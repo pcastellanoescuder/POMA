@@ -1,0 +1,55 @@
+
+PomaNormPlot <- function(data, group = c("subjects", "metabolites")){
+
+  if (missing(group)) {
+    group <- "subjects"
+    warning("group argument is empty! subjects will be used")
+  }
+
+  colnames(data)[1:2] <- c("ID", "Group")
+  data <- data %>% mutate(ID = paste0(row_number(), "_", ID))
+
+  normtable_metabolites <- select(data, -ID) %>%
+    reshape2::melt()
+
+  normtable_subjects <- select(data, -Group) %>%
+    as_tibble() %>%
+    gather(var, value, -ID) %>%
+    spread(ID, value) %>%
+    reshape2::melt()
+
+  normtable_subjects <- normtable_subjects %>%
+    mutate(variable = str_replace_all(variable, "._", ""))
+
+  if(group == "subjects"){
+
+    normtable_subjects %>%
+      group_by(variable) %>%
+      ggplot(aes(variable, value, color = variable)) +
+      geom_boxplot() +
+      geom_jitter() +
+      theme(legend.position = "none") +
+      theme_minimal() +
+      xlab("") +
+      ggtitle("Normalization Plot by Subjects") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position = "none")
+
+  }
+  else{
+
+    normtable_metabolites %>%
+      group_by(Group) %>%
+      ggplot(aes(variable, value, color = Group)) +
+      geom_boxplot() +
+      geom_jitter() +
+      theme(legend.position = "none") +
+      theme_minimal() +
+      xlab("") +
+      ggtitle("Normalization Plot by Metabolites") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+  }
+
+}
+

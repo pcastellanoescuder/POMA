@@ -5,6 +5,14 @@ PomaVolcano <- function(data,
                         FC_cutoff = 1.5,
                         xlim = 2){
 
+  if (missing(pval)) {
+    pval <- "raw"
+    warning("pval argument is empty! Raw p-value will be used")
+  }
+  if (!(pval %in% c("raw", "adjusted"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for pval argument!"))
+  }
+
   names <- rownames(data)
 
   if(pval == "raw"){
@@ -26,15 +34,17 @@ PomaVolcano <- function(data,
   ggplot(data = df, aes(x = log2(FC), y = -log10(P.Value), colour = threshold)) +
     geom_point(size=1.75) +
     xlim(c(-(xlim), xlim)) +
-    xlab("log2 fold change") + ylab("-log10 p-value")+
+    xlab("log2 fold change") +
+    ylab("-log10 p-value") +
     scale_y_continuous(trans = "log1p")+
     ggtitle("Comparisson: Group2/Group1") +
-    geom_label(data = df[df$P.Value < Pval_cutoff & (df$FC > FC_cutoff | log2(df$FC) < -log2(FC_cutoff)),],
-              aes(x = log2(FC), y = -log10(P.Value)+0.12, label = names), show.legend = FALSE) +
+    ggrepel::geom_label_repel(data = df[df$P.Value < Pval_cutoff & (df$FC > FC_cutoff | log2(df$FC) < -log2(FC_cutoff)),],
+              aes(x = log2(FC), y = -log10(P.Value), label = names), show.legend = FALSE) +
     geom_vline(xintercept = -log2(FC_cutoff), colour = "black") +
     geom_vline(xintercept = log2(FC_cutoff), colour = "black") +
     geom_hline(yintercept = -log10(Pval_cutoff), colour = "black") +
-    theme(legend.position = "none")+ theme_minimal() +
+    theme(legend.position = "none") +
+    theme_minimal() +
     scale_color_manual(values = c("Down-regulated" = "#E64B35", "Up-regulated" = "#3182bd", "none" = "#636363"))
 
   }

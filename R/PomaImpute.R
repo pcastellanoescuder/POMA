@@ -5,6 +5,14 @@ PomaImpute <- function(data,
                        cutoff = 20,
                        method = c("none", "half_min", "median", "mean", "min", "knn")){
 
+  if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+  }
+  if (missing(method)) {
+    method <- "knn"
+    warning("method argument is empty! KNN will be used")
+  }
+
   data <- as.data.frame(data)
   samples_groups <- data[, 1:2]
   to_imp_data <- data[, c(3:ncol(data))]

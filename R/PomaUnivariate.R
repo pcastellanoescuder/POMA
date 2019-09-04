@@ -6,6 +6,18 @@ PomaUnivariate <- function(data_uni,
                            var_equal = FALSE,
                            adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")){
 
+  if (missing(method)) {
+    stop(crayon::red(clisymbols::symbol$cross, "Select a method!"))
+  }
+  if (!(method %in% c("ttest", "anova", "mann", "kruskal"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+  }
+  if (missing(adjust)) {
+    adjust <- "fdr"
+    warning("adjust argument is empty! FDR will be used")
+  }
+
+
   colnames(data_uni)[1:2] <- c("ID", "Group")
   Group <- data_uni$Group
 
