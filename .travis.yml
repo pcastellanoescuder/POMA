@@ -4,10 +4,8 @@ language: r
 
 r_packages:
   - covr
+  - testthat
   - devtools
-
-r_github_packages:
-  - codecov/POMA
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
