@@ -10,5 +10,9 @@
   <!-- badges: end -->
 
 
-library(devtools)
-install_github("Displayr/flipPlots")
+## Installation
+
+```{r}
+# library(devtools)
+# devtools::install_github("pcastellanoescuder/POMA_package")
+```
