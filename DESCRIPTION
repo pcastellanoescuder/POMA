@@ -12,11 +12,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    ggplot2
-    tibble
-    dplyr
-    tidyr     
-    stringr
+    tidyverse
     crayon
     clisymbols
     impute
@@ -24,6 +20,5 @@ Imports:
 Suggests: 
     covr,
     testthat (>= 2.1.0)
-    tidyverse
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
