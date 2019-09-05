@@ -1,3 +1,7 @@
+---
+output: md_document
+---
+
 # POMA package
 
 <img src='POMA_sticker/POMA_sticker.png' alt='POMA_sticker' title='POMA sticker' width='110' height='120' align='right'/>
