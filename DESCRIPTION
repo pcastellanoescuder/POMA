@@ -25,6 +25,9 @@ Suggests:
     covr,
     tidyverse,
     testthat (>= 2.1.0),
-    vroom
+    vroom,
+    knitr,
+    rmarkdown
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr

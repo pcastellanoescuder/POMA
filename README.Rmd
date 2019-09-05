@@ -19,6 +19,13 @@ output: github_document
 ## Installation
 
 ```{r, eval = FALSE}
-# library(devtools)
+# install.packages("devtools")
 devtools::install_github("pcastellanoescuder/POMA")
 ```
+
+## Usage
+
+```{r, eval = FALSE}
+browseVignettes("POMA")
+```
+

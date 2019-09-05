@@ -19,6 +19,12 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 ## Installation
 
 ``` r
-# library(devtools)
+# install.packages("devtools")
 devtools::install_github("pcastellanoescuder/POMA")
+```
+
+## Usage
+
+``` r
+browseVignettes("POMA")
 ```

@@ -1,0 +1,49 @@
+---
+title: "POMA: An R Package for Statistical Analysis of Metabolomic Data"
+author: "Pol Castellano-Escuder"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    toc: true
+    theme: cayman
+    highlight: github
+  pdf_document:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{POMA: An R Package for Statistical Analysis of Metabolomic Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, eval = FALSE}
+library(POMA)
+```
+
+```{r, eval = FALSE}
+data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
+
+imputed <- PomaImpute(data, ZerosAsNA = F, RemoveNA = F, method = "half_min")
+
+norm_none <- PomaNorm(imputed, method = "none")
+norm_ls <- PomaNorm(imputed, method = "log_scaling")
+
+PomaNormPlot(norm_none)
+PomaNormPlot(norm_ls)
+PomaNormPlot(norm_none, group = "metabolites")
+PomaNormPlot(norm_ls, group = "metabolites")
+
+univ_ttest <- PomaUnivariate(norm, method = "ttest", adjust = "fdr")
+univ_mann <- PomaUnivariate(norm, method = "mann", adjust = "fdr")
+
+PomaVolcano(univ_ttest)
+PomaVolcano(univ_mann, pval = "raw", Pval_cutoff = 0.05, FC_cutoff = 1.5, xlim = 2)
+```
+
