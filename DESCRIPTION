@@ -12,10 +12,10 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    tidyverse
-    crayon
-    clisymbols
-    impute
+    tidyverse,
+    crayon,
+    clisymbols,
+    impute,
     reshape2
 Suggests: 
     covr,
