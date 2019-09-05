@@ -2,8 +2,6 @@
 
 language: r
 
-remotes: 2.0.3
-
 r_packages:
   - covr
   - testthat
