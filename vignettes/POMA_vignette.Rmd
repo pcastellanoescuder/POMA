@@ -28,7 +28,7 @@ library(POMA)
 ```
 
 ```{r, eval = FALSE}
-data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
+data <- vroom::vroom("../data_ST000284/MET_CRC_ST000284.csv", delim = ",")
 
 imputed <- PomaImpute(data, ZerosAsNA = F, RemoveNA = F, method = "half_min")
 

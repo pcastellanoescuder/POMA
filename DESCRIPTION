@@ -20,6 +20,7 @@ Imports:
     crayon,
     clisymbols,
     impute,
+    mixOmics,
     reshape2,
     prettydoc
 Suggests: 
