@@ -184,7 +184,10 @@ PomaMultivariate <- function(data_multi,
 
     ####
 
-    return(list(selected_variables = selected_variables))
+    return(list(selected_variables = selected_variables, ncomp = ncomp,
+                select_keepX = select_keepX, errors_splsda = errors_splsda,
+                bal_error_rate = bal_error_rate, splsda_scores_plot = splsda_scores_plot,
+                scores_splsda = scores_splsda, selected_variables = selected_variables))
 
   }
 
