@@ -3,6 +3,7 @@ context("PomaVolcano")
 test_that("PomaVolcano works", {
 
   library(tidyverse)
+  library(ggrepel)
 
   data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
 
