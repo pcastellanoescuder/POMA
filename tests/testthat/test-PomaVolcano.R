@@ -2,6 +2,8 @@ context("PomaVolcano")
 
 test_that("PomaVolcano works", {
 
+  library(tidyverse)
+
   data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
 
   univ_ttest <- PomaUnivariate(data, method = "ttest", adjust = "fdr")
