@@ -4,6 +4,14 @@ PomaNorm <- function(data,
                                 "log_transformation", "vast_scaling","log_pareto"),
                      round = 3){
 
+  if (missing(method)) {
+    stop(crayon::red(clisymbols::symbol$cross, "Select a method!"))
+  }
+  if (!(method %in% c("none", "auto_scaling", "level_scaling", "log_scaling",
+                      "log_transformation", "vast_scaling","log_pareto"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+  }
+
   data <- as.data.frame(data)
   samples_groups <- data[, 1:2]
   to_norm_data <- data[, c(3:ncol(data))]

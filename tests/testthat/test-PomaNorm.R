@@ -18,9 +18,8 @@ test_that("PomaNorm works", {
   expect_equal(e, f)
   expect_equal(f, g)
 
-  # expect_identical(PomaNorm(data, method = "auto_scaling", round = 2)[,3],
-  #                  PomaNorm(data, method = "level_scaling", round = 2)[,3])
-
+  expect_error(PomaNorm(data, method = "log", round = 2))
+  expect_error(PomaNorm(data))
 
 })
 

@@ -14,6 +14,23 @@ test_that("PomaImpute works", {
   e <- ncol(PomaImpute(data, method = "knn", ZerosAsNA = T, RemoveNA = T, cutoff = 20))
   f <- ncol(PomaImpute(data, method = "knn", ZerosAsNA = T, RemoveNA = T, cutoff = 10))
 
+  g <- PomaImpute(data, method = "half_min", ZerosAsNA = T, RemoveNA = T, cutoff = 20)
+  h <- PomaImpute(data, method = "knn", ZerosAsNA = T, RemoveNA = T, cutoff = 20)
+
+  i <- PomaImpute(data, method = "half_min", ZerosAsNA = T, RemoveNA = F, cutoff = 1)
+  j <- PomaImpute(data, method = "mean", ZerosAsNA = T, RemoveNA = F, cutoff = 1)
+  k <- PomaImpute(data, method = "median", ZerosAsNA = T, RemoveNA = F, cutoff = 1)
+
+  l <- PomaImpute(data, method = "knn", ZerosAsNA = T, RemoveNA = T, cutoff = 20)
+  m <- PomaImpute(data)
+
+  n <- PomaImpute(data, method = "none", ZerosAsNA = T, RemoveNA = T, cutoff = 2)
+  o <- PomaImpute(data, method = "none", cutoff = 1)
+  p <- PomaImpute(data, method = "none", cutoff = 20)
+  q <- PomaImpute(data, method = "min", cutoff = 20)
+
+  ####
+
   expect_equal(a, b)
   expect_equal(b, c)
 
@@ -22,6 +39,25 @@ test_that("PomaImpute works", {
 
   expect_equal(c, e)
   expect_equal(e, f)
+
+  expect_false(all(g == h))
+  expect_equal(dim(g), dim(h))
+
+  expect_equal(dim(i), dim(j))
+  expect_equal(dim(j), dim(k))
+
+  expect_false(all(i == j))
+  expect_false(all(j == k))
+  expect_false(all(k == i))
+
+  expect_equal(l, m)
+  expect_equal(n, o)
+
+  expect_false(all(p == q))
+  expect_equal(dim(p), dim(q))
+
+  expect_error(PomaImpute(data, method = "non"))
+  expect_warning(PomaImpute(data))
 
 })
 
