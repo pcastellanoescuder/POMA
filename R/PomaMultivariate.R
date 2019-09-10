@@ -15,6 +15,10 @@ PomaMultivariate <- function(data_multi,
   if (!(method %in% c("pca", "plsda", "splsda"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
+  if (missing(validation)) {
+    validation <- "Mfold"
+    warning("validation argument is empty! Mfold will be used")
+  }
   if (!(validation %in% c("Mfold", "loo"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect validation method! Please choose 'Mfold' or 'loo'"))
   }
@@ -54,7 +58,8 @@ PomaMultivariate <- function(data_multi,
 
     score_data <- PCi %>% select(-Groups) %>% round(4)
 
-    return(list(screeplot = screeplot, scoresplot = scoresplot, score_data = score_data, eigenvalues = eigenvalues))
+    return(list(screeplot = screeplot, scoresplot = scoresplot,
+                score_data = score_data, eigenvalues = eigenvalues))
 
   }
 
@@ -67,11 +72,11 @@ PomaMultivariate <- function(data_multi,
 
     PLSDAi <- data.frame(plsda_res$variates$X, Groups = Y)
 
-    scoresplot <- ggplot(PLSDAi, aes(x = comp.1, y = comp.2, col = Groups))+
+    scoresplot <- ggplot(PLSDAi, aes(x = comp1, y = comp2, col = Groups))+
       geom_point(size=3,alpha=0.5) +
       xlab("Component 1") +
       ylab("Component 2") +
-      stat_ellipse(aes(x = comp.1, y = comp.2, col = Groups), type = "norm") +
+      stat_ellipse(aes(x = comp1, y = comp2, col = Groups), type = "norm") +
       theme_minimal()
 
     #####
@@ -107,13 +112,13 @@ PomaMultivariate <- function(data_multi,
     plsda_vip_top <- plsda_vip[1:15 ,]
 
     plsda_vip_top <- plsda_vip_top %>%
-      mutate(Variable = factor(Variable, levels = Variable[order(comp.1)]))
+      mutate(Variable = factor(Variable, levels = Variable[order(comp1)]))
 
-    vip_plsda_plot <- ggplot(plsda_vip_top, aes(x = Variable, y = comp.1, fill = NULL)) +
+    vip_plsda_plot <- ggplot(plsda_vip_top, aes(x = Variable, y = comp1, fill = NULL)) +
       geom_bar(stat="identity", fill = rep(c("lightblue"), nrow(plsda_vip_top))) +
       coord_flip() +
       ylab("VIP") +
-      geom_label(data = plsda_vip_top, aes(label = round(comp.1, 2))) +
+      geom_label(data = plsda_vip_top, aes(label = round(comp1, 2))) +
       theme_minimal()
 
     ####
@@ -169,11 +174,11 @@ PomaMultivariate <- function(data_multi,
 
     SPLSDAi <- data.frame(res_splsda$variates$X, Groups = Y)
 
-    splsda_scores_plot <- ggplot(SPLSDAi, aes(x = comp.1, y = comp.2, col = Groups)) +
+    splsda_scores_plot <- ggplot(SPLSDAi, aes(x = comp1, y = comp2, col = Groups)) +
       geom_point(size=3,alpha=0.5) +
       xlab("Component 1") +
       ylab("Component 2") +
-      stat_ellipse(aes(x = comp.1, y = comp.2, col = Groups), type = "norm") +
+      stat_ellipse(aes(x = comp1, y = comp2, col = Groups), type = "norm") +
       theme_minimal()
 
     scores_splsda <- SPLSDAi %>% select(-Groups) %>% round(4)

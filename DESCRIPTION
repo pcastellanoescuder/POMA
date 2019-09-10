@@ -23,7 +23,8 @@ Imports:
     impute,
     mixOmics,
     reshape2,
-    prettydoc
+    prettydoc,
+    ggrepel
 Suggests: 
     covr,
     tidyverse,
