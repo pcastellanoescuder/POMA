@@ -144,7 +144,8 @@ PomaMultivariate <- function(data_multi,
     ncomp <- tune_splsda$choice.ncomp$ncomp # optimal number of components based on t-tests
     select_keepX <- tune_splsda$choice.keepX[1:ncomp]  # optimal number of variables to select
 
-    errors_splsda_out <- data.frame(tune_splsda$error.rate) %>% round(4) %>% rownames_to_column("features")
+    errors_splsda_out <- data.frame(tune_splsda$error.rate) %>% round(4) %>%
+      rownames_to_column("features")
     errors_splsda <- reshape2::melt(errors_splsda_out, id.vars=c("features"))
 
     errors_sd <- data.frame(tune_splsda$error.rate.sd) %>% rownames_to_column("features_sd")
