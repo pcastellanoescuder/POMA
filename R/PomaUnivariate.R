@@ -1,4 +1,17 @@
 
+#' Title
+#'
+#' @param data_uni A data frame
+#' @param covariates A data frame
+#' @param method
+#' @param paired Logical that indicate if your data is paired or not
+#' @param var_equal
+#' @param adjust
+#'
+#' @return A data.frame with
+#' @export
+#'
+#' @examples
 PomaUnivariate <- function(data_uni,
                            covariates = NULL,
                            method = c("ttest", "anova", "mann", "kruskal"),

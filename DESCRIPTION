@@ -25,7 +25,8 @@ Imports:
     reshape2,
     prettydoc,
     ggrepel,
-    snow
+    snow,
+    limma
 Suggests: 
     covr,
     tidyverse,

@@ -20,7 +20,7 @@ output: github_document
 
 ```{r, eval = FALSE}
 # install.packages("devtools")
-devtools::install_github("pcastellanoescuder/POMA")
+devtools::install_github("pcastellanoescuder/POMA", dependencies = TRUE)
 ```
 
 ## Usage
