@@ -74,7 +74,7 @@ PomaMultivariate <- function(data_multi,
 
     ####
 
-    score_data <- PCi %>% select(-Groups) %>% round(4)
+    score_data <- PCi %>% dplyr::select(-Groups) %>% round(4)
 
     return(list(screeplot = screeplot, scoresplot = scoresplot,
                 score_data = score_data, eigenvalues = eigenvalues))
@@ -141,7 +141,7 @@ PomaMultivariate <- function(data_multi,
 
     ####
 
-    scores_plsda <- PLSDAi %>% select(-Groups) %>% round(4)
+    scores_plsda <- PLSDAi %>% dplyr::select(-Groups) %>% round(4)
 
     return(list(scoresplot = scoresplot, errors_plsda = errors_plsda, errors_plsda_plot = errors_plsda_plot, plsda_vip_table = plsda_vip,
                 vip_plsda_plot = vip_plsda_plot, scores_plsda = scores_plsda))
@@ -200,7 +200,7 @@ PomaMultivariate <- function(data_multi,
       stat_ellipse(aes(x = comp1, y = comp2, col = Groups), type = "norm") +
       theme_minimal()
 
-    scores_splsda <- SPLSDAi %>% select(-Groups) %>% round(4)
+    scores_splsda <- SPLSDAi %>% dplyr::select(-Groups) %>% round(4)
 
     selected_variables <- mixOmics::selectVar(res_splsda, comp = 1)
     selected_variables <- round(selected_variables$value, 4)
