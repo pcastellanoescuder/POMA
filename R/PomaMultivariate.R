@@ -13,6 +13,8 @@
 #' @param nrepeat (Only for "plsda" and "splsda" methods) Numeric. Number of iterations for the validation method selected.
 #' @param num_features (Only for "splsda" method) Numeric. Number of variables selected to discriminate groups.
 #'
+#' @export
+#'
 #' @return A list with all results for multivariate statistical analysis including plots and data frames.
 #' @author Pol Castellano-Escuder
 PomaMultivariate <- function(data_multi,

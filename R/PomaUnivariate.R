@@ -10,6 +10,8 @@
 #' @param var_equal Logical indicates if the data variance is equal or not.
 #' @param adjust Multiple comparisons correction method.
 #'
+#' @export
+#'
 #' @return A data frame with the results.
 #' @author Pol Castellano-Escuder
 PomaUnivariate <- function(data_uni,

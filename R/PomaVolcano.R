@@ -9,6 +9,8 @@
 #' @param FC_cutoff Numeric. Define the log fold change cutoff (vertical lines).
 #' @param xlim Numeric. Define the limits for x axis.
 #'
+#' @export
+#'
 #' @return A ggplot2 object.
 #' @author Pol Castellano-Escuder
 PomaVolcano <- function(data,

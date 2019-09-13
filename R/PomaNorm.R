@@ -7,6 +7,8 @@
 #' @param method Normalization method. Options are c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling","log_pareto").
 #' @param round Numeric. Number of decimal places (Default is 3).
 #'
+#' @export
+#'
 #' @return A data frame with the results.
 #' @references van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.
 #' @author Pol Castellano-Escuder

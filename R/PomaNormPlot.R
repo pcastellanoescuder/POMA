@@ -6,6 +6,8 @@
 #' @param data A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
 #' @param group Groupping factor for the plot. Options are c("subjects", "metabolites"). If the user select "subject", the boxplot will be created for each subject. If the selection is "metabolites", the boxplot will be created for each metabolite.
 #'
+#' @export
+#'
 #' @return A ggplot2 object.
 #' @author Pol Castellano-Escuder
 PomaNormPlot <- function(data, group = c("subjects", "metabolites")){
