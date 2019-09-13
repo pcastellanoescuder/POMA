@@ -23,10 +23,10 @@ PomaNormPlot <- function(data, group = c("subjects", "metabolites")){
   colnames(data)[1:2] <- c("ID", "Group")
   data <- data %>% mutate(ID = paste0(row_number(), "_", ID))
 
-  normtable_metabolites <- select(data, -ID) %>%
+  normtable_metabolites <- dplyr::select(data, -ID) %>%
     reshape2::melt()
 
-  normtable_subjects <- select(data, -Group) %>%
+  normtable_subjects <- dplyr::select(data, -Group) %>%
     as_tibble() %>%
     gather(var, value, -ID) %>%
     spread(ID, value) %>%
