@@ -34,5 +34,7 @@ test_that("PomaNormPlot works", {
   expect_warning(PomaNormPlot(norm_none))
   expect_warning(PomaNormPlot(norm_ls))
 
+  expect_error(PomaNormPlot(norm_ls, group = "subj"))
+
 })
 

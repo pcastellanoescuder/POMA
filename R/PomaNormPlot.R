@@ -12,6 +12,9 @@
 #' @author Pol Castellano-Escuder
 PomaNormPlot <- function(data, group = c("subjects", "metabolites")){
 
+  if (!(group %in% c("subjects", "metabolites"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
+  }
   if (missing(group)) {
     group <- "subjects"
     warning("group argument is empty! subjects will be used")
