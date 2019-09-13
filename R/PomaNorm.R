@@ -1,4 +1,15 @@
 
+#' Different Normalization Methods for Metabolomics
+#'
+#' @description PomaNorm() offers different methods to normalize metabolomic data. This function contains both centering and scaling functions to normalize the data.
+#'
+#' @param data A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param method Normalization method. Options are c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling","log_pareto").
+#' @param round Numeric. Number of decimal places (Default is 3).
+#'
+#' @return A data frame with the results.
+#' @references van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.
+#' @author Pol Castellano-Escuder
 PomaNorm <- function(data,
                      method = c("none", "auto_scaling", "level_scaling", "log_scaling",
                                 "log_transformation", "vast_scaling","log_pareto"),

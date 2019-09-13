@@ -1,6 +1,19 @@
 
+#' Different Imputation Methods for Metabolomics
+#'
+#' @description PomaImpute() offers different methods to impute missing values in metabolomic data.
+#'
+#' @param data A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param ZerosAsNA Logical that indicates if the zeros in the data are missing values. Default is FALSE.
+#' @param RemoveNA Logical that indicates if those metabolites with more than selected cutoff missing values in each group have to be removed. Default is TRUE.
+#' @param cutoff Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these metabolite will not be removed.
+#' @param method Imputation method. Options are c("none", "half_min", "median", "mean", "min", "knn"). If "none", all missing values will be replaced by zero.
+#'
+#' @return A data frame with the results.
+#' @references Armitage, E. G., Godzien, J., Alonso‐Herranz, V., López‐Gonzálvez, Á., & Barbas, C. (2015). Missing value imputation strategies for metabolomics data. Electrophoresis, 36(24), 3050-3060.
+#' @author Pol Castellano-Escuder
 PomaImpute <- function(data,
-                       ZerosAsNA = TRUE,
+                       ZerosAsNA = FALSE,
                        RemoveNA = TRUE,
                        cutoff = 20,
                        method = c("none", "half_min", "median", "mean", "min", "knn")){

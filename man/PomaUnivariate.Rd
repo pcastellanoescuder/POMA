@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaUnivariate.R
 \name{PomaUnivariate}
 \alias{PomaUnivariate}
-\title{Title}
+\title{Univariate Statistical Methods for Metabolomics}
 \usage{
 PomaUnivariate(data_uni, covariates = NULL, method = c("ttest",
   "anova", "mann", "kruskal"), paired = FALSE, var_equal = FALSE,
@@ -10,17 +10,24 @@ PomaUnivariate(data_uni, covariates = NULL, method = c("ttest",
   "BY"))
 }
 \arguments{
-\item{data_uni}{A data frame}
+\item{data_uni}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}
 
-\item{covariates}{A data frame}
+\item{covariates}{A data frame with covariates. The first column must be the subject ID in the same order as in the metabolites data (optional).}
 
-\item{paired}{Logical that indicate if your data is paired or not}
+\item{method}{Univariate statistical method. Options are c("ttest", "anova", "mann", "kruskal").}
 
-\item{adjust}{}
+\item{paired}{Logical indicates if the data is paired or not.}
+
+\item{var_equal}{Logical indicates if the data variance is equal or not.}
+
+\item{adjust}{Multiple comparisons correction method.}
 }
 \value{
-A data.frame with
+A data frame with the results.
 }
 \description{
-Title
+PomaUnivariate() allows users to perform different univariate statistical analysis on metabolomic data.
+}
+\author{
+Pol Castellano-Escuder
 }

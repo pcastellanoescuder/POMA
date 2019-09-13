@@ -1,4 +1,16 @@
 
+#' Volcano Plot
+#'
+#' @description PomaVolcano() generates a volcano plot from the PomaUnivariate() result.
+#'
+#' @param data A data frame object from PomaUnivariate(). Only for two group data!
+#' @param pval Select a pvalue type to generate the volcano plot. Options c("raw", "adjusted").
+#' @param Pval_cutoff Numeric. Define the pvalue cutoff (horizontal line).
+#' @param FC_cutoff Numeric. Define the log fold change cutoff (vertical lines).
+#' @param xlim Numeric. Define the limits for x axis.
+#'
+#' @return A ggplot2 object.
+#' @author Pol Castellano-Escuder
 PomaVolcano <- function(data,
                         pval = c("raw", "adjusted"),
                         Pval_cutoff = 0.05,

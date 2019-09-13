@@ -1,17 +1,17 @@
 
-#' Title
+#' Univariate Statistical Methods for Metabolomics
 #'
-#' @param data_uni A data frame
-#' @param covariates A data frame
-#' @param method
-#' @param paired Logical that indicate if your data is paired or not
-#' @param var_equal
-#' @param adjust
+#' @description PomaUnivariate() allows users to perform different univariate statistical analysis on metabolomic data.
 #'
-#' @return A data.frame with
-#' @export
+#' @param data_uni A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param covariates A data frame with covariates. The first column must be the subject ID in the same order as in the metabolites data (optional).
+#' @param method Univariate statistical method. Options are c("ttest", "anova", "mann", "kruskal").
+#' @param paired Logical indicates if the data is paired or not.
+#' @param var_equal Logical indicates if the data variance is equal or not.
+#' @param adjust Multiple comparisons correction method.
 #'
-#' @examples
+#' @return A data frame with the results.
+#' @author Pol Castellano-Escuder
 PomaUnivariate <- function(data_uni,
                            covariates = NULL,
                            method = c("ttest", "anova", "mann", "kruskal"),

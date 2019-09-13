@@ -1,4 +1,20 @@
 
+#' Multivariate Statistical Methods for Metabolomics
+#'
+#' @description PomaMultivariate() allows users to perform different multivariate statistical analysis on metabolomic data.
+#'
+#' @param data_multi A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param method A multivariate method. Options are c("pca", "plsda", "splsda").
+#' @param components Numeric. Number of components to include in the model. Default is 5.
+#' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.
+#' @param scale Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.
+#' @param validation (Only for "plsda" and "splsda" methods) Validation method. Options are c("Mfold", "loo").
+#' @param folds (Only for "plsda" and "splsda" methods) Numeric. Number of folds for Mfold validation method (default is 5). If the validation method is loo, this value will become to 1.
+#' @param nrepeat (Only for "plsda" and "splsda" methods) Numeric. Number of iterations for the validation method selected.
+#' @param num_features (Only for "splsda" method) Numeric. Number of variables selected to discriminate groups.
+#'
+#' @return A list with all results for multivariate statistical analysis including plots and data frames.
+#' @author Pol Castellano-Escuder
 PomaMultivariate <- function(data_multi,
                              method = c("pca", "plsda", "splsda"),
                              components = 5,

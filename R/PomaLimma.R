@@ -1,4 +1,16 @@
 
+#' Implementation of Limma R Package in Metabolomics
+#'
+#' @description PomaLimma() uses the classical limma package for metabolomics.
+#'
+#' @param data_limma A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param contrast A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".
+#' @param covariates A data frame with covariates. The first column must be the subject ID in the same order as in the metabolites data (optional).
+#' @param adjust Multiple comparisons correction method.
+#'
+#' @return A data frame with the limma results.
+#' @references Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007
+#' @author Pol Castellano-Escuder
 PomaLimma <- function(data_limma,
                       contrast = NULL,
                       covariates = NULL,
