@@ -25,7 +25,7 @@ test_that("PomaMultivariate works", {
   expect_error(PomaMultivariate(data, method = "pc", components = 5))
   expect_error(PomaMultivariate(data))
   expect_error(PomaMultivariate(data, method = "pca", validation = "Mfo"))
-  expect_warning(PomaMultivariate(data, method = "pca"))
+  expect_warning(PomaMultivariate(data, method = "plsda"))
 
   df_a <- layer_data(multivariate_pca_1$screeplot)
   df_b <- layer_data(multivariate_pca_1$scoresplot)

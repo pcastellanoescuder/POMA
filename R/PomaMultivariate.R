@@ -35,7 +35,9 @@ PomaMultivariate <- function(data_multi,
   }
   if (missing(validation)) {
     validation <- "Mfold"
-    warning("validation argument is empty! Mfold will be used")
+    if (method %in% c("plsda", "splsda")){
+      warning("validation argument is empty! Mfold will be used")
+    }
   }
   if (!(validation %in% c("Mfold", "loo"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect validation method! Please choose 'Mfold' or 'loo'"))
