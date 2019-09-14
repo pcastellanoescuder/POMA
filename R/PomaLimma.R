@@ -41,12 +41,12 @@ PomaLimma <- function(data_limma,
 
     trans_limma <- t(data_limma[, c(3:ncol(data_limma))])
 
-    model <- lmFit(trans_limma, initialmodel)
-    model <- contrasts.fit(model, cont.matrix)
+    model <- limma::lmFit(trans_limma, initialmodel)
+    model <- limma::contrasts.fit(model, cont.matrix)
 
-    modelstats <- eBayes(model)
-    res <- topTable(modelstats, number = ncol(data_limma),
-                    coef = contrast, sort.by = "p", adjust.method = adjust)
+    modelstats <- limma::eBayes(model)
+    res <- limma::topTable(modelstats, number = ncol(data_limma),
+                           coef = contrast, sort.by = "p", adjust.method = adjust)
 
     return(res)
 
@@ -70,12 +70,12 @@ PomaLimma <- function(data_limma,
 
     trans_limma2 <- t(data_limma[, c(3:ncol(data_limma))])
 
-    model2 <- lmFit(trans_limma2, initialmodel2)
-    model2 <- contrasts.fit(model2, cont.matrix2)
+    model2 <- limma::lmFit(trans_limma2, initialmodel2)
+    model2 <- limma::contrasts.fit(model2, cont.matrix2)
 
-    modelstats2 <- eBayes(model2)
-    res2 <- topTable(modelstats2, number= ncol(data_limma) ,
-                     coef = contrast, sort.by = "p", adjust.method = adjust)
+    modelstats2 <- limma::eBayes(model2)
+    res2 <- limma::topTable(modelstats2, number= ncol(data_limma) ,
+                            coef = contrast, sort.by = "p", adjust.method = adjust)
 
     return(res2)
   }
