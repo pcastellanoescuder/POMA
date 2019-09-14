@@ -23,9 +23,3 @@ output: github_document
 devtools::install_github("pcastellanoescuder/POMA", dependencies = TRUE)
 ```
 
-## Usage
-
-```{r, eval = FALSE}
-browseVignettes("POMA")
-```
-
