@@ -11,7 +11,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![Build
 Status](https://travis-ci.org/pcastellanoescuder/POMA.svg?branch=master)](https://travis-ci.org/pcastellanoescuder/POMA)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/pcastellanoescuder/POMA_package?branch=master&svg=true)](https://ci.appveyor.com/project/pcastellanoescuder/POMA_package)
+status](https://ci.appveyor.com/api/projects/status/github/pcastellanoescuder/POMA?branch=master&svg=true)](https://ci.appveyor.com/project/pcastellanoescuder/POMA)
 [![Codecov test
 coverage](https://codecov.io/gh/pcastellanoescuder/POMA/branch/master/graph/badge.svg)](https://codecov.io/gh/pcastellanoescuder/POMA?branch=master)
 [![License: GPL
