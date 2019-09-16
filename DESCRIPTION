@@ -26,7 +26,8 @@ Imports:
     prettydoc,
     ggrepel,
     snow,
-    limma
+    limma,
+    magrittr
 Suggests: 
     covr,
     tidyverse,
