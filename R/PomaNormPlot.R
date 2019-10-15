@@ -21,43 +21,31 @@ PomaNormPlot <- function(data, group = c("subjects", "metabolites")){
   }
 
   colnames(data)[1:2] <- c("ID", "Group")
-  data <- data %>% mutate(ID = paste0(row_number(), "_", ID))
-
-  normtable_metabolites <- dplyr::select(data, -ID) %>%
-    reshape2::melt()
-
-  normtable_subjects <- dplyr::select(data, -Group) %>%
-    as_tibble() %>%
-    gather(var, value, -ID) %>%
-    spread(ID, value) %>%
-    reshape2::melt()
-
-  normtable_subjects <- normtable_subjects %>%
-    mutate(variable = str_replace_all(variable, "._", ""))
+  data <- data %>% mutate(ID = as.character(ID))
 
   if(group == "subjects"){
 
-    normtable_subjects %>%
-      group_by(variable) %>%
-      ggplot(aes(variable, value, color = variable)) +
+    data %>%
+      reshape2::melt() %>%
+      group_by(ID) %>%
+      ggplot(aes(ID, value, color = Group)) +
       geom_boxplot() +
       geom_jitter() +
-      theme(legend.position = "none") +
       theme_minimal() +
-      xlab("") +
       ggtitle("Normalization Plot by Subjects") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position = "none")
+      xlab("") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
   }
   else{
 
-    normtable_metabolites %>%
+    data %>%
+      dplyr::select(-ID) %>%
+      reshape2::melt() %>%
       group_by(Group) %>%
       ggplot(aes(variable, value, color = Group)) +
       geom_boxplot() +
       geom_jitter() +
-      theme(legend.position = "none") +
       theme_minimal() +
       xlab("") +
       ggtitle("Normalization Plot by Metabolites") +

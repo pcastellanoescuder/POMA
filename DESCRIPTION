@@ -27,7 +27,8 @@ Imports:
     ggrepel,
     snow,
     limma,
-    magrittr
+    magrittr,
+    randomForest
 Suggests: 
     covr,
     tidyverse,
