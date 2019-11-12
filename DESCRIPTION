@@ -28,7 +28,8 @@ Imports:
     snow,
     limma,
     magrittr,
-    randomForest
+    randomForest,
+    RankProd
 Suggests: 
     covr,
     tidyverse,
