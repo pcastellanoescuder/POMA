@@ -4,8 +4,13 @@
 \alias{PomaVolcano}
 \title{Volcano Plot}
 \usage{
-PomaVolcano(data, pval = c("raw", "adjusted"), Pval_cutoff = 0.05,
-  FC_cutoff = 1.5, xlim = 2)
+PomaVolcano(
+  data,
+  pval = c("raw", "adjusted"),
+  Pval_cutoff = 0.05,
+  FC_cutoff = 1.5,
+  xlim = 2
+)
 }
 \arguments{
 \item{data}{A data frame object from PomaUnivariate(method = c("ttest", "mann")). Only for two group data!}

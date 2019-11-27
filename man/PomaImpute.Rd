@@ -4,8 +4,13 @@
 \alias{PomaImpute}
 \title{Different Imputation Methods for Metabolomics}
 \usage{
-PomaImpute(data, ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20,
-  method = c("none", "half_min", "median", "mean", "min", "knn"))
+PomaImpute(
+  data,
+  ZerosAsNA = FALSE,
+  RemoveNA = TRUE,
+  cutoff = 20,
+  method = c("none", "half_min", "median", "mean", "min", "knn")
+)
 }
 \arguments{
 \item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}

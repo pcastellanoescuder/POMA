@@ -4,10 +4,14 @@
 \alias{PomaUnivariate}
 \title{Univariate Statistical Methods for Metabolomics}
 \usage{
-PomaUnivariate(data_uni, covariates = NULL, method = c("ttest",
-  "anova", "mann", "kruskal"), paired = FALSE, var_equal = FALSE,
-  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH",
-  "BY"))
+PomaUnivariate(
+  data_uni,
+  covariates = NULL,
+  method = c("ttest", "anova", "mann", "kruskal"),
+  paired = FALSE,
+  var_equal = FALSE,
+  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")
+)
 }
 \arguments{
 \item{data_uni}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}

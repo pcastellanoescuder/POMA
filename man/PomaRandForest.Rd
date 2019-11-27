@@ -4,8 +4,14 @@
 \alias{PomaRandForest}
 \title{Classification Random Forest with POMA}
 \usage{
-PomaRandForest(data, folds = 3, ntree = 500,
-  mtry = floor(sqrt(ncol(data))), nodesize = 1, nvar = 20)
+PomaRandForest(
+  data,
+  folds = 3,
+  ntree = 500,
+  mtry = floor(sqrt(ncol(data))),
+  nodesize = 1,
+  nvar = 20
+)
 }
 \arguments{
 \item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}

@@ -4,9 +4,12 @@
 \alias{PomaNorm}
 \title{Different Normalization Methods for Metabolomics}
 \usage{
-PomaNorm(data, method = c("none", "auto_scaling", "level_scaling",
-  "log_scaling", "log_transformation", "vast_scaling", "log_pareto"),
-  round = 3)
+PomaNorm(
+  data,
+  method = c("none", "auto_scaling", "level_scaling", "log_scaling",
+    "log_transformation", "vast_scaling", "log_pareto"),
+  round = 3
+)
 }
 \arguments{
 \item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}

@@ -4,9 +4,12 @@
 \alias{PomaLimma}
 \title{Implementation of Limma R Package in Metabolomics}
 \usage{
-PomaLimma(data_limma, contrast = NULL, covariates = NULL,
-  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH",
-  "BY"))
+PomaLimma(
+  data_limma,
+  contrast = NULL,
+  covariates = NULL,
+  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")
+)
 }
 \arguments{
 \item{data_limma}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}

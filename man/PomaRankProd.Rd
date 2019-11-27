@@ -4,8 +4,14 @@
 \alias{PomaRankProd}
 \title{Rank Product/Rank Sum Analysis for Metabolomics}
 \usage{
-PomaRankProd(data, logged = TRUE, logbase = 2, paired = NA,
-  cutoff = 0.05, method = c("pfp", "pval"))
+PomaRankProd(
+  data,
+  logged = TRUE,
+  logbase = 2,
+  paired = NA,
+  cutoff = 0.05,
+  method = c("pfp", "pval")
+)
 }
 \arguments{
 \item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a TWO-FACTOR variable with the subject group.}
