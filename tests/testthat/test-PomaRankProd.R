@@ -16,13 +16,9 @@ test_that("PomaRankProd works", {
 
   RP_one <- PomaRankProd(data, logged = TRUE, logbase = 2)
   RP_two <- PomaRankProd(data, logged = TRUE, logbase = 10)
-  # RP_three <- PomaRankProd(data, logged = FALSE, logbase = 2)
-  # RP_four <- PomaRankProd(data, logged = FALSE, logbase = 10)
-  #
-  # RP_five <- PomaRankProd(data, cutoff = 0.05, method = "pfp")
-  # RP_six <- PomaRankProd(data, cutoff = 0.05, method = "pval")
-  # RP_seven <- PomaRankProd(data, cutoff = 0.01, method = "pfp")
-  # RP_eight <- PomaRankProd(data, cutoff = 0.01, method = "pval")
+
+  RP_five <- PomaRankProd(data, cutoff = 0.05, method = "pfp")
+  RP_six <- PomaRankProd(data, cutoff = 0.05, method = "pval")
 
   ##
 
@@ -35,6 +31,9 @@ test_that("PomaRankProd works", {
 
   expect_equal(dim(RP_one$upregulated), dim(RP_two$upregulated))
   expect_equal(dim(RP_one$downregulated), dim(RP_two$downregulated))
+
+  # expect_false(all(RP_five$upregulated == RP_six$upregulated))
+  # expect_false(all(RP_five$downregulated == RP_six$downregulated))
 
 })
 

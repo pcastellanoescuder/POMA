@@ -4,8 +4,13 @@ language: r
 
 warnings_are_errors: false
 
-cache: packages
-sudo: false
+# cache: packages
+# sudo: false
+
+addons:
+  apt:
+    packages:
+      - libmpfr-dev
 
 r_packages:
   - covr

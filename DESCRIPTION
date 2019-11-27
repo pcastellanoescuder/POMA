@@ -29,8 +29,7 @@ Imports:
     limma,
     magrittr,
     randomForest,
-    RankProd,
-    Rmpfr
+    RankProd
 Suggests: 
     covr,
     tidyverse,
