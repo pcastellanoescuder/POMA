@@ -32,8 +32,8 @@ test_that("PomaRankProd works", {
   expect_equal(dim(RP_one$upregulated), dim(RP_two$upregulated))
   expect_equal(dim(RP_one$downregulated), dim(RP_two$downregulated))
 
-  # expect_false(all(RP_five$upregulated == RP_six$upregulated))
-  # expect_false(all(RP_five$downregulated == RP_six$downregulated))
+  expect_false(dim(RP_five$upregulated)[1] == dim(RP_six$upregulated)[1])
+  expect_false(dim(RP_five$downregulated)[1] == dim(RP_six$downregulated)[1])
 
 })
 
