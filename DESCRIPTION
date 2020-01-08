@@ -29,12 +29,12 @@ Imports:
     limma,
     magrittr,
     randomForest,
-    RankProd
+    RankProd,
+    Biobase
 Suggests: 
     covr,
     tidyverse,
     testthat (>= 2.1.0),
-    vroom,
     knitr,
     rmarkdown
 Roxygen: list(markdown = TRUE)

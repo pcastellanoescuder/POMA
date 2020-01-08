@@ -2,7 +2,7 @@ context("PomaNorm")
 
 test_that("PomaNorm works", {
 
-  data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
+  data <- data("st000284")
 
   a <- dim(PomaNorm(data, method = "auto_scaling", round = 2))
   b <- dim(PomaNorm(data, method = "level_scaling", round = 2))
