@@ -2,11 +2,11 @@
 % Please edit documentation in R/PomaUnivariate.R
 \name{PomaUnivariate}
 \alias{PomaUnivariate}
-\title{Univariate Statistical Methods for Metabolomics}
+\title{Univariate Statistical Methods for Mass Spectrometry Data}
 \usage{
 PomaUnivariate(
   data_uni,
-  covariates = NULL,
+  covariates = FALSE,
   method = c("ttest", "anova", "mann", "kruskal"),
   paired = FALSE,
   var_equal = FALSE,
@@ -14,9 +14,9 @@ PomaUnivariate(
 )
 }
 \arguments{
-\item{data_uni}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}
+\item{data_uni}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
-\item{covariates}{A data frame with covariates. The first column must be the subject ID in the same order as in the metabolites data (optional).}
+\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{pData} will be used as covariables. Default = FALSE.}
 
 \item{method}{Univariate statistical method. Options are c("ttest", "anova", "mann", "kruskal").}
 
@@ -27,10 +27,10 @@ PomaUnivariate(
 \item{adjust}{Multiple comparisons correction method.}
 }
 \value{
-A data frame with the results.
+A data frame with results.
 }
 \description{
-PomaUnivariate() allows users to perform different univariate statistical analysis on metabolomic data.
+PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 }
 \author{
 Pol Castellano-Escuder

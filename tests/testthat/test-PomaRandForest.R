@@ -2,7 +2,7 @@ context("PomaRandForest")
 
 test_that("PomaRandForest works", {
 
-  library(tidyverse)
+  # library(tidyverse)
 
   data("st000284")
 

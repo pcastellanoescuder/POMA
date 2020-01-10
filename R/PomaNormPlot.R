@@ -1,18 +1,27 @@
 
 #' Normalization Plot
 #'
-#' @description PomaNormPlot() generates a boxplot of not normalized and normalized metabolomic data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
+#' @description PomaNormPlot() generates a boxplot of not normalized and normalized MS data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 #'
-#' @param data A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
-#' @param group Groupping factor for the plot. Options are c("subjects", "metabolites"). If the user select "subject", the boxplot will be created for each subject. If the selection is "metabolites", the boxplot will be created for each metabolite.
+#' @param data A MSnSet object. First `pData` column must be the suject group/type.
+#' @param group Groupping factor for the plot. Options are c("subjects", "features"). If the user select "subject", the boxplot will be created for each subject. If the selection is "features", the boxplot will be created for each feature
 #'
 #' @export
 #'
 #' @return A ggplot2 object.
 #' @author Pol Castellano-Escuder
-PomaNormPlot <- function(data, group = c("subjects", "metabolites")){
+#'
+#' @import ggplot2
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr select group_by
+#' @importFrom magrittr %>%
+#' @importFrom reshape2 melt
+#' @importFrom crayon red
+#' @importFrom clisymbols symbol
+#' @importFrom Biobase varLabels pData exprs
+PomaNormPlot <- function(data, group = c("subjects", "features")){
 
-  if (!(group %in% c("subjects", "metabolites"))) {
+  if (!(group %in% c("subjects", "features"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
   }
   if (missing(group)) {
@@ -54,7 +63,7 @@ PomaNormPlot <- function(data, group = c("subjects", "metabolites")){
       geom_jitter() +
       theme_minimal() +
       xlab("") +
-      ggtitle("Normalization Plot by Metabolites") +
+      ggtitle("Normalization Plot by Features") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
   }

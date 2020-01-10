@@ -1,18 +1,25 @@
 
 #' Volcano Plot
 #'
-#' @description PomaVolcano() generates a volcano plot from the PomaUnivariate() result. The data can't has negative values, so select method = "none" in PomaNorm() to avoid them.
+#' @description PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't has negative values!
 #'
-#' @param data A data frame object from PomaUnivariate(method = c("ttest", "mann")). Only for two group data!
+#' @param data A MSnSet object. First `pData` column must be the suject group/type. Only for two group data!
 #' @param pval Select a pvalue type to generate the volcano plot. Options c("raw", "adjusted").
 #' @param pval_cutoff Numeric. Define the pvalue cutoff (horizontal line).
-#' @param log2FC Numeric. Define the fold change cutoff (vertical lines).
+#' @param log2FC Numeric. Define the log2 fold change cutoff (vertical lines).
 #' @param xlim Numeric. Define the limits for x axis.
 #'
 #' @export
 #'
 #' @return A ggplot2 object.
 #' @author Pol Castellano-Escuder
+#'
+#' @import ggplot2
+#' @importFrom ggrepel geom_label_repel
+#' @importFrom dplyr mutate
+#' @importFrom crayon red
+#' @importFrom clisymbols symbol
+#' @importFrom Biobase varLabels pData exprs featureNames
 PomaVolcano <- function(data,
                         pval = c("raw", "adjusted"),
                         pval_cutoff = 0.05,

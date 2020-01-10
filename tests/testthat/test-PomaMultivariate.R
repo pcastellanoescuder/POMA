@@ -2,7 +2,7 @@ context("PomaMultivariate")
 
 test_that("PomaMultivariate works", {
 
-  library(tidyverse)
+  # library(tidyverse)
 
   data("st000284")
 

@@ -2,29 +2,29 @@
 % Please edit documentation in R/PomaLimma.R
 \name{PomaLimma}
 \alias{PomaLimma}
-\title{Implementation of Limma R Package in Metabolomics}
+\title{Implementation of Limma R Package in Mass Spectrometry Data}
 \usage{
 PomaLimma(
   data_limma,
   contrast = NULL,
-  covariates = NULL,
+  covariates = FALSE,
   adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")
 )
 }
 \arguments{
-\item{data_limma}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}
+\item{data_limma}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
 \item{contrast}{A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".}
 
-\item{covariates}{A data frame with covariates. The first column must be the subject ID in the same order as in the metabolites data (optional).}
+\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{pData} will be used as covariables. Default = FALSE.}
 
 \item{adjust}{Multiple comparisons correction method.}
 }
 \value{
-A data frame with the limma results.
+A data frame with limma results.
 }
 \description{
-PomaLimma() uses the classical limma package for metabolomics.
+PomaLimma() uses the classical limma package for MS data.
 }
 \references{
 Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007

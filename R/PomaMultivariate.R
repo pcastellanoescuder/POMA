@@ -1,9 +1,9 @@
 
-#' Multivariate Statistical Methods for Metabolomics
+#' Multivariate Statistical Methods for Mass Spectrometry Data
 #'
-#' @description PomaMultivariate() allows users to perform different multivariate statistical analysis on metabolomic data.
+#' @description PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 #'
-#' @param data_multi A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param data_multi A MSnSet object. First `pData` column must be the suject group/type.
 #' @param method A multivariate method. Options are c("pca", "plsda", "splsda").
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.
@@ -17,6 +17,16 @@
 #'
 #' @return A list with all results for multivariate statistical analysis including plots and data frames.
 #' @author Pol Castellano-Escuder
+#'
+#' @import ggplot2
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr select
+#' @importFrom magrittr %>%
+#' @importFrom mixOmics pca plsda perf vip tune.splsda splsda selectVar
+#' @importFrom reshape2 melt
+#' @importFrom crayon red
+#' @importFrom clisymbols symbol
+#' @importFrom Biobase varLabels pData exprs
 PomaMultivariate <- function(data_multi,
                              method = c("pca", "plsda", "splsda"),
                              components = 5,

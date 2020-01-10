@@ -1,17 +1,21 @@
 
-#' Different Normalization Methods for Metabolomics
+#' Collection of Normalization Methods for Mass Spectrometry Data
 #'
-#' @description PomaNorm() offers different methods to normalize metabolomic data. This function contains both centering and scaling functions to normalize the data.
+#' @description PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 #'
-#' @param data A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param data A MSnSet object. First `pData` column must be the suject group/type.
 #' @param method Normalization method. Options are c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling","log_pareto").
 #' @param round Numeric. Number of decimal places (Default is 3).
 #'
 #' @export
 #'
-#' @return A data frame with the results.
+#' @return A MSnSet object with normalized data.
 #' @references van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.
 #' @author Pol Castellano-Escuder
+#'
+#' @importFrom crayon red
+#' @importFrom clisymbols symbol
+#' @importFrom Biobase varLabels pData exprs
 PomaNorm <- function(data,
                      method = c("none", "auto_scaling", "level_scaling", "log_scaling",
                                 "log_transformation", "vast_scaling","log_pareto"),

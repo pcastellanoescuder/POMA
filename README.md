@@ -3,7 +3,7 @@
 
 <img src='POMA_sticker/POMA_sticker.png' alt='POMA_sticker' title='POMA sticker' width='110' height='120' align='right'/>
 
-## R Package for Statistical Analysis of Metabolomic Data
+## R Package for Statistical Analysis of Mass Spectrometry Data
 
 <!-- badges: start --> 
 [![Lifecycle:
@@ -22,5 +22,5 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("pcastellanoescuder/POMA", dependencies = TRUE)
+devtools::install_github("pcastellanoescuder/POMA")
 ```

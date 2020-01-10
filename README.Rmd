@@ -6,7 +6,7 @@ output: github_document
 
 <img src='POMA_sticker/POMA_sticker.png' alt='POMA_sticker' title='POMA sticker' width='110' height='120' align='right'/>
 
-## R Package for Statistical Analysis of Metabolomic Data
+## R Package for Statistical Analysis of Mass Spectrometry Data
 
   <!-- badges: start -->
   [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
@@ -21,6 +21,6 @@ output: github_document
 
 ```{r, eval = FALSE}
 # install.packages("devtools")
-devtools::install_github("pcastellanoescuder/POMA", dependencies = TRUE)
+devtools::install_github("pcastellanoescuder/POMA")
 ```
 

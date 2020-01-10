@@ -1,13 +1,13 @@
 
-#' Rank Product/Rank Sum Analysis for Metabolomics
+#' Rank Product/Rank Sum Analysis for Mass Spectrometry Data
 #'
-#' @description PomaRankProd() performs the Rank Product method to identify differential metabolite concentration.
+#' @description PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.
 #'
-#' @param data A data frame with metabolites. First column must be the subject ID and second column must be a TWO-FACTOR variable with the subject group.
+#' @param data A MSnSet object. First `pData` column must be the suject group/type.
 #' @param logged If "TRUE" (default) data have been previously log transformed.
 #' @param logbase Numerical. Base for log transformation.
 #' @param paired Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.
-#' @param cutoff The pfp threshold value used to select metabolites.
+#' @param cutoff The pfp/pvalue threshold value used to select features.
 #' @param method If cutoff is provided, the method needs to be selected to identify metabolites. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.
 #'
 #' @export
@@ -15,6 +15,12 @@
 #' @return A list with all results for Rank Product analysis including tables and plots.
 #' @references Breitling, R., Armengaud, P., Amtmann, A., and Herzyk, P.(2004) Rank Products: A simple, yet powerful, new method to detect differentially regulated genes in replicated microarray experiments, FEBS Letter, 57383-92
 #' @author Pol Castellano-Escuder
+#'
+#' @importFrom RankProd RankProducts topGene
+#' @import ggplot2
+#' @importFrom crayon red
+#' @importFrom clisymbols symbol
+#' @importFrom Biobase varLabels pData exprs
 PomaRankProd <- function(data,
                          logged = TRUE,
                          logbase = 2,

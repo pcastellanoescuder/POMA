@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaMultivariate.R
 \name{PomaMultivariate}
 \alias{PomaMultivariate}
-\title{Multivariate Statistical Methods for Metabolomics}
+\title{Multivariate Statistical Methods for Mass Spectrometry Data}
 \usage{
 PomaMultivariate(
   data_multi,
@@ -17,7 +17,7 @@ PomaMultivariate(
 )
 }
 \arguments{
-\item{data_multi}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}
+\item{data_multi}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
 \item{method}{A multivariate method. Options are c("pca", "plsda", "splsda").}
 
@@ -39,7 +39,7 @@ PomaMultivariate(
 A list with all results for multivariate statistical analysis including plots and data frames.
 }
 \description{
-PomaMultivariate() allows users to perform different multivariate statistical analysis on metabolomic data.
+PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 }
 \author{
 Pol Castellano-Escuder

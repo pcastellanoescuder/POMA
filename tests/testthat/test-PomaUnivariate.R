@@ -2,7 +2,7 @@ context("PomaUnivariate")
 
 test_that("PomaUnivariate works", {
 
-  library(tidyverse)
+  # library(tidyverse)
 
   data("st000284")
 

@@ -2,19 +2,19 @@
 % Please edit documentation in R/PomaRandForest.R
 \name{PomaRandForest}
 \alias{PomaRandForest}
-\title{Classification Random Forest with POMA}
+\title{Classification Random Forest for Mass Spectrometry Data}
 \usage{
 PomaRandForest(
   data,
   folds = 3,
   ntree = 500,
-  mtry = floor(sqrt(ncol(data))),
+  mtry = floor(sqrt(ncol(t(Biobase::exprs(data))))),
   nodesize = 1,
   nvar = 20
 )
 }
 \arguments{
-\item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}
+\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
 \item{folds}{Number of observations that will be used as test dataset. For example, if folds = 3, 1/3 of dataset will be used as train dataset.}
 
@@ -30,7 +30,7 @@ PomaRandForest(
 A list with all results for Random Forest including plots and data frames.
 }
 \description{
-PomaRandForest() allows users to perform a classification Random Forest with a metabolomic data matrix using the classical \code{randomForest} R package.
+PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical \code{randomForest} R package.
 }
 \references{
 A. Liaw and M. Wiener (2002). Classification and Regression by randomForest. R News 2(3), 18--22.

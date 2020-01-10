@@ -1,9 +1,9 @@
 
-#' Classification Random Forest with POMA
+#' Classification Random Forest for Mass Spectrometry Data
 #'
-#' @description PomaRandForest() allows users to perform a classification Random Forest with a metabolomic data matrix using the classical `randomForest` R package.
+#' @description PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical `randomForest` R package.
 #'
-#' @param data A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param data A MSnSet object. First `pData` column must be the suject group/type.
 #' @param folds Number of observations that will be used as test dataset. For example, if folds = 3, 1/3 of dataset will be used as train dataset.
 #' @param ntree Number of trees to grow.
 #' @param mtry Number of variables randomly sampled as candidates at each split. This value is set sqrt(p) (where p is number of variables in data) by default.
@@ -17,6 +17,11 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom randomForest randomForest importance
+#' @import ggplot2
+#' @importFrom tibble rownames_to_column
+#' @importFrom crayon red
+#' @importFrom clisymbols symbol
+#' @importFrom Biobase varLabels pData exprs
 PomaRandForest <- function(data,
                            folds = 3,
                            ntree = 500,

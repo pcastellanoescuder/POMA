@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaNorm.R
 \name{PomaNorm}
 \alias{PomaNorm}
-\title{Different Normalization Methods for Metabolomics}
+\title{Collection of Normalization Methods for Mass Spectrometry Data}
 \usage{
 PomaNorm(
   data,
@@ -12,17 +12,17 @@ PomaNorm(
 )
 }
 \arguments{
-\item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}
+\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
 \item{method}{Normalization method. Options are c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling","log_pareto").}
 
 \item{round}{Numeric. Number of decimal places (Default is 3).}
 }
 \value{
-A data frame with the results.
+A MSnSet object with normalized data.
 }
 \description{
-PomaNorm() offers different methods to normalize metabolomic data. This function contains both centering and scaling functions to normalize the data.
+PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 }
 \references{
 van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.

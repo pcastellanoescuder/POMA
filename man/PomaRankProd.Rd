@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaRankProd.R
 \name{PomaRankProd}
 \alias{PomaRankProd}
-\title{Rank Product/Rank Sum Analysis for Metabolomics}
+\title{Rank Product/Rank Sum Analysis for Mass Spectrometry Data}
 \usage{
 PomaRankProd(
   data,
@@ -14,7 +14,7 @@ PomaRankProd(
 )
 }
 \arguments{
-\item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a TWO-FACTOR variable with the subject group.}
+\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
 \item{logged}{If "TRUE" (default) data have been previously log transformed.}
 
@@ -22,7 +22,7 @@ PomaRankProd(
 
 \item{paired}{Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.}
 
-\item{cutoff}{The pfp threshold value used to select metabolites.}
+\item{cutoff}{The pfp/pvalue threshold value used to select features.}
 
 \item{method}{If cutoff is provided, the method needs to be selected to identify metabolites. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.}
 }
@@ -30,7 +30,7 @@ PomaRankProd(
 A list with all results for Rank Product analysis including tables and plots.
 }
 \description{
-PomaRankProd() performs the Rank Product method to identify differential metabolite concentration.
+PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.
 }
 \references{
 Breitling, R., Armengaud, P., Amtmann, A., and Herzyk, P.(2004) Rank Products: A simple, yet powerful, new method to detect differentially regulated genes in replicated microarray experiments, FEBS Letter, 57383-92

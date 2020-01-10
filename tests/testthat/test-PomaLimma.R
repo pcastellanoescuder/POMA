@@ -2,23 +2,22 @@ context("PomaLimma")
 
 test_that("PomaLimma works", {
 
-  library(tidyverse)
-  library(limma)
+  # library(tidyverse)
+  # library(limma)
 
-  data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
-  covariates <- vroom::vroom("data_ST000284/COV_CRC_ST000284.csv", delim = ",")
+  data("st000284")
 
-  a <- PomaLimma(data, contrast = "C-H", covariates = NULL, adjust = "fdr")
-  b <- PomaLimma(data, contrast = "C-H", covariates = NULL, adjust = "bonferroni")
-  c <- PomaLimma(data, contrast = "C-H", covariates = covariates, adjust = "fdr")
-  d <- PomaLimma(data, contrast = "C-H", covariates = covariates, adjust = "bonferroni")
+  a <- PomaLimma(st000284, contrast = "C-H", covariates = FALSE, adjust = "fdr")
+  b <- PomaLimma(st000284, contrast = "C-H", covariates = FALSE, adjust = "bonferroni")
+  c <- PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fdr")
+  d <- PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "bonferroni")
 
   ####
 
-  expect_error(PomaLimma(data, covariates = NULL, adjust = "fdr"))
-  expect_error(PomaLimma(data, contrast = NULL))
-  expect_warning(PomaLimma(data, contrast = "C-H", covariates = NULL))
-  expect_warning(PomaLimma(data, contrast = "C-H", covariates = covariates))
+  expect_error(PomaLimma(st000284, covariates = FALSE, adjust = "fdr"))
+  expect_error(PomaLimma(st000284, contrast = NULL))
+  expect_warning(PomaLimma(st000284, contrast = "C-H", covariates = FALSE))
+  expect_warning(PomaLimma(st000284, contrast = "C-H", covariates = TRUE))
 
 
   ##########

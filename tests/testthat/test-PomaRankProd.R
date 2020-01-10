@@ -2,8 +2,8 @@ context("PomaRankProd")
 
 test_that("PomaRankProd works", {
 
-  library(tidyverse)
-  library(RankProd)
+  # library(tidyverse)
+  # library(RankProd)
 
   data("st000284")
 

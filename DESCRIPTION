@@ -1,5 +1,5 @@
 Package: POMA
-Title: R Package for Statistical Analysis of Metabolomic Data
+Title: R Package for Statistical Analysis of Mass Spectrometry Data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Pol",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "polcaes@gmail.com",
            comment = c(ORCID = "0000-0001-6466-877X"))
-Description: What the package does (one paragraph).
+Description: POMA is an easy use R package that contains different robust functions for processing, exploratory analysis and statistical analysis of mass spectrometry data, such as metabolomics or proteomics. This package is based on the standardized "MSnbase" infrastructure to achieve maximum flexibility and reproducibility. This package also offers a Shiny app that implements all functions in an easy use web interface.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -30,7 +30,8 @@ Imports:
     magrittr,
     randomForest,
     RankProd,
-    Biobase
+    Biobase,
+    MSnbase
 Suggests: 
     covr,
     tidyverse,
@@ -39,4 +40,6 @@ Suggests:
     rmarkdown
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.0
+Depends: R (>= 2.10)
 VignetteBuilder: knitr
+

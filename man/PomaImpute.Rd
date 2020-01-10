@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaImpute.R
 \name{PomaImpute}
 \alias{PomaImpute}
-\title{Different Imputation Methods for Metabolomics}
+\title{Collettion of Imputation Methods for Mass Spectrometry Data}
 \usage{
 PomaImpute(
   data,
@@ -13,7 +13,7 @@ PomaImpute(
 )
 }
 \arguments{
-\item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}
+\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
 \item{ZerosAsNA}{Logical that indicates if the zeros in the data are missing values. Default is FALSE.}
 
@@ -24,10 +24,10 @@ PomaImpute(
 \item{method}{Imputation method. Options are c("none", "half_min", "median", "mean", "min", "knn"). If "none", all missing values will be replaced by zero.}
 }
 \value{
-A data frame with the results.
+A MSnSet object with cleaned data.
 }
 \description{
-PomaImpute() offers different methods to impute missing values in metabolomic data.
+PomaImpute() offers different methods to impute missing values in MS data.
 }
 \references{
 Armitage, E. G., Godzien, J., Alonso‐Herranz, V., López‐Gonzálvez, Á., & Barbas, C. (2015). Missing value imputation strategies for metabolomics data. Electrophoresis, 36(24), 3050-3060.

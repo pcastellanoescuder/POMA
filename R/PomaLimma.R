@@ -1,21 +1,26 @@
 
-#' Implementation of Limma R Package in Metabolomics
+#' Implementation of Limma R Package in Mass Spectrometry Data
 #'
-#' @description PomaLimma() uses the classical limma package for metabolomics.
+#' @description PomaLimma() uses the classical limma package for MS data.
 #'
-#' @param data_limma A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
+#' @param data_limma A MSnSet object. First `pData` column must be the suject group/type.
 #' @param contrast A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".
-#' @param covariates A data frame with covariates. The first column must be the subject ID in the same order as in the metabolites data (optional).
+#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
 #' @param adjust Multiple comparisons correction method.
 #'
 #' @export
 #'
-#' @return A data frame with the limma results.
+#' @return A data frame with limma results.
 #' @references Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007
 #' @author Pol Castellano-Escuder
+#'
+#' @importFrom limma makeContrasts lmFit contrasts.fit eBayes topTable
+#' @importFrom crayon red
+#' @importFrom clisymbols symbol
+#' @importFrom Biobase varLabels pData exprs
 PomaLimma <- function(data_limma,
                       contrast = NULL,
-                      covariates = NULL,
+                      covariates = FALSE,
                       adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")){
 
   if (is.null(contrast)) {
@@ -26,12 +31,14 @@ PomaLimma <- function(data_limma,
     warning("adjust argument is empty! FDR will be used")
   }
 
-  colnames(data_limma)[1:2] <- c("ID", "Group")
+  Biobase::varLabels(data_limma)[1] <- "Group"
+  Group <- Biobase::pData(data_limma)$Group
+  e <- Biobase::exprs(data_limma)
 
-  contrasts <- levels(as.factor(data_limma$Group))
-  fac1 <- as.factor(data_limma$Group)
+  contrasts <- levels(as.factor(Group))
+  fac1 <- as.factor(Group)
 
-  if (is.null(covariates)){
+  if (isFALSE(covariates)){
 
     initialmodel <- model.matrix( ~ 0 + fac1)
     colnames(initialmodel) <- contrasts
@@ -39,13 +46,11 @@ PomaLimma <- function(data_limma,
     cont.matrix <- limma::makeContrasts(contrasts = contrast,
                                         levels = initialmodel)
 
-    trans_limma <- t(data_limma[, c(3:ncol(data_limma))])
-
-    model <- limma::lmFit(trans_limma, initialmodel)
+    model <- limma::lmFit(e, initialmodel)
     model <- limma::contrasts.fit(model, cont.matrix)
 
     modelstats <- limma::eBayes(model)
-    res <- limma::topTable(modelstats, number = ncol(data_limma),
+    res <- limma::topTable(modelstats, number = nrow(e),
                            coef = contrast, sort.by = "p", adjust.method = adjust)
 
     return(res)
@@ -54,13 +59,11 @@ PomaLimma <- function(data_limma,
 
   ####
 
-  else if (!is.null(covariates)){
+  else {
 
-    colnames(covariates)[1] <- "ID"
+    covariates <- pData(data_limma)[, 2:ncol(pData(data_limma))]
 
-    form <- as.formula(noquote(paste("~ 0 + fac1 + ",
-                                     paste0(colnames(covariates)[2:length(covariates)],
-                                            collapse = " + ", sep=""), sep = "")))
+    form <- as.formula(noquote(paste("~ 0 + fac1 + ", paste0(colnames(covariates), collapse = " + ", sep=""), sep = "")))
 
     initialmodel2 <- model.matrix(form , covariates)
     colnames(initialmodel2)[1:length(levels(fac1))] <- contrasts
@@ -68,13 +71,11 @@ PomaLimma <- function(data_limma,
     cont.matrix2 <- limma::makeContrasts(contrasts = contrast,
                                          levels = initialmodel2)
 
-    trans_limma2 <- t(data_limma[, c(3:ncol(data_limma))])
-
-    model2 <- limma::lmFit(trans_limma2, initialmodel2)
+    model2 <- limma::lmFit(e, initialmodel2)
     model2 <- limma::contrasts.fit(model2, cont.matrix2)
 
     modelstats2 <- limma::eBayes(model2)
-    res2 <- limma::topTable(modelstats2, number= ncol(data_limma) ,
+    res2 <- limma::topTable(modelstats2, number = nrow(e) ,
                             coef = contrast, sort.by = "p", adjust.method = adjust)
 
     return(res2)

@@ -4,18 +4,18 @@
 \alias{PomaNormPlot}
 \title{Normalization Plot}
 \usage{
-PomaNormPlot(data, group = c("subjects", "metabolites"))
+PomaNormPlot(data, group = c("subjects", "features"))
 }
 \arguments{
-\item{data}{A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.}
+\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
-\item{group}{Groupping factor for the plot. Options are c("subjects", "metabolites"). If the user select "subject", the boxplot will be created for each subject. If the selection is "metabolites", the boxplot will be created for each metabolite.}
+\item{group}{Groupping factor for the plot. Options are c("subjects", "features"). If the user select "subject", the boxplot will be created for each subject. If the selection is "features", the boxplot will be created for each feature}
 }
 \value{
 A ggplot2 object.
 }
 \description{
-PomaNormPlot() generates a boxplot of not normalized and normalized metabolomic data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
+PomaNormPlot() generates a boxplot of not normalized and normalized MS data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 }
 \author{
 Pol Castellano-Escuder

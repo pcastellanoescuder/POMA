@@ -2,7 +2,7 @@ context("PomaNormPlot")
 
 test_that("PomaNormPlot works", {
 
-  library(tidyverse)
+  # library(tidyverse)
 
   data("st000284")
 
@@ -11,8 +11,8 @@ test_that("PomaNormPlot works", {
 
   a <- PomaNormPlot(norm_none)
   b <- PomaNormPlot(norm_ls)
-  c <- PomaNormPlot(norm_none, group = "metabolites")
-  d <- PomaNormPlot(norm_ls, group = "metabolites")
+  c <- PomaNormPlot(norm_none, group = "features")
+  d <- PomaNormPlot(norm_ls, group = "features")
 
   e <- PomaNormPlot(norm_none, group = "subjects")
 

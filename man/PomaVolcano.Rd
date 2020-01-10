@@ -7,19 +7,19 @@
 PomaVolcano(
   data,
   pval = c("raw", "adjusted"),
-  Pval_cutoff = 0.05,
-  FC_cutoff = 1.5,
+  pval_cutoff = 0.05,
+  log2FC = 0.6,
   xlim = 2
 )
 }
 \arguments{
-\item{data}{A data frame object from PomaUnivariate(method = c("ttest", "mann")). Only for two group data!}
+\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type. Only for two group data!}
 
 \item{pval}{Select a pvalue type to generate the volcano plot. Options c("raw", "adjusted").}
 
-\item{Pval_cutoff}{Numeric. Define the pvalue cutoff (horizontal line).}
+\item{pval_cutoff}{Numeric. Define the pvalue cutoff (horizontal line).}
 
-\item{FC_cutoff}{Numeric. Define the fold change cutoff (vertical lines).}
+\item{log2FC}{Numeric. Define the log2 fold change cutoff (vertical lines).}
 
 \item{xlim}{Numeric. Define the limits for x axis.}
 }
@@ -27,7 +27,7 @@ PomaVolcano(
 A ggplot2 object.
 }
 \description{
-PomaVolcano() generates a volcano plot from the PomaUnivariate() result. The data can't has negative values, so select method = "none" in PomaNorm() to avoid them.
+PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't has negative values!
 }
 \author{
 Pol Castellano-Escuder

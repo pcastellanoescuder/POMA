@@ -1,10 +1,10 @@
 
-#' Univariate Statistical Methods for Metabolomics
+#' Univariate Statistical Methods for Mass Spectrometry Data
 #'
-#' @description PomaUnivariate() allows users to perform different univariate statistical analysis on metabolomic data.
+#' @description PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 #'
-#' @param data_uni A data frame with metabolites. First column must be the subject ID and second column must be a factor with the subject group.
-#' @param covariates A data frame with covariates. The first column must be the subject ID in the same order as in the metabolites data (optional).
+#' @param data_uni A MSnSet object. First `pData` column must be the suject group/type.
+#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
 #' @param method Univariate statistical method. Options are c("ttest", "anova", "mann", "kruskal").
 #' @param paired Logical indicates if the data is paired or not.
 #' @param var_equal Logical indicates if the data variance is equal or not.
@@ -12,8 +12,15 @@
 #'
 #' @export
 #'
-#' @return A data frame with the results.
+#' @return A data frame with results.
 #' @author Pol Castellano-Escuder
+#'
+#' @importFrom tibble rownames_to_column column_to_rownames as_tibble
+#' @importFrom dplyr select mutate
+#' @importFrom magrittr %>%
+#' @importFrom crayon red
+#' @importFrom clisymbols symbol
+#' @importFrom Biobase varLabels pData exprs
 PomaUnivariate <- function(data_uni,
                            covariates = FALSE,
                            method = c("ttest", "anova", "mann", "kruskal"),
@@ -90,13 +97,6 @@ PomaUnivariate <- function(data_uni,
       covariate_uni <- merge(e, pData(data_uni), by = "row.names")
       covariate_uni <- covariate_uni %>% select(-Row.names, -Group)
 
-      # addQuotes <- function(x) sprintf("`%s`", paste(x, collapse = "` + `"))
-      # variables <- addQuotes(colnames(covariate_uni))
-      #
-      # form2 <- as.formula(paste("Group", variables, sep = " ~ "))
-      #
-      # stat3 <- function(Group){anova(aov(form2))$"Pr(>F)"}
-
       stat3 <- function(x){anova(aov(x ~ Group))$"Pr(>F)"[1]}
       p3 <- data.frame(apply(FUN = stat3, MARGIN = 2, X = covariate_uni))
 
@@ -106,23 +106,6 @@ PomaUnivariate <- function(data_uni,
         rownames_to_column %>%
         mutate(pvalue_Adj = p.adjust(pvalue, method = adjust)) %>%
         column_to_rownames("rowname")
-
-      # p3 <- p3 %>%
-      #   rownames_to_column %>%
-      #   as_tibble() %>%
-      #   gather(var, value, -rowname) %>%
-      #   spread(rowname, value) %>%
-      #   column_to_rownames("var") %>%
-      #   setNames(paste0("P.Value_", colnames(covariates)))
-      #
-      # p3 <- p3[, 1:ncol(p3)-1] %>%
-      #   rename(P.Value_Group = "P.Value_ID")
-      #
-      # p3 <- p3 %>%
-      #   rownames_to_column("metabolite") %>%
-      #   as_tibble() %>%
-      #   mutate_at(vars(contains("P.Value")), list(adjusted = ~ p.adjust(. , method = adjust))) %>%
-      #   column_to_rownames("metabolite")
 
       return(p3)
 
