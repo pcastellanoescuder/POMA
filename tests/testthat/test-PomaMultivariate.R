@@ -4,14 +4,14 @@ test_that("PomaMultivariate works", {
 
   library(tidyverse)
 
-  data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
+  data("st000284")
 
   #### pca
 
-  multivariate_pca_1 <- PomaMultivariate(data, method = "pca", components = 5,
+  multivariate_pca_1 <- PomaMultivariate(st000284, method = "pca", components = 5,
                                     center = FALSE, scale = FALSE)
 
-  multivariate_pca_2 <- PomaMultivariate(data, method = "pca", components = 5,
+  multivariate_pca_2 <- PomaMultivariate(st000284, method = "pca", components = 5,
                                     center = TRUE, scale = TRUE)
 
   ####
@@ -22,10 +22,10 @@ test_that("PomaMultivariate works", {
   expect_equal(dim(multivariate_pca_1$eigenvalues), dim(multivariate_pca_2$eigenvalues))
   expect_false(all(multivariate_pca_1$eigenvalues == multivariate_pca_2$eigenvalues))
 
-  expect_error(PomaMultivariate(data, method = "pc", components = 5))
-  expect_error(PomaMultivariate(data))
-  expect_error(PomaMultivariate(data, method = "pca", validation = "Mfo"))
-  expect_warning(PomaMultivariate(data, method = "plsda"))
+  expect_error(PomaMultivariate(st000284, method = "pc", components = 5))
+  expect_error(PomaMultivariate(st000284))
+  expect_error(PomaMultivariate(st000284, method = "pca", validation = "Mfo"))
+  expect_warning(PomaMultivariate(st000284, method = "plsda"))
 
   df_a <- layer_data(multivariate_pca_1$screeplot)
   df_b <- layer_data(multivariate_pca_1$scoresplot)
@@ -37,11 +37,11 @@ test_that("PomaMultivariate works", {
 
   #### plsda
 
-  multivariate_plsda_1 <- PomaMultivariate(data, method = "plsda", components = 5,
+  multivariate_plsda_1 <- PomaMultivariate(st000284, method = "plsda", components = 5,
                                            center = TRUE, scale = TRUE,
                                            validation = "Mfold", folds = 5, nrepeat = 10)
 
-  multivariate_plsda_2 <- PomaMultivariate(data, method = "plsda", components = 4,
+  multivariate_plsda_2 <- PomaMultivariate(st000284, method = "plsda", components = 4,
                                            center = TRUE, scale = TRUE,
                                            validation = "loo", folds = 5, nrepeat = 1)
 
@@ -69,12 +69,12 @@ test_that("PomaMultivariate works", {
 
   #### splsda
 
-  multivariate_splsda_1 <- PomaMultivariate(data, method = "splsda", components = 5,
+  multivariate_splsda_1 <- PomaMultivariate(st000284, method = "splsda", components = 5,
                                             center = TRUE, scale = TRUE,
                                             validation = "Mfold", folds = 5, nrepeat = 10,
                                             num_features = 10)
 
-  multivariate_splsda_2 <- PomaMultivariate(data, method = "splsda", components = 5,
+  multivariate_splsda_2 <- PomaMultivariate(st000284, method = "splsda", components = 5,
                                             center = TRUE, scale = TRUE,
                                             validation = "Mfold", folds = 5, nrepeat = 10,
                                             num_features = 5)

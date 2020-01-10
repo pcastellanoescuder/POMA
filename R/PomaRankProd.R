@@ -33,26 +33,21 @@ PomaRankProd <- function(data,
     warning("method argument is empty! pfp method will be used")
   }
 
-  colnames(data)[1:2] <- c("ID", "Group")
+  Biobase::varLabels(data)[1] <- "Group"
+  Group <- Biobase::pData(data)$Group
 
-  if (length(levels(as.factor(data$Group))) > 2) {
+  if (length(levels(as.factor(Group))) > 2) {
     stop(crayon::red(clisymbols::symbol$cross, "Your data has more than two groups!"))
   }
 
-  data.cl <- as.numeric(as.factor(data$Group))
+  data.cl <- as.numeric(as.factor(Group))
   data.cl[data.cl == 1] <- 0
   data.cl[data.cl == 2] <- 1
 
-  class1 <- levels(as.factor(data$Group))[1]
-  class2 <- levels(as.factor(data$Group))[2]
+  class1 <- levels(as.factor(Group))[1]
+  class2 <- levels(as.factor(Group))[2]
 
-  names <- make.names(data$ID, unique = TRUE)
-
-  data <- data %>% dplyr::select(-ID, -Group)
-  data <- t(data)
-  colnames(data) <- names
-
-  RP <- RankProducts(data, data.cl, logged = logged, na.rm = TRUE, plot = FALSE,
+  RP <- RankProducts(Biobase::exprs(data), data.cl, logged = logged, na.rm = TRUE, plot = FALSE,
                      RandomPairs = paired,
                      rand = 123,
                      gene.names = rownames(data))

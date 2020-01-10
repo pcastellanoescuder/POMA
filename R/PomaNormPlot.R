@@ -20,7 +20,13 @@ PomaNormPlot <- function(data, group = c("subjects", "metabolites")){
     warning("group argument is empty! subjects will be used")
   }
 
-  colnames(data)[1:2] <- c("ID", "Group")
+  e <- t(Biobase::exprs(data))
+  pData <- Biobase::pData(data)
+
+  data <- cbind(pData, e)
+  data <- tibble::rownames_to_column(data, "ID")
+
+  colnames(data)[2] <- c("Group")
   data <- data %>% mutate(ID = as.character(ID))
 
   if(group == "subjects"){

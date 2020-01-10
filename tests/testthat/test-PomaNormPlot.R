@@ -4,10 +4,10 @@ test_that("PomaNormPlot works", {
 
   library(tidyverse)
 
-  data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
+  data("st000284")
 
-  norm_none <- PomaNorm(data, method = "none")
-  norm_ls <- PomaNorm(data, method = "log_scaling")
+  norm_none <- PomaNorm(st000284, method = "none")
+  norm_ls <- PomaNorm(st000284, method = "log_scaling")
 
   a <- PomaNormPlot(norm_none)
   b <- PomaNormPlot(norm_ls)

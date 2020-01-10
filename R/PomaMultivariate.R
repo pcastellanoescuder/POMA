@@ -43,15 +43,14 @@ PomaMultivariate <- function(data_multi,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect validation method! Please choose 'Mfold' or 'loo'"))
   }
 
-  colnames(data_multi)[1:2] <- c("ID", "Group")
+  Biobase::varLabels(data_multi)[1] <- "Group"
 
-  data_multi <- data_multi %>% mutate(Group = as.factor(Group))
-  df <- as.matrix(data_multi[, c(3:ncol(data_multi))])
+  df <- t(Biobase::exprs(data_multi))
 
   if(method == "pca"){
 
     X <- as.matrix(df)
-    Y <- data_multi$Group
+    Y <- as.factor(Biobase::pData(data_multi)$Group)
     pca_res <- mixOmics::pca(X, ncomp = components, center = center, scale = scale)
 
     PCi <- data.frame(pca_res$x, Groups = Y)
@@ -86,7 +85,7 @@ PomaMultivariate <- function(data_multi,
   else if (method == "plsda"){
 
     X <- as.matrix(df)
-    Y <- data_multi$Group
+    Y <- as.factor(Biobase::pData(data_multi)$Group)
 
     plsda_res <- mixOmics::plsda(X, Y, ncomp = components)
 
@@ -152,7 +151,7 @@ PomaMultivariate <- function(data_multi,
   else if (method == "splsda"){
 
     X <- as.matrix(df)
-    Y <- data_multi$Group
+    Y <- as.factor(Biobase::pData(data_multi)$Group)
 
     list_keepX <- c(1:num_features)
 

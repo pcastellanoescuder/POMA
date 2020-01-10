@@ -5,27 +5,26 @@ test_that("PomaRankProd works", {
   library(tidyverse)
   library(RankProd)
 
-  data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
-  data <- PomaImpute(data, method = "knn")
+  data("st000284")
 
-  toy_data <- data.frame(ID = c("One", "Two", "Three"),
-                         Group = c("A", "B", "C"),
-                         Alanine = c(123, 453, 432))
+  # toy_data <- data.frame(ID = c("One", "Two", "Three"),
+  #                        Group = c("A", "B", "C"),
+  #                        Alanine = c(123, 453, 432))
 
   ##
 
-  RP_one <- PomaRankProd(data, logged = TRUE, logbase = 2)
-  RP_two <- PomaRankProd(data, logged = TRUE, logbase = 10)
+  RP_one <- PomaRankProd(st000284, logged = TRUE, logbase = 2)
+  RP_two <- PomaRankProd(st000284, logged = TRUE, logbase = 10)
 
-  RP_five <- PomaRankProd(data, cutoff = 0.05, method = "pfp")
-  RP_six <- PomaRankProd(data, cutoff = 0.05, method = "pval")
+  RP_five <- PomaRankProd(st000284, cutoff = 0.05, method = "pfp")
+  RP_six <- PomaRankProd(st000284, cutoff = 0.05, method = "pval")
 
   ##
 
   expect_error(PomaRankProd())
-  expect_error(PomaRankProd(data, method = "pfd"))
-  expect_error(PomaRankProd(toy_data))
-  expect_warning(PomaRankProd(data))
+  expect_error(PomaRankProd(st000284, method = "pfd"))
+  # expect_error(PomaRankProd(toy_data))
+  expect_warning(PomaRankProd(st000284))
 
   ##
 

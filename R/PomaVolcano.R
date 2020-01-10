@@ -5,8 +5,8 @@
 #'
 #' @param data A data frame object from PomaUnivariate(method = c("ttest", "mann")). Only for two group data!
 #' @param pval Select a pvalue type to generate the volcano plot. Options c("raw", "adjusted").
-#' @param Pval_cutoff Numeric. Define the pvalue cutoff (horizontal line).
-#' @param FC_cutoff Numeric. Define the fold change cutoff (vertical lines).
+#' @param pval_cutoff Numeric. Define the pvalue cutoff (horizontal line).
+#' @param log2FC Numeric. Define the fold change cutoff (vertical lines).
 #' @param xlim Numeric. Define the limits for x axis.
 #'
 #' @export
@@ -15,8 +15,8 @@
 #' @author Pol Castellano-Escuder
 PomaVolcano <- function(data,
                         pval = c("raw", "adjusted"),
-                        Pval_cutoff = 0.05,
-                        FC_cutoff = 1.5,
+                        pval_cutoff = 0.05,
+                        log2FC = 0.6,
                         xlim = 2){
 
   if (missing(pval)) {
@@ -27,37 +27,41 @@ PomaVolcano <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for pval argument!"))
   }
 
-  names <- rownames(data)
+  log2FC <- 2^(log2FC)
+
+  df <- POMA::PomaUnivariate(data, method = "ttest", adjust = "fdr")
+
+  names <- featureNames(data)
 
   if(pval == "raw"){
-    df <- data.frame(P.Value = data$P.Value, FC = log2(data$Fold_Change_Ratio), names = names)
+    df <- data.frame(pvalue = df$pvalue, FC = log2(df$Fold_Change_Ratio), names = names)
   }
   else{
-    df <- data.frame(P.Value = data$adj.P.Val, FC = log2(data$Fold_Change_Ratio), names = names)
+    df <- data.frame(pvalue = df$pvalue_Adj, FC = log2(df$Fold_Change_Ratio), names = names)
   }
 
-
-  df <- mutate(df, threshold = as.factor(ifelse(df$P.Value >= Pval_cutoff,
+  df <- mutate(df, threshold = as.factor(ifelse(df$pvalue >= pval_cutoff,
                                                 yes = "none",
-                                                no = ifelse(df$FC < log2(FC_cutoff),
-                                                            yes = ifelse(df$FC < -log2(FC_cutoff),
+                                                no = ifelse(df$FC < log2(log2FC),
+                                                            yes = ifelse(df$FC < -log2(log2FC),
                                                                          yes = "Down-regulated",
                                                                          no = "none"),
                                                             no = "Up-regulated"))))
 
-  ggplot(data = df, aes(x = FC, y = -log10(P.Value), colour = threshold)) +
+  ggplot(data = df, aes(x = FC, y = -log10(pvalue), colour = threshold)) +
     geom_point(size=1.75) +
     xlim(c(-(xlim), xlim)) +
     xlab("log2 Fold Change") +
     ylab("-log10 p-value") +
     scale_y_continuous(trans = "log1p")+
     ggtitle("Comparisson: Group2/Group1") +
-    ggrepel::geom_label_repel(data = df[df$P.Value < Pval_cutoff & (df$FC > log2(FC_cutoff) | df$FC < -log2(FC_cutoff)),],
-              aes(x = FC, y = -log10(P.Value), label = names), show.legend = FALSE) +
-    geom_vline(xintercept = -log2(FC_cutoff), colour = "black") +
-    geom_vline(xintercept = log2(FC_cutoff), colour = "black") +
-    geom_hline(yintercept = -log10(Pval_cutoff), colour = "black") +
+    geom_vline(xintercept = -log2(log2FC), colour = "black", linetype = "dashed") +
+    geom_vline(xintercept = log2(log2FC), colour = "black", linetype = "dashed") +
+    geom_hline(yintercept = -log10(pval_cutoff), colour = "black", linetype = "dashed") +
+    ggrepel::geom_label_repel(data = df[df$pvalue < pval_cutoff & (df$FC > log2(log2FC) | df$FC < -log2(log2FC)),],
+              aes(x = FC, y = -log10(pvalue), label = names), show.legend = FALSE) +
     theme(legend.position = "none") +
+    labs(color = "") +
     theme_minimal() +
     scale_color_manual(values = c("Down-regulated" = "#E64B35", "Up-regulated" = "#3182bd", "none" = "#636363"))
 

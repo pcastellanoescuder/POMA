@@ -20,7 +20,7 @@
 PomaRandForest <- function(data,
                            folds = 3,
                            ntree = 500,
-                           mtry = floor(sqrt(ncol(data))),
+                           mtry = floor(sqrt(ncol(t(Biobase::exprs(data))))),
                            nodesize = 1,
                            nvar = 20){
 
@@ -28,8 +28,9 @@ PomaRandForest <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
 
-  colnames(data)[1:2] <- c("ID", "Group")
-  rf_data <- data %>% dplyr::select(-ID)
+  Biobase::varLabels(data)[1] <- "Group"
+  rf_data <- data.frame(cbind(Group = Biobase::pData(data)$Group, t(Biobase::exprs(data))))
+  rf_data[, 2:ncol(rf_data)] <- sapply(rf_data[, 2:ncol(rf_data)], as.numeric)
 
   names <- data.frame(real_names = colnames(rf_data), new_names = NA)
   names$new_names <- paste0("X", rownames(names))

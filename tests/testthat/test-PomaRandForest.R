@@ -4,10 +4,10 @@ test_that("PomaRandForest works", {
 
   library(tidyverse)
 
-  data <- vroom::vroom("data_ST000284/MET_CRC_ST000284.csv", delim = ",")
+  data("st000284")
 
-  res <- PomaRandForest(data)
-  res1 <- PomaRandForest(data)
+  res <- PomaRandForest(st000284)
+  res1 <- PomaRandForest(st000284)
 
   df_a <- layer_data(res$error_tree)
   df_b <- layer_data(res$gini_plot)
