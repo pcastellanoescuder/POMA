@@ -11,6 +11,7 @@ addons:
   apt:
     packages:
       - libmpfr-dev
+      - libnetcdf-dev
 
 r_packages:
   - covr
@@ -19,3 +20,4 @@ r_packages:
 
 after_success:
   - Rscript -e 'covr::codecov()'
+
