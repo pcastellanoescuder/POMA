@@ -4,13 +4,8 @@
 \alias{PomaImpute}
 \title{Collettion of Imputation Methods for Mass Spectrometry Data}
 \usage{
-PomaImpute(
-  data,
-  ZerosAsNA = FALSE,
-  RemoveNA = TRUE,
-  cutoff = 20,
-  method = c("none", "half_min", "median", "mean", "min", "knn")
-)
+PomaImpute(data, ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20,
+  method = c("none", "half_min", "median", "mean", "min", "knn"))
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}

@@ -4,14 +4,10 @@
 \alias{PomaUnivariate}
 \title{Univariate Statistical Methods for Mass Spectrometry Data}
 \usage{
-PomaUnivariate(
-  data_uni,
-  covariates = FALSE,
-  method = c("ttest", "anova", "mann", "kruskal"),
-  paired = FALSE,
-  var_equal = FALSE,
-  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")
-)
+PomaUnivariate(data_uni, covariates = FALSE, method = c("ttest",
+  "anova", "mann", "kruskal"), paired = FALSE, var_equal = FALSE,
+  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH",
+  "BY"))
 }
 \arguments{
 \item{data_uni}{A MSnSet object. First \code{pData} column must be the suject group/type.}

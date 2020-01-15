@@ -4,14 +4,9 @@
 \alias{PomaRandForest}
 \title{Classification Random Forest for Mass Spectrometry Data}
 \usage{
-PomaRandForest(
-  data,
-  folds = 3,
-  ntree = 500,
-  mtry = floor(sqrt(ncol(t(Biobase::exprs(data))))),
-  nodesize = 1,
-  nvar = 20
-)
+PomaRandForest(data, folds = 3, ntree = 500,
+  mtry = floor(sqrt(ncol(t(Biobase::exprs(data))))), nodesize = 1,
+  nvar = 20)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}

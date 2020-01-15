@@ -4,17 +4,10 @@
 \alias{PomaMultivariate}
 \title{Multivariate Statistical Methods for Mass Spectrometry Data}
 \usage{
-PomaMultivariate(
-  data_multi,
-  method = c("pca", "plsda", "splsda"),
-  components = 5,
-  center = FALSE,
-  scale = FALSE,
-  validation = c("Mfold", "loo"),
-  folds = 5,
-  nrepeat = 10,
-  num_features = 10
-)
+PomaMultivariate(data_multi, method = c("pca", "plsda", "splsda"),
+  components = 5, center = FALSE, scale = FALSE,
+  validation = c("Mfold", "loo"), folds = 5, nrepeat = 10,
+  num_features = 10)
 }
 \arguments{
 \item{data_multi}{A MSnSet object. First \code{pData} column must be the suject group/type.}

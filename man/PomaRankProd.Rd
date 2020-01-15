@@ -4,14 +4,8 @@
 \alias{PomaRankProd}
 \title{Rank Product/Rank Sum Analysis for Mass Spectrometry Data}
 \usage{
-PomaRankProd(
-  data,
-  logged = TRUE,
-  logbase = 2,
-  paired = NA,
-  cutoff = 0.05,
-  method = c("pfp", "pval")
-)
+PomaRankProd(data, logged = TRUE, logbase = 2, paired = NA,
+  cutoff = 0.05, method = c("pfp", "pval"))
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}

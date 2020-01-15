@@ -1,7 +1,7 @@
 
 # POMA
 
-<img src='POMA_sticker/POMA_sticker.png' alt='POMA_sticker' title='POMA sticker' width='110' height='120' align='right'/>
+<img src='man/figures/logo.png' alt='logo' title='logo' width='110' height='120' align='right'/>
 
 ## R Package for Statistical Analysis of Mass Spectrometry Data
 
