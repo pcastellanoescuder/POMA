@@ -48,5 +48,5 @@ devtools::install_github("pcastellanoescuder/POMA")
 
 Please note that the ‘POMA’ project is released with a [Contributor Code
 of
-Conduct](https://github.com/pcastellanoescuder/POMA/blob/master/CODE_OF_CONDUCT.md).
+Conduct](https://pcastellanoescuder.github.io/POMA/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
