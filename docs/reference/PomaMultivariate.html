@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9000</span>
       </span>
     </div>
 
@@ -100,13 +100,18 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/POMA_vignette.html">POMA: An R Package for Statistical Analysis of Metabolomic Data</a>
+      <a href="../articles/POMA-demo.html">POMA: R Package for Statistical Analysis of Mass Spectrometry Data</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/pcastellanoescuder/POMA">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -121,7 +126,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Multivariate Statistical Methods for Mass Spectrometry Data</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/pcastellanoescuder/POMA/blob/master/R/PomaMultivariate.R'><code>R/PomaMultivariate.R</code></a></small>
     <div class="hidden name"><code>PomaMultivariate.Rd</code></div>
     </div>
 
@@ -129,17 +134,10 @@
     <p>PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaMultivariate</span>(
-  <span class='no'>data_multi</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pca"</span>, <span class='st'>"plsda"</span>, <span class='st'>"splsda"</span>),
-  <span class='kw'>components</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>validation</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Mfold"</span>, <span class='st'>"loo"</span>),
-  <span class='kw'>folds</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>nrepeat</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>num_features</span> <span class='kw'>=</span> <span class='fl'>10</span>
-)</pre>
+    <pre class="usage"><span class='fu'>PomaMultivariate</span>(<span class='no'>data_multi</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pca"</span>, <span class='st'>"plsda"</span>, <span class='st'>"splsda"</span>),
+  <span class='kw'>components</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>validation</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Mfold"</span>, <span class='st'>"loo"</span>), <span class='kw'>folds</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nrepeat</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>num_features</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9000</span>
       </span>
     </div>
 
@@ -100,13 +100,18 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/POMA_vignette.html">POMA: An R Package for Statistical Analysis of Metabolomic Data</a>
+      <a href="../articles/POMA-demo.html">POMA: R Package for Statistical Analysis of Mass Spectrometry Data</a>
     </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/pcastellanoescuder/POMA">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -121,7 +126,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Collettion of Imputation Methods for Mass Spectrometry Data</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/pcastellanoescuder/POMA/blob/master/R/PomaImpute.R'><code>R/PomaImpute.R</code></a></small>
     <div class="hidden name"><code>PomaImpute.Rd</code></div>
     </div>
 
@@ -129,13 +134,8 @@
     <p>PomaImpute() offers different methods to impute missing values in MS data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaImpute</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>ZerosAsNA</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>RemoveNA</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"half_min"</span>, <span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"min"</span>, <span class='st'>"knn"</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>PomaImpute</span>(<span class='no'>data</span>, <span class='kw'>ZerosAsNA</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>RemoveNA</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"half_min"</span>, <span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"min"</span>, <span class='st'>"knn"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

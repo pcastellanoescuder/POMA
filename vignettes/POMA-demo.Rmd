@@ -1,0 +1,97 @@
+---
+title: "POMA: R Package for Statistical Analysis of Mass Spectrometry Data"
+author: "Pol Castellano-Escuder"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+    toc_depth: 2
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{POMA: R Package for Statistical Analysis of Mass Spectrometry Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  dpi = 400
+)
+```
+
+# Load POMA
+
+```{r, warning = FALSE}
+library(POMA)
+```
+
+# Load `MSnbase::MSnSet()` object
+
+```{r}
+data(st000284)
+```
+
+# Impute Missing Values
+
+```{r}
+imputed <- PomaImpute(st000284, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
+imputed
+```
+
+# Volcano Plot
+
+```{r}
+PomaVolcano(imputed, pval = "raw")
+```
+
+# Normalization
+
+```{r}
+normalized <- PomaNorm(imputed, method = "log_pareto")
+normalized
+```
+
+## Not Normalized Data
+
+```{r}
+PomaNormPlot(imputed, group = "subjects")
+```
+
+## Normalized Data
+
+```{r}
+PomaNormPlot(normalized, group = "subjects")
+```
+
+# Principal Component Analysis
+
+```{r}
+multiv_pca <- PomaMultivariate(normalized, 
+                               method = "pca",
+                               components = 5,
+                               scale = FALSE,
+                               center = FALSE)
+```
+
+## Scree Plot
+
+```{r}
+multiv_pca$screeplot
+```
+
+## Scores Plot
+
+```{r}
+multiv_pca$scoresplot
+```
+
+## Score Table
+
+```{r}
+head(multiv_pca$score_data)
+```
+
