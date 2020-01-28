@@ -58,13 +58,13 @@ normalized
 ## Not Normalized Data
 
 ```{r}
-PomaNormPlot(imputed, group = "subjects")
+PomaNormPlot(imputed, group = "samples")
 ```
 
 ## Normalized Data
 
 ```{r}
-PomaNormPlot(normalized, group = "subjects")
+PomaNormPlot(normalized, group = "samples")
 ```
 
 # Principal Component Analysis

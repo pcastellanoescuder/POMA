@@ -134,9 +134,14 @@
     <p>PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical <code>randomForest</code> R package.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaRandForest</span>(<span class='no'>data</span>, <span class='kw'>folds</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ntree</span> <span class='kw'>=</span> <span class='fl'>500</span>,
-  <span class='kw'>mtry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/exprs.html'>exprs</a></span>(<span class='no'>data</span>))))), <span class='kw'>nodesize</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>nvar</span> <span class='kw'>=</span> <span class='fl'>20</span>)</pre>
+    <pre class="usage"><span class='fu'>PomaRandForest</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>folds</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>ntree</span> <span class='kw'>=</span> <span class='fl'>500</span>,
+  <span class='kw'>mtry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/exprs.html'>exprs</a></span>(<span class='no'>data</span>))))),
+  <span class='kw'>nodesize</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>nvar</span> <span class='kw'>=</span> <span class='fl'>20</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

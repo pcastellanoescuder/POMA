@@ -14,7 +14,7 @@ test_that("PomaNormPlot works", {
   c <- PomaNormPlot(norm_none, group = "features")
   d <- PomaNormPlot(norm_ls, group = "features")
 
-  e <- PomaNormPlot(norm_none, group = "subjects")
+  e <- PomaNormPlot(norm_none, group = "samples")
 
   df_a <- layer_data(a)
   df_b <- layer_data(b)
@@ -34,7 +34,7 @@ test_that("PomaNormPlot works", {
   expect_warning(PomaNormPlot(norm_none))
   expect_warning(PomaNormPlot(norm_ls))
 
-  expect_error(PomaNormPlot(norm_ls, group = "subj"))
+  expect_error(PomaNormPlot(norm_ls, group = "samp"))
 
 })
 

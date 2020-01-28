@@ -4,9 +4,12 @@
 \alias{PomaLimma}
 \title{Implementation of Limma R Package in Mass Spectrometry Data}
 \usage{
-PomaLimma(data_limma, contrast = NULL, covariates = FALSE,
-  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH",
-  "BY"))
+PomaLimma(
+  data_limma,
+  contrast = NULL,
+  covariates = FALSE,
+  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")
+)
 }
 \arguments{
 \item{data_limma}{A MSnSet object. First \code{pData} column must be the suject group/type.}

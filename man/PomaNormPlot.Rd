@@ -4,12 +4,12 @@
 \alias{PomaNormPlot}
 \title{Normalization Plot}
 \usage{
-PomaNormPlot(data, group = c("subjects", "features"))
+PomaNormPlot(data, group = c("samples", "features"))
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
 
-\item{group}{Groupping factor for the plot. Options are c("subjects", "features"). If the user select "subject", the boxplot will be created for each subject. If the selection is "features", the boxplot will be created for each feature}
+\item{group}{Groupping factor for the plot. Options are c("samples", "features"). Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.}
 }
 \value{
 A ggplot2 object.

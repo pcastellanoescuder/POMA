@@ -4,7 +4,7 @@
 #' @description PomaNormPlot() generates a boxplot of not normalized and normalized MS data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 #'
 #' @param data A MSnSet object. First `pData` column must be the suject group/type.
-#' @param group Groupping factor for the plot. Options are c("subjects", "features"). If the user select "subject", the boxplot will be created for each subject. If the selection is "features", the boxplot will be created for each feature
+#' @param group Groupping factor for the plot. Options are c("samples", "features"). Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.
 #'
 #' @export
 #'
@@ -19,14 +19,14 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
-PomaNormPlot <- function(data, group = c("subjects", "features")){
+PomaNormPlot <- function(data, group = c("samples", "features")){
 
-  if (!(group %in% c("subjects", "features"))) {
+  if (!(group %in% c("samples", "features"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
   }
   if (missing(group)) {
-    group <- "subjects"
-    warning("group argument is empty! subjects will be used")
+    group <- "samples"
+    warning("group argument is empty! samples will be used")
   }
 
   e <- t(Biobase::exprs(data))
@@ -38,7 +38,10 @@ PomaNormPlot <- function(data, group = c("subjects", "features")){
   colnames(data)[2] <- c("Group")
   data <- data %>% mutate(ID = as.character(ID))
 
-  if(group == "subjects"){
+  n_rem <- ncol(pData) - 1
+  data <- data[, c(1:2, (3 + n_rem):ncol(data))]
+
+  if(group == "samples"){
 
     data %>%
       reshape2::melt() %>%
@@ -47,8 +50,7 @@ PomaNormPlot <- function(data, group = c("subjects", "features")){
       geom_boxplot() +
       geom_jitter() +
       theme_minimal() +
-      ggtitle("Normalization Plot by Subjects") +
-      xlab("") +
+      xlab("Samples") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
   }
@@ -62,8 +64,7 @@ PomaNormPlot <- function(data, group = c("subjects", "features")){
       geom_boxplot() +
       geom_jitter() +
       theme_minimal() +
-      xlab("") +
-      ggtitle("Normalization Plot by Features") +
+      xlab("Features") +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
   }

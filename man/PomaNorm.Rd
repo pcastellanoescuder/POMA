@@ -4,9 +4,12 @@
 \alias{PomaNorm}
 \title{Collection of Normalization Methods for Mass Spectrometry Data}
 \usage{
-PomaNorm(data, method = c("none", "auto_scaling", "level_scaling",
-  "log_scaling", "log_transformation", "vast_scaling", "log_pareto"),
-  round = 3)
+PomaNorm(
+  data,
+  method = c("none", "auto_scaling", "level_scaling", "log_scaling",
+    "log_transformation", "vast_scaling", "log_pareto"),
+  round = 3
+)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}

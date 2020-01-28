@@ -4,8 +4,13 @@
 \alias{PomaVolcano}
 \title{Volcano Plot}
 \usage{
-PomaVolcano(data, pval = c("raw", "adjusted"), pval_cutoff = 0.05,
-  log2FC = 0.6, xlim = 2)
+PomaVolcano(
+  data,
+  pval = c("raw", "adjusted"),
+  pval_cutoff = 0.05,
+  log2FC = 0.6,
+  xlim = 2
+)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the suject group/type. Only for two group data!}
