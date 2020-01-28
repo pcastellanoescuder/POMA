@@ -3,6 +3,7 @@
 export(PomaDensity)
 export(PomaImpute)
 export(PomaLimma)
+export(PomaMSnSetClass)
 export(PomaMultivariate)
 export(PomaNorm)
 export(PomaNormPlot)
