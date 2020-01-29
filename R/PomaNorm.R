@@ -34,6 +34,9 @@ PomaNorm <- function(data,
   # remove columns that only have zeros
   to_norm_data <- to_norm_data[, apply(to_norm_data, 2, function(x) !all(x==0))]
 
+  # remove columns with var = 0
+  to_norm_data <- to_norm_data[, !apply(to_norm_data, 2, var) == 0]
+
   if (method == "none"){
     normalized <- t(round(to_norm_data, round))
   }
@@ -62,7 +65,7 @@ PomaNorm <- function(data,
     normalized <- t(round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=T))/sqrt(sd(log10(x+1),na.rm=T))), round))
   }
 
-  Biobase::exprs(data) <- normalized
+  data <- MSnbase::MSnSet(exprs = normalized, pData = Biobase::pData(data))
   data@processingData@processing <-
     c(data@processingData@processing,
       paste("Normalised (", method ,"): ",

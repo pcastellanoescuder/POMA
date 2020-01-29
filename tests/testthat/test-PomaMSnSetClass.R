@@ -13,6 +13,8 @@ test_that("PomaMSnSetClass works", {
   expect_true(validObject(a))
   expect_true(validObject(b))
 
+  expect_false(all(Biobase::sampleNames(a) == Biobase::sampleNames(b)))
+
   expect_error(PomaMSnSetClass(target, features_error))
   expect_error(PomaMSnSetClass(target))
   expect_error(PomaMSnSetClass(features))

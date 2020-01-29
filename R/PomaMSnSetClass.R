@@ -18,6 +18,8 @@ PomaMSnSetClass <- function(target, features){
   colnames(target)[1] <- "ID"
   target <- column_to_rownames(target, "ID")
 
+  rownames(features) <- rownames(target)
+
   data <- MSnbase::MSnSet(exprs = t(features), pData = target)
 
   if (validObject(data))
