@@ -11,12 +11,12 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom MSnbase MSnSet
-#' @importFrom tibble column_to_rownames
 PomaMSnSetClass <- function(target, features){
 
   target <- as.data.frame(target)
   colnames(target)[1] <- "ID"
-  target <- column_to_rownames(target, "ID")
+  rownames(target) <- target$ID
+  target$ID <- NULL
 
   rownames(features) <- rownames(target)
 

@@ -7,7 +7,7 @@ output:
     theme: cayman
     highlight: github
     toc: true
-    toc_depth: 2
+    toc_depth: 4
     number_sections: true
 vignette: >
   %\VignetteIndexEntry{POMA: R Package for Statistical Analysis of Mass Spectrometry Data}
@@ -19,8 +19,18 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  dpi = 400
+  dpi = 300,
+  fig.align = "center",
+  fig.height = 5,
+  fig.width = 8
 )
+```
+
+# Installation
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("pcastellanoescuder/POMA")
 ```
 
 # Load POMA
@@ -29,45 +39,77 @@ knitr::opts_chunk$set(
 library(POMA)
 ```
 
-# Load `MSnbase::MSnSet()` object
+# Load or Create an `MSnbase::MSnSet()` object
+
+## Load example data
 
 ```{r}
 data(st000284)
+st000284
 ```
 
-# Impute Missing Values
+## Create the data
+
+We can load an `MSnSet` object directly or we can create our own object from matrix and/or data frames using `PomaMSnSetClass` function. See:
+
+```{r}
+# object <- PomaMSnSetClass(features = my_features, target = my_target)
+```
+
+# Pre Processing
+
+## Missing Value Imputation
+
+Often in mass spectometry analyses we have to deal with some missing values in our data. To face this in **POMA** just run the following line of code to impute your missings!
 
 ```{r}
 imputed <- PomaImpute(st000284, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
 imputed
 ```
 
-# Volcano Plot
+_Note that the object has been updated with imputation information._
 
-```{r}
-PomaVolcano(imputed, pval = "raw")
-```
+## Normalization
 
-# Normalization
+The next step is the **normalization** of the data. Again, **POMA** offers several methods to normalize the data by running just one line of code:
 
 ```{r}
 normalized <- PomaNorm(imputed, method = "log_pareto")
 normalized
 ```
 
-## Not Normalized Data
+_Note that the object has been updated with normalization information._
 
-```{r}
-PomaNormPlot(imputed, group = "samples")
+### Normalization effect
+
+Sometimes, we could be interested in _how the normalization process has affected our data_?  
+
+To answer this question, **POMA** offers two exploratory functions, `PomaNormPlot` and `PomaDensity`, that can help to understand the normalization process.
+
+`PomaNormPlot` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object.
+
+```{r, fig.height = 5, fig.width = 8}
+PomaNormPlot(imputed, group = "samples") # data before normalization
 ```
 
-## Normalized Data
-
-```{r}
-PomaNormPlot(normalized, group = "samples")
+```{r, fig.height = 5, fig.width = 8}
+PomaNormPlot(normalized, group = "samples") # data after normalization
 ```
 
-# Principal Component Analysis
+On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process. 
+
+```{r, fig.height = 5, fig.width = 8}
+PomaDensity(imputed, group = "features") # data before normalization
+```
+
+
+```{r, fig.height = 5, fig.width = 8}
+PomaDensity(normalized, group = "features") # data after normalization
+```
+
+# Statistical Analysis
+
+## Principal Component Analysis
 
 ```{r}
 multiv_pca <- PomaMultivariate(normalized, 
@@ -94,4 +136,5 @@ multiv_pca$scoresplot
 ```{r}
 head(multiv_pca$score_data)
 ```
+
 

@@ -89,7 +89,7 @@
       <h1>POMA: R Package for Statistical Analysis of Mass Spectrometry Data</h1>
                         <h4 class="author">Pol Castellano-Escuder</h4>
             
-            <h4 class="date">2020-01-29</h4>
+            <h4 class="date">2020-02-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pcastellanoescuder/POMA/blob/master/vignettes/POMA-demo.Rmd"><code>vignettes/POMA-demo.Rmd</code></a></small>
       <div class="hidden name"><code>POMA-demo.Rmd</code></div>
@@ -98,47 +98,55 @@
 
     
     
+<div id="installation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"pcastellanoescuder/POMA"</span>)</a></code></pre></div>
+</div>
 <div id="load-poma" class="section level1">
 <h1 class="hasAnchor">
 <a href="#load-poma" class="anchor"></a>Load POMA</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(POMA)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(POMA)</a></code></pre></div>
 </div>
-<div id="load-msnbasemsnset-object" class="section level1">
+<div id="load-or-create-an-msnbasemsnset-object" class="section level1">
 <h1 class="hasAnchor">
-<a href="#load-msnbasemsnset-object" class="anchor"></a>Load <code>MSnbase::MSnSet()</code> object</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(st000284)</a></code></pre></div>
-</div>
-<div id="impute-missing-values" class="section level1">
-<h1 class="hasAnchor">
-<a href="#impute-missing-values" class="anchor"></a>Impute Missing Values</h1>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">imputed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaImpute.html">PomaImpute</a></span>(st000284, <span class="dt">ZerosAsNA =</span> T, <span class="dt">RemoveNA =</span> T, <span class="dt">cutoff =</span> <span class="dv">20</span>, <span class="dt">method =</span> <span class="st">"knn"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">imputed</a>
+<a href="#load-or-create-an-msnbasemsnset-object" class="anchor"></a>Load or Create an <code>MSnbase::MSnSet()</code> object</h1>
+<div id="load-example-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#load-example-data" class="anchor"></a>Load example data</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(st000284)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">st000284</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">## MSnSet (storageMode: lockedEnvironment)</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">## assayData: 113 features, 132 samples </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">##   element names: exprs </span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">## protocolData: none</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">## phenoData</span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">##   sampleNames: Subject_1 Subject_2 ... Subject_132 (132 total)</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">##   varLabels: Group ageatconsent ... drink_alcohol (5 total)</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">##   varLabels: group ageatconsent ... drink_alcohol (5 total)</span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">##   varMetadata: labelDescription</span></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">## featureData: none</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">## Imputed (knn): Wed Jan 29 11:20:04 2020 </span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 </div>
-<div id="volcano-plot" class="section level1">
-<h1 class="hasAnchor">
-<a href="#volcano-plot" class="anchor"></a>Volcano Plot</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/PomaVolcano.html">PomaVolcano</a></span>(imputed, <span class="dt">pval =</span> <span class="st">"raw"</span>)</a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-5-1.png" width="2916.66666666667"></p>
+<div id="create-the-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#create-the-data" class="anchor"></a>Create the data</h2>
+<p>We can load an <code>MSnSet</code> object directly or we can create our own object from matrix and/or data frames using <code>PomaMSnSetClass</code> function. See:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># object &lt;- PomaMSnSetClass(features = my_features, target = my_target)</span></a></code></pre></div>
 </div>
-<div id="normalization" class="section level1">
+</div>
+<div id="pre-processing" class="section level1">
 <h1 class="hasAnchor">
-<a href="#normalization" class="anchor"></a>Normalization</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">normalized &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(imputed, <span class="dt">method =</span> <span class="st">"log_pareto"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">normalized</a>
+<a href="#pre-processing" class="anchor"></a>Pre Processing</h1>
+<div id="missing-value-imputation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#missing-value-imputation" class="anchor"></a>Missing Value Imputation</h2>
+<p>Often in mass spectometry analyses we have to deal with some missing values in our data. To face this in <strong>POMA</strong> just run the following line of code to impute your missings!</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">imputed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaImpute.html">PomaImpute</a></span>(st000284, <span class="dt">ZerosAsNA =</span> T, <span class="dt">RemoveNA =</span> T, <span class="dt">cutoff =</span> <span class="dv">20</span>, <span class="dt">method =</span> <span class="st">"knn"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">imputed</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">## MSnSet (storageMode: lockedEnvironment)</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">## assayData: 113 features, 132 samples </span></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">##   element names: exprs </span></a>
@@ -151,54 +159,88 @@
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Normalised (log_pareto): Wed Jan 29 11:20:07 2020 </span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Imputed (knn): Sun Feb  2 23:09:47 2020 </span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
-<div id="not-normalized-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#not-normalized-data" class="anchor"></a>Not Normalized Data</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(imputed, <span class="dt">group =</span> <span class="st">"samples"</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">## Using ID, Group as id variables</span></a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-7-1.png" width="2916.66666666667"></p>
+<p><em>Note that the object has been updated with imputation information.</em></p>
 </div>
-<div id="normalized-data" class="section level2">
+<div id="normalization" class="section level2">
 <h2 class="hasAnchor">
-<a href="#normalized-data" class="anchor"></a>Normalized Data</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(normalized, <span class="dt">group =</span> <span class="st">"samples"</span>)</a>
+<a href="#normalization" class="anchor"></a>Normalization</h2>
+<p>The next step is the <strong>normalization</strong> of the data. Again, <strong>POMA</strong> offers several methods to normalize the data by running just one line of code:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">normalized &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(imputed, <span class="dt">method =</span> <span class="st">"log_pareto"</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">normalized</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">## MSnSet (storageMode: lockedEnvironment)</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">## assayData: 113 features, 132 samples </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">##   element names: exprs </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">## protocolData: none</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">## phenoData</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">##   sampleNames: Subject_1 Subject_2 ... Subject_132 (132 total)</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">##   varLabels: Group ageatconsent ... drink_alcohol (5 total)</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">##   varMetadata: labelDescription</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">## featureData: none</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">## Normalised (log_pareto): Sun Feb  2 23:09:48 2020 </span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
+<p><em>Note that the object has been updated with normalization information.</em></p>
+<div id="normalization-effect" class="section level3">
+<h3 class="hasAnchor">
+<a href="#normalization-effect" class="anchor"></a>Normalization effect</h3>
+<p>Sometimes, we could be interested in <em>how the normalization process has affected our data</em>?</p>
+<p>To answer this question, <strong>POMA</strong> offers two exploratory functions, <code>PomaNormPlot</code> and <code>PomaDensity</code>, that can help to understand the normalization process.</p>
+<p><code>PomaNormPlot</code> generates boxplots for all samples or features (depending on the group factor) of an <code>MSnSet</code> object.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(imputed, <span class="dt">group =</span> <span class="st">"samples"</span>) <span class="co"># data before normalization</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">## Using ID, Group as id variables</span></a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-8-1.png" width="2916.66666666667"></p>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-8-1.png" width="2400" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(normalized, <span class="dt">group =</span> <span class="st">"samples"</span>) <span class="co"># data after normalization</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">## Using ID, Group as id variables</span></a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-9-1.png" width="2400" style="display: block; margin: auto;"></p>
+<p>On the other hand, <code>PomaDensity</code> shows the distribution of all features before and after the normalization process.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(imputed, <span class="dt">group =</span> <span class="st">"features"</span>) <span class="co"># data before normalization</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">## Using Group as id variables</span></a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-10-1.png" width="2400" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(normalized, <span class="dt">group =</span> <span class="st">"features"</span>) <span class="co"># data after normalization</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">## Using Group as id variables</span></a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-11-1.png" width="2400" style="display: block; margin: auto;"></p>
 </div>
 </div>
-<div id="principal-component-analysis" class="section level1">
+</div>
+<div id="statistical-analysis" class="section level1">
 <h1 class="hasAnchor">
-<a href="#principal-component-analysis" class="anchor"></a>Principal Component Analysis</h1>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">multiv_pca &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaMultivariate.html">PomaMultivariate</a></span>(normalized, </a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">                               <span class="dt">method =</span> <span class="st">"pca"</span>,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">                               <span class="dt">components =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">                               <span class="dt">scale =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">                               <span class="dt">center =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<a href="#statistical-analysis" class="anchor"></a>Statistical Analysis</h1>
+<div id="principal-component-analysis" class="section level2">
+<h2 class="hasAnchor">
+<a href="#principal-component-analysis" class="anchor"></a>Principal Component Analysis</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">multiv_pca &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaMultivariate.html">PomaMultivariate</a></span>(normalized, </a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">                               <span class="dt">method =</span> <span class="st">"pca"</span>,</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">                               <span class="dt">components =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">                               <span class="dt">scale =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">                               <span class="dt">center =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+</div>
 <div id="scree-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scree-plot" class="anchor"></a>Scree Plot</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">multiv_pca<span class="op">$</span>screeplot</a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-10-1.png" width="2916.66666666667"></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">multiv_pca<span class="op">$</span>screeplot</a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-13-1.png" width="2400" style="display: block; margin: auto;"></p>
 </div>
 <div id="scores-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scores-plot" class="anchor"></a>Scores Plot</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">multiv_pca<span class="op">$</span>scoresplot</a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-11-1.png" width="2916.66666666667"></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">multiv_pca<span class="op">$</span>scoresplot</a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-14-1.png" width="2400" style="display: block; margin: auto;"></p>
 </div>
 <div id="score-table" class="section level2">
 <h2 class="hasAnchor">
 <a href="#score-table" class="anchor"></a>Score Table</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(multiv_pca<span class="op">$</span>score_data)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">##               PC1    PC2     PC3     PC4     PC5</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">## Subject_1 -0.4920 3.2223 -0.4056 -0.9602 -0.1377</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">## Subject_2 -1.4216 2.5342 -1.5620 -0.3542  3.0973</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">## Subject_3  2.4304 1.1799  1.0433 -0.3040  0.4411</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">## Subject_4 -0.7437 3.7469 -2.4490 -1.4468  0.7222</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">## Subject_5 -0.7866 0.9041 -1.0319  2.5226 -0.9203</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">## Subject_6  1.3134 2.0314 -3.0247  4.2086  1.3496</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(multiv_pca<span class="op">$</span>score_data)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">##               PC1    PC2     PC3     PC4     PC5</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">## Subject_1 -0.4920 3.2223 -0.4056 -0.9602 -0.1377</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">## Subject_2 -1.4216 2.5342 -1.5620 -0.3542  3.0973</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">## Subject_3  2.4304 1.1799  1.0433 -0.3040  0.4411</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">## Subject_4 -0.7437 3.7469 -2.4490 -1.4468  0.7222</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">## Subject_5 -0.7866 0.9041 -1.0319  2.5226 -0.9203</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">## Subject_6  1.3134 2.0314 -3.0247  4.2086  1.3496</span></a></code></pre></div>
 </div>
 </div>
   </div>
@@ -209,19 +251,24 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#load-poma">Load POMA</a></li>
-      <li><a href="#load-msnbasemsnset-object">Load <code>MSnbase::MSnSet()</code> object</a></li>
-      <li><a href="#impute-missing-values">Impute Missing Values</a></li>
-      <li><a href="#volcano-plot">Volcano Plot</a></li>
+<li><a href="#installation">Installation</a></li>
+      <li><a href="#load-poma">Load POMA</a></li>
       <li>
-<a href="#normalization">Normalization</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#not-normalized-data">Not Normalized Data</a></li>
-      <li><a href="#normalized-data">Normalized Data</a></li>
+<a href="#load-or-create-an-msnbasemsnset-object">Load or Create an <code>MSnbase::MSnSet()</code> object</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#load-example-data">Load example data</a></li>
+      <li><a href="#create-the-data">Create the data</a></li>
       </ul>
 </li>
       <li>
-<a href="#principal-component-analysis">Principal Component Analysis</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#scree-plot">Scree Plot</a></li>
+<a href="#pre-processing">Pre Processing</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#missing-value-imputation">Missing Value Imputation</a></li>
+      <li><a href="#normalization">Normalization</a></li>
+      </ul>
+</li>
+      <li>
+<a href="#statistical-analysis">Statistical Analysis</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#principal-component-analysis">Principal Component Analysis</a></li>
+      <li><a href="#scree-plot">Scree Plot</a></li>
       <li><a href="#scores-plot">Scores Plot</a></li>
       <li><a href="#score-table">Score Table</a></li>
       </ul>
