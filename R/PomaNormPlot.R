@@ -5,6 +5,7 @@
 #'
 #' @param data A MSnSet object. First `pData` column must be the suject group/type.
 #' @param group Groupping factor for the plot. Options are c("samples", "features"). Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.
+#' @param jitter Logical. If it's TRUE (default), the boxplot will show all points.
 #'
 #' @export
 #'
@@ -19,7 +20,7 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
-PomaNormPlot <- function(data, group = c("samples", "features")){
+PomaNormPlot <- function(data, group = c("samples", "features"), jitter = TRUE){
 
   if (!(group %in% c("samples", "features"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
@@ -43,29 +44,63 @@ PomaNormPlot <- function(data, group = c("samples", "features")){
 
   if(group == "samples"){
 
-    data %>%
-      reshape2::melt() %>%
-      group_by(ID) %>%
-      ggplot(aes(ID, value, color = Group)) +
-      geom_boxplot() +
-      geom_jitter() +
-      theme_minimal() +
-      xlab("Samples") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    if(isTRUE(jitter)){
+
+      data %>%
+        reshape2::melt() %>%
+        group_by(ID) %>%
+        ggplot(aes(ID, value, color = Group)) +
+        geom_boxplot() +
+        geom_jitter() +
+        theme_minimal() +
+        xlab("Samples") +
+        ylab("Value") +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+    }
+    else{
+
+      data %>%
+        reshape2::melt() %>%
+        group_by(ID) %>%
+        ggplot(aes(ID, value, color = Group)) +
+        geom_boxplot() +
+        theme_minimal() +
+        xlab("Samples") +
+        ylab("Value") +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    }
 
   }
   else{
 
-    data %>%
-      dplyr::select(-ID) %>%
-      reshape2::melt() %>%
-      group_by(Group) %>%
-      ggplot(aes(variable, value, color = Group)) +
-      geom_boxplot() +
-      geom_jitter() +
-      theme_minimal() +
-      xlab("Features") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    if(isTRUE(jitter)){
+
+      data %>%
+        dplyr::select(-ID) %>%
+        reshape2::melt() %>%
+        group_by(Group) %>%
+        ggplot(aes(variable, value, color = Group)) +
+        geom_boxplot() +
+        geom_jitter() +
+        theme_minimal() +
+        xlab("Features") +
+        ylab("Value") +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    }
+    else{
+
+      data %>%
+        dplyr::select(-ID) %>%
+        reshape2::melt() %>%
+        group_by(Group) %>%
+        ggplot(aes(variable, value, color = Group)) +
+        geom_boxplot() +
+        theme_minimal() +
+        xlab("Features") +
+        ylab("Value") +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    }
 
   }
 

@@ -19,10 +19,10 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  dpi = 300,
-  fig.align = "center",
-  fig.height = 5,
-  fig.width = 8
+  dpi = 200,
+  fig.align = "center"
+  # fig.height = 5,
+  # fig.width = 8
 )
 ```
 
@@ -86,14 +86,14 @@ Sometimes, we could be interested in _how the normalization process has affected
 
 To answer this question, **POMA** offers two exploratory functions, `PomaNormPlot` and `PomaDensity`, that can help to understand the normalization process.
 
-`PomaNormPlot` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object.
+`PomaNormPlot` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object. Here, we can compare objects between and after normalization step.
 
 ```{r, fig.height = 5, fig.width = 8}
-PomaNormPlot(imputed, group = "samples") # data before normalization
+PomaNormPlot(imputed, group = "samples", jitter = FALSE) # data before normalization
 ```
 
 ```{r, fig.height = 5, fig.width = 8}
-PomaNormPlot(normalized, group = "samples") # data after normalization
+PomaNormPlot(normalized, group = "samples", jitter = FALSE) # data after normalization
 ```
 
 On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process. 
@@ -105,6 +105,13 @@ PomaDensity(imputed, group = "features") # data before normalization
 
 ```{r, fig.height = 5, fig.width = 8}
 PomaDensity(normalized, group = "features") # data after normalization
+```
+
+We can plot only a few variables of the dataset just typing the name/s of the feature/s.
+
+```{r, fig.height = 5, fig.width = 8}
+PomaDensity(normalized, group = "features", 
+            feature_name = c("Pyruvate", "OxalicAcid")) # data after normalization
 ```
 
 # Statistical Analysis
