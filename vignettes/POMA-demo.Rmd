@@ -35,25 +35,32 @@ devtools::install_github("pcastellanoescuder/POMA")
 
 # Load POMA
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE, comment = FALSE}
 library(POMA)
+library(Biobase) # to subset example data
+library(ggplot2) # to tune POMA default plots
+library(patchwork) # to show plots together
+library(tidyverse) # it's just tidyverse;)
 ```
 
 # Load or Create an `MSnbase::MSnSet()` object
 
-## Load example data
-
-```{r}
-data(st000284)
-st000284
-```
-
-## Create the data
-
 We can load an `MSnSet` object directly or we can create our own object from matrix and/or data frames using `PomaMSnSetClass` function. See:
 
 ```{r}
-# object <- PomaMSnSetClass(features = my_features, target = my_target)
+# load example data
+data(st000284)
+
+# subset example data
+my_features <- t(exprs(st000284))[c(1:8, 120:127) ,]
+
+my_target <- pData(st000284)[c(1:8, 120:127) ,]
+my_target <- my_target %>%
+  mutate(ID = rownames(.)) %>%
+  select(ID, group, ageatconsent, gender, smoking_condition, drink_alcohol)
+
+# create a smaller MSnSet object from example data
+example_data <- PomaMSnSetClass(features = my_features, target = my_target)
 ```
 
 # Pre Processing
@@ -63,7 +70,7 @@ We can load an `MSnSet` object directly or we can create our own object from mat
 Often in mass spectometry analyses we have to deal with some missing values in our data. To face this in **POMA** just run the following line of code to impute your missings!
 
 ```{r}
-imputed <- PomaImpute(st000284, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
+imputed <- PomaImpute(example_data, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
 imputed
 ```
 
@@ -88,35 +95,54 @@ To answer this question, **POMA** offers two exploratory functions, `PomaNormPlo
 
 `PomaNormPlot` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object. Here, we can compare objects between and after normalization step.
 
-```{r, fig.height = 5, fig.width = 8}
-PomaNormPlot(imputed, group = "samples", jitter = FALSE) # data before normalization
+```{r}
+p1 <- PomaNormPlot(imputed, group = "samples", jitter = FALSE) +
+  ggtitle("Not Normalized") +
+  theme(legend.position = "none") # data before normalization
+```
+
+```{r}
+p2 <- PomaNormPlot(normalized, group = "samples", jitter = FALSE) +
+  ggtitle("Normalized") # data after normalization
 ```
 
 ```{r, fig.height = 5, fig.width = 8}
-PomaNormPlot(normalized, group = "samples", jitter = FALSE) # data after normalization
+p1 + p2
 ```
 
 On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process. 
 
-```{r, fig.height = 5, fig.width = 8}
-PomaDensity(imputed, group = "features") # data before normalization
+```{r}
+p3 <- PomaDensity(imputed, group = "features") +
+  ggtitle("Not Normalized") +
+  theme(legend.position = "none") # data before normalization
 ```
 
-
-```{r, fig.height = 5, fig.width = 8}
-PomaDensity(normalized, group = "features") # data after normalization
+```{r}
+p4 <- PomaDensity(normalized, group = "features") +
+  ggtitle("Normalized") # data after normalization
 ```
 
-We can plot only a few variables of the dataset just typing the name/s of the feature/s.
-
 ```{r, fig.height = 5, fig.width = 8}
-PomaDensity(normalized, group = "features", 
-            feature_name = c("Pyruvate", "OxalicAcid")) # data after normalization
+p3 + p4
 ```
 
 # Statistical Analysis
 
-## Principal Component Analysis
+## Univariate Analysis
+
+### Limma
+
+```{r}
+limma_res <- PomaLimma(normalized, contrast = "C-H", covariates = TRUE, adjust = "fdr")
+limma_res %>% 
+  rownames_to_column() %>% 
+  head()
+```
+
+## Multivariate Analysis
+
+### Principal Component Analysis
 
 ```{r}
 multiv_pca <- PomaMultivariate(normalized, 
@@ -126,22 +152,21 @@ multiv_pca <- PomaMultivariate(normalized,
                                center = FALSE)
 ```
 
-## Scree Plot
+Scree Plot
 
 ```{r}
 multiv_pca$screeplot
 ```
 
-## Scores Plot
+Scores Plot
 
 ```{r}
 multiv_pca$scoresplot
 ```
 
-## Score Table
+Score Table
 
 ```{r}
 head(multiv_pca$score_data)
 ```
-
 

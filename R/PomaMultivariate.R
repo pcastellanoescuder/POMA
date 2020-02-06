@@ -69,6 +69,7 @@ PomaMultivariate <- function(data_multi,
       geom_point(size = 3, alpha = 0.5) +
       xlab(paste0("PC1 (", round(100*(pca_res$explained_variance)[1], 2), "%)")) +
       ylab(paste0("PC2 (", round(100*(pca_res$explained_variance)[2], 2), "%)")) +
+      stat_ellipse() +
       theme_minimal()
 
     ####
