@@ -74,8 +74,8 @@ test_that("PomaImpute works", {
   expect_false(all(exprs(j) == exprs(k)))
   expect_false(all(exprs(k) == exprs(i)))
 
-  expect_equal(l, m)
-  expect_equal(n, o)
+  expect_equal(Biobase::exprs(l), Biobase::exprs(m))
+  expect_equal(Biobase::exprs(n), Biobase::exprs(o))
   expect_true(all(exprs(p) == exprs(q)))
 
   expect_equal(dim(r), dim(s))

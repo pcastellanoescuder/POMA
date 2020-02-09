@@ -10,7 +10,7 @@ output:
     toc_depth: 4
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{Workflow Overview}
+  %\VignetteIndexEntry{POMA Workflow Overview}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\VignetteEncoding{UTF-8}
