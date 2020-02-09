@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>POMA: R Package for Statistical Analysis of Mass Spectrometry Data • POMA</title>
+<title>POMA Workflow Overview • POMA</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="POMA: R Package for Statistical Analysis of Mass Spectrometry Data">
+<script src="../pkgdown.js"></script><meta property="og:title" content="POMA Workflow Overview">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
@@ -61,7 +61,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/POMA-demo.html">POMA: R Package for Statistical Analysis of Mass Spectrometry Data</a>
+      <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
+    </li>
+    <li>
+      <a href="../articles/POMA-normalization.html">Normalization</a>
     </li>
   </ul>
 </li>
@@ -86,10 +89,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>POMA: R Package for Statistical Analysis of Mass Spectrometry Data</h1>
+      <h1>POMA Workflow Overview</h1>
                         <h4 class="author">Pol Castellano-Escuder</h4>
             
-            <h4 class="date">2020-02-06</h4>
+            <h4 class="date">2020-02-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pcastellanoescuder/POMA/blob/master/vignettes/POMA-demo.Rmd"><code>vignettes/POMA-demo.Rmd</code></a></small>
       <div class="hidden name"><code>POMA-demo.Rmd</code></div>
@@ -152,7 +155,7 @@
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Thu Feb  6 22:11:08 2020 </span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Sun Feb  9 11:12:13 2020 </span></a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with imputation information.</em></p>
 </div>
@@ -174,7 +177,7 @@
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Normalised (log_pareto): Thu Feb  6 22:11:08 2020 </span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Normalised (log_pareto): Sun Feb  9 11:12:13 2020 </span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with normalization information.</em></p>
 <div id="normalization-effect" class="section level3">
@@ -186,22 +189,22 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(imputed, <span class="dt">group =</span> <span class="st">"samples"</span>, <span class="dt">jitter =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Not Normalized"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>) <span class="co"># data before normalization</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">## Using ID, Group as id variables</span></a></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">p2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(normalized, <span class="dt">group =</span> <span class="st">"samples"</span>, <span class="dt">jitter =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Normalized"</span>) <span class="co"># data after normalization</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">## Using ID, Group as id variables</span></a></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">p1 <span class="op">+</span><span class="st"> </span>p2</a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-9-1.png" width="1600" style="display: block; margin: auto;"></p>
+<a class="sourceLine" id="cb6-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">p2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(normalized, <span class="dt">group =</span> <span class="st">"samples"</span>, <span class="dt">jitter =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Normalized"</span>) <span class="co"># data after normalization</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">p1 <span class="op">+</span><span class="st"> </span>p2</a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-7-1.png" width="1600" style="display: block; margin: auto;"></p>
 <p>On the other hand, <code>PomaDensity</code> shows the distribution of all features before and after the normalization process.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">p3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(imputed, <span class="dt">group =</span> <span class="st">"features"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Not Normalized"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>) <span class="co"># data before normalization</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">## Using Group as id variables</span></a></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">p4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(normalized, <span class="dt">group =</span> <span class="st">"features"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Normalized"</span>) <span class="co"># data after normalization</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">## Using Group as id variables</span></a></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">p3 <span class="op">+</span><span class="st"> </span>p4</a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-12-1.png" width="1600" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">p3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(imputed, <span class="dt">group =</span> <span class="st">"features"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Not Normalized"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>) <span class="co"># data before normalization</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">p4 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(normalized, <span class="dt">group =</span> <span class="st">"features"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Normalized"</span>) <span class="co"># data after normalization</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">p3 <span class="op">+</span><span class="st"> </span>p4</a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-8-1.png" width="1600" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
@@ -211,27 +214,50 @@
 <div id="univariate-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#univariate-analysis" class="anchor"></a>Univariate Analysis</h2>
+<div id="t-test" class="section level3">
+<h3 class="hasAnchor">
+<a href="#t-test" class="anchor"></a>T-test</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">ttest_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaUnivariate.html">PomaUnivariate</a></span>(normalized, <span class="dt">method =</span> <span class="st">"ttest"</span>, </a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">                            <span class="dt">paired =</span> <span class="ot">FALSE</span>, <span class="dt">var_equal =</span> <span class="ot">FALSE</span>, <span class="dt">adjust =</span> <span class="st">"fdr"</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">ttest_res <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">##           rowname Mean_G1 Mean_G2 Fold_Change_Ratio Difference_Of_Means</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">## 1 Methyladenosine  -0.174   0.174                -1              -0.348</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">## 2 Methylhistamine   0.062  -0.062                -1               0.124</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">## 3    Aminoadipate  -0.110   0.110                -1              -0.220</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">## 4    Deoxyuridine   0.118  -0.118                -1               0.236</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">## 5   Nitrotyrosine  -0.017   0.017                -1              -0.034</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">## 6   Pyridoxicacid  -0.044   0.044                -1              -0.088</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">##       pvalue pvalue_Adj</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">## 1 0.05646815  0.4465232</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">## 2 0.55542663  0.9229884</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">## 3 0.32871427  0.9068738</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">## 4 0.12678979  0.7514041</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">## 5 0.85409255  0.9661294</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">## 6 0.33464626  0.9068738</span></a></code></pre></div>
+</div>
 <div id="limma" class="section level3">
 <h3 class="hasAnchor">
 <a href="#limma" class="anchor"></a>Limma</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">limma_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaLimma.html">PomaLimma</a></span>(normalized, <span class="dt">contrast =</span> <span class="st">"C-H"</span>, <span class="dt">covariates =</span> <span class="ot">TRUE</span>, <span class="dt">adjust =</span> <span class="st">"fdr"</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">limma_res <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">##        rowname      logFC       AveExpr         t      P.Value  adj.P.Val</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">## 1    Adenosine  0.9920637  6.250000e-05  4.176125 0.0007366567 0.08324221</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">## 2     Cytosine  2.2341795 -6.250000e-05  3.615644 0.0023748477 0.13417890</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">## 3 HyppuricAcid  1.0229309 -1.734723e-18  2.879016 0.0110442969 0.36347714</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">## 4   AdipicAcid -0.6667253 -5.204170e-18 -2.804768 0.0128664473 0.36347714</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">## 5 AsparticAcid -0.4951861  6.250000e-05 -2.534439 0.0222849388 0.50363962</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">## 6      Inosine  0.9357519 -1.250000e-04  2.291205 0.0361024703 0.58505611</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">##            B</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">## 1 -0.3037481</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">## 2 -1.3765094</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">## 3 -2.7758154</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">## 4 -2.9134137</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">## 5 -3.4047458</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">## 6 -3.8301953</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">limma_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaLimma.html">PomaLimma</a></span>(normalized, <span class="dt">contrast =</span> <span class="st">"C-H"</span>, <span class="dt">covariates =</span> <span class="ot">TRUE</span>, <span class="dt">adjust =</span> <span class="st">"fdr"</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">limma_res <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">##        rowname      logFC       AveExpr         t      P.Value  adj.P.Val</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">## 1    Adenosine  0.9920637  6.250000e-05  4.176125 0.0007366567 0.08324221</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">## 2     Cytosine  2.2341795 -6.250000e-05  3.615644 0.0023748477 0.13417890</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">## 3 HyppuricAcid  1.0229309 -1.734723e-18  2.879016 0.0110442969 0.36347714</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">## 4   AdipicAcid -0.6667253 -5.204170e-18 -2.804768 0.0128664473 0.36347714</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">## 5 AsparticAcid -0.4951861  6.250000e-05 -2.534439 0.0222849388 0.50363962</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">## 6      Inosine  0.9357519 -1.250000e-04  2.291205 0.0361024703 0.58505611</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">##            B</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">## 1 -0.3037481</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">## 2 -1.3765094</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">## 3 -2.7758154</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">## 4 -2.9134137</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">## 5 -3.4047458</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">## 6 -3.8301953</span></a></code></pre></div>
 </div>
 </div>
 <div id="multivariate-analysis" class="section level2">
@@ -240,27 +266,43 @@
 <div id="principal-component-analysis" class="section level3">
 <h3 class="hasAnchor">
 <a href="#principal-component-analysis" class="anchor"></a>Principal Component Analysis</h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">multiv_pca &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaMultivariate.html">PomaMultivariate</a></span>(normalized, </a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">                               <span class="dt">method =</span> <span class="st">"pca"</span>,</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">                               <span class="dt">components =</span> <span class="dv">5</span>,</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">                               <span class="dt">scale =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5">                               <span class="dt">center =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>Scree Plot</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">multiv_pca<span class="op">$</span>screeplot</a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-15-1.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
-<p>Scores Plot</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">multiv_pca<span class="op">$</span>scoresplot</a></code></pre></div>
-<p><img src="POMA-demo_files/figure-html/unnamed-chunk-16-1.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
-<p>Score Table</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(multiv_pca<span class="op">$</span>score_data)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">##               PC1     PC2     PC3     PC4     PC5</span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">## Subject_1 -2.1330  0.6416 -1.7736 -0.7151  1.1246</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">## Subject_2 -1.2018  3.3485 -1.1164 -0.5592  0.2253</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">## Subject_3 -2.7435 -1.4739  1.8220 -4.0711 -2.5289</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">## Subject_4 -3.2063  3.6014 -2.8166  0.9181 -0.8597</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">## Subject_5 -0.8246  0.6974  2.0660  1.4456 -0.1974</span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">## Subject_6 -1.4447  1.4514  4.5528  2.5257 -0.5141</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">multiv_pca &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaMultivariate.html">PomaMultivariate</a></span>(normalized, <span class="dt">method =</span> <span class="st">"pca"</span>, <span class="dt">components =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">                               <span class="dt">scale =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">                               <span class="dt">center =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">multiv_pca<span class="op">$</span>score_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">##               PC1     PC2     PC3     PC4     PC5</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">## Subject_1 -2.1330  0.6416 -1.7736 -0.7151  1.1246</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">## Subject_2 -1.2018  3.3485 -1.1164 -0.5592  0.2253</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">## Subject_3 -2.7435 -1.4739  1.8220 -4.0711 -2.5289</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">## Subject_4 -3.2063  3.6014 -2.8166  0.9181 -0.8597</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">## Subject_5 -0.8246  0.6974  2.0660  1.4456 -0.1974</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">## Subject_6 -1.4447  1.4514  4.5528  2.5257 -0.5141</span></a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">p5 &lt;-<span class="st"> </span>multiv_pca<span class="op">$</span>screeplot <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Scree Plot"</span>)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">p6 &lt;-<span class="st"> </span>multiv_pca<span class="op">$</span>scoresplot <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Scores Plot"</span>)</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">p5 <span class="op">+</span><span class="st"> </span>p6</a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-13-1.png" width="2000" style="display: block; margin: auto;"></p>
 </div>
+</div>
+<div id="random-forest" class="section level2">
+<h2 class="hasAnchor">
+<a href="#random-forest" class="anchor"></a>Random Forest</h2>
+<p>Here we will use the whole dataset because a larger sample size is needed to perform a random forest.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">imputed2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaImpute.html">PomaImpute</a></span>(st000284, <span class="dt">ZerosAsNA =</span> T, <span class="dt">RemoveNA =</span> T, <span class="dt">cutoff =</span> <span class="dv">20</span>, <span class="dt">method =</span> <span class="st">"knn"</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">normalized2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(imputed2, <span class="dt">method =</span> <span class="st">"log_pareto"</span>)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">rf_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaRandForest.html">PomaRandForest</a></span>(normalized2, <span class="dt">folds =</span> <span class="dv">3</span>, <span class="dt">nvar =</span> <span class="dv">10</span>)</a></code></pre></div>
+<p>Confusion matrix of the random forest model:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">rf_res<span class="op">$</span>confusion_matrix</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">##    C  H class.error</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">## C 18  4      0.1818</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">## H  4 18      0.1818</span></a></code></pre></div>
+<p>Top 10 best predictors:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">rf_res<span class="op">$</span>gini_plot</a></code></pre></div>
+<p><img src="POMA-demo_files/figure-html/unnamed-chunk-16-1.png" width="1600" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </div>
@@ -284,6 +326,7 @@
 <a href="#statistical-analysis">Statistical Analysis</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#univariate-analysis">Univariate Analysis</a></li>
       <li><a href="#multivariate-analysis">Multivariate Analysis</a></li>
+      <li><a href="#random-forest">Random Forest</a></li>
       </ul>
 </li>
       </ul>

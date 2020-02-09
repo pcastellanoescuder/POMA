@@ -3,4 +3,5 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   POMA-demo: POMA-demo.html
+  POMA-normalization: POMA-normalization.html
 

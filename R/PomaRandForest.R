@@ -46,7 +46,7 @@ PomaRandForest <- function(data,
   # training Sample with 1/folds observations
   train <- sample(1:nrow(rf_data), round(nrow(rf_data)/folds))
 
-  RF_model <- randomForest(as.factor(Group) ~ . ,
+  RF_model <- randomForest(as.factor(Group) ~ .,
                            data = rf_data,
                            subset = train,
                            ntree = ntree,
@@ -75,11 +75,11 @@ PomaRandForest <- function(data,
   Gini_plot <- ggplot(importancia_pred, aes(x = reorder(real_names, MeanDecreaseGini),
                                             y = MeanDecreaseGini,
                                             fill = MeanDecreaseGini)) +
-    xlab("Variable") +
+    xlab("") +
     geom_col() +
     coord_flip() +
     theme_minimal() +
-    theme(legend.position = "bottom")
+    theme(legend.position = "none")
 
   importancia_pred1 <- importancia_pred1[, c(3,2)]
   importancia_pred1$MeanDecreaseGini <- round(importancia_pred1$MeanDecreaseGini, 4)

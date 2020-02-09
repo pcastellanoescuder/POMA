@@ -1,5 +1,5 @@
 ---
-title: "POMA: R Package for Statistical Analysis of Mass Spectrometry Data"
+title: "POMA Workflow Overview"
 author: "Pol Castellano-Escuder"
 date: "`r Sys.Date()`"
 output:
@@ -10,7 +10,7 @@ output:
     toc_depth: 4
     number_sections: true
 vignette: >
-  %\VignetteIndexEntry{POMA: R Package for Statistical Analysis of Mass Spectrometry Data}
+  %\VignetteIndexEntry{Workflow Overview}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\VignetteEncoding{UTF-8}
@@ -21,8 +21,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   dpi = 200,
   fig.align = "center"
-  # fig.height = 5,
-  # fig.width = 8
 )
 ```
 
@@ -95,41 +93,43 @@ To answer this question, **POMA** offers two exploratory functions, `PomaNormPlo
 
 `PomaNormPlot` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object. Here, we can compare objects between and after normalization step.
 
-```{r}
+```{r, fig.height = 4, fig.width = 8, message = FALSE, comment = FALSE}
 p1 <- PomaNormPlot(imputed, group = "samples", jitter = FALSE) +
   ggtitle("Not Normalized") +
   theme(legend.position = "none") # data before normalization
-```
 
-```{r}
 p2 <- PomaNormPlot(normalized, group = "samples", jitter = FALSE) +
   ggtitle("Normalized") # data after normalization
-```
 
-```{r, fig.height = 5, fig.width = 8}
 p1 + p2
 ```
 
 On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process. 
 
-```{r}
+```{r, fig.height = 4, fig.width = 8, message = FALSE, comment = FALSE}
 p3 <- PomaDensity(imputed, group = "features") +
   ggtitle("Not Normalized") +
   theme(legend.position = "none") # data before normalization
-```
 
-```{r}
 p4 <- PomaDensity(normalized, group = "features") +
   ggtitle("Normalized") # data after normalization
-```
 
-```{r, fig.height = 5, fig.width = 8}
 p3 + p4
 ```
 
 # Statistical Analysis
 
 ## Univariate Analysis
+
+### T-test
+
+```{r}
+ttest_res <- PomaUnivariate(normalized, method = "ttest", 
+                            paired = FALSE, var_equal = FALSE, adjust = "fdr")
+ttest_res %>% 
+  rownames_to_column() %>% 
+  head()
+```
 
 ### Limma
 
@@ -145,28 +145,44 @@ limma_res %>%
 ### Principal Component Analysis
 
 ```{r}
-multiv_pca <- PomaMultivariate(normalized, 
-                               method = "pca",
-                               components = 5,
+multiv_pca <- PomaMultivariate(normalized, method = "pca", components = 5,
                                scale = FALSE,
                                center = FALSE)
 ```
 
-Scree Plot
-
 ```{r}
-multiv_pca$screeplot
+multiv_pca$score_data %>% head()
 ```
 
-Scores Plot
+```{r, fig.height = 4, fig.width = 10}
+p5 <- multiv_pca$screeplot +
+  ggtitle("Scree Plot")
 
-```{r}
-multiv_pca$scoresplot
+p6 <- multiv_pca$scoresplot +
+  ggtitle("Scores Plot")
+
+p5 + p6
 ```
 
-Score Table
+## Random Forest
+
+Here we will use the whole dataset because a larger sample size is needed to perform a random forest.  
+```{r}
+imputed2 <- PomaImpute(st000284, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
+normalized2 <- PomaNorm(imputed2, method = "log_pareto")
+
+rf_res <- PomaRandForest(normalized2, folds = 3, nvar = 10)
+```
+
+Confusion matrix of the random forest model:  
 
 ```{r}
-head(multiv_pca$score_data)
+rf_res$confusion_matrix
+```
+
+Top 10 best predictors:  
+
+```{r, fig.height = 4, fig.width = 8}
+rf_res$gini_plot
 ```
 
