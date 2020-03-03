@@ -31,7 +31,9 @@ Imports:
     randomForest,
     RankProd,
     Biobase,
-    MSnbase
+    MSnbase,
+    broom,
+    glmnet
 Suggests: 
     covr,
     tidyverse,

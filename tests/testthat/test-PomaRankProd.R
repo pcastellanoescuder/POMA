@@ -2,14 +2,10 @@ context("PomaRankProd")
 
 test_that("PomaRankProd works", {
 
-  # library(tidyverse)
-  # library(RankProd)
-
   data("st000284")
 
-  # toy_data <- data.frame(ID = c("One", "Two", "Three"),
-  #                        Group = c("A", "B", "C"),
-  #                        Alanine = c(123, 453, 432))
+  toy_data <- POMA::PomaNorm(st000284, method = "log_scaling")
+  Biobase::pData(toy_data)$groups <- c(rep("C", 100), rep("H", 29), rep("G", 29))
 
   ##
 
@@ -23,7 +19,7 @@ test_that("PomaRankProd works", {
 
   expect_error(PomaRankProd())
   expect_error(PomaRankProd(st000284, method = "pfd"))
-  # expect_error(PomaRankProd(toy_data))
+  expect_error(PomaRankProd(toy_data))
   expect_warning(PomaRankProd(st000284))
 
   ##

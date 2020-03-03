@@ -55,7 +55,7 @@ my_features <- t(exprs(st000284))[c(1:8, 120:127) ,]
 my_target <- pData(st000284)[c(1:8, 120:127) ,]
 my_target <- my_target %>%
   mutate(ID = rownames(.)) %>%
-  select(ID, group, ageatconsent, gender, smoking_condition, drink_alcohol)
+  select(ID, groups, age_at_consent, gender, smoking_condition, drink_alcohol)
 
 # create a smaller MSnSet object from example data
 example_data <- PomaMSnSetClass(features = my_features, target = my_target)

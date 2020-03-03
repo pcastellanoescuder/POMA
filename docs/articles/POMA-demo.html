@@ -92,7 +92,7 @@
       <h1>POMA Workflow Overview</h1>
                         <h4 class="author">Pol Castellano-Escuder</h4>
             
-            <h4 class="date">2020-02-09</h4>
+            <h4 class="date">2020-03-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pcastellanoescuder/POMA/blob/master/vignettes/POMA-demo.Rmd"><code>vignettes/POMA-demo.Rmd</code></a></small>
       <div class="hidden name"><code>POMA-demo.Rmd</code></div>
@@ -129,7 +129,7 @@
 <a class="sourceLine" id="cb3-7" data-line-number="7">my_target &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(st000284)[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, <span class="dv">120</span><span class="op">:</span><span class="dv">127</span>) ,]</a>
 <a class="sourceLine" id="cb3-8" data-line-number="8">my_target &lt;-<span class="st"> </span>my_target <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ID =</span> <span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(.)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw">select</span>(ID, group, ageatconsent, gender, smoking_condition, drink_alcohol)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw">select</span>(ID, groups, age_at_consent, gender, smoking_condition, drink_alcohol)</a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co"># create a smaller MSnSet object from example data</span></a>
 <a class="sourceLine" id="cb3-13" data-line-number="13">example_data &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaMSnSetClass.html">PomaMSnSetClass</a></span>(<span class="dt">features =</span> my_features, <span class="dt">target =</span> my_target)</a></code></pre></div>
@@ -148,14 +148,14 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">##   element names: exprs </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">## protocolData: none</span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">## phenoData</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">##   sampleNames: Subject_1 Subject_2 ... Subject_127 (16 total)</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">##   varLabels: Group ageatconsent ... drink_alcohol (5 total)</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">##   sampleNames: Subject_157 Subject_200 ... Subject_265 (16 total)</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">##   varLabels: Group age_at_consent ... drink_alcohol (5 total)</span></a>
 <a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">##   varMetadata: labelDescription</span></a>
 <a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">## featureData: none</span></a>
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Sun Feb  9 23:17:23 2020 </span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Tue Mar  3 12:31:36 2020 </span></a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with imputation information.</em></p>
 </div>
@@ -170,14 +170,14 @@
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">##   element names: exprs </span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## protocolData: none</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">## phenoData</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">##   sampleNames: Subject_1 Subject_2 ... Subject_127 (16 total)</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">##   varLabels: Group ageatconsent ... drink_alcohol (5 total)</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">##   sampleNames: Subject_157 Subject_200 ... Subject_265 (16 total)</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">##   varLabels: Group age_at_consent ... drink_alcohol (5 total)</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">##   varMetadata: labelDescription</span></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## featureData: none</span></a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Normalised (log_pareto): Sun Feb  9 23:17:23 2020 </span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Normalised (log_pareto): Tue Mar  3 12:31:37 2020 </span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with normalization information.</em></p>
 <div id="normalization-effect" class="section level3">
@@ -222,20 +222,20 @@
 <a class="sourceLine" id="cb8-3" data-line-number="3">ttest_res <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">##           rowname Mean_G1 Mean_G2 Fold_Change_Ratio Difference_Of_Means</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">## 1 Methyladenosine  -0.174   0.174                -1              -0.348</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">## 2 Methylhistamine   0.062  -0.062                -1               0.124</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">## 3    Aminoadipate  -0.110   0.110                -1              -0.220</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">## 4    Deoxyuridine   0.118  -0.118                -1               0.236</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">## 5   Nitrotyrosine  -0.017   0.017                -1              -0.034</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">## 6   Pyridoxicacid  -0.044   0.044                -1              -0.088</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">##       pvalue pvalue_Adj</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">## 1 0.05646815  0.4465232</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">## 2 0.55542663  0.9229884</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">## 3 0.32871427  0.9068738</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">## 4 0.12678979  0.7514041</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">## 5 0.85409255  0.9661294</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">## 6 0.33464626  0.9068738</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">##                          rowname Mean_G1 Mean_G2 Fold_Change_Ratio</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">## 1 x1_methyladenosine_282_1_150_0  -0.174   0.174                -1</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">## 2 x1_methylhistamine_126_0_109_0   0.062  -0.062                -1</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">## 3    x2_aminoadipate_160_1_116_0  -0.110   0.110                -1</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">## 4    x2_deoxyuridine_229_1_113_0   0.118  -0.118                -1</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">## 5  x3_nitro_tyrosine_225_0_179_3  -0.017   0.017                -1</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">## 6  x4_pyridoxic_acid_182_1_138_0  -0.044   0.044                -1</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">##   Difference_Of_Means     pvalue pvalue_Adj</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">## 1              -0.348 0.05646815  0.4465232</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">## 2               0.124 0.55542663  0.9229884</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">## 3              -0.220 0.32871427  0.9068738</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">## 4               0.236 0.12678979  0.7514041</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">## 5              -0.034 0.85409255  0.9661294</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">## 6              -0.088 0.33464626  0.9068738</span></a></code></pre></div>
 </div>
 <div id="limma" class="section level3">
 <h3 class="hasAnchor">
@@ -244,20 +244,20 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2">limma_res <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">##        rowname      logFC       AveExpr         t      P.Value  adj.P.Val</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">## 1    Adenosine  0.9920637  6.250000e-05  4.176125 0.0007366567 0.08324221</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">## 2     Cytosine  2.2341795 -6.250000e-05  3.615644 0.0023748477 0.13417890</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">## 3 HyppuricAcid  1.0229309 -1.734723e-18  2.879016 0.0110442969 0.36347714</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">## 4   AdipicAcid -0.6667253 -5.204170e-18 -2.804768 0.0128664473 0.36347714</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">## 5 AsparticAcid -0.4951861  6.250000e-05 -2.534439 0.0222849388 0.50363962</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">## 6      Inosine  0.9357519 -1.250000e-04  2.291205 0.0361024703 0.58505611</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">##            B</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">## 1 -0.3037481</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">## 2 -1.3765094</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">## 3 -2.7758154</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">## 4 -2.9134137</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">## 5 -3.4047458</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">## 6 -3.8301953</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">##                     rowname      logFC       AveExpr         t</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">## 1     adenosine_268_1_136_0  1.0941068  6.250000e-05  4.774928</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">## 2       cytosine_112_0_95_0  2.0066221 -6.250000e-05  2.890698</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">## 3 cystathionine_221_1_134_0  0.7842311 -1.250000e-04  2.590037</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">## 4            pep_166_9_79_0  0.5261762  6.250000e-05  2.368755</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">## 5  aspartic_acid_132_0_88_0 -0.5127275  6.250000e-05 -2.284274</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">## 6 hyppuric_acid_178_0_134_0  0.9449905 -1.734723e-18  2.257732</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">##        P.Value  adj.P.Val          B</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">## 1 0.0003392003 0.03832964  0.4446795</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">## 2 0.0123670284 0.69873710 -2.9730574</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">## 3 0.0220722430 0.76412294 -3.5114557</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">## 4 0.0335915762 0.76412294 -3.8963690</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">## 5 0.0393531497 0.76412294 -4.0399615</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">## 6 0.0413486219 0.76412294 -4.0846365</span></a></code></pre></div>
 </div>
 </div>
 <div id="multivariate-analysis" class="section level2">
@@ -270,13 +270,13 @@
 <a class="sourceLine" id="cb10-2" data-line-number="2">                               <span class="dt">scale =</span> <span class="ot">FALSE</span>,</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">                               <span class="dt">center =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">multiv_pca<span class="op">$</span>score_data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">##               PC1     PC2     PC3     PC4     PC5</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">## Subject_1 -2.1330  0.6416 -1.7736 -0.7151  1.1246</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">## Subject_2 -1.2018  3.3485 -1.1164 -0.5592  0.2253</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">## Subject_3 -2.7435 -1.4739  1.8220 -4.0711 -2.5289</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">## Subject_4 -3.2063  3.6014 -2.8166  0.9181 -0.8597</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">## Subject_5 -0.8246  0.6974  2.0660  1.4456 -0.1974</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">## Subject_6 -1.4447  1.4514  4.5528  2.5257 -0.5141</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">##                 PC1     PC2     PC3     PC4     PC5</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">## Subject_157 -2.1331  0.6416 -1.7736 -0.7152  1.1245</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">## Subject_200 -1.2018  3.3485 -1.1165 -0.5593  0.2253</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">## Subject_133 -2.7435 -1.4739  1.8222 -4.0709 -2.5292</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">## Subject_250 -3.2063  3.6013 -2.8165  0.9181 -0.8596</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">## Subject_109 -0.8246  0.6975  2.0659  1.4457 -0.1973</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">## Subject_77  -1.4446  1.4515  4.5527  2.5258 -0.5139</span></a></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">p5 &lt;-<span class="st"> </span>multiv_pca<span class="op">$</span>screeplot <span class="op">+</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Scree Plot"</span>)</a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"></a>
@@ -298,8 +298,8 @@
 <p>Confusion matrix of the random forest model:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">rf_res<span class="op">$</span>confusion_matrix</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">##    C  H class.error</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">## C 18  4      0.1818</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">## H  4 18      0.1818</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">## C 14 11      0.4400</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">## H  9 19      0.3214</span></a></code></pre></div>
 <p>Top 10 best predictors:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">rf_res<span class="op">$</span>gini_plot</a></code></pre></div>
 <p><img src="POMA-demo_files/figure-html/unnamed-chunk-16-1.png" width="1600" style="display: block; margin: auto;"></p>

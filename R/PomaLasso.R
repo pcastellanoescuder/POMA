@@ -16,7 +16,7 @@
 #'
 #' @import ggplot2
 #' @importFrom broom tidy glance
-#' @importFrom glmnet cv.glmnet coef
+#' @importFrom glmnet cv.glmnet
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
