@@ -44,65 +44,31 @@ PomaNormPlot <- function(data, group = c("samples", "features"), jitter = TRUE){
 
   if(group == "samples"){
 
-    if(isTRUE(jitter)){
-
-      data %>%
-        reshape2::melt() %>%
-        group_by(ID) %>%
-        ggplot(aes(ID, value, color = Group)) +
-        geom_boxplot() +
-        geom_jitter() +
-        theme_minimal() +
-        xlab("Samples") +
-        ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-    }
-    else{
-
-      data %>%
-        reshape2::melt() %>%
-        group_by(ID) %>%
-        ggplot(aes(ID, value, color = Group)) +
-        geom_boxplot() +
-        theme_minimal() +
-        xlab("Samples") +
-        ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    data %>%
+      reshape2::melt() %>%
+      group_by(ID) %>%
+      ggplot(aes(ID, value, color = Group)) +
+      geom_boxplot() +
+      {if(jitter)geom_jitter()} +
+      theme_bw() +
+      xlab("Samples") +
+      ylab("Value") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
     }
 
+  else {
+
+    data %>%
+      dplyr::select(-ID) %>%
+      reshape2::melt() %>%
+      group_by(Group) %>%
+      ggplot(aes(variable, value, color = Group)) +
+      geom_boxplot() +
+      {if(jitter)geom_jitter()} +
+      theme_bw() +
+      xlab("Features") +
+      ylab("Value") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    }
   }
-  else{
-
-    if(isTRUE(jitter)){
-
-      data %>%
-        dplyr::select(-ID) %>%
-        reshape2::melt() %>%
-        group_by(Group) %>%
-        ggplot(aes(variable, value, color = Group)) +
-        geom_boxplot() +
-        geom_jitter() +
-        theme_minimal() +
-        xlab("Features") +
-        ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
-    }
-    else{
-
-      data %>%
-        dplyr::select(-ID) %>%
-        reshape2::melt() %>%
-        group_by(Group) %>%
-        ggplot(aes(variable, value, color = Group)) +
-        geom_boxplot() +
-        theme_minimal() +
-        xlab("Features") +
-        ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
-    }
-
-  }
-
-}
 

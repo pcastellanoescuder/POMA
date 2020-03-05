@@ -33,7 +33,8 @@ Imports:
     Biobase,
     MSnbase,
     broom,
-    glmnet
+    glmnet,
+    plotly
 Suggests: 
     covr,
     tidyverse,

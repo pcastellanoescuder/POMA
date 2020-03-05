@@ -8,6 +8,7 @@
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.
 #' @param scale Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.
+#' @param ellipse Logical that indicates whether a 95%CI ellipse should be plotted in scores plot. Default is TRUE.
 #' @param validation (Only for "plsda" and "splsda" methods) Validation method. Options are c("Mfold", "loo").
 #' @param folds (Only for "plsda" and "splsda" methods) Numeric. Number of folds for Mfold validation method (default is 5). If the validation method is loo, this value will become to 1.
 #' @param nrepeat (Only for "plsda" and "splsda" methods) Numeric. Number of iterations for the validation method selected.
@@ -32,6 +33,7 @@ PomaMultivariate <- function(data_multi,
                              components = 5,
                              center = FALSE,
                              scale = FALSE,
+                             ellipse = TRUE,
                              validation = c("Mfold", "loo"),
                              folds = 5,
                              nrepeat = 10,
@@ -69,8 +71,8 @@ PomaMultivariate <- function(data_multi,
       geom_point(size = 3, alpha = 0.5) +
       xlab(paste0("PC1 (", round(100*(pca_res$explained_variance)[1], 2), "%)")) +
       ylab(paste0("PC2 (", round(100*(pca_res$explained_variance)[2], 2), "%)")) +
-      stat_ellipse() +
-      theme_minimal()
+      {if(ellipse)stat_ellipse(type = "norm")} +
+      theme_bw()
 
     ####
 
@@ -82,14 +84,37 @@ PomaMultivariate <- function(data_multi,
       xlab("Principal Component") +
       ylab("% Variance Explained") +
       geom_label(data = eigenvalues, aes(label =  paste0(round(Percent_Variance_Explained, 3), "%"))) +
-      theme_minimal()
+      theme_bw()
 
     ####
 
     score_data <- PCi %>% dplyr::select(-Groups) %>% round(4)
 
+    ####
+
+    pca_res2 <- mixOmics::pca(X, ncomp = components, center = T, scale = T)
+
+    PCi2 <- data.frame(pca_res2$x, Groups = Y)
+
+    PCAloadings <- data.frame(pca_res2$loadings$X)
+
+    biplot <- ggplot(PCi2, aes(x = PC1, y = PC2, col = Groups))+
+      geom_point(size = 3, alpha = 0.5) +
+      xlab(paste0("PC1 (", round(100*(pca_res2$explained_variance)[1], 2), "%)")) +
+      ylab(paste0("PC2 (", round(100*(pca_res2$explained_variance)[2], 2), "%)")) +
+      theme_bw() +
+      {if(ellipse)stat_ellipse(type = "norm")} +
+      geom_segment(data = PCAloadings,
+                   aes(x = 0, y = 0,
+                       xend = (PC1*12),
+                       yend = (PC2*12)),
+                   arrow = arrow(length = unit(1/2, "picas")), color = "grey19") +
+      annotate("text", x = (PCAloadings$PC1*12),
+               y = (PCAloadings$PC2*12),
+               label = rownames(PCAloadings), size = 4)
+
     return(list(screeplot = screeplot, scoresplot = scoresplot,
-                score_data = score_data, eigenvalues = eigenvalues))
+                score_data = score_data, eigenvalues = eigenvalues, biplot = biplot))
 
   }
 
@@ -106,8 +131,8 @@ PomaMultivariate <- function(data_multi,
       geom_point(size=3,alpha=0.5) +
       xlab("Component 1") +
       ylab("Component 2") +
-      stat_ellipse(aes(x = comp1, y = comp2, col = Groups), type = "norm") +
-      theme_minimal()
+      {if(ellipse)stat_ellipse(type = "norm")} +
+      theme_bw()
 
     #####
 
@@ -130,8 +155,8 @@ PomaMultivariate <- function(data_multi,
     errors_plsda_plot <- ggplot(data = errors_plsda, aes(x = Component, y = value, group = variable)) +
       geom_line(aes(color=variable)) +
       geom_point(aes(color=variable)) +
-      theme_minimal() +
-      geom_point(size=3,alpha=0.5)
+      ylab("Error") +
+      theme_bw()
 
     ####
 
@@ -148,14 +173,16 @@ PomaMultivariate <- function(data_multi,
       geom_bar(stat="identity", fill = rep(c("lightblue"), nrow(plsda_vip_top))) +
       coord_flip() +
       ylab("VIP") +
+      xlab("") +
       geom_label(data = plsda_vip_top, aes(label = round(comp1, 2))) +
-      theme_minimal()
+      theme_bw()
 
     ####
 
     scores_plsda <- PLSDAi %>% dplyr::select(-Groups) %>% round(4)
 
-    return(list(scoresplot = scoresplot, errors_plsda = errors_plsda, errors_plsda_plot = errors_plsda_plot, plsda_vip_table = plsda_vip,
+    return(list(scoresplot = scoresplot, errors_plsda = errors_plsda,
+                errors_plsda_plot = errors_plsda_plot, plsda_vip_table = plsda_vip,
                 vip_plsda_plot = vip_plsda_plot, scores_plsda = scores_plsda))
   }
 
@@ -187,10 +214,9 @@ PomaMultivariate <- function(data_multi,
       geom_line(aes(color=variable)) +
       geom_point(aes(color=variable)) +
       geom_errorbar(aes(ymin = value-sd, ymax = value+sd), width=.1) +
-      theme_minimal() +
-      xlab("Number of variables") +
-      ylab("Error") +
-      geom_point(size=3,alpha=0.5)
+      theme_bw() +
+      xlab("Number of features") +
+      ylab("Error")
 
     ####
 
@@ -209,8 +235,8 @@ PomaMultivariate <- function(data_multi,
       geom_point(size=3,alpha=0.5) +
       xlab("Component 1") +
       ylab("Component 2") +
-      stat_ellipse(aes(x = comp1, y = comp2, col = Groups), type = "norm") +
-      theme_minimal()
+      {if(ellipse)stat_ellipse(type = "norm")} +
+      theme_bw()
 
     scores_splsda <- SPLSDAi %>% dplyr::select(-Groups) %>% round(4)
 
@@ -220,8 +246,7 @@ PomaMultivariate <- function(data_multi,
 
     ####
 
-    return(list(selected_variables = selected_variables, ncomp = ncomp,
-                select_keepX = select_keepX, errors_splsda = errors_splsda,
+    return(list(ncomp = ncomp, select_keepX = select_keepX, errors_splsda = errors_splsda,
                 bal_error_rate = bal_error_rate, splsda_scores_plot = splsda_scores_plot,
                 scores_splsda = scores_splsda, selected_variables = selected_variables))
 

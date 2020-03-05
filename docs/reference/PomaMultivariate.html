@@ -143,6 +143,7 @@
   <span class='kw'>components</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>validation</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Mfold"</span>, <span class='st'>"loo"</span>),
   <span class='kw'>folds</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>nrepeat</span> <span class='kw'>=</span> <span class='fl'>10</span>,
@@ -171,6 +172,10 @@
     <tr>
       <th>scale</th>
       <td><p>Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>ellipse</th>
+      <td><p>Logical that indicates whether a 95%CI ellipse should be plotted in scores plot. Default is TRUE.</p></td>
     </tr>
     <tr>
       <th>validation</th>

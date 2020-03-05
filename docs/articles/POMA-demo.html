@@ -92,7 +92,7 @@
       <h1>POMA Workflow Overview</h1>
                         <h4 class="author">Pol Castellano-Escuder</h4>
             
-            <h4 class="date">2020-03-03</h4>
+            <h4 class="date">2020-03-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pcastellanoescuder/POMA/blob/master/vignettes/POMA-demo.Rmd"><code>vignettes/POMA-demo.Rmd</code></a></small>
       <div class="hidden name"><code>POMA-demo.Rmd</code></div>
@@ -155,7 +155,7 @@
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Tue Mar  3 12:31:36 2020 </span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Thu Mar  5 13:38:57 2020 </span></a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with imputation information.</em></p>
 </div>
@@ -177,7 +177,7 @@
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Normalised (log_pareto): Tue Mar  3 12:31:37 2020 </span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Normalised (log_pareto): Thu Mar  5 13:38:57 2020 </span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with normalization information.</em></p>
 <div id="normalization-effect" class="section level3">
@@ -244,20 +244,20 @@
 <a class="sourceLine" id="cb9-2" data-line-number="2">limma_res <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">##                     rowname      logFC       AveExpr         t</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">## 1     adenosine_268_1_136_0  1.0941068  6.250000e-05  4.774928</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">## 2       cytosine_112_0_95_0  2.0066221 -6.250000e-05  2.890698</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">## 3 cystathionine_221_1_134_0  0.7842311 -1.250000e-04  2.590037</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">## 4            pep_166_9_79_0  0.5261762  6.250000e-05  2.368755</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">## 5  aspartic_acid_132_0_88_0 -0.5127275  6.250000e-05 -2.284274</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">## 6 hyppuric_acid_178_0_134_0  0.9449905 -1.734723e-18  2.257732</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">##        P.Value  adj.P.Val          B</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">## 1 0.0003392003 0.03832964  0.4446795</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">## 2 0.0123670284 0.69873710 -2.9730574</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">## 3 0.0220722430 0.76412294 -3.5114557</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">## 4 0.0335915762 0.76412294 -3.8963690</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">## 5 0.0393531497 0.76412294 -4.0399615</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">## 6 0.0413486219 0.76412294 -4.0846365</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">##                     rowname      logFC       AveExpr         t      P.Value</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">## 1     adenosine_268_1_136_0  1.0941068  6.250000e-05  4.774928 0.0003392003</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">## 2       cytosine_112_0_95_0  2.0066221 -6.250000e-05  2.890698 0.0123670284</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">## 3 cystathionine_221_1_134_0  0.7842311 -1.250000e-04  2.590037 0.0220722430</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">## 4            pep_166_9_79_0  0.5261762  6.250000e-05  2.368755 0.0335915762</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">## 5  aspartic_acid_132_0_88_0 -0.5127275  6.250000e-05 -2.284274 0.0393531497</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">## 6 hyppuric_acid_178_0_134_0  0.9449905 -1.734723e-18  2.257732 0.0413486219</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">##    adj.P.Val          B</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">## 1 0.03832964  0.4446795</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">## 2 0.69873710 -2.9730574</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">## 3 0.76412294 -3.5114557</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">## 4 0.76412294 -3.8963690</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">## 5 0.76412294 -4.0399615</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">## 6 0.76412294 -4.0846365</span></a></code></pre></div>
 </div>
 </div>
 <div id="multivariate-analysis" class="section level2">

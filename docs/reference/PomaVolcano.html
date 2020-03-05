@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Volcano Plot — PomaVolcano" />
-<meta property="og:description" content="PomaVolcano() generates a volcano plot from the PomaUnivariate(method = &quot;ttest&quot;) result. The data can't has negative values!" />
+<meta property="og:description" content="PomaVolcano() generates a volcano plot from the PomaUnivariate(method = &quot;ttest&quot;) result. The data can't have negative values!" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -134,7 +134,7 @@
     </div>
 
     <div class="ref-description">
-    <p>PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't has negative values!</p>
+    <p>PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values!</p>
     </div>
 
     <pre class="usage"><span class='fu'>PomaVolcano</span>(
@@ -142,7 +142,9 @@
   <span class='kw'>pval</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"raw"</span>, <span class='st'>"adjusted"</span>),
   <span class='kw'>pval_cutoff</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
   <span class='kw'>log2FC</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
-  <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fl'>2</span>
+  <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>interactive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -167,6 +169,14 @@
     <tr>
       <th>xlim</th>
       <td><p>Numeric. Define the limits for x axis.</p></td>
+    </tr>
+    <tr>
+      <th>labels</th>
+      <td><p>Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>interactive</th>
+      <td><p>Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.</p></td>
     </tr>
     </table>
 

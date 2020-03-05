@@ -102,14 +102,14 @@ PomaRankProd <- function(data,
 
   plot1 <- ggplot(rp_plot, aes(x = rank1, y = pfp1)) +
     geom_point(size = 1.5, alpha=0.8) +
-    theme_minimal() +
+    theme_bw() +
     xlab("Number of identified metabolites") +
     ylab("Estimated PFP") +
     ggtitle(paste0("Identification of Up-regulated metabolites under class ", class2))
 
   plot2 <- ggplot(rp_plot, aes(x = rank2, y = pfp2)) +
     geom_point(size = 1.5, alpha=0.8) +
-    theme_minimal() +
+    theme_bw() +
     xlab("Number of identified metabolites") +
     ylab("Estimated PFP") +
     ggtitle(paste0("Identification of Down-regulated metabolites under class ", class2))

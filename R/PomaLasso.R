@@ -63,7 +63,7 @@ PomaLasso <- function(data,
     ylab("Estimate") +
     geom_vline(xintercept = glance_cv$lambda.min) +
     geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
-    theme_minimal()
+    theme_bw()
 
   tmp_coeffs <- coef(cv_fit, s = "lambda.min")
   final_coef <- data.frame(name = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x)
@@ -79,7 +79,7 @@ PomaLasso <- function(data,
     geom_line() +
     geom_vline(xintercept = glance_cv$lambda.min) +
     geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
-    theme_minimal() +
+    theme_bw() +
     theme(legend.position = "none")
 
   return(list(coefficients = final_coef, coefficientPlot = coefficientplot, cvLassoPlot = cvlasso))

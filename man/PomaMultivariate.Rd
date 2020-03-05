@@ -10,6 +10,7 @@ PomaMultivariate(
   components = 5,
   center = FALSE,
   scale = FALSE,
+  ellipse = TRUE,
   validation = c("Mfold", "loo"),
   folds = 5,
   nrepeat = 10,
@@ -26,6 +27,8 @@ PomaMultivariate(
 \item{center}{Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.}
 
 \item{scale}{Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.}
+
+\item{ellipse}{Logical that indicates whether a 95\%CI ellipse should be plotted in scores plot. Default is TRUE.}
 
 \item{validation}{(Only for "plsda" and "splsda" methods) Validation method. Options are c("Mfold", "loo").}
 

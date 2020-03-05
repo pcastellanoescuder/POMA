@@ -71,12 +71,12 @@ test_that("PomaMultivariate works", {
 
   multivariate_splsda_1 <- PomaMultivariate(st000284, method = "splsda", components = 5,
                                             center = TRUE, scale = TRUE,
-                                            validation = "Mfold", folds = 5, nrepeat = 10,
+                                            validation = "Mfold", folds = 5, nrepeat = 5,
                                             num_features = 10)
 
   multivariate_splsda_2 <- PomaMultivariate(st000284, method = "splsda", components = 5,
                                             center = TRUE, scale = TRUE,
-                                            validation = "Mfold", folds = 5, nrepeat = 10,
+                                            validation = "Mfold", folds = 5, nrepeat = 5,
                                             num_features = 5)
 
   ####

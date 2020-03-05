@@ -61,7 +61,7 @@ PomaRandForest <- function(data,
   error_tree <- ggplot(forest_data, aes(ntrees, OOB)) +
     geom_line() +
     labs(y = "Out-Of-Bag Error Rate") +
-    theme_minimal()
+    theme_bw()
 
   ####
 
@@ -78,7 +78,7 @@ PomaRandForest <- function(data,
     xlab("") +
     geom_col() +
     coord_flip() +
-    theme_minimal() +
+    theme_bw() +
     theme(legend.position = "none")
 
   importancia_pred1 <- importancia_pred1[, c(3,2)]

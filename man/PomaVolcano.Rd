@@ -9,7 +9,9 @@ PomaVolcano(
   pval = c("raw", "adjusted"),
   pval_cutoff = 0.05,
   log2FC = 0.6,
-  xlim = 2
+  xlim = 2,
+  labels = FALSE,
+  interactive = FALSE
 )
 }
 \arguments{
@@ -22,12 +24,16 @@ PomaVolcano(
 \item{log2FC}{Numeric. Define the log2 fold change cutoff (vertical lines).}
 
 \item{xlim}{Numeric. Define the limits for x axis.}
+
+\item{labels}{Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.}
+
+\item{interactive}{Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.}
 }
 \value{
 A ggplot2 object.
 }
 \description{
-PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't has negative values!
+PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values!
 }
 \author{
 Pol Castellano-Escuder

@@ -58,7 +58,7 @@ PomaDensity <- function(data,
       geom_density(alpha = 0.4) +
       xlab("Value") +
       ylab("Density") +
-      theme_minimal()
+      theme_bw()
 
   } else {
 
@@ -70,7 +70,7 @@ PomaDensity <- function(data,
         group_by(Group) %>%
         ggplot(aes(value, fill = variable)) +
         geom_density(alpha = 0.4) +
-        theme_minimal() +
+        theme_bw() +
         xlab("Value") +
         ylab("Density") +
         theme(legend.position = "none")
@@ -84,7 +84,7 @@ PomaDensity <- function(data,
         filter(variable %in% feature_name) %>%
         ggplot(aes(value, fill = variable)) +
         geom_density(alpha = 0.4) +
-        theme_minimal() +
+        theme_bw() +
         xlab("Value") +
         ylab("Density")
 
