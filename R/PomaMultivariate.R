@@ -195,7 +195,7 @@ PomaMultivariate <- function(data_multi,
 
     tune_splsda <- mixOmics::tune.splsda(X, Y, ncomp = components, validation = validation, folds = folds,
                                          progressBar = TRUE, dist = 'max.dist', measure = "BER",
-                                         test.keepX = list_keepX, nrepeat = nrepeat, cpus = 4)
+                                         test.keepX = list_keepX, nrepeat = nrepeat) # cpus = 4
 
     error <- tune_splsda$error.rate
     ncomp <- tune_splsda$choice.ncomp$ncomp # optimal number of components based on t-tests
