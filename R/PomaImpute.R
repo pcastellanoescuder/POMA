@@ -5,8 +5,8 @@
 #'
 #' @param data A MSnSet object. First `pData` column must be the suject group/type.
 #' @param ZerosAsNA Logical that indicates if the zeros in the data are missing values. Default is FALSE.
-#' @param RemoveNA Logical that indicates if those metabolites with more than selected cutoff missing values in each group have to be removed. Default is TRUE.
-#' @param cutoff Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these metabolite will not be removed.
+#' @param RemoveNA Logical that indicates if those features with more than selected cutoff missing values in each group have to be removed. Default is TRUE.
+#' @param cutoff Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these feature will not be removed.
 #' @param method Imputation method. Options are c("none", "half_min", "median", "mean", "min", "knn"). If "none", all missing values will be replaced by zero.
 #'
 #' @export

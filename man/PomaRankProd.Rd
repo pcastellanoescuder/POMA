@@ -24,7 +24,7 @@ PomaRankProd(
 
 \item{cutoff}{The pfp/pvalue threshold value used to select features.}
 
-\item{method}{If cutoff is provided, the method needs to be selected to identify metabolites. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.}
+\item{method}{If cutoff is provided, the method needs to be selected to identify features. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.}
 }
 \value{
 A list with all results for Rank Product analysis including tables and plots.

@@ -56,20 +56,20 @@ PomaUnivariate <- function(data_uni,
     p <- data.frame(pvalue = apply(FUN = stat, MARGIN = 2, X = e))
 
     p <- p %>%
-      rownames_to_column("metabolite") %>%
+      rownames_to_column("feature") %>%
       as_tibble() %>%
       mutate(pvalue_Adj = p.adjust(pvalue, method = adjust)) %>%
-      column_to_rownames("metabolite")
+      column_to_rownames("feature")
 
     G2 <- round(data.frame(Mean_G2 = apply(FUN = stat_G2, MARGIN = 2, X = e)), 3)
     G1 <- round(data.frame(Mean_G1 = apply(FUN = stat_G1, MARGIN = 2, X = e)), 3)
     means <- cbind(G1, G2)
 
     means <- means %>%
-      rownames_to_column("metabolite") %>%
+      rownames_to_column("feature") %>%
       mutate(Fold_Change_Ratio = as.numeric(round(Mean_G2/Mean_G1, 3)),
              Difference_Of_Means = as.numeric(round(Mean_G1 - Mean_G2, 3))) %>%
-      column_to_rownames("metabolite")
+      column_to_rownames("feature")
 
     p <- cbind(means, p)
 
@@ -84,10 +84,10 @@ PomaUnivariate <- function(data_uni,
       p2 <- data.frame(pvalue = apply(FUN = stat2, MARGIN = 2, X = e))
 
       p2 <- p2 %>%
-        rownames_to_column("metabolite") %>%
+        rownames_to_column("feature") %>%
         as_tibble() %>%
         mutate(pvalue_Adj = p.adjust(pvalue, method = adjust)) %>%
-        column_to_rownames("metabolite")
+        column_to_rownames("feature")
 
       return(p2)
 
@@ -133,10 +133,10 @@ PomaUnivariate <- function(data_uni,
     colnames(means) <- c("Mean_G1", "Mean_G2")
 
     means <- means %>%
-      rownames_to_column("metabolite") %>%
+      rownames_to_column("feature") %>%
       mutate(Fold_Change_Ratio = as.numeric(round(Mean_G2/Mean_G1, 3)),
              Difference_Of_Means = as.numeric(round(Mean_G1 - Mean_G2, 3))) %>%
-      column_to_rownames("metabolite")
+      column_to_rownames("feature")
 
     non_param_mann <- cbind(means, non_param_mann)
 
@@ -147,11 +147,11 @@ PomaUnivariate <- function(data_uni,
 
     non_param_kru <- data.frame(pvalue = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$p.value}))
     non_param_kru <- non_param_kru %>%
-      rownames_to_column("metabolite") %>%
+      rownames_to_column("feature") %>%
       as_tibble() %>%
       mutate(pvalue_Adj = p.adjust(pvalue, method = adjust),
              Kruskal_Wallis_Rank_Sum = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$statistic})) %>%
-      column_to_rownames("metabolite")
+      column_to_rownames("feature")
 
     return(non_param_kru)
   }

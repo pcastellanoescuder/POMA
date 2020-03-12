@@ -8,7 +8,7 @@
 #' @param logbase Numerical. Base for log transformation.
 #' @param paired Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.
 #' @param cutoff The pfp/pvalue threshold value used to select features.
-#' @param method If cutoff is provided, the method needs to be selected to identify metabolites. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.
+#' @param method If cutoff is provided, the method needs to be selected to identify features. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.
 #'
 #' @export
 #'
@@ -103,16 +103,16 @@ PomaRankProd <- function(data,
   plot1 <- ggplot(rp_plot, aes(x = rank1, y = pfp1)) +
     geom_point(size = 1.5, alpha=0.8) +
     theme_bw() +
-    xlab("Number of identified metabolites") +
+    xlab("Number of identified features") +
     ylab("Estimated PFP") +
-    ggtitle(paste0("Identification of Up-regulated metabolites under class ", class2))
+    ggtitle(paste0("Identification of Up-regulated features under class ", class2))
 
   plot2 <- ggplot(rp_plot, aes(x = rank2, y = pfp2)) +
     geom_point(size = 1.5, alpha=0.8) +
     theme_bw() +
-    xlab("Number of identified metabolites") +
+    xlab("Number of identified features") +
     ylab("Estimated PFP") +
-    ggtitle(paste0("Identification of Down-regulated metabolites under class ", class2))
+    ggtitle(paste0("Identification of Down-regulated features under class ", class2))
 
   return(list(upregulated = one,
               downregulated = two,
