@@ -16,7 +16,7 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom tibble rownames_to_column column_to_rownames as_tibble
-#' @importFrom dplyr select mutate
+#' @importFrom dplyr select mutate bind_rows
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
@@ -94,13 +94,24 @@ PomaUnivariate <- function(data_uni,
     }
     else{
 
-      covariate_uni <- merge(e, pData(data_uni), by = "row.names")
-      covariate_uni <- covariate_uni %>% select(-Row.names, -Group)
+      covariate_uni <- pData(data_uni)[, 2:ncol(pData(data_uni))]
+      covariate_uni <- sapply(covariate_uni, as.numeric)
 
-      stat3 <- function(x){anova(aov(x ~ Group))$"Pr(>F)"[1]}
-      p3 <- data.frame(apply(FUN = stat3, MARGIN = 2, X = covariate_uni))
+      model_names <- paste0(paste0(colnames(covariate_uni), collapse = " + "), " ~ Group")
 
-      colnames(p3) <- "pvalue"
+      LenCov <- ncol(covariate_uni)
+
+      covariate_uni <- as.data.frame(cbind(e, covariate_uni))
+
+      n <- ncol(covariate_uni) - LenCov
+      result <- vector(mode = "list", length = n)
+      for(i in 1:n) {
+        result[[i]] <- data.frame(pvalue = anova(aov(as.formula(paste(colnames(covariate_uni)[i], "+", model_names)),
+                                            data = covariate_uni))$"Pr(>F)"[1])
+      }
+
+      p3 <- bind_rows(result)
+      rownames(p3) <- colnames(e)
 
       p3 <- p3 %>%
         rownames_to_column %>%

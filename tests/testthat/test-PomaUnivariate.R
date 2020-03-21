@@ -7,7 +7,7 @@ test_that("PomaUnivariate works", {
   data("st000284")
 
   dims_for_ttest <- c(ncol(t(Biobase::exprs(st000284))), 6)
-  dims_for_aov <- c(ncol(t(Biobase::exprs(st000284))) + ncol(Biobase::pData(st000284)) -1, 2)
+  dims_for_aov <- c(ncol(t(Biobase::exprs(st000284))), 2)
 
   univ_ttest <- PomaUnivariate(st000284, method = "ttest", adjust = "fdr")
   univ_aov_cov <- PomaUnivariate(st000284, covariates = T, method = "anova", adjust = "fdr")
