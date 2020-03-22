@@ -97,7 +97,7 @@ PomaUnivariate <- function(data_uni,
       covariate_uni <- pData(data_uni)[, 2:ncol(pData(data_uni))]
       covariate_uni <- sapply(covariate_uni, as.numeric)
 
-      model_names <- paste0(paste0(colnames(covariate_uni), collapse = " + "), " ~ Group")
+      model_names <- paste0("Group + ", paste0(colnames(covariate_uni), collapse = " + "))
 
       LenCov <- ncol(covariate_uni)
 
@@ -106,7 +106,7 @@ PomaUnivariate <- function(data_uni,
       n <- ncol(covariate_uni) - LenCov
       result <- vector(mode = "list", length = n)
       for(i in 1:n) {
-        result[[i]] <- data.frame(pvalue = anova(aov(as.formula(paste(colnames(covariate_uni)[i], "+", model_names)),
+        result[[i]] <- data.frame(pvalue = anova(aov(as.formula(paste(colnames(covariate_uni)[i], "~", model_names)),
                                             data = covariate_uni))$"Pr(>F)"[1])
       }
 
