@@ -14,7 +14,7 @@ PomaUnivariate(
 )
 }
 \arguments{
-\item{data_uni}{A MSnSet object. First \code{pData} column must be the suject group/type.}
+\item{data_uni}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{pData} will be used as covariables. Default = FALSE.}
 

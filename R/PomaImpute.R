@@ -3,7 +3,7 @@
 #'
 #' @description PomaImpute() offers different methods to impute missing values in MS data.
 #'
-#' @param data A MSnSet object. First `pData` column must be the suject group/type.
+#' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param ZerosAsNA Logical that indicates if the zeros in the data are missing values. Default is FALSE.
 #' @param RemoveNA Logical that indicates if those features with more than selected cutoff missing values in each group have to be removed. Default is TRUE.
 #' @param cutoff Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these feature will not be removed.

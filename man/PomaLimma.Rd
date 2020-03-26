@@ -12,7 +12,7 @@ PomaLimma(
 )
 }
 \arguments{
-\item{data_limma}{A MSnSet object. First \code{pData} column must be the suject group/type.}
+\item{data_limma}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{contrast}{A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".}
 

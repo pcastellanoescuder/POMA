@@ -3,7 +3,7 @@
 #'
 #' @description PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values!
 #'
-#' @param data A MSnSet object. First `pData` column must be the suject group/type. Only for two group data!
+#' @param data A MSnSet object. First `pData` column must be the subject group/type. Only for two group data!
 #' @param pval Select a pvalue type to generate the volcano plot. Options c("raw", "adjusted").
 #' @param pval_cutoff Numeric. Define the pvalue cutoff (horizontal line).
 #' @param log2FC Numeric. Define the log2 fold change cutoff (vertical lines).

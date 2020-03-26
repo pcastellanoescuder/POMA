@@ -3,7 +3,7 @@
 #'
 #' @description PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 #'
-#' @param data A MSnSet object. First `pData` column must be the suject group/type.
+#' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param method Normalization method. Options are c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling","log_pareto").
 #' @param round Numeric. Number of decimal places (Default is 3).
 #'

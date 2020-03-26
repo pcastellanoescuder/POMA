@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rank Product/Rank Sum Analysis for Mass Spectrometry Data — PomaRankProd • POMA</title>
+<title>Logistic Regression Model Odds Ratios — PomaOddsRatio • POMA</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Rank Product/Rank Sum Analysis for Mass Spectrometry Data — PomaRankProd" />
-<meta property="og:description" content="PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity." />
+<meta property="og:title" content="Logistic Regression Model Odds Ratios — PomaOddsRatio" />
+<meta property="og:description" content="PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcone (group/type must be a binary factor) as a dependent variable." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -128,23 +128,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Rank Product/Rank Sum Analysis for Mass Spectrometry Data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/pcastellanoescuder/POMA/blob/master/R/PomaRankProd.R'><code>R/PomaRankProd.R</code></a></small>
-    <div class="hidden name"><code>PomaRankProd.Rd</code></div>
+    <h1>Logistic Regression Model Odds Ratios</h1>
+    <small class="dont-index">Source: <a href='https://github.com/pcastellanoescuder/POMA/blob/master/R/PomaOddsRatio.R'><code>R/PomaOddsRatio.R</code></a></small>
+    <div class="hidden name"><code>PomaOddsRatio.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.</p>
+    <p>PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcone (group/type must be a binary factor) as a dependent variable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaRankProd</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>logged</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>logbase</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"pfp"</span>, <span class='st'>"pval"</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>PomaOddsRatio</span>(<span class='no'>data</span>, <span class='kw'>feature_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,33 +147,14 @@
       <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
     </tr>
     <tr>
-      <th>logged</th>
-      <td><p>If "TRUE" (default) data have been previously log transformed.</p></td>
-    </tr>
-    <tr>
-      <th>logbase</th>
-      <td><p>Numerical. Base for log transformation.</p></td>
-    </tr>
-    <tr>
-      <th>paired</th>
-      <td><p>Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.</p></td>
-    </tr>
-    <tr>
-      <th>cutoff</th>
-      <td><p>The pfp/pvalue threshold value used to select features.</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>If cutoff is provided, the method needs to be selected to identify features. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.</p></td>
+      <th>feature_name</th>
+      <td><p>A vector with the name/s of feature/s to plot. If it's NULL (default), all variables will be plotted.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with all results for Rank Product analysis including tables and plots.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Breitling, R., Armengaud, P., Amtmann, A., and Herzyk, P.(2004) Rank Products: A simple, yet powerful, new method to detect differentially regulated genes in replicated microarray experiments, FEBS Letter, 57383-92</p>
+    <p>A data frame with the Odds Ratios for all features with their 95% confidence intervals and a ggplot2 object.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -188,7 +162,6 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#references">References</a></li>
     </ul>
 
     <h2>Author</h2>

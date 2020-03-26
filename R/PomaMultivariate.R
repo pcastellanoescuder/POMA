@@ -3,7 +3,7 @@
 #'
 #' @description PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 #'
-#' @param data_multi A MSnSet object. First `pData` column must be the suject group/type.
+#' @param data_multi A MSnSet object. First `pData` column must be the subject group/type.
 #' @param method A multivariate method. Options are c("pca", "plsda", "splsda").
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.

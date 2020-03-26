@@ -7,7 +7,7 @@
 PomaDensity(data, group = c("samples", "features"), feature_name = NULL)
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
+\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{group}{Groupping factor for the plot. Options are c("samples", "features"). Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.}
 

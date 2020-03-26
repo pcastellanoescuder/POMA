@@ -3,7 +3,7 @@
 #'
 #' @description PomaLasso() is an implementation of the lasso an ridge regression from `glmnet` package for binary outcomes.
 #'
-#' @param data A MSnSet object. First `pData` column must be the suject group/type.
+#' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param method Choose between lasso and ridge regression ("lasso", "ridge").
 #' @param nfolds Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.
 #' @param lambda A user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on `nlambda` and `lambda.min.ratio`. See `?glmnet::glmnet()`.

@@ -3,7 +3,7 @@
 #'
 #' @description PomaLimma() uses the classical limma package for MS data.
 #'
-#' @param data_limma A MSnSet object. First `pData` column must be the suject group/type.
+#' @param data_limma A MSnSet object. First `pData` column must be the subject group/type.
 #' @param contrast A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
 #' @param adjust Multiple comparisons correction method.

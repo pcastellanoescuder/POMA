@@ -3,7 +3,7 @@
 #'
 #' @description PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.
 #'
-#' @param data A MSnSet object. First `pData` column must be the suject group/type.
+#' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param logged If "TRUE" (default) data have been previously log transformed.
 #' @param logbase Numerical. Base for log transformation.
 #' @param paired Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.

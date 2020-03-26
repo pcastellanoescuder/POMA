@@ -7,7 +7,7 @@
 PomaLasso(data, method = c("lasso", "ridge"), nfolds = 10, lambda = NULL)
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
+\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{method}{Choose between lasso and ridge regression ("lasso", "ridge").}
 

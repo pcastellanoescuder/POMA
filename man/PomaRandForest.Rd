@@ -14,7 +14,7 @@ PomaRandForest(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
+\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{folds}{Number of observations that will be used as test dataset. For example, if folds = 3, 1/3 of dataset will be used as train dataset.}
 

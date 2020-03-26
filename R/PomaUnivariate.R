@@ -3,7 +3,7 @@
 #'
 #' @description PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 #'
-#' @param data_uni A MSnSet object. First `pData` column must be the suject group/type.
+#' @param data_uni A MSnSet object. First `pData` column must be the subject group/type.
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
 #' @param method Univariate statistical method. Options are c("ttest", "anova", "mann", "kruskal").
 #' @param paired Logical indicates if the data is paired or not.

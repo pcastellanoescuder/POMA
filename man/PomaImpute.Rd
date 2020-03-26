@@ -13,7 +13,7 @@ PomaImpute(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type.}
+\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{ZerosAsNA}{Logical that indicates if the zeros in the data are missing values. Default is FALSE.}
 

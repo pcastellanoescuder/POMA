@@ -15,7 +15,7 @@ PomaVolcano(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the suject group/type. Only for two group data!}
+\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type. Only for two group data!}
 
 \item{pval}{Select a pvalue type to generate the volcano plot. Options c("raw", "adjusted").}
 
