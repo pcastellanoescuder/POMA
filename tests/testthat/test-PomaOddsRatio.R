@@ -21,21 +21,47 @@ test_that("PomaOddsRatio works", {
 
   ##
 
+  expect_equal(nrow(df_a), nrow(df_b))
+  expect_false(nrow(df_c) == nrow(df_d))
+
+  ##
+
   e <- PomaOddsRatio(norm_none)$OddsRatioTable
   f <- PomaOddsRatio(norm_ls)$OddsRatioTable
   g <- PomaOddsRatio(norm_ls, feature_name = "methyl_succinate_131_0_113_0")$OddsRatioTable
   h <- PomaOddsRatio(norm_ls, feature_name = c("methyl_succinate_131_0_113_0", "linoleic_acid_277_1_259_0"))$OddsRatioTable
+  h_1 <- PomaOddsRatio(norm_ls, feature_name = c("methyl_succinate_131_0_113_0", "linoleic_acid_277_1_259_0"), covariates = TRUE)$OddsRatioTable
 
   ##
 
   expect_equal(dim(e), dim(f))
-  expect_equal(dim(f), dim(g))
-  expect_equal(dim(g), dim(h))
+  expect_false(nrow(f) == nrow(g))
+  expect_false(nrow(g) == nrow(h))
+  expect_false(nrow(h) == nrow(h_1))
 
   ##
 
-  expect_equal(nrow(df_a), nrow(df_b))
-  expect_false(nrow(df_c) == nrow(df_d))
+  i <- PomaOddsRatio(norm_ls, feature_name = NULL, covariates = TRUE)$OddsRatioTable
+  j <- PomaOddsRatio(norm_ls, feature_name = NULL, covariates = FALSE)$OddsRatioTable
+
+  ##
+
+  expect_false(nrow(i) == nrow(j))
+
+  ##
+
+  k <- PomaOddsRatio(norm_ls, feature_name = NULL)$OddsRatioPlot
+  l <- PomaOddsRatio(norm_ls, feature_name = NULL, showCI = FALSE)$OddsRatioPlot
+  m <- PomaOddsRatio(norm_ls, feature_name = NULL, showCI = FALSE, covariates = TRUE)$OddsRatioPlot
+
+  df_k <- layer_data(k)
+  df_l <- layer_data(l)
+  df_m <- layer_data(m)
+
+  ##
+
+  expect_equal(nrow(df_k), nrow(df_l))
+  expect_false(nrow(df_l) == nrow(df_m))
 
   ##
 
