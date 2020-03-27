@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Logistic Regression Model Odds Ratios — PomaOddsRatio" />
-<meta property="og:description" content="PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcone (group/type must be a binary factor) as a dependent variable." />
+<meta property="og:description" content="PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -134,10 +134,10 @@
     </div>
 
     <div class="ref-description">
-    <p>PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcone (group/type must be a binary factor) as a dependent variable.</p>
+    <p>PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaOddsRatio</span>(<span class='no'>data</span>, <span class='kw'>feature_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>PomaOddsRatio</span>(<span class='no'>data</span>, <span class='kw'>feature_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>showCI</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,7 +148,15 @@
     </tr>
     <tr>
       <th>feature_name</th>
-      <td><p>A vector with the name/s of feature/s to plot. If it's NULL (default), all variables will be plotted.</p></td>
+      <td><p>A vector with the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.</p></td>
+    </tr>
+    <tr>
+      <th>covariates</th>
+      <td><p>Logical that indicates if covariates will be included in logistic regression model. Default is <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>showCI</th>
+      <td><p>Logical that indicates if the 95% confidence intervals will be plotted. Default is <code>TRUE</code>.</p></td>
     </tr>
     </table>
 
