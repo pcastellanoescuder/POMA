@@ -2,8 +2,6 @@ context("PomaUnivariate")
 
 test_that("PomaUnivariate works", {
 
-  # library(tidyverse)
-
   data("st000284")
 
   dims_for_ttest <- c(ncol(t(Biobase::exprs(st000284))), 6)
@@ -31,6 +29,11 @@ test_that("PomaUnivariate works", {
 
   expect_equal(dim(univ_kruskal), dim(univ_kruskal2))
   expect_false(all(univ_kruskal == univ_kruskal2))
+
+  ####
+
+  Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
+  expect_error(PomaUnivariate(st000284, method = "anova", covariates = TRUE))
 
 })
 

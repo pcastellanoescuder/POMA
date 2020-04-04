@@ -29,6 +29,10 @@ PomaOddsRatio <- function(data, feature_name = NULL, covariates = FALSE, showCI 
     }
   }
 
+  if(isTRUE(covariates) & ncol(pData(data)) == 1){
+    stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
+  }
+
   e <- t(Biobase::exprs(data))
   pData <- Biobase::pData(data)
   colnames(pData)[1] <- "Group"

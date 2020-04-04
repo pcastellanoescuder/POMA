@@ -2,9 +2,6 @@ context("PomaLimma")
 
 test_that("PomaLimma works", {
 
-  # library(tidyverse)
-  # library(limma)
-
   data("st000284")
 
   a <- PomaLimma(st000284, contrast = "C-H", covariates = FALSE, adjust = "fdr")
@@ -20,7 +17,7 @@ test_that("PomaLimma works", {
   expect_warning(PomaLimma(st000284, contrast = "C-H", covariates = TRUE))
 
 
-  ##########
+  ####
 
   expect_equal(dim(a), dim(b))
   expect_equal(dim(b), dim(c))
@@ -30,6 +27,11 @@ test_that("PomaLimma works", {
   expect_false(all(a == c))
 
   expect_false(all(b == d))
+
+  ####
+
+  Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
+  expect_error(PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fdr"))
 
 })
 

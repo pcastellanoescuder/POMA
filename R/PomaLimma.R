@@ -31,6 +31,10 @@ PomaLimma <- function(data_limma,
     warning("adjust argument is empty! FDR will be used")
   }
 
+  if(isTRUE(covariates) & ncol(pData(data_limma)) == 1){
+    stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
+  }
+
   Biobase::varLabels(data_limma)[1] <- "Group"
   Group <- Biobase::pData(data_limma)$Group
   e <- Biobase::exprs(data_limma)

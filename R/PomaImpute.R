@@ -93,14 +93,13 @@ PomaImpute <- function(data,
     depurdata <- t(datai$data)
   }
 
-  data <- MSnbase::MSnSet(exprs = t(depurdata), pData = Biobase::pData(data))
-  data@processingData@processing <-
+  dataImputed <- MSnbase::MSnSet(exprs = t(depurdata), pData = Biobase::pData(data))
+  dataImputed@processingData@processing <-
     c(data@processingData@processing,
-      paste("Imputed (", method ,"): ",
-            date(), sep = ""))
-  data@processingData@cleaned <- TRUE
-  if (validObject(data))
-  return(data)
+      paste("Imputed (", method ,"): ", date(), sep = ""))
+  dataImputed@processingData@cleaned <- TRUE
+  if (validObject(dataImputed))
+  return(dataImputed)
 
   }
 

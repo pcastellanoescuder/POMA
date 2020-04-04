@@ -68,5 +68,10 @@ test_that("PomaOddsRatio works", {
   expect_error(PomaOddsRatio(norm_ls, feature_name = "hello"))
   expect_error(PomaOddsRatio(norm_ls, feature_name = "methyl_succinate_131_0_113_"))
 
+  ##
+
+  Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
+  expect_error(PomaOddsRatio(st000284, covariates = TRUE))
+
 })
 

@@ -19,6 +19,7 @@ test_that("PomaNorm works", {
   testnorm <- MSnbase::MSnSet(exprs = t(data), pData = Biobase::pData(st000284))
 
   newdata <- POMA::PomaImpute(testnorm, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 2)
+  newdata2 <- POMA::PomaNorm(newdata, method = "log_pareto")
 
   ####
 
@@ -38,6 +39,9 @@ test_that("PomaNorm works", {
 
   expect_error(PomaNorm(newdata, method = "log", round = 2))
   expect_error(PomaNorm(newdata))
+
+  expect_true(newdata2@processingData@cleaned)
+  expect_true(newdata2@processingData@normalised)
 
 })
 

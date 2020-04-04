@@ -65,14 +65,14 @@ PomaNorm <- function(data,
     normalized <- t(round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=T))/sqrt(sd(log10(x+1),na.rm=T))), round))
   }
 
-  data <- MSnbase::MSnSet(exprs = normalized, pData = Biobase::pData(data))
-  data@processingData@processing <-
+  dataNormalized <- MSnbase::MSnSet(exprs = normalized, pData = Biobase::pData(data))
+  dataNormalized@processingData@processing <-
     c(data@processingData@processing,
-      paste("Normalised (", method ,"): ",
-            date(), sep = ""))
-  data@processingData@normalised <- TRUE
-  if (validObject(data))
-    return(data)
+      paste("Normalised (", method ,"): ", date(), sep = ""))
+  dataNormalized@processingData@normalised <- TRUE
+  dataNormalized@processingData@cleaned <- data@processingData@cleaned
+  if (validObject(dataNormalized))
+    return(dataNormalized)
 
 }
 

@@ -104,5 +104,10 @@ test_that("PomaImpute works", {
   expect_error(PomaImpute(st000284, method = "non"))
   expect_warning(PomaImpute(st000284))
 
+  ####
+
+  expect_true(g@processingData@cleaned)
+  expect_true(h@processingData@cleaned)
+
 })
 

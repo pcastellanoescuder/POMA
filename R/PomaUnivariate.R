@@ -39,6 +39,10 @@ PomaUnivariate <- function(data_uni,
     warning("adjust argument is empty! FDR will be used")
   }
 
+  if(isTRUE(covariates) & ncol(pData(data_uni)) == 1){
+    stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
+  }
+
   Biobase::varLabels(data_uni)[1] <- "Group"
   Group <- Biobase::pData(data_uni)$Group
   e <- t(Biobase::exprs(data_uni))
