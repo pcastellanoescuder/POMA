@@ -35,6 +35,7 @@ PomaMSnSetClass <- function(target,
 
   target <- target %>% column_to_rownames("ID")
 
+  features <- as.matrix(features)
   rownames(features) <- rownames(target)
 
   data <- MSnbase::MSnSet(exprs = t(features), pData = target)

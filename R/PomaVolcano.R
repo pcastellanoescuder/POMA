@@ -31,6 +31,9 @@ PomaVolcano <- function(data,
                         labels = FALSE,
                         interactive = FALSE){
 
+  if (length(table(Biobase::pData(data)[1])) > 2) {
+    stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
+  }
   if (missing(pval)) {
     warning("pval argument is empty! Raw p-value will be used")
   }
