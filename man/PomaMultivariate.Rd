@@ -5,22 +5,22 @@
 \title{Multivariate Statistical Methods for Mass Spectrometry Data}
 \usage{
 PomaMultivariate(
-  data_multi,
-  method = c("pca", "plsda", "splsda"),
+  data,
+  method = "pca",
   components = 5,
   center = FALSE,
   scale = FALSE,
   ellipse = TRUE,
-  validation = c("Mfold", "loo"),
+  validation = "Mfold",
   folds = 5,
   nrepeat = 10,
   num_features = 10
 )
 }
 \arguments{
-\item{data_multi}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
-\item{method}{A multivariate method. Options are c("pca", "plsda", "splsda").}
+\item{method}{A multivariate method. Options are: "pca", "plsda" and "splsda".}
 
 \item{components}{Numeric. Number of components to include in the model. Default is 5.}
 
@@ -30,7 +30,7 @@ PomaMultivariate(
 
 \item{ellipse}{Logical that indicates whether a 95\%CI ellipse should be plotted in scores plot. Default is TRUE.}
 
-\item{validation}{(Only for "plsda" and "splsda" methods) Validation method. Options are c("Mfold", "loo").}
+\item{validation}{(Only for "plsda" and "splsda" methods) Validation method. Options are "Mfold" and "loo".}
 
 \item{folds}{(Only for "plsda" and "splsda" methods) Numeric. Number of folds for Mfold validation method (default is 5). If the validation method is loo, this value will become to 1.}
 

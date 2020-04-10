@@ -2,23 +2,18 @@
 % Please edit documentation in R/PomaLimma.R
 \name{PomaLimma}
 \alias{PomaLimma}
-\title{Implementation of Limma R Package in Mass Spectrometry Data}
+\title{Implementation of limma R Package on Mass Spectrometry Data}
 \usage{
-PomaLimma(
-  data_limma,
-  contrast = NULL,
-  covariates = FALSE,
-  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")
-)
+PomaLimma(data, contrast = NULL, covariates = FALSE, adjust = "fdr")
 }
 \arguments{
-\item{data_limma}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{contrast}{A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".}
 
 \item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{pData} will be used as covariables. Default = FALSE.}
 
-\item{adjust}{Multiple comparisons correction method.}
+\item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 }
 \value{
 A data frame with limma results.

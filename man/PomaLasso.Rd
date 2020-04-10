@@ -4,7 +4,7 @@
 \alias{PomaLasso}
 \title{Lasso and Ridge Regularized Generalized Linear Models for Binary Outcomes}
 \usage{
-PomaLasso(data, method = c("lasso", "ridge"), nfolds = 10, lambda = NULL)
+PomaLasso(data, method = "lasso", nfolds = 10, lambda = NULL)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}

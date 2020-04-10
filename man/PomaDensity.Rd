@@ -4,12 +4,12 @@
 \alias{PomaDensity}
 \title{Distribution Plot}
 \usage{
-PomaDensity(data, group = c("samples", "features"), feature_name = NULL)
+PomaDensity(data, group = "samples", feature_name = NULL)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
-\item{group}{Groupping factor for the plot. Options are c("samples", "features"). Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.}
+\item{group}{Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.}
 
 \item{feature_name}{A vector with the name/s of feature/s to plot. If it's NULL (default) a density plot of all variables will be created.}
 }

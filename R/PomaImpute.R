@@ -7,7 +7,7 @@
 #' @param ZerosAsNA Logical that indicates if the zeros in the data are missing values. Default is FALSE.
 #' @param RemoveNA Logical that indicates if those features with more than selected cutoff missing values in each group have to be removed. Default is TRUE.
 #' @param cutoff Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these feature will not be removed.
-#' @param method Imputation method. Options are c("none", "half_min", "median", "mean", "min", "knn"). If "none", all missing values will be replaced by zero.
+#' @param method Imputation method. Options are: "none", "half_min", "median", "mean", "min" and "knn". If "none", all missing values will be replaced by zero.
 #'
 #' @export
 #'
@@ -24,13 +24,12 @@ PomaImpute <- function(data,
                        ZerosAsNA = FALSE,
                        RemoveNA = TRUE,
                        cutoff = 20,
-                       method = c("none", "half_min", "median", "mean", "min", "knn")){
+                       method = "knn"){
 
   if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
   if (missing(method)) {
-    method <- "knn"
     warning("method argument is empty! KNN will be used")
   }
 

@@ -21,7 +21,10 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase pData exprs featureNames
-PomaOddsRatio <- function(data, feature_name = NULL, covariates = FALSE, showCI = TRUE){
+PomaOddsRatio <- function(data,
+                          feature_name = NULL,
+                          covariates = FALSE,
+                          showCI = TRUE){
 
   if (!is.null(feature_name)) {
     if(!(feature_name %in% Biobase::featureNames(data))){

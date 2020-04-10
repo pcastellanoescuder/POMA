@@ -9,7 +9,7 @@ PomaImpute(
   ZerosAsNA = FALSE,
   RemoveNA = TRUE,
   cutoff = 20,
-  method = c("none", "half_min", "median", "mean", "min", "knn")
+  method = "knn"
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ PomaImpute(
 
 \item{cutoff}{Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these feature will not be removed.}
 
-\item{method}{Imputation method. Options are c("none", "half_min", "median", "mean", "min", "knn"). If "none", all missing values will be replaced by zero.}
+\item{method}{Imputation method. Options are: "none", "half_min", "median", "mean", "min" and "knn". If "none", all missing values will be replaced by zero.}
 }
 \value{
 A MSnSet object with cleaned data.

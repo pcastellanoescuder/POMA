@@ -3,13 +3,13 @@
 #'
 #' @description PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 #'
-#' @param data_multi A MSnSet object. First `pData` column must be the subject group/type.
-#' @param method A multivariate method. Options are c("pca", "plsda", "splsda").
+#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param method A multivariate method. Options are: "pca", "plsda" and "splsda".
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.
 #' @param scale Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.
 #' @param ellipse Logical that indicates whether a 95%CI ellipse should be plotted in scores plot. Default is TRUE.
-#' @param validation (Only for "plsda" and "splsda" methods) Validation method. Options are c("Mfold", "loo").
+#' @param validation (Only for "plsda" and "splsda" methods) Validation method. Options are "Mfold" and "loo".
 #' @param folds (Only for "plsda" and "splsda" methods) Numeric. Number of folds for Mfold validation method (default is 5). If the validation method is loo, this value will become to 1.
 #' @param nrepeat (Only for "plsda" and "splsda" methods) Numeric. Number of iterations for the validation method selected.
 #' @param num_features (Only for "splsda" method) Numeric. Number of variables selected to discriminate groups.
@@ -28,13 +28,13 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
-PomaMultivariate <- function(data_multi,
-                             method = c("pca", "plsda", "splsda"),
+PomaMultivariate <- function(data,
+                             method = "pca",
                              components = 5,
                              center = FALSE,
                              scale = FALSE,
                              ellipse = TRUE,
-                             validation = c("Mfold", "loo"),
+                             validation = "Mfold",
                              folds = 5,
                              nrepeat = 10,
                              num_features = 10){
@@ -55,14 +55,14 @@ PomaMultivariate <- function(data_multi,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect validation method! Please choose 'Mfold' or 'loo'"))
   }
 
-  Biobase::varLabels(data_multi)[1] <- "Group"
+  Biobase::varLabels(data)[1] <- "Group"
 
-  df <- t(Biobase::exprs(data_multi))
+  df <- t(Biobase::exprs(data))
 
   if(method == "pca"){
 
     X <- as.matrix(df)
-    Y <- as.factor(Biobase::pData(data_multi)$Group)
+    Y <- as.factor(Biobase::pData(data)$Group)
     pca_res <- mixOmics::pca(X, ncomp = components, center = center, scale = scale)
 
     PCi <- data.frame(pca_res$x, Groups = Y)
@@ -121,7 +121,7 @@ PomaMultivariate <- function(data_multi,
   else if (method == "plsda"){
 
     X <- as.matrix(df)
-    Y <- as.factor(Biobase::pData(data_multi)$Group)
+    Y <- as.factor(Biobase::pData(data)$Group)
 
     plsda_res <- mixOmics::plsda(X, Y, ncomp = components)
 
@@ -189,7 +189,7 @@ PomaMultivariate <- function(data_multi,
   else if (method == "splsda"){
 
     X <- as.matrix(df)
-    Y <- as.factor(Biobase::pData(data_multi)$Group)
+    Y <- as.factor(Biobase::pData(data)$Group)
 
     list_keepX <- c(1:num_features)
 

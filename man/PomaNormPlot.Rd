@@ -4,12 +4,12 @@
 \alias{PomaNormPlot}
 \title{Normalization Plot}
 \usage{
-PomaNormPlot(data, group = c("samples", "features"), jitter = TRUE)
+PomaNormPlot(data, group = "samples", jitter = TRUE)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
-\item{group}{Groupping factor for the plot. Options are c("samples", "features"). Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.}
+\item{group}{Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.}
 
 \item{jitter}{Logical. If it's TRUE (default), the boxplot will show all points.}
 }

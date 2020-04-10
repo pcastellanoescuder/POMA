@@ -2,9 +2,6 @@ context("PomaVolcano")
 
 test_that("PomaVolcano works", {
 
-  # library(tidyverse)
-  # library(ggrepel)
-
   data("st000284")
 
   a <- PomaVolcano(st000284)

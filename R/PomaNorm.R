@@ -4,7 +4,7 @@
 #' @description PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 #'
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
-#' @param method Normalization method. Options are c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling","log_pareto").
+#' @param method Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".
 #' @param round Numeric. Number of decimal places (Default is 3).
 #'
 #' @export
@@ -17,15 +17,14 @@
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
 PomaNorm <- function(data,
-                     method = c("none", "auto_scaling", "level_scaling", "log_scaling",
-                                "log_transformation", "vast_scaling","log_pareto"),
+                     method = "log_pareto",
                      round = 3){
 
   if (missing(method)) {
     stop(crayon::red(clisymbols::symbol$cross, "Select a method!"))
   }
   if (!(method %in% c("none", "auto_scaling", "level_scaling", "log_scaling",
-                      "log_transformation", "vast_scaling","log_pareto"))) {
+                      "log_transformation", "vast_scaling", "log_pareto"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
 

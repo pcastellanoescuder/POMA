@@ -1,12 +1,12 @@
 
-#' Implementation of Limma R Package in Mass Spectrometry Data
+#' Implementation of limma R Package on Mass Spectrometry Data
 #'
 #' @description PomaLimma() uses the classical limma package for MS data.
 #'
-#' @param data_limma A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param contrast A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
-#' @param adjust Multiple comparisons correction method.
+#' @param adjust Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
 #'
 #' @export
 #'
@@ -18,26 +18,25 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
-PomaLimma <- function(data_limma,
+PomaLimma <- function(data,
                       contrast = NULL,
                       covariates = FALSE,
-                      adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")){
+                      adjust = "fdr"){
 
   if (is.null(contrast)) {
     stop(crayon::red(clisymbols::symbol$cross, "Contrast argument is empty! You have to specify a contrast."))
   }
   if (missing(adjust)) {
-    adjust <- "fdr"
     warning("adjust argument is empty! FDR will be used")
   }
 
-  if(isTRUE(covariates) & ncol(pData(data_limma)) == 1){
+  if(isTRUE(covariates) & ncol(pData(data)) == 1){
     stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
   }
 
-  Biobase::varLabels(data_limma)[1] <- "Group"
-  Group <- Biobase::pData(data_limma)$Group
-  e <- Biobase::exprs(data_limma)
+  Biobase::varLabels(data)[1] <- "Group"
+  Group <- Biobase::pData(data)$Group
+  e <- Biobase::exprs(data)
 
   contrasts <- levels(as.factor(Group))
   fac1 <- as.factor(Group)
@@ -65,7 +64,7 @@ PomaLimma <- function(data_limma,
 
   else {
 
-    covariates <- pData(data_limma)[, 2:ncol(pData(data_limma))]
+    covariates <- pData(data)[, 2:ncol(pData(data))]
 
     form <- as.formula(noquote(paste("~ 0 + fac1 + ", paste0(colnames(covariates), collapse = " + ", sep=""), sep = "")))
 

@@ -3,12 +3,12 @@
 #'
 #' @description PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 #'
-#' @param data_uni A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
-#' @param method Univariate statistical method. Options are c("ttest", "anova", "mann", "kruskal").
+#' @param method Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".
 #' @param paired Logical indicates if the data is paired or not.
 #' @param var_equal Logical indicates if the data variance is equal or not.
-#' @param adjust Multiple comparisons correction method.
+#' @param adjust Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
 #'
 #' @export
 #'
@@ -21,12 +21,12 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
-PomaUnivariate <- function(data_uni,
+PomaUnivariate <- function(data,
                            covariates = FALSE,
-                           method = c("ttest", "anova", "mann", "kruskal"),
+                           method = "ttest",
                            paired = FALSE,
                            var_equal = FALSE,
-                           adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")){
+                           adjust = "fdr"){
 
   if (missing(method)) {
     stop(crayon::red(clisymbols::symbol$cross, "Select a method!"))
@@ -35,17 +35,16 @@ PomaUnivariate <- function(data_uni,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
   if (missing(adjust)) {
-    adjust <- "fdr"
     warning("adjust argument is empty! FDR will be used")
   }
 
-  if(isTRUE(covariates) & ncol(pData(data_uni)) == 1){
+  if(isTRUE(covariates) & ncol(pData(data)) == 1){
     stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
   }
 
-  Biobase::varLabels(data_uni)[1] <- "Group"
-  Group <- Biobase::pData(data_uni)$Group
-  e <- t(Biobase::exprs(data_uni))
+  Biobase::varLabels(data)[1] <- "Group"
+  Group <- Biobase::pData(data)$Group
+  e <- t(Biobase::exprs(data))
 
   if(method == "ttest"){
 
@@ -98,7 +97,7 @@ PomaUnivariate <- function(data_uni,
     }
     else{
 
-      covariate_uni <- pData(data_uni)[, 2:ncol(pData(data_uni))]
+      covariate_uni <- pData(data)[, 2:ncol(pData(data))]
       covariate_uni <- sapply(covariate_uni, as.numeric)
 
       model_names <- paste0("Group + ", paste0(colnames(covariate_uni), collapse = " + "))

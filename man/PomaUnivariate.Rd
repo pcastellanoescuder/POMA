@@ -5,26 +5,26 @@
 \title{Univariate Statistical Methods for Mass Spectrometry Data}
 \usage{
 PomaUnivariate(
-  data_uni,
+  data,
   covariates = FALSE,
-  method = c("ttest", "anova", "mann", "kruskal"),
+  method = "ttest",
   paired = FALSE,
   var_equal = FALSE,
-  adjust = c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY")
+  adjust = "fdr"
 )
 }
 \arguments{
-\item{data_uni}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{pData} will be used as covariables. Default = FALSE.}
 
-\item{method}{Univariate statistical method. Options are c("ttest", "anova", "mann", "kruskal").}
+\item{method}{Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".}
 
 \item{paired}{Logical indicates if the data is paired or not.}
 
 \item{var_equal}{Logical indicates if the data variance is equal or not.}
 
-\item{adjust}{Multiple comparisons correction method.}
+\item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 }
 \value{
 A data frame with results.

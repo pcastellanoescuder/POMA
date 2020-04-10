@@ -6,7 +6,7 @@
 \usage{
 PomaVolcano(
   data,
-  pval = c("raw", "adjusted"),
+  pval = "raw",
   pval_cutoff = 0.05,
   log2FC = 0.6,
   xlim = 2,
@@ -17,7 +17,7 @@ PomaVolcano(
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type. Only for two group data!}
 
-\item{pval}{Select a pvalue type to generate the volcano plot. Options c("raw", "adjusted").}
+\item{pval}{Select a pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".}
 
 \item{pval_cutoff}{Numeric. Define the pvalue cutoff (horizontal line).}
 

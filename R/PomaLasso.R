@@ -21,12 +21,11 @@
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
 PomaLasso <- function(data,
-                      method = c("lasso", "ridge"),
+                      method = "lasso",
                       nfolds = 10,
                       lambda = NULL){
 
   if (missing(method)) {
-    method <- "lasso"
     warning("method argument is empty! lasso will be used")
   }
   if (!(method %in% c("lasso", "ridge"))) {

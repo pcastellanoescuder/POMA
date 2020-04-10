@@ -26,16 +26,15 @@ PomaRankProd <- function(data,
                          logbase = 2,
                          paired = NA,
                          cutoff = 0.05,
-                         method = c("pfp", "pval")){
+                         method = "pfp"){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "Select some data!"))
+    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
   if (!(method %in% c("pfp", "pval"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
   if (missing(method)) {
-    method <- "pfp"
     warning("method argument is empty! pfp method will be used")
   }
 

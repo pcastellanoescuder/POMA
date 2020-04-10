@@ -10,7 +10,7 @@ PomaRankProd(
   logbase = 2,
   paired = NA,
   cutoff = 0.05,
-  method = c("pfp", "pval")
+  method = "pfp"
 )
 }
 \arguments{

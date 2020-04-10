@@ -11,18 +11,34 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom MSnbase MSnSet
-PomaMSnSetClass <- function(target, features){
+#' @importFrom tibble column_to_rownames
+#' @importFrom magrittr %>%
+PomaMSnSetClass <- function(target,
+                            features){
+
+  if(nrow(target) != nrow(features)){
+    stop(crayon::red(clisymbols::symbol$cross, "Different number of sambles between target and features!"))
+  }
+  if(missing(target)){
+    stop(crayon::red(clisymbols::symbol$cross, "target required!"))
+  }
+  if(missing(features)){
+    stop(crayon::red(clisymbols::symbol$cross, "features required!"))
+  }
+  if(!is.data.frame(target)){
+    stop(crayon::red(clisymbols::symbol$cross, "target must be a data frame!"))
+  }
 
   target <- as.data.frame(target)
   colnames(target)[1] <- "ID"
-  rownames(target) <- target$ID
-  target$ID <- NULL
+
+  target <- target %>% column_to_rownames("ID")
 
   rownames(features) <- rownames(target)
 
   data <- MSnbase::MSnSet(exprs = t(features), pData = target)
 
-  if (validObject(data))
+  if(validObject(data))
     return(data)
 
 }
