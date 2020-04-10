@@ -138,19 +138,19 @@
     </div>
 
     <pre class="usage"><span class='fu'>PomaUnivariate</span>(
-  <span class='no'>data_uni</span>,
+  <span class='no'>data</span>,
   <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"ttest"</span>, <span class='st'>"anova"</span>, <span class='st'>"mann"</span>, <span class='st'>"kruskal"</span>),
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ttest"</span>,
   <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>var_equal</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fdr"</span>, <span class='st'>"holm"</span>, <span class='st'>"hochberg"</span>, <span class='st'>"hommel"</span>, <span class='st'>"bonferroni"</span>, <span class='st'>"BH"</span>, <span class='st'>"BY"</span>)
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data_uni</th>
+      <th>data</th>
       <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
     </tr>
     <tr>
@@ -159,7 +159,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Univariate statistical method. Options are c("ttest", "anova", "mann", "kruskal").</p></td>
+      <td><p>Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".</p></td>
     </tr>
     <tr>
       <th>paired</th>
@@ -171,7 +171,7 @@
     </tr>
     <tr>
       <th>adjust</th>
-      <td><p>Multiple comparisons correction method.</p></td>
+      <td><p>Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".</p></td>
     </tr>
     </table>
 

@@ -142,7 +142,7 @@
   <span class='kw'>ZerosAsNA</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>RemoveNA</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"half_min"</span>, <span class='st'>"median"</span>, <span class='st'>"mean"</span>, <span class='st'>"min"</span>, <span class='st'>"knn"</span>)
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"knn"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -166,7 +166,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Imputation method. Options are c("none", "half_min", "median", "mean", "min", "knn"). If "none", all missing values will be replaced by zero.</p></td>
+      <td><p>Imputation method. Options are: "none", "half_min", "median", "mean", "min" and "knn". If "none", all missing values will be replaced by zero.</p></td>
     </tr>
     </table>
 

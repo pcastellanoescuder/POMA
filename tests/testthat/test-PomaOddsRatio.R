@@ -67,6 +67,7 @@ test_that("PomaOddsRatio works", {
 
   expect_error(PomaOddsRatio(norm_ls, feature_name = "hello"))
   expect_error(PomaOddsRatio(norm_ls, feature_name = "methyl_succinate_131_0_113_"))
+  expect_error(PomaOddsRatio(norm_ls, feature_name = c("methyl_succinate_131_0_113_", "linoleic_acid_277_1_259_0")))
 
   ##
 

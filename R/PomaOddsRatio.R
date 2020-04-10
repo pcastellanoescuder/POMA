@@ -15,7 +15,7 @@
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
-#' @importFrom dplyr mutate rename desc arrange bind_cols
+#' @importFrom dplyr mutate rename desc arrange bind_cols mutate_at vars
 #' @importFrom tidyr drop_na
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
@@ -27,22 +27,24 @@ PomaOddsRatio <- function(data,
                           showCI = TRUE){
 
   if (!is.null(feature_name)) {
-    if(!(feature_name %in% Biobase::featureNames(data))){
-      stop(crayon::red(clisymbols::symbol$cross, "Feature name not found!"))
+    if(!isTRUE(all(feature_name %in% Biobase::featureNames(data)))){
+      stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
     }
   }
-
   if(isTRUE(covariates) & ncol(pData(data)) == 1){
     stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
   }
 
-  e <- t(Biobase::exprs(data))
+  e <- data.frame(t(Biobase::exprs(data)))
   pData <- Biobase::pData(data)
   colnames(pData)[1] <- "Group"
 
   if(!is.null(feature_name)){
     e <- as.data.frame(e[, colnames(e) %in% feature_name])
-    colnames(e) <- feature_name
+
+    if(length(feature_name == 1)){
+      colnames(e) <- feature_name 
+    }
 
   } else {
     e <- as.data.frame(e)
@@ -56,10 +58,10 @@ PomaOddsRatio <- function(data,
     data <- bind_cols(Group = as.factor(pData$Group), e)
   }
 
-  data <- data %>% mutate(Group = as.factor(ifelse(Group == levels(data$Group)[1], 0, 1)))
-
-  data[,2:ncol(data)] <- as.data.frame(apply(data[,2:ncol(data)], 2, function(x){as.numeric(as.character(x))}))
-
+  data <- data %>% 
+    mutate(Group = as.factor(ifelse(Group == levels(data$Group)[1], 0, 1))) %>% 
+    mutate_at(vars(-Group), as.numeric)
+    
   logit_model <- glm(Group ~ 0 + ., family = binomial(link = 'logit'), data = data)
 
   odds <- data.frame(exp(cbind(OddsRatio = coef(logit_model), confint.default(logit_model, level = 0.95)))) %>%

@@ -1,7 +1,7 @@
 
 #' Convert data frames to an MSnSet Object
 #'
-#' @param target Metadata variables structured in columns. Sample ID must be the first column and group/type of study must be the second column.
+#' @param target Metadata variables structured in columns. Sample ID must be the first column and group/type/treatment of the study must be the second column.
 #' @param features Table of features. Each feature in one column.
 #'
 #' @export
@@ -11,7 +11,7 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom MSnbase MSnSet
-#' @importFrom tibble column_to_rownames
+#' @importFrom tibble column_to_rownames remove_rownames
 #' @importFrom magrittr %>%
 PomaMSnSetClass <- function(target,
                             features){
@@ -30,6 +30,7 @@ PomaMSnSetClass <- function(target,
   }
 
   target <- as.data.frame(target)
+  target <- remove_rownames(target)
   colnames(target)[1] <- "ID"
 
   target <- target %>% column_to_rownames("ID")

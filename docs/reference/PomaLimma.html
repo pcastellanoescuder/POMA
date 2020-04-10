@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Implementation of Limma R Package in Mass Spectrometry Data — PomaLimma • POMA</title>
+<title>Implementation of limma R Package on Mass Spectrometry Data — PomaLimma • POMA</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Implementation of Limma R Package in Mass Spectrometry Data — PomaLimma" />
+<meta property="og:title" content="Implementation of limma R Package on Mass Spectrometry Data — PomaLimma" />
 <meta property="og:description" content="PomaLimma() uses the classical limma package for MS data." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -128,7 +128,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Implementation of Limma R Package in Mass Spectrometry Data</h1>
+    <h1>Implementation of limma R Package on Mass Spectrometry Data</h1>
     <small class="dont-index">Source: <a href='https://github.com/pcastellanoescuder/POMA/blob/master/R/PomaLimma.R'><code>R/PomaLimma.R</code></a></small>
     <div class="hidden name"><code>PomaLimma.Rd</code></div>
     </div>
@@ -137,18 +137,13 @@
     <p>PomaLimma() uses the classical limma package for MS data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaLimma</span>(
-  <span class='no'>data_limma</span>,
-  <span class='kw'>contrast</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"fdr"</span>, <span class='st'>"holm"</span>, <span class='st'>"hochberg"</span>, <span class='st'>"hommel"</span>, <span class='st'>"bonferroni"</span>, <span class='st'>"BH"</span>, <span class='st'>"BY"</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>PomaLimma</span>(<span class='no'>data</span>, <span class='kw'>contrast</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data_limma</th>
+      <th>data</th>
       <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
     </tr>
     <tr>
@@ -161,7 +156,7 @@
     </tr>
     <tr>
       <th>adjust</th>
-      <td><p>Multiple comparisons correction method.</p></td>
+      <td><p>Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".</p></td>
     </tr>
     </table>
 

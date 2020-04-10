@@ -137,12 +137,7 @@
     <p>PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaNorm</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"none"</span>, <span class='st'>"auto_scaling"</span>, <span class='st'>"level_scaling"</span>, <span class='st'>"log_scaling"</span>,
-    <span class='st'>"log_transformation"</span>, <span class='st'>"vast_scaling"</span>, <span class='st'>"log_pareto"</span>),
-  <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>3</span>
-)</pre>
+    <pre class="usage"><span class='fu'>PomaNorm</span>(<span class='no'>data</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"log_pareto"</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,7 +148,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Normalization method. Options are c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling","log_pareto").</p></td>
+      <td><p>Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".</p></td>
     </tr>
     <tr>
       <th>round</th>
