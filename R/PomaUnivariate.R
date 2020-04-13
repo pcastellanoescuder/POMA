@@ -6,8 +6,8 @@
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
 #' @param method Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".
-#' @param paired Logical indicates if the data is paired or not.
-#' @param var_equal Logical indicates if the data variance is equal or not.
+#' @param paired Logical that indicates if the data is paired or not.
+#' @param var_equal Logical that indicates if the data variance is equal or not.
 #' @param adjust Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
 #'
 #' @export

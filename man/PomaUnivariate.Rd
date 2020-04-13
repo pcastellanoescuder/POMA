@@ -20,9 +20,9 @@ PomaUnivariate(
 
 \item{method}{Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".}
 
-\item{paired}{Logical indicates if the data is paired or not.}
+\item{paired}{Logical that indicates if the data is paired or not.}
 
-\item{var_equal}{Logical indicates if the data variance is equal or not.}
+\item{var_equal}{Logical that indicates if the data variance is equal or not.}
 
 \item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 }

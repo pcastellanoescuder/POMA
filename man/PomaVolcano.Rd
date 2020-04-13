@@ -11,6 +11,8 @@ PomaVolcano(
   log2FC = 0.6,
   xlim = 2,
   labels = FALSE,
+  paired = FALSE,
+  var_equal = FALSE,
   interactive = FALSE
 )
 }
@@ -26,6 +28,10 @@ PomaVolcano(
 \item{xlim}{Numeric. Define the limits for x axis.}
 
 \item{labels}{Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.}
+
+\item{paired}{Logical that indicates if the data is paired or not.}
+
+\item{var_equal}{Logical that indicates if the data variance is equal or not.}
 
 \item{interactive}{Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.}
 }

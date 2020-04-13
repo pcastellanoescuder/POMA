@@ -92,7 +92,7 @@
       <h1>POMA Workflow Overview</h1>
                         <h4 class="author">Pol Castellano-Escuder</h4>
             
-            <h4 class="date">2020-04-10</h4>
+            <h4 class="date">2020-04-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pcastellanoescuder/POMA/blob/master/vignettes/POMA-demo.Rmd"><code>vignettes/POMA-demo.Rmd</code></a></small>
       <div class="hidden name"><code>POMA-demo.Rmd</code></div>
@@ -153,7 +153,7 @@
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Fri Apr 10 14:03:57 2020 </span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Mon Apr 13 11:39:07 2020 </span></a>
 <a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with imputation information.</em></p>
 </div>
@@ -175,21 +175,21 @@
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Imputed (knn): Fri Apr 10 14:03:57 2020 </span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## Normalised (log_pareto): Fri Apr 10 14:03:57 2020 </span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Imputed (knn): Mon Apr 13 11:39:07 2020 </span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## Normalised (log_pareto): Mon Apr 13 11:39:07 2020 </span></a>
 <a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with normalization information.</em></p>
 <div id="normalization-effect" class="section level3">
 <h3 class="hasAnchor">
 <a href="#normalization-effect" class="anchor"></a>Normalization effect</h3>
 <p>Sometimes, we could be interested in <em>how the normalization process has affected our data</em>?</p>
-<p>To answer this question, <strong>POMA</strong> offers two exploratory functions, <code>PomaNormPlot</code> and <code>PomaDensity</code>, that can help to understand the normalization process.</p>
-<p><code>PomaNormPlot</code> generates boxplots for all samples or features (depending on the group factor) of an <code>MSnSet</code> object. Here, we can compare objects between and after normalization step.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(imputed, <span class="dt">group =</span> <span class="st">"samples"</span>, <span class="dt">jitter =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<p>To answer this question, <strong>POMA</strong> offers two exploratory functions, <code>PomaBoxplots</code> and <code>PomaDensity</code>, that can help to understand the normalization process.</p>
+<p><code>PomaBoxplots</code> generates boxplots for all samples or features (depending on the group factor) of an <code>MSnSet</code> object. Here, we can compare objects between and after normalization step.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(imputed, <span class="dt">group =</span> <span class="st">"samples"</span>, <span class="dt">jitter =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Not Normalized"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>) <span class="co"># data before normalization</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">p2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNormPlot.html">PomaNormPlot</a></span>(normalized, <span class="dt">group =</span> <span class="st">"samples"</span>, <span class="dt">jitter =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">p2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(normalized, <span class="dt">group =</span> <span class="st">"samples"</span>, <span class="dt">jitter =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Normalized"</span>) <span class="co"># data after normalization</span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8">p1 <span class="op">+</span><span class="st"> </span>p2</a></code></pre></div>

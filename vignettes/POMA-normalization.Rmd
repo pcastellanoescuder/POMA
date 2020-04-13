@@ -86,42 +86,42 @@ dim(Biobase::exprs(log_pareto))
 ## Normalization effect on samples
 
 ```{r, fig.height = 8, fig.width = 10, message = FALSE, comment = FALSE}
-p1 <- PomaNormPlot(none, group = "samples", jitter = FALSE) +
+p1 <- PomaBoxplots(none, group = "samples", jitter = FALSE) +
   ggtitle("Not Normalized") +
   ylab("") +
   theme(axis.text.x = element_blank())
 
-p2 <- PomaNormPlot(auto_scaling, group = "samples", jitter = FALSE) +
+p2 <- PomaBoxplots(auto_scaling, group = "samples", jitter = FALSE) +
   ggtitle("Auto Scaling") +
   ylab("") +
   theme(legend.position = "none",
         axis.text.x = element_blank())
 
-p3 <- PomaNormPlot(level_scaling, group = "samples", jitter = FALSE) +
+p3 <- PomaBoxplots(level_scaling, group = "samples", jitter = FALSE) +
   ggtitle("Level Scaling") +
   ylab("") +
   theme(legend.position = "none",
         axis.text.x = element_blank())
 
-p4 <- PomaNormPlot(log_scaling, group = "samples", jitter = FALSE) +
+p4 <- PomaBoxplots(log_scaling, group = "samples", jitter = FALSE) +
   ggtitle("Log Scaling") +
   ylab("") +
   theme(legend.position = "none",
         axis.text.x = element_blank())
 
-p5 <- PomaNormPlot(log_transformation, group = "samples", jitter = FALSE) +
+p5 <- PomaBoxplots(log_transformation, group = "samples", jitter = FALSE) +
   ggtitle("Log Transformation") +
   ylab("") +
   theme(legend.position = "none",
         axis.text.x = element_blank())
 
-p6 <- PomaNormPlot(vast_scaling, group = "samples", jitter = FALSE) +
+p6 <- PomaBoxplots(vast_scaling, group = "samples", jitter = FALSE) +
   ggtitle("Vast Scaling") +
   ylab("") +
   theme(legend.position = "none",
         axis.text.x = element_blank())
 
-p7 <- PomaNormPlot(log_pareto, group = "samples", jitter = FALSE) +
+p7 <- PomaBoxplots(log_pareto, group = "samples", jitter = FALSE) +
   ggtitle("Log Pareto") +
   ylab("") +
   theme(legend.position = "none",

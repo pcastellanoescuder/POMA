@@ -87,16 +87,16 @@ _Note that the object has been updated with normalization information._
 
 Sometimes, we could be interested in _how the normalization process has affected our data_?  
 
-To answer this question, **POMA** offers two exploratory functions, `PomaNormPlot` and `PomaDensity`, that can help to understand the normalization process.
+To answer this question, **POMA** offers two exploratory functions, `PomaBoxplots` and `PomaDensity`, that can help to understand the normalization process.
 
-`PomaNormPlot` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object. Here, we can compare objects between and after normalization step.
+`PomaBoxplots` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object. Here, we can compare objects between and after normalization step.
 
 ```{r, fig.height = 4, fig.width = 8, message = FALSE, comment = FALSE}
-p1 <- PomaNormPlot(imputed, group = "samples", jitter = FALSE) +
+p1 <- PomaBoxplots(imputed, group = "samples", jitter = FALSE) +
   ggtitle("Not Normalized") +
   theme(legend.position = "none") # data before normalization
 
-p2 <- PomaNormPlot(normalized, group = "samples", jitter = FALSE) +
+p2 <- PomaBoxplots(normalized, group = "samples", jitter = FALSE) +
   ggtitle("Normalized") # data after normalization
 
 p1 + p2

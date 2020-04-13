@@ -9,6 +9,8 @@
 #' @param log2FC Numeric. Define the log2 fold change cutoff (vertical lines).
 #' @param xlim Numeric. Define the limits for x axis.
 #' @param labels Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.
+#' @param paired Logical that indicates if the data is paired or not.
+#' @param var_equal Logical that indicates if the data variance is equal or not.
 #' @param interactive Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.
 #'
 #' @export
@@ -29,6 +31,8 @@ PomaVolcano <- function(data,
                         log2FC = 0.6,
                         xlim = 2,
                         labels = FALSE,
+                        paired = FALSE,
+                        var_equal = FALSE,
                         interactive = FALSE){
 
   if (length(table(Biobase::pData(data)[1])) > 2) {
@@ -43,7 +47,7 @@ PomaVolcano <- function(data,
 
   log2FC <- 2^(log2FC)
 
-  df <- POMA::PomaUnivariate(data, method = "ttest", adjust = "fdr")
+  df <- POMA::PomaUnivariate(data, method = "ttest", adjust = "fdr", paired = paired, var_equal = var_equal)
 
   names <- featureNames(data)
 
