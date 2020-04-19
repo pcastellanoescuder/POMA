@@ -31,10 +31,11 @@ Imports:
     randomForest,
     RankProd,
     Biobase,
-    MSnbase,
     broom,
     glmnet,
-    plotly
+    plotly,
+    janitor,
+    MSnbase
 Suggests: 
     covr,
     tidyverse,

@@ -26,10 +26,12 @@ PomaLimma <- function(data,
   if (is.null(contrast)) {
     stop(crayon::red(clisymbols::symbol$cross, "Contrast argument is empty! You have to specify a contrast."))
   }
+  if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for adjust argument!"))
+  }
   if (missing(adjust)) {
     warning("adjust argument is empty! FDR will be used")
   }
-
   if(isTRUE(covariates) & ncol(pData(data)) == 1){
     stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
   }

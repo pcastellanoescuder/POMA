@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Volcano Plot — PomaVolcano" />
-<meta property="og:description" content="PomaVolcano() generates a volcano plot from the PomaUnivariate(method = &quot;ttest&quot;) result. The data can't have negative values!" />
+<meta property="og:description" content="PomaVolcano() generates a volcano plot from the PomaUnivariate(method = &quot;ttest&quot;) result. The data can't have negative values." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -134,19 +134,21 @@
     </div>
 
     <div class="ref-description">
-    <p>PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values!</p>
+    <p>PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PomaVolcano</span>(
   <span class='no'>data</span>,
   <span class='kw'>pval</span> <span class='kw'>=</span> <span class='st'>"raw"</span>,
   <span class='kw'>pval_cutoff</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>,
   <span class='kw'>log2FC</span> <span class='kw'>=</span> <span class='fl'>0.6</span>,
   <span class='kw'>xlim</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>var_equal</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>interactive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>interactive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>plot_title</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -163,6 +165,10 @@
     <tr>
       <th>pval_cutoff</th>
       <td><p>Numeric. Define the pvalue cutoff (horizontal line).</p></td>
+    </tr>
+    <tr>
+      <th>adjust</th>
+      <td><p>Multiple comparisons correction method for t test result. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".</p></td>
     </tr>
     <tr>
       <th>log2FC</th>
@@ -187,6 +193,10 @@
     <tr>
       <th>interactive</th>
       <td><p>Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>plot_title</th>
+      <td><p>Logical that indicates if title will be plotted or not. Defaul is TRUE.</p></td>
     </tr>
     </table>
 

@@ -15,8 +15,8 @@
 #' @return A data frame with results.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom tibble rownames_to_column column_to_rownames as_tibble
-#' @importFrom dplyr select mutate bind_rows
+#' @importFrom tibble column_to_rownames
+#' @importFrom dplyr select mutate filter bind_cols bind_rows 
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
@@ -34,6 +34,9 @@ PomaUnivariate <- function(data,
   if (!(method %in% c("ttest", "anova", "mann", "kruskal"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
+  if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for adjust argument!"))
+  }
   if (missing(adjust)) {
     warning("adjust argument is empty! FDR will be used")
   }
@@ -46,35 +49,40 @@ PomaUnivariate <- function(data,
   Group <- Biobase::pData(data)$Group
   e <- t(Biobase::exprs(data))
 
+  ## calcule means
+  
+  group_means <- e %>% 
+    as.data.frame() %>% 
+    mutate(group = Group)
+  
+  suppressWarnings({
+    group_means <- data.frame(aggregate(group_means, by = list(group_means$group), FUN = mean)) %>% 
+      column_to_rownames("Group.1") %>% 
+      t() %>% 
+      as.data.frame() %>% 
+      round(2) %>% 
+      filter(rownames(.) != "group")
+    
+    colnames(group_means) <- paste0("mean_", colnames(group_means))
+  })
+  
+  ##
+  
   if(method == "ttest"){
 
     stat <- function(x){t.test(x ~ Group, na.rm = TRUE, alternative = c("two.sided"),
                                var.equal = eval(parse(text = var_equal)),
                                paired = eval(parse(text = paired)))$p.value}
-    stat_G2 <- function(x){t.test(x ~ Group, na.rm = TRUE, alternative = c("two.sided"),
-                                  var.equal = eval(parse(text = var_equal)))$estimate[[2]]}
-    stat_G1 <- function(x){t.test(x ~ Group, na.rm = TRUE, alternative = c("two.sided"),
-                                  var.equal = eval(parse(text = var_equal)))$estimate[[1]]}
 
     p <- data.frame(pvalue = apply(FUN = stat, MARGIN = 2, X = e))
 
     p <- p %>%
-      rownames_to_column("feature") %>%
-      as_tibble() %>%
-      mutate(pvalue_Adj = p.adjust(pvalue, method = adjust)) %>%
-      column_to_rownames("feature")
-
-    G2 <- round(data.frame(Mean_G2 = apply(FUN = stat_G2, MARGIN = 2, X = e)), 3)
-    G1 <- round(data.frame(Mean_G1 = apply(FUN = stat_G1, MARGIN = 2, X = e)), 3)
-    means <- cbind(G1, G2)
-
-    means <- means %>%
-      rownames_to_column("feature") %>%
-      mutate(Fold_Change_Ratio = as.numeric(round(Mean_G2/Mean_G1, 3)),
-             Difference_Of_Means = as.numeric(round(Mean_G1 - Mean_G2, 3))) %>%
-      column_to_rownames("feature")
-
-    p <- cbind(means, p)
+      mutate(adj_pvalue = p.adjust(pvalue, method = adjust))
+    
+    p <- bind_cols(group_means, p) %>%
+      mutate(Fold_Change_Ratio = as.numeric(round(group_means[,2]/group_means[,1], 3)),
+             Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3)))
+    p <- p[, c(1:2,5:6,3:4)]
 
     return(p)
   }
@@ -87,10 +95,9 @@ PomaUnivariate <- function(data,
       p2 <- data.frame(pvalue = apply(FUN = stat2, MARGIN = 2, X = e))
 
       p2 <- p2 %>%
-        rownames_to_column("feature") %>%
-        as_tibble() %>%
-        mutate(pvalue_Adj = p.adjust(pvalue, method = adjust)) %>%
-        column_to_rownames("feature")
+        mutate(adj_pvalue = p.adjust(pvalue, method = adjust))
+      
+      p2 <- bind_cols(group_means, p2)
 
       return(p2)
 
@@ -117,9 +124,9 @@ PomaUnivariate <- function(data,
       rownames(p3) <- colnames(e)
 
       p3 <- p3 %>%
-        rownames_to_column %>%
-        mutate(pvalue_Adj = p.adjust(pvalue, method = adjust)) %>%
-        column_to_rownames("rowname")
+        mutate(adj_pvalue = p.adjust(pvalue, method = adjust))
+
+      p3 <- bind_cols(group_means, p3)
 
       return(p3)
 
@@ -133,26 +140,12 @@ PomaUnivariate <- function(data,
                                                                          paired = eval(parse(text = paired)))$p.value}))
 
     non_param_mann <- non_param_mann %>%
-      rownames_to_column %>%
-      mutate(pvalue_Adj = p.adjust(pvalue, method = adjust)) %>%
-      column_to_rownames("rowname")
+      mutate(adj_pvalue = p.adjust(pvalue, method = adjust))
 
-    manndata <- data.frame(cbind(Group = Group, e))
-    manndata[,2:ncol(manndata)] <- sapply(manndata[,2:ncol(manndata)], as.numeric)
-
-    means <- aggregate(manndata[, 2:ncol(manndata)], list(manndata$Group), mean)
-
-    means <- column_to_rownames(means, var = "Group.1")
-    means <- as_tibble(t(means), rownames = NA)
-    colnames(means) <- c("Mean_G1", "Mean_G2")
-
-    means <- means %>%
-      rownames_to_column("feature") %>%
-      mutate(Fold_Change_Ratio = as.numeric(round(Mean_G2/Mean_G1, 3)),
-             Difference_Of_Means = as.numeric(round(Mean_G1 - Mean_G2, 3))) %>%
-      column_to_rownames("feature")
-
-    non_param_mann <- cbind(means, non_param_mann)
+    non_param_mann <- bind_cols(group_means, non_param_mann) %>%
+      mutate(Fold_Change_Ratio = as.numeric(round(group_means[,2]/group_means[,1], 3)),
+             Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3)))
+    non_param_mann <- non_param_mann[, c(1:2,5:6,3:4)]
 
     return(non_param_mann)
   }
@@ -161,12 +154,11 @@ PomaUnivariate <- function(data,
 
     non_param_kru <- data.frame(pvalue = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$p.value}))
     non_param_kru <- non_param_kru %>%
-      rownames_to_column("feature") %>%
-      as_tibble() %>%
-      mutate(pvalue_Adj = p.adjust(pvalue, method = adjust),
-             Kruskal_Wallis_Rank_Sum = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$statistic})) %>%
-      column_to_rownames("feature")
+      mutate(adj_pvalue = p.adjust(pvalue, method = adjust),
+             Kruskal_Wallis_Rank_Sum = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$statistic}))
 
+    non_param_kru <- bind_cols(group_means, non_param_kru)
+    
     return(non_param_kru)
   }
 

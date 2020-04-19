@@ -16,7 +16,8 @@ test_that("PomaNorm works", {
   data[,1] <- 0 # create column of only zeros
   data[,2] <- 100 # create feature with var = 0
 
-  testnorm <- MSnbase::MSnSet(exprs = t(data), pData = Biobase::pData(st000284))
+  target <- pData(st000284) %>% rownames_to_column() %>% as.data.frame()
+  testnorm <- PomaMSnSetClass(features = data, target = target)
 
   newdata <- POMA::PomaImpute(testnorm, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 2)
   newdata2 <- POMA::PomaNorm(newdata, method = "log_pareto")

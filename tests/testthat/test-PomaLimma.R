@@ -32,6 +32,7 @@ test_that("PomaLimma works", {
 
   Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
   expect_error(PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fdr"))
-
+  expect_error(PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fd"))
+  
 })
 

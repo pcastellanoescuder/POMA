@@ -14,6 +14,7 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom crayon red
+#' @importFrom tibble rownames_to_column
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
 PomaNorm <- function(data,
@@ -37,34 +38,38 @@ PomaNorm <- function(data,
   to_norm_data <- to_norm_data[, !apply(to_norm_data, 2, var) == 0]
 
   if (method == "none"){
-    normalized <- t(round(to_norm_data, round))
+    normalized <- round(to_norm_data, round)
   }
 
   else if (method == "auto_scaling"){
-    normalized <- t(round(apply(to_norm_data, 2, function(x) (x-mean(x,na.rm=T))/sd(x,na.rm=T)), round))
+    normalized <- round(apply(to_norm_data, 2, function(x) (x-mean(x,na.rm=T))/sd(x,na.rm=T)), round)
   }
 
   else if (method == "level_scaling"){
-    normalized <- t(round(apply(to_norm_data, 2, function(x) (x-mean(x,na.rm=T))/mean(x,na.rm=T)), round))
+    normalized <- round(apply(to_norm_data, 2, function(x) (x-mean(x,na.rm=T))/mean(x,na.rm=T)), round)
   }
 
   else if (method == "log_scaling"){
-    normalized <- t(round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=T))/sd(log10(x+1),na.rm=T)), round))
+    normalized <- round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=T))/sd(log10(x+1),na.rm=T)), round)
   }
 
   else if (method == "log_transformation"){
-    normalized <- t(round(apply(to_norm_data, 2, function(x) (log10(x+1))), round))
+    normalized <- round(apply(to_norm_data, 2, function(x) (log10(x+1))), round)
   }
 
   else if (method == "vast_scaling"){
-    normalized <- t(round(apply(to_norm_data, 2, function(x) ((x-mean(x,na.rm=T))/sd(x,na.rm=T))*(mean(x,na.rm=T)/sd(x,na.rm=T))), round))
+    normalized <- round(apply(to_norm_data, 2, function(x) ((x-mean(x,na.rm=T))/sd(x,na.rm=T))*(mean(x,na.rm=T)/sd(x,na.rm=T))), round)
   }
 
   else if (method == "log_pareto"){
-    normalized <- t(round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=T))/sqrt(sd(log10(x+1),na.rm=T))), round))
+    normalized <- round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=T))/sqrt(sd(log10(x+1),na.rm=T))), round)
   }
 
-  dataNormalized <- MSnbase::MSnSet(exprs = normalized, pData = Biobase::pData(data))
+  ##
+  
+  target <- pData(data) %>% rownames_to_column() %>% as.data.frame()
+  dataNormalized <- PomaMSnSetClass(features = normalized, target = target)
+
   dataNormalized@processingData@processing <-
     c(data@processingData@processing,
       paste("Normalised (", method ,"): ", date(), sep = ""))

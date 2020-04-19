@@ -6,14 +6,15 @@ test_that("PomaImpute works", {
 
   data <- t(Biobase::exprs(st000284))
 
-  data <- data*round(runif(n=1, min = 0.01, max = 0.99), 3) # just to create decimals
+  data <- data*round(runif(n = 1, min = 0.01, max = 0.99), 3) # just to create decimals
   data[1:4, 5] <- 0 # create some zeros in one group
   data[73:77, 5] <- 0 # create some zeros in the other group
 
   data[10:14, 5] <- NA # create some NA in one group (5/66 = 7.6% of NA)
   data[78:81, 5] <- NA # create some NA in the other group (4/66 = 6.1% of NA)
 
-  testimput <- MSnbase::MSnSet(exprs = t(data), pData = Biobase::pData(st000284))
+  target <- pData(st000284) %>% rownames_to_column() %>% as.data.frame()
+  testimput <- PomaMSnSetClass(features = data, target = target)
 
   a <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = F, cutoff = 8))))
   b <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = T, RemoveNA = F, cutoff = 8))))
@@ -23,6 +24,9 @@ test_that("PomaImpute works", {
   e <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20))))
   f <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 10))))
 
+  e_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = F, RemoveNA = T, cutoff = 20))))
+  f_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = F, RemoveNA = T, cutoff = 10))))
+  
   g <- PomaImpute(testimput, method = "half_min", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
   h <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
 
@@ -31,7 +35,7 @@ test_that("PomaImpute works", {
   k <- PomaImpute(testimput, method = "median", ZerosAsNA = F, RemoveNA = F, cutoff = 1)
 
   l <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
-  m <- PomaImpute(testimput)
+  m <- PomaImpute(testimput, method = "knn")
 
   n <- PomaImpute(testimput, method = "none", RemoveNA = F, cutoff = 2)
   o <- PomaImpute(testimput, method = "none", RemoveNA = F, cutoff = 5)
@@ -43,14 +47,15 @@ test_that("PomaImpute works", {
   data2[1:4, 5] <- 1000
   data2[73:77, 5] <- 1000
 
-  testimput2 <- MSnbase::MSnSet(exprs = t(data2), pData = Biobase::pData(st000284))
+  testimput2 <- PomaMSnSetClass(features = data2, target = target)
 
   r <- PomaImpute(testimput2, method = "half_min")
   s <- PomaImpute(testimput2, method = "median")
   t <- PomaImpute(testimput2, method = "mean")
   u <- PomaImpute(testimput2, method = "min")
   v <- PomaImpute(testimput2, method = "knn")
-
+  y <- PomaImpute(testimput2, method = "rf")
+  
   ####
 
   expect_equal(a, b)
@@ -63,7 +68,9 @@ test_that("PomaImpute works", {
   expect_true(d != e)
   expect_equal(c, e)
   expect_equal(e, f)
-
+  expect_equal(e, e_rf)
+  expect_equal(f, f_rf)
+  
   expect_false(all(exprs(g) == exprs(h)))
   expect_equal(dim(g), dim(h))
 
@@ -98,16 +105,22 @@ test_that("PomaImpute works", {
   expect_false(all(exprs(t) == exprs(v)))
 
   expect_false(all(exprs(u) == exprs(v)))
+  expect_false(all(exprs(v) == exprs(y)))
 
   ####
 
-  expect_error(PomaImpute(st000284, method = "non"))
-  expect_warning(PomaImpute(st000284))
+  expect_error(PomaImpute(testimput, method = "non"))
+  expect_warning(PomaImpute(testimput))
+  expect_warning(PomaImpute(testimput2))
 
   ####
 
   expect_true(g@processingData@cleaned)
   expect_true(h@processingData@cleaned)
 
+  ####
+  
+  expect_warning(PomaImpute(st000284, method = "knn"))
+  expect_error(PomaImpute(st000284, method = "rf")) # rfImpute doesn't work without NAs
 })
 
