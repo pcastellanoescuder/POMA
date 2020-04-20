@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaMSnSetClass.R
 \name{PomaMSnSetClass}
 \alias{PomaMSnSetClass}
-\title{Convert data frames to a simplified MSnSet Object}
+\title{Convert data frames to a MSnSet Object}
 \usage{
 PomaMSnSetClass(target, features)
 }
@@ -12,10 +12,10 @@ PomaMSnSetClass(target, features)
 \item{features}{Table of features. Each feature in one column.}
 }
 \value{
-A simplified MSnSet object.
+A MSnSet object.
 }
 \description{
-Convert data frames to a simplified MSnSet Object
+This function converts data frame objects to a MSnSet object.
 }
 \references{
 Laurent Gatto and Kathryn S. Lilley. MSnbase - an R/Bioconductor package for isobaric tagged mass spectrometry data visualization, processing and quantitation. Bioinformatics 28, 288-289 (2012).

@@ -48,8 +48,7 @@ test_that("PomaMultivariate works", {
   ####
 
   expect_equal(ncol(multivariate_plsda_1$errors_plsda), ncol(multivariate_plsda_2$errors_plsda))
-  expect_false(all(multivariate_plsda_1$errors_plsda$Component ==
-                    multivariate_plsda_2$errors_plsda$Component))
+  expect_false(all(multivariate_plsda_1$errors_plsda$Component == multivariate_plsda_2$errors_plsda$Component))
 
   expect_false(ncol(multivariate_plsda_1$plsda_vip_table) == ncol(multivariate_plsda_2$plsda_vip_table))
 

@@ -13,7 +13,7 @@ RUN R -e "install.packages(c('remotes', 'reshape2', 'ggplot2', 'tidyr', 'dplyr',
 
 ## BIOCONDUCTOR
 
-RUN R -e "BiocManager::install(c('impute', 'RankProd', 'mixOmics', 'limma', 'MSnbase', 'Biobase'))"
+RUN R -e "BiocManager::install(c('impute', 'RankProd', 'mixOmics', 'MSnbase', 'limma', 'Biobase'))"
 
 # Install POMA from GitHub
 

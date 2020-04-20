@@ -66,10 +66,10 @@ PomaNorm <- function(data,
   }
 
   ##
-  
+
   target <- pData(data) %>% rownames_to_column() %>% as.data.frame()
   dataNormalized <- PomaMSnSetClass(features = normalized, target = target)
-
+  
   dataNormalized@processingData@processing <-
     c(data@processingData@processing,
       paste("Normalised (", method ,"): ", date(), sep = ""))

@@ -123,7 +123,7 @@ PomaImpute <- function(data,
       paste("Imputed (", method ,"): ", date(), sep = ""))
   dataImputed@processingData@cleaned <- TRUE
   if (validObject(dataImputed))
-  return(dataImputed)
+    return(dataImputed)
 
   }
 

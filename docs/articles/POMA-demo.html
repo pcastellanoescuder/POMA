@@ -92,7 +92,7 @@
       <h1>POMA Workflow Overview</h1>
                         <h4 class="author">Pol Castellano-Escuder</h4>
             
-            <h4 class="date">2020-04-13</h4>
+            <h4 class="date">2020-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pcastellanoescuder/POMA/blob/master/vignettes/POMA-demo.Rmd"><code>vignettes/POMA-demo.Rmd</code></a></small>
       <div class="hidden name"><code>POMA-demo.Rmd</code></div>
@@ -140,21 +140,23 @@
 <a href="#missing-value-imputation" class="anchor"></a>Missing Value Imputation</h2>
 <p>Often in mass spectometry analyses we have to deal with some missing values in our data. To face this in <strong>POMA</strong> just run the following line of code to impute your missings!</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">imputed &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaImpute.html">PomaImpute</a></span>(example_data, <span class="dt">ZerosAsNA =</span> T, <span class="dt">RemoveNA =</span> T, <span class="dt">cutoff =</span> <span class="dv">20</span>, <span class="dt">method =</span> <span class="st">"knn"</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">imputed</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">## MSnSet (storageMode: lockedEnvironment)</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">## assayData: 113 features, 16 samples </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">##   element names: exprs </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">## protocolData: none</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">## phenoData</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">##   sampleNames: Subject_157 Subject_200 ... Subject_265 (16 total)</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">##   varLabels: Group age_at_consent ... drink_alcohol (5 total)</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">##   varMetadata: labelDescription</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">## featureData: none</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Imputed (knn): Mon Apr 13 17:07:20 2020 </span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">## Warning in PomaImpute(example_data, ZerosAsNA = T, RemoveNA = T, cutoff = 20, :</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">## No missing values detected in your data</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">imputed</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">## MSnSet (storageMode: lockedEnvironment)</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">## assayData: 113 features, 16 samples </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">##   element names: exprs </span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">## protocolData: none</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">## phenoData</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">##   sampleNames: Subject_157 Subject_200 ... Subject_265 (16 total)</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">##   varLabels: group age_at_consent ... drink_alcohol (5 total)</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">##   varMetadata: labelDescription</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">## featureData: none</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">## Annotation:  </span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">## - - - Processing information - - -</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">## Imputed (knn): Mon Apr 20 20:54:29 2020 </span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with imputation information.</em></p>
 </div>
 <div id="normalization" class="section level2">
@@ -169,14 +171,14 @@
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">## protocolData: none</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">## phenoData</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">##   sampleNames: Subject_157 Subject_200 ... Subject_265 (16 total)</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">##   varLabels: Group age_at_consent ... drink_alcohol (5 total)</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">##   varLabels: group age_at_consent ... drink_alcohol (5 total)</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">##   varMetadata: labelDescription</span></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">## featureData: none</span></a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">## experimentData: use 'experimentData(object)'</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">## Annotation:  </span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">## - - - Processing information - - -</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Imputed (knn): Mon Apr 13 17:07:20 2020 </span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## Normalised (log_pareto): Mon Apr 13 17:07:20 2020 </span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">## Imputed (knn): Mon Apr 20 20:54:29 2020 </span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">## Normalised (log_pareto): Mon Apr 20 20:54:29 2020 </span></a>
 <a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">##  MSnbase version: 2.10.1</span></a></code></pre></div>
 <p><em>Note that the object has been updated with normalization information.</em></p>
 <div id="normalization-effect" class="section level3">
@@ -221,20 +223,20 @@
 <a class="sourceLine" id="cb8-3" data-line-number="3">ttest_res <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">rownames_to_column</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">##                          rowname Mean_G1 Mean_G2 Fold_Change_Ratio</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">## 1 x1_methyladenosine_282_1_150_0  -0.174   0.174                -1</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">## 2 x1_methylhistamine_126_0_109_0   0.062  -0.062                -1</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">## 3    x2_aminoadipate_160_1_116_0  -0.110   0.110                -1</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">## 4    x2_deoxyuridine_229_1_113_0   0.118  -0.118                -1</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">## 5  x3_nitro_tyrosine_225_0_179_3  -0.017   0.017                -1</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">## 6  x4_pyridoxic_acid_182_1_138_0  -0.044   0.044                -1</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">##   Difference_Of_Means     pvalue pvalue_Adj</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">## 1              -0.348 0.05646815  0.4465232</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">## 2               0.124 0.55542663  0.9229884</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">## 3              -0.220 0.32871427  0.9068738</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">## 4               0.236 0.12678979  0.7514041</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">## 5              -0.034 0.85409255  0.9661294</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">## 6              -0.088 0.33464626  0.9068738</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">##                          rowname mean_C mean_H Fold_Change_Ratio</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">## 1 x1_methyladenosine_282_1_150_0  -0.17   0.17                -1</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">## 2 x1_methylhistamine_126_0_109_0   0.06  -0.06                -1</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">## 3    x2_aminoadipate_160_1_116_0  -0.11   0.11                -1</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">## 4    x2_deoxyuridine_229_1_113_0   0.12  -0.12                -1</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">## 5  x3_nitro_tyrosine_225_0_179_3  -0.02   0.02                -1</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">## 6  x4_pyridoxic_acid_182_1_138_0  -0.04   0.04                -1</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">##   Difference_Of_Means     pvalue adj_pvalue</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">## 1                0.34 0.05646815  0.4465232</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">## 2               -0.12 0.55542663  0.9229884</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">## 3                0.22 0.32871427  0.9068738</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">## 4               -0.24 0.12678979  0.7514041</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">## 5                0.04 0.85409255  0.9661294</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">## 6                0.08 0.33464626  0.9068738</span></a></code></pre></div>
 </div>
 <div id="limma" class="section level3">
 <h3 class="hasAnchor">
@@ -291,9 +293,11 @@
 <a href="#random-forest" class="anchor"></a>Random Forest</h2>
 <p>Here we will use the whole dataset because a larger sample size is needed to perform a random forest.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">imputed2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaImpute.html">PomaImpute</a></span>(st000284, <span class="dt">ZerosAsNA =</span> T, <span class="dt">RemoveNA =</span> T, <span class="dt">cutoff =</span> <span class="dv">20</span>, <span class="dt">method =</span> <span class="st">"knn"</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">normalized2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(imputed2, <span class="dt">method =</span> <span class="st">"log_pareto"</span>)</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">rf_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaRandForest.html">PomaRandForest</a></span>(normalized2, <span class="dt">folds =</span> <span class="dv">3</span>, <span class="dt">nvar =</span> <span class="dv">10</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">## Warning in PomaImpute(st000284, ZerosAsNA = T, RemoveNA = T, cutoff = 20, : No</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">## missing values detected in your data</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">normalized2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(imputed2, <span class="dt">method =</span> <span class="st">"log_pareto"</span>)</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">rf_res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PomaRandForest.html">PomaRandForest</a></span>(normalized2, <span class="dt">folds =</span> <span class="dv">3</span>, <span class="dt">nvar =</span> <span class="dv">10</span>)</a></code></pre></div>
 <p>Confusion matrix of the random forest model:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">rf_res<span class="op">$</span>confusion_matrix</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">##    C  H class.error</span></a>

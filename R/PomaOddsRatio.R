@@ -61,8 +61,10 @@ PomaOddsRatio <- function(data,
   data <- data %>% 
     mutate(Group = as.factor(ifelse(Group == levels(data$Group)[1], 0, 1))) %>% 
     mutate_at(vars(-Group), as.numeric)
-    
-  logit_model <- glm(Group ~ 0 + ., family = binomial(link = 'logit'), data = data)
+  
+  suppressWarnings({
+    logit_model <- glm(Group ~ 0 + ., family = binomial(link = 'logit'), data = data)
+  })  
 
   odds <- data.frame(exp(cbind(OddsRatio = coef(logit_model), confint.default(logit_model, level = 0.95)))) %>%
     drop_na() %>%
