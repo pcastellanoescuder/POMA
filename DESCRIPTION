@@ -44,7 +44,7 @@ Suggests:
     rmarkdown,
     patchwork
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Depends: R (>= 2.10)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA

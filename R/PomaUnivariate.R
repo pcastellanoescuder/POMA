@@ -107,7 +107,7 @@ PomaUnivariate <- function(data,
       covariate_uni <- pData(data)[, 2:ncol(pData(data))]
       covariate_uni <- sapply(covariate_uni, as.numeric)
 
-      model_names <- paste0("Group + ", paste0(colnames(covariate_uni), collapse = " + "))
+      model_names <- paste0(paste0(colnames(covariate_uni), collapse = " + "), " + Group")
 
       LenCov <- ncol(covariate_uni)
 

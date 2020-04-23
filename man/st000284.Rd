@@ -4,11 +4,13 @@
 \name{st000284}
 \alias{st000284}
 \title{Colorectal Cancer Detection Using Targeted Serum Metabolic Profiling}
-\format{A \code{MSnSet} object: 158 Subjects, 113 metabolites, 4 covariables and 2 groups (colorectal cancer = C and and healthy patiens = H).
+\format{
+A \code{MSnSet} object: 158 Subjects, 113 metabolites, 4 covariables and 2 groups (colorectal cancer = C and and healthy patiens = H).
 \describe{
 \item{metabolites}{113 serum metabolites.}
 \item{covariables}{Age at consent, Gender, Smoking Condition and Drink Alcohol.}
-}}
+}
+}
 \source{
 \url{https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?Mode=Study&StudyID=ST000284&StudyType=MS&ResultType=1\%20target=_blank}
 }
