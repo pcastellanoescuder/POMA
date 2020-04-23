@@ -117,7 +117,7 @@ PomaUnivariate <- function(data,
       result <- vector(mode = "list", length = n)
       for(i in 1:n) {
         result[[i]] <- data.frame(pvalue = anova(aov(as.formula(paste(colnames(covariate_uni)[i], "~", model_names)),
-                                            data = covariate_uni))$"Pr(>F)"[1])
+                                            data = covariate_uni))$"Pr(>F)"[LenCov+1])
       }
 
       p3 <- bind_rows(result)

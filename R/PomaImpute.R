@@ -39,12 +39,6 @@ PomaImpute <- function(data,
   Biobase::varLabels(data)[1] <- "Group"
   samples_groups <- Biobase::pData(data)$Group
   to_imp_data <- t(Biobase::exprs(data))
-
-  percent_na <- sum(is.na(to_imp_data))
-  
-  if (percent_na == 0) {
-    warning("No missing values detected in your data")
-  }
   
   ##
   
@@ -56,6 +50,13 @@ PomaImpute <- function(data,
     to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
   }
 
+  ##
+  
+  percent_na <- sum(is.na(to_imp_data))
+  if (percent_na == 0) {
+    warning("No missing values detected in your data")
+  }
+  
   ##
   
   if (isTRUE(RemoveNA)){
