@@ -46,7 +46,7 @@ PomaUnivariate <- function(data,
   }
 
   Biobase::varLabels(data)[1] <- "Group"
-  Group <- Biobase::pData(data)$Group
+  Group <- as.factor(Biobase::pData(data)$Group)
   e <- t(Biobase::exprs(data))
 
   ## calcule means
