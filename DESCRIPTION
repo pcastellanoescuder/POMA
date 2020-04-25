@@ -7,45 +7,48 @@ Authors@R:
            role = c("aut", "cre"),
            email = "polcaes@gmail.com",
            comment = c(ORCID = "0000-0001-6466-877X"))
-Description: POMA is an easy use R package that contains different robust functions for processing, exploratory analysis and statistical analysis of mass spectrometry data, such as metabolomics or proteomics. This package is based on the standardized "MSnbase" infrastructure to achieve maximum flexibility and reproducibility. This package also offers a Shiny app that implements all functions in an easy use web interface.
+Description: POMA is an easy use R package that contains different robust functions for processing, 
+    exploratory analysis and statistical analysis of mass spectrometry data, such as metabolomics or proteomics. 
+    This package is based on the standardized "MSnbase" infrastructure to achieve maximum flexibility and reproducibility. 
+    This package also offers a Shiny app that implements all functions in an easy use web interface.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 biocViews:
 Imports:
-    ggplot2,
-    tidyr,
-    dplyr,
-    tibble,
-    stringr,
-    crayon,
+    Biobase (>= 2.44.0),
+    broom,
     clisymbols,
-    impute,
-    mixOmics,
-    reshape2,
-    prettydoc,
+    crayon,
+    dplyr,
+    glmnet,
+    ggplot2,
     ggrepel,
-    snow,
+    impute,
+    janitor,
     limma,
     magrittr,
+    mixOmics,
+    MSnbase (>= 2.12.0),
+    plotly,
     randomForest,
     RankProd,
-    Biobase,
-    broom,
-    glmnet,
-    plotly,
-    janitor,
-    MSnbase
+    reshape2,
+    snow,
+    tibble,
+    tidyr,
+    stringr
 Suggests: 
     covr,
     tidyverse,
-    testthat (>= 2.1.0),
+    testthat (>= 2.3.2),
     knitr,
     rmarkdown,
-    patchwork
+    patchwork,
+    prettydoc
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Depends: R (>= 2.10)
+Depends: R (>= 3.6.1)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA
 BugReports: https://github.com/pcastellanoescuder/POMA/issues
