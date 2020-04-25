@@ -38,8 +38,8 @@ PomaDensity <- function(data,
     warning("group argument is empty! samples will be used")
   }
   if (!is.null(feature_name)) {
-    if(!(feature_name %in% Biobase::featureNames(data))){
-      stop(crayon::red(clisymbols::symbol$cross, "Feature name not found!"))
+    if(!isTRUE(all(feature_name %in% Biobase::featureNames(data)))){
+      stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
     }
   }
 
@@ -57,14 +57,30 @@ PomaDensity <- function(data,
 
   if(group == "samples"){
 
-    data %>%
-      reshape2::melt() %>%
-      group_by(ID) %>%
-      ggplot(aes(value, fill = Group)) +
-      geom_density(alpha = 0.4) +
-      xlab("Value") +
-      ylab("Density") +
-      theme_bw()
+    if (is.null(feature_name)){
+      
+      data %>%
+        reshape2::melt() %>%
+        group_by(ID) %>%
+        ggplot(aes(value, fill = Group)) +
+        geom_density(alpha = 0.4) +
+        xlab("Value") +
+        ylab("Density") +
+        theme_bw()
+      
+    } else {
+      
+      data %>%
+        reshape2::melt() %>%
+        group_by(ID) %>%
+        filter(variable %in% feature_name) %>%
+        ggplot(aes(value, fill = Group)) +
+        geom_density(alpha = 0.4) +
+        xlab("Value") +
+        ylab("Density") +
+        theme_bw()
+      
+    }
 
   } else {
 
@@ -82,17 +98,28 @@ PomaDensity <- function(data,
         theme(legend.position = "none")
 
     } else {
-
+      
       data %>%
         dplyr::select(-ID) %>%
         reshape2::melt() %>%
         group_by(Group) %>%
         filter(variable %in% feature_name) %>%
-        ggplot(aes(value, fill = variable)) +
+        ggplot(aes(value, fill = variable)) + 
         geom_density(alpha = 0.4) +
         theme_bw() +
         xlab("Value") +
         ylab("Density")
+      
+      # data %>%
+      #   dplyr::select(-ID) %>%
+      #   reshape2::melt() %>%
+      #   group_by(Group) %>%
+      #   filter(variable %in% feature_name) %>%
+      #   ggplot(aes(value, fill = interaction(variable, Group))) + 
+      #   geom_density(alpha = 0.4) +
+      #   theme_bw() +
+      #   xlab("Value") +
+      #   ylab("Density")
 
     }
   }

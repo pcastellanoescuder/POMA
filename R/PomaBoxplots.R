@@ -20,7 +20,7 @@
 #' @importFrom reshape2 melt
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom Biobase varLabels pData exprs featureNames
 PomaBoxplots <- function(data,
                          group = "samples",
                          jitter = TRUE,
@@ -38,6 +38,11 @@ PomaBoxplots <- function(data,
   }
   if (missing(group)) {
     warning("group argument is empty! samples will be used")
+  }
+  if (!is.null(feature_name)) {
+    if(!isTRUE(all(feature_name %in% Biobase::featureNames(data)))){
+      stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
+    }
   }
   
   e <- t(Biobase::exprs(data))
@@ -68,7 +73,7 @@ PomaBoxplots <- function(data,
   
   else {
     
-    if (is.null(feature_name)){
+    if(is.null(feature_name)){
       
       data %>%
         dplyr::select(-ID) %>%
