@@ -16,7 +16,7 @@ Encoding: UTF-8
 LazyData: true
 biocViews:
 Imports:
-    Biobase (>= 2.44.0),
+    Biobase,
     broom,
     clisymbols,
     crayon,

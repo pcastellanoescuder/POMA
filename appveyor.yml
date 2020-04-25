@@ -10,8 +10,8 @@ init:
 install:
   ps: Bootstrap
 
-cache:
-  - C:\RLibrary
+# cache:
+#   - C:\RLibrary
 
 environment:
   NOT_CRAN: true
@@ -19,7 +19,6 @@ environment:
   # see https://github.com/krlmlr/r-appveyor#readme for details
   # USE_RTOOLS: true
   # R_REMOTES_STANDALONE: true
-  PKGTYPE: binary
 
 # Adapt as necessary starting from here
 
