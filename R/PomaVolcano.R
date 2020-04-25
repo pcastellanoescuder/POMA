@@ -39,6 +39,13 @@ PomaVolcano <- function(data,
                         interactive = FALSE,
                         plot_title = TRUE){
 
+  if (missing(data)) {
+    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+  }
+  if(!(class(data) == "MSnSet")){
+    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
+                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  }
   if (length(table(Biobase::pData(data)[1])) > 2) {
     stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
   }

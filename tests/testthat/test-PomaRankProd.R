@@ -21,6 +21,7 @@ test_that("PomaRankProd works", {
   expect_error(PomaRankProd(st000284, method = "pfd"))
   expect_error(PomaRankProd(toy_data))
   expect_warning(PomaRankProd(st000284))
+  expect_error(PomaRankProd(iris))
 
   ##
 
@@ -29,6 +30,6 @@ test_that("PomaRankProd works", {
 
   expect_false(dim(RP_five$upregulated)[1] == dim(RP_six$upregulated)[1])
   expect_false(dim(RP_five$downregulated)[1] == dim(RP_six$downregulated)[1])
-
+  
 })
 

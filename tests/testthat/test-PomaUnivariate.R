@@ -45,5 +45,10 @@ test_that("PomaUnivariate works", {
   Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
   expect_error(PomaUnivariate(st000284, method = "anova", covariates = TRUE, adjust = "fdr"))
   
+  ##
+  
+  expect_error(PomaUnivariate(method = "ttest"))
+  expect_error(PomaUnivariate(iris, method = "ttest"))
+  
 })
 

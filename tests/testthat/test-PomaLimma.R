@@ -34,5 +34,10 @@ test_that("PomaLimma works", {
   expect_error(PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fdr"))
   expect_error(PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fd"))
   
+  ##
+  
+  expect_error(PomaLimma(contrast = "C-H"))
+  expect_error(PomaLimma(iris, contrast = "C-H"))
+  
 })
 

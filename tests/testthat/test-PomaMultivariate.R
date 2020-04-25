@@ -95,6 +95,11 @@ test_that("PomaMultivariate works", {
 
   expect_false(all(df_a$y == df_b$y))
   expect_false(all(df_c$y == df_d$y))
+  
+  ##
+  
+  expect_error(PomaMultivariate(method = "splsda"))
+  expect_error(PomaMultivariate(iris, method = "splsda"))
 
 })
 

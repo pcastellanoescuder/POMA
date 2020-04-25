@@ -32,5 +32,11 @@ test_that("PomaVolcano works", {
   expect_error(PomaVolcano(st000284, pval = "raw", adjust = "fd"))
   
   expect_error(PomaVolcano(iris_example, pval = "raw", adjust = "fdr"))
+  
+  ##
+  
+  expect_error(PomaVolcano())
+  expect_error(PomaVolcano(iris))
+  
 })
 

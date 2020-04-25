@@ -26,6 +26,13 @@ PomaBoxplots <- function(data,
                          jitter = TRUE,
                          feature_name = NULL){
   
+  if (missing(data)) {
+    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+  }
+  if(!(class(data) == "MSnSet")){
+    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
+                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  }
   if (!(group %in% c("samples", "features"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
   }

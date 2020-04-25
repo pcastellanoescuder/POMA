@@ -52,3 +52,4 @@ Depends: R (>= 3.6.1)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA
 BugReports: https://github.com/pcastellanoescuder/POMA/issues
+

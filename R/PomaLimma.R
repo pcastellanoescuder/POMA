@@ -23,6 +23,13 @@ PomaLimma <- function(data,
                       covariates = FALSE,
                       adjust = "fdr"){
 
+  if (missing(data)) {
+    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+  }
+  if(!(class(data) == "MSnSet")){
+    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
+                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  }
   if (is.null(contrast)) {
     stop(crayon::red(clisymbols::symbol$cross, "Contrast argument is empty! You have to specify a contrast."))
   }

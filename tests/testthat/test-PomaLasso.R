@@ -35,5 +35,10 @@ test_that("PomaLasso works", {
   expect_false(length(df_a$y) == length(df_b$y))
   expect_false(length(df_c$y) == length(df_d$y))
 
+  ##
+  
+  expect_error(PomaLasso(method = "lasso"))
+  expect_error(PomaLasso(iris, method = "lasso"))
+  
 })
 

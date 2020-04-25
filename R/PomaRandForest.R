@@ -32,6 +32,10 @@ PomaRandForest <- function(data,
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
+  if(!(class(data) == "MSnSet")){
+    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
+                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  }
 
   Biobase::varLabels(data)[1] <- "Group"
   rf_data <- data.frame(cbind(Group = Biobase::pData(data)$Group, t(Biobase::exprs(data))))

@@ -73,6 +73,11 @@ test_that("PomaOddsRatio works", {
 
   Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
   expect_error(PomaOddsRatio(st000284, covariates = TRUE))
+  
+  ##
+  
+  expect_error(PomaOddsRatio())
+  expect_error(PomaOddsRatio(iris))
 
 })
 

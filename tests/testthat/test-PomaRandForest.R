@@ -18,6 +18,7 @@ test_that("PomaRandForest works", {
   ####
 
   expect_error(PomaRandForest())
+  expect_error(PomaRandForest(iris))
   expect_true(length(res) == 5)
 
   expect_false(all(df_a$y == df_c$y))

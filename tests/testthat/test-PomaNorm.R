@@ -44,5 +44,10 @@ test_that("PomaNorm works", {
   expect_true(newdata2@processingData@cleaned)
   expect_true(newdata2@processingData@normalised)
 
+  ##
+  
+  expect_error(PomaNorm(method = "auto_scaling"))
+  expect_error(PomaNorm(iris, method = "auto_scaling"))
+  
 })
 

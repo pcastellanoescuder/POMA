@@ -44,5 +44,10 @@ test_that("PomaDensity works", {
   expect_error(PomaDensity(norm_ls, group = "samp"))
   expect_error(PomaDensity(norm_ls, group = "features", feature_name = "hello"))
 
+  ##
+  
+  expect_error(PomaDensity(group = "sample"))
+  expect_error(PomaDensity(iris, group = "sample"))
+  
 })
 

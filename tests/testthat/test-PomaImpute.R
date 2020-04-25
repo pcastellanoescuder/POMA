@@ -122,5 +122,11 @@ test_that("PomaImpute works", {
   
   expect_warning(PomaImpute(st000284, method = "knn"))
   expect_error(PomaImpute(st000284, method = "rf")) # rfImpute doesn't work without NAs
+  
+  ##
+  
+  expect_error(PomaImpute(method = "knn"))
+  expect_error(PomaImpute(iris, method = "knn"))
+  
 })
 

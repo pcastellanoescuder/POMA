@@ -25,6 +25,13 @@ PomaLasso <- function(data,
                       nfolds = 10,
                       lambda = NULL){
 
+  if (missing(data)) {
+    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+  }
+  if(!(class(data) == "MSnSet")){
+    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
+                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  }
   if (missing(method)) {
     warning("method argument is empty! lasso will be used")
   }

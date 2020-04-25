@@ -29,6 +29,13 @@ PomaImpute <- function(data,
                        cutoff = 20,
                        method = "knn"){
 
+  if (missing(data)) {
+    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+  }
+  if(!(class(data) == "MSnSet")){
+    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
+                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  }
   if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn", "rf"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }

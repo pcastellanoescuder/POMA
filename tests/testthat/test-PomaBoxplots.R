@@ -49,5 +49,10 @@ test_that("PomaBoxplots works", {
   
   expect_error(PomaBoxplots(norm_ls, group = "samp"))
   
+  ##
+  
+  expect_error(PomaBoxplots(group = "sample"))
+  expect_error(PomaBoxplots(iris, group = "sample"))
+  
 })
 
