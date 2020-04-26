@@ -27,6 +27,7 @@ test_that("PomaImpute works", {
   e_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = F, RemoveNA = T, cutoff = 20))))
   f_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = F, RemoveNA = T, cutoff = 10))))
   
+  
   g <- PomaImpute(testimput, method = "half_min", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
   h <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
 
@@ -120,8 +121,8 @@ test_that("PomaImpute works", {
 
   ####
   
-  expect_warning(PomaImpute(st000284, method = "knn"))
-  expect_error(PomaImpute(st000284, method = "rf")) # rfImpute doesn't work without NAs
+  expect_error(PomaImpute(st000284, method = "knn"))
+  expect_error(PomaImpute(st000284, method = "rf"))
   
   ##
   

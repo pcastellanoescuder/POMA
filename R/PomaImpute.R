@@ -61,7 +61,7 @@ PomaImpute <- function(data,
   
   percent_na <- sum(is.na(to_imp_data))
   if (percent_na == 0) {
-    warning("No missing values detected in your data")
+    stop(crayon::red(clisymbols::symbol$cross, "No missing values detected in your data"))
   }
   
   ##
