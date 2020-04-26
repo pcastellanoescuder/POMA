@@ -1,0 +1,181 @@
+---
+title: "POMA Workflow Overview"
+author: "Pol Castellano-Escuder"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+    toc_depth: 4
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{POMA Workflow Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  dpi = 200,
+  fig.align = "center"
+)
+```
+
+# Installation
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("pcastellanoescuder/POMA")
+```
+
+# Load POMA
+
+```{r, warning = FALSE, message = FALSE, comment = FALSE}
+library(POMA)
+library(ggplot2) # to tune POMA default plots
+library(patchwork) # to show plots together
+library(tidyverse) # it's just tidyverse;)
+```
+
+# Load or Create an `MSnbase::MSnSet()` object
+
+We can load an `MSnSet` object directly or we can create our own object from matrix and/or data frames using `PomaMSnSetClass` function.  
+
+```{r}
+# load example data
+data("st000336")
+
+# # subset example data
+# my_features <- t(exprs(st000284))[c(1:8, 120:127) ,]
+# 
+# my_target <- pData(st000284)[c(1:8, 120:127) ,]
+# my_target <- my_target %>% rownames_to_column("ID")
+# 
+# # create a smaller MSnSet object from example data
+# example_data <- PomaMSnSetClass(features = my_features, target = my_target)
+```
+
+# Pre Processing
+
+## Missing Value Imputation
+
+Often in mass spectometry analyses we have to deal with some missing values in our data. To face this in **POMA** just run the following line of code to impute your missings!
+
+```{r}
+imputed <- PomaImpute(st000336, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
+imputed
+```
+
+_Note that the object has been updated with imputation information._
+
+## Normalization
+
+The next step is the **normalization** of the data. Again, **POMA** offers several methods to normalize the data by running just one line of code:
+
+```{r}
+normalized <- PomaNorm(imputed, method = "log_pareto")
+normalized
+```
+
+_Note that the object has been updated with normalization information._
+
+### Normalization effect
+
+Sometimes, we could be interested in _how the normalization process has affected our data_?  
+
+To answer this question, **POMA** offers two exploratory functions, `PomaBoxplots` and `PomaDensity`, that can help to understand the normalization process.
+
+`PomaBoxplots` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object. Here, we can compare objects between and after normalization step.
+
+```{r, fig.height = 4, fig.width = 8, message = FALSE, comment = FALSE}
+p1 <- PomaBoxplots(imputed, group = "samples", jitter = FALSE) +
+  ggtitle("Not Normalized") +
+  theme(legend.position = "none") # data before normalization
+
+p2 <- PomaBoxplots(normalized, group = "samples", jitter = FALSE) +
+  ggtitle("Normalized") # data after normalization
+
+p1 + p2
+```
+
+On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process. 
+
+```{r, fig.height = 4, fig.width = 8, message = FALSE, comment = FALSE}
+p3 <- PomaDensity(imputed, group = "features") +
+  ggtitle("Not Normalized") +
+  theme(legend.position = "none") # data before normalization
+
+p4 <- PomaDensity(normalized, group = "features") +
+  ggtitle("Normalized") # data after normalization
+
+p3 + p4
+```
+
+# Statistical Analysis
+
+## Univariate Analysis
+
+### T-test
+
+```{r}
+ttest_res <- PomaUnivariate(normalized, method = "ttest", 
+                            paired = FALSE, var_equal = FALSE, adjust = "fdr")
+ttest_res %>% 
+  rownames_to_column() %>% 
+  head()
+```
+
+### Limma
+
+```{r}
+limma_res <- PomaLimma(normalized, contrast = "Controls-DMD", covariates = FALSE, adjust = "fdr")
+limma_res %>% 
+  rownames_to_column() %>% 
+  head()
+```
+
+## Multivariate Analysis
+
+### Principal Component Analysis
+
+```{r}
+multiv_pca <- PomaMultivariate(normalized, method = "pca", components = 5,
+                               scale = FALSE,
+                               center = FALSE)
+```
+
+```{r}
+multiv_pca$score_data %>% head()
+```
+
+```{r, fig.height = 4, fig.width = 10}
+p5 <- multiv_pca$screeplot +
+  ggtitle("Scree Plot")
+
+p6 <- multiv_pca$scoresplot +
+  ggtitle("Scores Plot")
+
+p5 + p6
+```
+
+## Random Forest
+
+```{r}
+rf_res <- PomaRandForest(normalized, folds = 3, nvar = 10)
+```
+
+Confusion matrix of the random forest model:  
+
+```{r}
+rf_res$confusion_matrix
+```
+
+Top 10 best predictors:  
+
+```{r, fig.height = 4, fig.width = 8}
+rf_res$gini_plot
+```
+

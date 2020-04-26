@@ -1,0 +1,185 @@
+* using log directory ‘/Users/pol/Dropbox/POMA/POMA/check/POMA.Rcheck’
+* using R version 3.6.1 (2019-07-05)
+* using platform: x86_64-apple-darwin15.6.0 (64-bit)
+* using session charset: UTF-8
+* using options ‘--no-manual --as-cran’
+* checking for file ‘POMA/DESCRIPTION’ ... OK
+* this is package ‘POMA’ version ‘1.5.0.9000’
+* package encoding: UTF-8
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: ‘Pol Castellano-Escuder <polcaes@gmail.com>’
+
+New submission
+
+Version contains large components (1.5.0.9000)
+
+Package has a FOSS license but eventually depends on the following
+package which restricts use:
+  RankProd
+
+Uses the superseded package: ‘snow’
+
+The Description field should not start with the package name,
+  'This package' or similar.
+
+Size of tarball: 6317703 bytes
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... NOTE
+Found the following hidden files and directories:
+  .github
+These were most likely included in error. See section ‘Package
+structure’ in the ‘Writing R Extensions’ manual.
+
+CRAN-pack does not know about
+  .github
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘POMA’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... NOTE
+Files ‘README.md’ or ‘NEWS.md’ cannot be checked without ‘pandoc’ being installed.
+Non-standard files/directories found at top level:
+  ‘Dockerfile’ ‘README.Rmd’ ‘docs’ ‘pkgdown’
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+File ‘POMA/R/zzz.R’:
+  .onAttach calls:
+    message(paste(poma_welcome, ver, shiny1, shiny2, info, sep = "\n"))
+
+Package startup functions should use ‘packageStartupMessage’ to
+  generate messages.
+See section ‘Good practice’ in '?.onAttach'.
+
+PomaBoxplots: no visible binding for global variable ‘ID’
+PomaBoxplots: no visible binding for global variable ‘value’
+PomaBoxplots: no visible binding for global variable ‘Group’
+PomaBoxplots: no visible binding for global variable ‘variable’
+PomaDensity: no visible binding for global variable ‘ID’
+PomaDensity: no visible binding for global variable ‘value’
+PomaDensity: no visible binding for global variable ‘Group’
+PomaDensity: no visible binding for global variable ‘variable’
+PomaImpute: no visible global function definition for ‘aggregate’
+PomaImpute: no visible binding for global variable ‘Group’
+PomaImpute : <anonymous>: no visible global function definition for
+  ‘median’
+PomaImpute: no visible binding for global variable ‘group’
+PomaLasso: no visible binding for global variable ‘estimate’
+PomaLasso: no visible binding for global variable ‘conf.low’
+PomaLasso: no visible binding for global variable ‘conf.high’
+PomaLasso: no visible global function definition for ‘coef’
+PomaLasso: no visible binding for global variable ‘term’
+PomaLimma: no visible global function definition for ‘model.matrix’
+PomaLimma: no visible global function definition for ‘as.formula’
+PomaMultivariate: no visible binding for global variable ‘PC1’
+PomaMultivariate: no visible binding for global variable ‘PC2’
+PomaMultivariate: no visible binding for global variable ‘Groups’
+PomaMultivariate: no visible binding for global variable
+  ‘Principal_Component’
+PomaMultivariate: no visible binding for global variable
+  ‘Percent_Variance_Explained’
+PomaMultivariate: no visible binding for global variable ‘comp1’
+PomaMultivariate: no visible binding for global variable ‘comp2’
+PomaMultivariate: no visible binding for global variable ‘Component’
+PomaMultivariate: no visible binding for global variable ‘value’
+PomaMultivariate: no visible binding for global variable ‘variable’
+PomaMultivariate: no visible binding for global variable ‘Variable’
+PomaMultivariate: no visible binding for global variable ‘features’
+PomaMultivariate: no visible binding for global variable ‘sd’
+PomaNorm: no visible binding for global variable ‘var’
+PomaNorm : <anonymous>: no visible global function definition for ‘sd’
+PomaOddsRatio: no visible binding for global variable ‘Group’
+PomaOddsRatio: no visible global function definition for ‘glm’
+PomaOddsRatio: no visible global function definition for ‘binomial’
+PomaOddsRatio: no visible global function definition for ‘coef’
+PomaOddsRatio: no visible global function definition for
+  ‘confint.default’
+PomaOddsRatio: no visible binding for global variable ‘X2.5..’
+PomaOddsRatio: no visible binding for global variable ‘X97.5..’
+PomaOddsRatio: no visible binding for global variable ‘OddsRatio’
+PomaOddsRatio: no visible binding for global variable ‘feature’
+PomaOddsRatio: no visible binding for global variable ‘CIHigh’
+PomaOddsRatio: no visible binding for global variable ‘CILow’
+PomaRandForest: no visible binding for global variable ‘OOB’
+PomaRandForest: no visible global function definition for ‘reorder’
+PomaRandForest: no visible binding for global variable ‘real_names’
+PomaRandForest: no visible binding for global variable
+  ‘MeanDecreaseGini’
+PomaRankProd: no visible binding for global variable ‘gene.index’
+PomaUnivariate: no visible global function definition for ‘aggregate’
+PomaUnivariate: no visible binding for global variable ‘.’
+PomaUnivariate : stat: no visible global function definition for
+  ‘t.test’
+PomaUnivariate: no visible global function definition for ‘p.adjust’
+PomaUnivariate: no visible binding for global variable ‘pvalue’
+PomaUnivariate : stat2: no visible global function definition for
+  ‘anova’
+PomaUnivariate : stat2: no visible global function definition for ‘aov’
+PomaUnivariate: no visible global function definition for ‘anova’
+PomaUnivariate: no visible global function definition for ‘aov’
+PomaUnivariate: no visible global function definition for ‘as.formula’
+PomaUnivariate : <anonymous>: no visible global function definition for
+  ‘wilcox.test’
+PomaUnivariate : <anonymous>: no visible global function definition for
+  ‘kruskal.test’
+PomaVolcano: no visible binding for global variable ‘FC’
+PomaVolcano: no visible binding for global variable ‘pvalue’
+PomaVolcano: no visible binding for global variable ‘threshold’
+Undefined global functions or variables:
+  . CIHigh CILow Component FC Group Groups ID MeanDecreaseGini OOB
+  OddsRatio PC1 PC2 Percent_Variance_Explained Principal_Component
+  Variable X2.5.. X97.5.. aggregate anova aov as.formula binomial coef
+  comp1 comp2 conf.high conf.low confint.default estimate feature
+  features gene.index glm group kruskal.test median model.matrix
+  p.adjust pvalue real_names reorder sd t.test term threshold value var
+  variable wilcox.test
+Consider adding
+  importFrom("stats", "aggregate", "anova", "aov", "as.formula",
+             "binomial", "coef", "confint.default", "glm",
+             "kruskal.test", "median", "model.matrix", "p.adjust",
+             "reorder", "sd", "t.test", "var", "wilcox.test")
+to your NAMESPACE file.
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... NONE
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’ [197s/211s]
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 4 NOTEs

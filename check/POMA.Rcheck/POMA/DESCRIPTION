@@ -1,6 +1,6 @@
 Package: POMA
 Title: R Package for Statistical Analysis of Mass Spectrometry Data
-Version: 0.99.0
+Version: 1.5.0.9000
 Authors@R: 
     person(given = "Pol",
            family = "Castellano-Escuder",
@@ -15,41 +15,21 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 biocViews:
-Imports:
-    Biobase,
-    broom,
-    clisymbols,
-    crayon,
-    dplyr,
-    glmnet,
-    ggplot2,
-    ggrepel,
-    impute,
-    janitor,
-    limma,
-    magrittr,
-    mixOmics (>= 6.10.9),
-    MSnbase (>= 2.12.0),
-    plotly,
-    randomForest,
-    RankProd,
-    reshape2,
-    snow,
-    tibble,
-    tidyr,
-    stringr
-Suggests: 
-    covr,
-    tidyverse,
-    testthat (>= 2.3.2),
-    knitr,
-    rmarkdown,
-    patchwork,
-    prettydoc
+Imports: Biobase, broom, clisymbols, crayon, dplyr, glmnet, ggplot2,
+        ggrepel, impute, janitor, limma, magrittr, mixOmics, MSnbase
+        (>= 2.12.0), plotly, randomForest, RankProd, reshape2, snow,
+        tibble, tidyr, stringr
+Suggests: covr, tidyverse, testthat (>= 2.3.2), knitr, rmarkdown,
+        patchwork, prettydoc
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: R (>= 3.6.0)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA
 BugReports: https://github.com/pcastellanoescuder/POMA/issues
-
+NeedsCompilation: no
+Packaged: 2020-04-26 21:09:27 UTC; pol
+Author: Pol Castellano-Escuder [aut, cre]
+    (<https://orcid.org/0000-0001-6466-877X>)
+Maintainer: Pol Castellano-Escuder <polcaes@gmail.com>
+Built: R 3.6.1; ; 2020-04-26 21:10:19 UTC; unix
