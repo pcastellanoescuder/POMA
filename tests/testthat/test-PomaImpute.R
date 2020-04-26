@@ -27,7 +27,6 @@ test_that("PomaImpute works", {
   e_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = F, RemoveNA = T, cutoff = 20))))
   f_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = F, RemoveNA = T, cutoff = 10))))
   
-  
   g <- PomaImpute(testimput, method = "half_min", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
   h <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
 
@@ -62,11 +61,11 @@ test_that("PomaImpute works", {
   expect_equal(a, b)
   expect_equal(b, c)
   expect_equal(a, c)
-  expect_false(a == d)
-  expect_false(b == d)
-  expect_false(c == d)
+  expect_equal(a, d)
+  expect_equal(b, d)
+  expect_equal(c, d)
 
-  expect_true(d != e)
+  expect_equal(d, e)
   expect_equal(c, e)
   expect_equal(e, f)
   expect_equal(e, e_rf)
@@ -128,6 +127,26 @@ test_that("PomaImpute works", {
   
   expect_error(PomaImpute(method = "knn"))
   expect_error(PomaImpute(iris, method = "knn"))
+  
+  #### 
+  
+  data("st000336")
+  
+  a_2 <- PomaImpute(st000336, method = "half_min")
+  b_2 <- PomaImpute(st000336, method = "median")
+  c_2 <- PomaImpute(st000336, method = "mean")
+  d_2 <- PomaImpute(st000336, method = "min")
+  e_2 <- PomaImpute(st000336, method = "knn")
+  f_2 <- PomaImpute(st000336, method = "rf")
+  
+  ##
+  
+  expect_false(all(Biobase::exprs(a_2) == Biobase::exprs(b_2)))
+  expect_false(all(Biobase::exprs(b_2) == Biobase::exprs(c_2)))
+  expect_false(all(Biobase::exprs(c_2) == Biobase::exprs(d_2)))
+  expect_false(all(Biobase::exprs(d_2) == Biobase::exprs(e_2)))
+  expect_false(all(Biobase::exprs(e_2) == Biobase::exprs(f_2)))
+  expect_false(all(Biobase::exprs(f_2) == Biobase::exprs(a_2)))
   
 })
 

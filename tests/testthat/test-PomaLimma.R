@@ -4,17 +4,17 @@ test_that("PomaLimma works", {
 
   data("st000284")
 
-  a <- PomaLimma(st000284, contrast = "C-H", covariates = FALSE, adjust = "fdr")
-  b <- PomaLimma(st000284, contrast = "C-H", covariates = FALSE, adjust = "bonferroni")
-  c <- PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fdr")
-  d <- PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "bonferroni")
+  a <- PomaLimma(st000284, contrast = "CRC-Polyp", covariates = FALSE, adjust = "fdr")
+  b <- PomaLimma(st000284, contrast = "CRC-Polyp", covariates = FALSE, adjust = "bonferroni")
+  c <- PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fdr")
+  d <- PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "bonferroni")
 
   ####
 
   expect_error(PomaLimma(st000284, covariates = FALSE, adjust = "fdr"))
   expect_error(PomaLimma(st000284, contrast = NULL))
-  expect_warning(PomaLimma(st000284, contrast = "C-H", covariates = FALSE))
-  expect_warning(PomaLimma(st000284, contrast = "C-H", covariates = TRUE))
+  expect_warning(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = FALSE))
+  expect_warning(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE))
 
 
   ####
@@ -31,13 +31,13 @@ test_that("PomaLimma works", {
   ####
 
   Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
-  expect_error(PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fdr"))
-  expect_error(PomaLimma(st000284, contrast = "C-H", covariates = TRUE, adjust = "fd"))
+  expect_error(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fdr"))
+  expect_error(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fd"))
   
   ##
   
-  expect_error(PomaLimma(contrast = "C-H"))
-  expect_error(PomaLimma(iris, contrast = "C-H"))
+  expect_error(PomaLimma(contrast = "CRC-Polyp"))
+  expect_error(PomaLimma(iris, contrast = "CRC-Polyp"))
   
 })
 

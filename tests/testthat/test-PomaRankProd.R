@@ -3,24 +3,29 @@ context("PomaRankProd")
 test_that("PomaRankProd works", {
 
   data("st000284")
-
-  toy_data <- POMA::PomaNorm(st000284, method = "log_scaling")
-  Biobase::pData(toy_data)$groups <- c(rep("C", 100), rep("H", 29), rep("G", 29))
+  
+  target <- Biobase::pData(st000284)[1:100,] %>% tibble::rownames_to_column("ID")
+  e <- Biobase::exprs(st000284)[,1:100]
+  
+  data <- PomaMSnSetClass(target = target, features = t(e))
+  
+  toy_data <- POMA::PomaNorm(data, method = "log_scaling")
+  Biobase::pData(toy_data)$groups <- c(rep("C", 25), rep("G", 25))
 
   ##
 
-  RP_one <- PomaRankProd(st000284, logged = TRUE, logbase = 2)
-  RP_two <- PomaRankProd(st000284, logged = TRUE, logbase = 10)
+  RP_one <- PomaRankProd(data, logged = TRUE, logbase = 2)
+  RP_two <- PomaRankProd(data, logged = TRUE, logbase = 10)
 
-  RP_five <- PomaRankProd(st000284, cutoff = 0.05, method = "pfp")
-  RP_six <- PomaRankProd(st000284, cutoff = 0.05, method = "pval")
+  RP_five <- PomaRankProd(data, cutoff = 0.05, method = "pfp")
+  RP_six <- PomaRankProd(data, cutoff = 0.05, method = "pval")
 
   ##
 
   expect_error(PomaRankProd())
-  expect_error(PomaRankProd(st000284, method = "pfd"))
+  expect_error(PomaRankProd(data, method = "pfd"))
   expect_error(PomaRankProd(toy_data))
-  expect_warning(PomaRankProd(st000284))
+  expect_warning(PomaRankProd(data))
   expect_error(PomaRankProd(iris))
 
   ##

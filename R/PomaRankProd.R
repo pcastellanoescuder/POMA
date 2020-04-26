@@ -18,7 +18,7 @@
 #'
 #' @importFrom RankProd RankProducts topGene
 #' @import ggplot2
-#' @importFrom crayon red
+#' @importFrom crayon red blue
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
 PomaRankProd <- function(data,
@@ -43,20 +43,18 @@ PomaRankProd <- function(data,
   }
 
   Biobase::varLabels(data)[1] <- "Group"
-  Group <- Biobase::pData(data)$Group
+  Group <- as.factor(Biobase::pData(data)$Group)
 
-  if (length(levels(as.factor(Group))) > 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Your data has more than two groups!"))
+  if (length(levels(Group)) != 2) {
+    stop(crayon::red(clisymbols::symbol$cross, "Data must have two groups..."))
   }
 
-  data.cl <- as.numeric(as.factor(Group))
-  data.cl[data.cl == 1] <- 0
-  data.cl[data.cl == 2] <- 1
-
+  data_class <- as.numeric(ifelse(Group == levels(Group)[1], 0, 1))
+  
   class1 <- levels(as.factor(Group))[1]
   class2 <- levels(as.factor(Group))[2]
 
-  RP <- RankProducts(Biobase::exprs(data), data.cl, logged = logged, na.rm = TRUE, plot = FALSE,
+  RP <- RankProducts(Biobase::exprs(data), data_class, logged = logged, na.rm = TRUE, plot = FALSE,
                      RandomPairs = paired,
                      rand = 123,
                      gene.names = rownames(data))
@@ -68,6 +66,10 @@ PomaRankProd <- function(data,
   one <- as.data.frame(top_rank$Table1)
   two <- as.data.frame(top_rank$Table2)
 
+  if(nrow(one) == 0 & nrow(two) == 0){
+    stop(crayon::blue(clisymbols::symbol$info, "No significant features found..."))
+  }
+  
   colnames(one)[3] <- paste0("FC: ", class1, "/", class2)
   colnames(two)[3] <- paste0("FC: ", class1, "/", class2)
 

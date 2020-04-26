@@ -2,16 +2,18 @@ context("PomaOddsRatio")
 
 test_that("PomaOddsRatio works", {
 
-  data("st000284")
+  data("st000336")
 
-  norm_none <- PomaNorm(st000284, method = "none")
-  norm_ls <- PomaNorm(st000284, method = "log_scaling")
+  imputed <- POMA::PomaImpute(st000336, method = "knn")
+  
+  norm_none <- PomaNorm(imputed, method = "none")
+  norm_ls <- PomaNorm(imputed, method = "log_scaling")
 
-  a <- PomaOddsRatio(norm_none)$OddsRatioPlot
-  b <- PomaOddsRatio(norm_ls)$OddsRatioPlot
+  a <- PomaOddsRatio(norm_none, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"))$OddsRatioPlot
+  b <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"))$OddsRatioPlot
 
-  c <- PomaOddsRatio(norm_ls, feature_name = "methyl_succinate_131_0_113_0")$OddsRatioPlot
-  d <- PomaOddsRatio(norm_ls, feature_name = c("methyl_succinate_131_0_113_0", "linoleic_acid_277_1_259_0"))$OddsRatioPlot
+  c <- PomaOddsRatio(norm_ls, feature_name = "glutamic_acid")$OddsRatioPlot
+  d <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "arginine"))$OddsRatioPlot
 
   df_a <- layer_data(a)
   df_b <- layer_data(b)
@@ -28,9 +30,9 @@ test_that("PomaOddsRatio works", {
 
   e <- PomaOddsRatio(norm_none)$OddsRatioTable
   f <- PomaOddsRatio(norm_ls)$OddsRatioTable
-  g <- PomaOddsRatio(norm_ls, feature_name = "methyl_succinate_131_0_113_0")$OddsRatioTable
-  h <- PomaOddsRatio(norm_ls, feature_name = c("methyl_succinate_131_0_113_0", "linoleic_acid_277_1_259_0"))$OddsRatioTable
-  h_1 <- PomaOddsRatio(norm_ls, feature_name = c("methyl_succinate_131_0_113_0", "linoleic_acid_277_1_259_0"), covariates = TRUE)$OddsRatioTable
+  g <- PomaOddsRatio(norm_ls, feature_name = "glutamic_acid")$OddsRatioTable
+  h <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "arginine"))$OddsRatioTable
+  h_1 <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "arginine"), covariates = TRUE)$OddsRatioTable
 
   ##
 
@@ -50,9 +52,9 @@ test_that("PomaOddsRatio works", {
 
   ##
 
-  k <- PomaOddsRatio(norm_ls, feature_name = NULL)$OddsRatioPlot
-  l <- PomaOddsRatio(norm_ls, feature_name = NULL, showCI = FALSE)$OddsRatioPlot
-  m <- PomaOddsRatio(norm_ls, feature_name = NULL, showCI = FALSE, covariates = TRUE)$OddsRatioPlot
+  k <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"))$OddsRatioPlot
+  l <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"), showCI = FALSE)$OddsRatioPlot
+  m <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"), showCI = FALSE, covariates = TRUE)$OddsRatioPlot
 
   df_k <- layer_data(k)
   df_l <- layer_data(l)
@@ -66,13 +68,13 @@ test_that("PomaOddsRatio works", {
   ##
 
   expect_error(PomaOddsRatio(norm_ls, feature_name = "hello"))
-  expect_error(PomaOddsRatio(norm_ls, feature_name = "methyl_succinate_131_0_113_"))
-  expect_error(PomaOddsRatio(norm_ls, feature_name = c("methyl_succinate_131_0_113_", "linoleic_acid_277_1_259_0")))
+  expect_error(PomaOddsRatio(norm_ls, feature_name = "glutamic_aci"))
+  expect_error(PomaOddsRatio(norm_ls, feature_name = c("glutamic_aci", "arginine")))
 
   ##
 
-  Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
-  expect_error(PomaOddsRatio(st000284, covariates = TRUE))
+  Biobase::pData(imputed) <- Biobase::pData(imputed)[1]
+  expect_error(PomaOddsRatio(imputed, covariates = TRUE))
   
   ##
   

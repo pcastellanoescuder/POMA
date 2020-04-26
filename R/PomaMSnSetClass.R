@@ -38,7 +38,8 @@ PomaMSnSetClass <- function(target,
   colnames(target)[1] <- "ID"
   target <- target %>% column_to_rownames("ID")
 
-  features <- features %>% as.data.frame() %>% janitor::clean_names() %>% as.matrix()
+  features <- features %>% as.data.frame() %>% janitor::clean_names()
+  features <- as.matrix(sapply(features, function(x)as.numeric(as.character(x))))
   rownames(features) <- rownames(target)
 
   ## create a MSnSet object

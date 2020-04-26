@@ -14,8 +14,8 @@ test_that("PomaDensity works", {
 
   e <- PomaDensity(norm_none, group = "samples")
 
-  f <- PomaDensity(norm_ls, group = "features", feature_name = "methyl_succinate_131_0_113_0")
-  g <- PomaDensity(norm_ls, group = "features", feature_name = c("methyl_succinate_131_0_113_0", "linoleic_acid_277_1_259_0"))
+  f <- PomaDensity(norm_ls, group = "features", feature_name = "methyl_succinate")
+  g <- PomaDensity(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
 
   df_a <- layer_data(a)
   df_b <- layer_data(b)
@@ -45,8 +45,8 @@ test_that("PomaDensity works", {
   expect_error(PomaDensity(norm_ls, group = "features", feature_name = "hello"))
 
   expect_error(PomaDensity(norm_ls, feature_name = "hello"))
-  expect_error(PomaDensity(norm_ls, feature_name = "methyl_succinate_131_0_113_"))
-  expect_error(PomaDensity(norm_ls, feature_name = c("methyl_succinate_131_0_113_", "linoleic_acid_277_1_259_0")))
+  expect_error(PomaDensity(norm_ls, feature_name = "methyl_succinat"))
+  expect_error(PomaDensity(norm_ls, feature_name = c("methyl_succinat", "linoleic_acid")))
   
   ##
   

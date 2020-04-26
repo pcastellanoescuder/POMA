@@ -2,13 +2,13 @@ context("PomaLasso")
 
 test_that("PomaLasso works", {
 
-  data("st000284")
+  data("st000336")
 
-  imputed <- POMA::PomaImpute(st000284, method = "knn")
+  imputed <- POMA::PomaImpute(st000336, method = "knn")
   normalized <- POMA::PomaNorm(imputed, method = "log_scaling")
 
   normalized_test <- POMA::PomaNorm(imputed, method = "log_scaling")
-  Biobase::pData(normalized_test)$Group <- c(rep("C", 100), rep("H", 29), rep("G", 29))
+  Biobase::pData(normalized_test)$Group <- c(rep("C", 30), rep("G", 27))
 
   lasso_res <- PomaLasso(normalized, method = "lasso")
   ridge_res <- PomaLasso(normalized, method = "ridge")

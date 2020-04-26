@@ -3,17 +3,20 @@ context("PomaUnivariate")
 test_that("PomaUnivariate works", {
 
   data("st000284")
+  data("st000336")
 
-  dims_for_ttest_and_mann <- c(ncol(t(Biobase::exprs(st000284))), 6)
+  st000336 <- POMA::PomaImpute(st000336, method = "knn")
+  
+  dims_for_ttest_and_mann <- c(ncol(t(Biobase::exprs(st000336))), 6)
   dims_for_aov <- c(ncol(t(Biobase::exprs(st000284))), length(levels(as.factor(Biobase::pData(st000284)[,1]))) + 2)
   dims_for_krusk <- c(ncol(t(Biobase::exprs(st000284))), length(levels(as.factor(Biobase::pData(st000284)[,1]))) + 3)
   
-  univ_ttest <- PomaUnivariate(st000284, method = "ttest", adjust = "fdr")
+  univ_ttest <- PomaUnivariate(st000336, method = "ttest", adjust = "fdr")
   univ_aov <- PomaUnivariate(st000284, covariates = F, method = "anova", adjust = "fdr")
   univ_aov_cov <- PomaUnivariate(st000284, covariates = T, method = "anova", adjust = "fdr")
   univ_aov_cov2 <- PomaUnivariate(st000284, covariates = T, method = "anova", adjust = "bonferroni")
 
-  univ_mann <- PomaUnivariate(st000284, method = "mann", adjust = "fdr")
+  univ_mann <- PomaUnivariate(st000336, method = "mann", adjust = "fdr")
   univ_kruskal <- PomaUnivariate(st000284, method = "kruskal", adjust = "fdr")
   univ_kruskal2 <- PomaUnivariate(st000284, method = "kruskal", adjust = "BY")
 
@@ -40,7 +43,7 @@ test_that("PomaUnivariate works", {
   expect_error(PomaUnivariate(st000284, covariates = T, method = "anov", adjust = "fdr"))
   expect_error(PomaUnivariate(st000284, covariates = T, adjust = "fdr"))
   
-  expect_error(PomaUnivariate(st000284, method = "ttest", adjust = "fd"))
+  expect_error(PomaUnivariate(st000336, method = "ttest", adjust = "fd"))
   
   Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
   expect_error(PomaUnivariate(st000284, method = "anova", covariates = TRUE, adjust = "fdr"))

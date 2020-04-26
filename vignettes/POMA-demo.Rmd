@@ -35,7 +35,6 @@ devtools::install_github("pcastellanoescuder/POMA")
 
 ```{r, warning = FALSE, message = FALSE, comment = FALSE}
 library(POMA)
-library(Biobase) # to subset example data
 library(ggplot2) # to tune POMA default plots
 library(patchwork) # to show plots together
 library(tidyverse) # it's just tidyverse;)
@@ -43,20 +42,20 @@ library(tidyverse) # it's just tidyverse;)
 
 # Load or Create an `MSnbase::MSnSet()` object
 
-We can load an `MSnSet` object directly or we can create our own object from matrix and/or data frames using `PomaMSnSetClass` function. See:
+We can load an `MSnSet` object directly or we can create our own object from matrix and/or data frames using `PomaMSnSetClass` function.  
 
 ```{r}
 # load example data
-data(st000284)
+data("st000336")
 
-# subset example data
-my_features <- t(exprs(st000284))[c(1:8, 120:127) ,]
-
-my_target <- pData(st000284)[c(1:8, 120:127) ,]
-my_target <- my_target %>% rownames_to_column("ID")
-
-# create a smaller MSnSet object from example data
-example_data <- PomaMSnSetClass(features = my_features, target = my_target)
+# # subset example data
+# my_features <- t(exprs(st000284))[c(1:8, 120:127) ,]
+# 
+# my_target <- pData(st000284)[c(1:8, 120:127) ,]
+# my_target <- my_target %>% rownames_to_column("ID")
+# 
+# # create a smaller MSnSet object from example data
+# example_data <- PomaMSnSetClass(features = my_features, target = my_target)
 ```
 
 # Pre Processing
@@ -66,7 +65,7 @@ example_data <- PomaMSnSetClass(features = my_features, target = my_target)
 Often in mass spectometry analyses we have to deal with some missing values in our data. To face this in **POMA** just run the following line of code to impute your missings!
 
 ```{r}
-imputed <- PomaImpute(example_data, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
+imputed <- PomaImpute(st000336, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
 imputed
 ```
 

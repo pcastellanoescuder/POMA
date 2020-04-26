@@ -40,7 +40,7 @@ Let's create a smaller `MSnSet` object to better explore normalization effects.
 
 ```{r}
 # load example data
-data(st000284)
+data("st000284")
 
 # subset example data
 my_features <- t(exprs(st000284))[c(1:8, 120:127) ,]
