@@ -131,7 +131,7 @@ ttest_res %>%
 ### Limma
 
 ```{r}
-limma_res <- PomaLimma(normalized, contrast = "C-H", covariates = TRUE, adjust = "fdr")
+limma_res <- PomaLimma(normalized, contrast = "Controls-DMD", covariates = FALSE, adjust = "fdr")
 limma_res %>% 
   rownames_to_column() %>% 
   head()
@@ -163,12 +163,8 @@ p5 + p6
 
 ## Random Forest
 
-Here we will use the whole dataset because a larger sample size is needed to perform a random forest.  
 ```{r}
-imputed2 <- PomaImpute(st000284, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
-normalized2 <- PomaNorm(imputed2, method = "log_pareto")
-
-rf_res <- PomaRandForest(normalized2, folds = 3, nvar = 10)
+rf_res <- PomaRandForest(normalized, folds = 3, nvar = 10)
 ```
 
 Confusion matrix of the random forest model:  
