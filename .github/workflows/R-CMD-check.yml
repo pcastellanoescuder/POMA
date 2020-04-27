@@ -20,8 +20,8 @@ jobs:
         config:
           - {os: windows-latest, r: '3.6.0'}
           - {os: macOS-latest, r: '3.6.0'}
-          - {os: macOS-latest, r: 'devel'}
-          - {os: ubuntu-16.04, r: '3.6.0', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          # - {os: macOS-latest, r: 'devel'}
+          - {os: ubuntu-latest, r: '3.6.0', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"} # 16.04
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -58,7 +58,6 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          apt install libboost-all-dev
 
       - name: Install dependencies
         run: |

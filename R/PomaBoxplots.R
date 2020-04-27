@@ -64,7 +64,7 @@ PomaBoxplots <- function(data,
       group_by(ID) %>%
       ggplot(aes(ID, value, color = Group)) +
       geom_boxplot() +
-      {if(jitter)geom_jitter()} +
+      {if(jitter)geom_jitter(position = position_jitterdodge())} +
       theme_bw() +
       xlab("") +
       ylab("Value") +
@@ -81,7 +81,7 @@ PomaBoxplots <- function(data,
         group_by(Group) %>%
         ggplot(aes(variable, value, color = Group)) +
         geom_boxplot() +
-        {if(jitter)geom_jitter()} +
+        {if(jitter)geom_jitter(position = position_jitterdodge())} +
         theme_bw() +
         xlab("") +
         ylab("Value") +
@@ -96,7 +96,7 @@ PomaBoxplots <- function(data,
         filter(variable %in% feature_name) %>%
         ggplot(aes(variable, value, color = Group)) +
         geom_boxplot() +
-        {if(jitter)geom_jitter()} +
+        {if(jitter)geom_jitter(position = position_jitterdodge())} +
         theme_bw() +
         xlab("") +
         ylab("Value") +

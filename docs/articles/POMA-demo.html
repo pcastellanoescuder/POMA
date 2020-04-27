@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
       </span>
     </div>
 
@@ -92,7 +92,7 @@
       <h1 data-toc-skip>POMA Workflow Overview</h1>
                         <h4 class="author">Pol Castellano-Escuder</h4>
             
-            <h4 class="date">2020-04-21</h4>
+            <h4 class="date">2020-04-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pcastellanoescuder/POMA/blob/master/vignettes/POMA-demo.Rmd"><code>vignettes/POMA-demo.Rmd</code></a></small>
       <div class="hidden name"><code>POMA-demo.Rmd</code></div>
@@ -105,13 +105,12 @@
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="co"># install.packages("devtools")</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"pcastellanoescuder/POMA"</span>)</pre></body></html></div>
+<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"pcastellanoescuder/POMA"</span>)</pre></body></html></div>
 </div>
 <div id="load-poma" class="section level1">
 <h1 class="hasAnchor">
 <a href="#load-poma" class="anchor"></a>Load POMA</h1>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">POMA</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Biobase</span>) <span class="co"># to subset example data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>) <span class="co"># to tune POMA default plots</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">patchwork</span>) <span class="co"># to show plots together</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>) <span class="co"># it's just tidyverse;)</span></pre></body></html></div>
@@ -119,18 +118,18 @@
 <div id="load-or-create-an-msnbasemsnset-object" class="section level1">
 <h1 class="hasAnchor">
 <a href="#load-or-create-an-msnbasemsnset-object" class="anchor"></a>Load or Create an <code>MSnbase::MSnSet()</code> object</h1>
-<p>We can load an <code>MSnSet</code> object directly or we can create our own object from matrix and/or data frames using <code>PomaMSnSetClass</code> function. See:</p>
+<p>We can load an <code>MSnSet</code> object directly or we can create our own object from matrix and/or data frames using <code>PomaMSnSetClass</code> function.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># load example data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">st000284</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"st000336"</span>)
 
-<span class="co"># subset example data</span>
-<span class="no">my_features</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">st000284</span>))[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>:<span class="fl">8</span>, <span class="fl">120</span>:<span class="fl">127</span>) ,]
-
-<span class="no">my_target</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">st000284</span>)[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>:<span class="fl">8</span>, <span class="fl">120</span>:<span class="fl">127</span>) ,]
-<span class="no">my_target</span> <span class="kw">&lt;-</span> <span class="no">my_target</span> <span class="kw">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">"ID"</span>)
-
-<span class="co"># create a smaller MSnSet object from example data</span>
-<span class="no">example_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaMSnSetClass.html">PomaMSnSetClass</a></span>(<span class="kw">features</span> <span class="kw">=</span> <span class="no">my_features</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="no">my_target</span>)</pre></body></html></div>
+<span class="co"># # subset example data</span>
+<span class="co"># my_features &lt;- t(exprs(st000284))[c(1:8, 120:127) ,]</span>
+<span class="co"># </span>
+<span class="co"># my_target &lt;- pData(st000284)[c(1:8, 120:127) ,]</span>
+<span class="co"># my_target &lt;- my_target %&gt;% rownames_to_column("ID")</span>
+<span class="co"># </span>
+<span class="co"># # create a smaller MSnSet object from example data</span>
+<span class="co"># example_data &lt;- PomaMSnSetClass(features = my_features, target = my_target)</span></pre></body></html></div>
 </div>
 <div id="pre-processing" class="section level1">
 <h1 class="hasAnchor">
@@ -139,24 +138,22 @@
 <h2 class="hasAnchor">
 <a href="#missing-value-imputation" class="anchor"></a>Missing Value Imputation</h2>
 <p>Often in mass spectometry analyses we have to deal with some missing values in our data. To face this in <strong>POMA</strong> just run the following line of code to impute your missings!</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">imputed</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaImpute.html">PomaImpute</a></span>(<span class="no">example_data</span>, <span class="kw">ZerosAsNA</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">RemoveNA</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"knn"</span>)
-<span class="co">## Warning in PomaImpute(example_data, ZerosAsNA = T, RemoveNA = T, cutoff = 20, :</span>
-<span class="co">## No missing values detected in your data</span>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">imputed</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaImpute.html">PomaImpute</a></span>(<span class="no">st000336</span>, <span class="kw">ZerosAsNA</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">RemoveNA</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"knn"</span>)
 <span class="no">imputed</span>
 <span class="co">## MSnSet (storageMode: lockedEnvironment)</span>
-<span class="co">## assayData: 113 features, 16 samples </span>
+<span class="co">## assayData: 30 features, 57 samples </span>
 <span class="co">##   element names: exprs </span>
 <span class="co">## protocolData: none</span>
 <span class="co">## phenoData</span>
-<span class="co">##   sampleNames: Subject_157 Subject_200 ... Subject_265 (16 total)</span>
-<span class="co">##   varLabels: group age_at_consent ... drink_alcohol (5 total)</span>
+<span class="co">##   sampleNames: DMD004.1.U02 DMD005.1.U02 ... DMD173.1.U02 (57 total)</span>
+<span class="co">##   varLabels: group steroids</span>
 <span class="co">##   varMetadata: labelDescription</span>
 <span class="co">## featureData: none</span>
 <span class="co">## experimentData: use 'experimentData(object)'</span>
 <span class="co">## Annotation:  </span>
 <span class="co">## - - - Processing information - - -</span>
-<span class="co">## Imputed (knn): Tue Apr 21 23:32:36 2020 </span>
-<span class="co">##  MSnbase version: 2.10.1</span></pre></body></html></div>
+<span class="co">## Imputed (knn): Mon Apr 27 13:24:15 2020 </span>
+<span class="co">##  MSnbase version: 2.12.0</span></pre></body></html></div>
 <p><em>Note that the object has been updated with imputation information.</em></p>
 </div>
 <div id="normalization" class="section level2">
@@ -166,20 +163,20 @@
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">normalized</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">imputed</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"log_pareto"</span>)
 <span class="no">normalized</span>
 <span class="co">## MSnSet (storageMode: lockedEnvironment)</span>
-<span class="co">## assayData: 113 features, 16 samples </span>
+<span class="co">## assayData: 30 features, 57 samples </span>
 <span class="co">##   element names: exprs </span>
 <span class="co">## protocolData: none</span>
 <span class="co">## phenoData</span>
-<span class="co">##   sampleNames: Subject_157 Subject_200 ... Subject_265 (16 total)</span>
-<span class="co">##   varLabels: group age_at_consent ... drink_alcohol (5 total)</span>
+<span class="co">##   sampleNames: DMD004.1.U02 DMD005.1.U02 ... DMD173.1.U02 (57 total)</span>
+<span class="co">##   varLabels: group steroids</span>
 <span class="co">##   varMetadata: labelDescription</span>
 <span class="co">## featureData: none</span>
 <span class="co">## experimentData: use 'experimentData(object)'</span>
 <span class="co">## Annotation:  </span>
 <span class="co">## - - - Processing information - - -</span>
-<span class="co">## Imputed (knn): Tue Apr 21 23:32:36 2020 </span>
-<span class="co">## Normalised (log_pareto): Tue Apr 21 23:32:36 2020 </span>
-<span class="co">##  MSnbase version: 2.10.1</span></pre></body></html></div>
+<span class="co">## Imputed (knn): Mon Apr 27 13:24:15 2020 </span>
+<span class="co">## Normalised (log_pareto): Mon Apr 27 13:24:15 2020 </span>
+<span class="co">##  MSnbase version: 2.12.0</span></pre></body></html></div>
 <p><em>Note that the object has been updated with normalization information.</em></p>
 <div id="normalization-effect" class="section level3">
 <h3 class="hasAnchor">
@@ -223,42 +220,42 @@
 <span class="no">ttest_res</span> <span class="kw">%&gt;%</span>
   <span class="fu">rownames_to_column</span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()
-<span class="co">##                          rowname mean_C mean_H Fold_Change_Ratio</span>
-<span class="co">## 1 x1_methyladenosine_282_1_150_0  -0.17   0.17                -1</span>
-<span class="co">## 2 x1_methylhistamine_126_0_109_0   0.06  -0.06                -1</span>
-<span class="co">## 3    x2_aminoadipate_160_1_116_0  -0.11   0.11                -1</span>
-<span class="co">## 4    x2_deoxyuridine_229_1_113_0   0.12  -0.12                -1</span>
-<span class="co">## 5  x3_nitro_tyrosine_225_0_179_3  -0.02   0.02                -1</span>
-<span class="co">## 6  x4_pyridoxic_acid_182_1_138_0  -0.04   0.04                -1</span>
-<span class="co">##   Difference_Of_Means     pvalue adj_pvalue</span>
-<span class="co">## 1                0.34 0.05646815  0.4465232</span>
-<span class="co">## 2               -0.12 0.55542663  0.9229884</span>
-<span class="co">## 3                0.22 0.32871427  0.9068738</span>
-<span class="co">## 4               -0.24 0.12678979  0.7514041</span>
-<span class="co">## 5                0.04 0.85409255  0.9661294</span>
-<span class="co">## 6                0.08 0.33464626  0.9068738</span></pre></body></html></div>
+<span class="co">##              rowname mean_Controls mean_DMD Fold_Change_Ratio</span>
+<span class="co">## 1 x1_methylhistidine         -0.44     0.12            -0.273</span>
+<span class="co">## 2 x3_methylhistidine         -0.52     0.14            -0.269</span>
+<span class="co">## 3            alanine         -0.31     0.08            -0.258</span>
+<span class="co">## 4           arginine         -0.09     0.02            -0.222</span>
+<span class="co">## 5         asparagine         -0.33     0.09            -0.273</span>
+<span class="co">## 6      aspartic_acid         -0.15     0.04            -0.267</span>
+<span class="co">##   Difference_Of_Means       pvalue   adj_pvalue</span>
+<span class="co">## 1                0.56 7.189501e-07 2.156850e-06</span>
+<span class="co">## 2                0.66 6.752457e-03 8.807553e-03</span>
+<span class="co">## 3                0.39 1.705051e-03 2.435787e-03</span>
+<span class="co">## 4                0.11 6.201234e-01 6.415069e-01</span>
+<span class="co">## 5                0.42 1.468845e-04 2.754085e-04</span>
+<span class="co">## 6                0.19 2.742384e-01 2.938269e-01</span></pre></body></html></div>
 </div>
 <div id="limma" class="section level3">
 <h3 class="hasAnchor">
 <a href="#limma" class="anchor"></a>Limma</h3>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">limma_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaLimma.html">PomaLimma</a></span>(<span class="no">normalized</span>, <span class="kw">contrast</span> <span class="kw">=</span> <span class="st">"C-H"</span>, <span class="kw">covariates</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">adjust</span> <span class="kw">=</span> <span class="st">"fdr"</span>)
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">limma_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaLimma.html">PomaLimma</a></span>(<span class="no">normalized</span>, <span class="kw">contrast</span> <span class="kw">=</span> <span class="st">"Controls-DMD"</span>, <span class="kw">covariates</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">adjust</span> <span class="kw">=</span> <span class="st">"fdr"</span>)
 <span class="no">limma_res</span> <span class="kw">%&gt;%</span>
   <span class="fu">rownames_to_column</span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()
-<span class="co">##                     rowname      logFC       AveExpr         t      P.Value</span>
-<span class="co">## 1     adenosine_268_1_136_0  1.0941068  6.250000e-05  4.774928 0.0003392003</span>
-<span class="co">## 2       cytosine_112_0_95_0  2.0066221 -6.250000e-05  2.890698 0.0123670284</span>
-<span class="co">## 3 cystathionine_221_1_134_0  0.7842311 -1.250000e-04  2.590037 0.0220722430</span>
-<span class="co">## 4            pep_166_9_79_0  0.5261762  6.250000e-05  2.368755 0.0335915762</span>
-<span class="co">## 5  aspartic_acid_132_0_88_0 -0.5127275  6.250000e-05 -2.284274 0.0393531497</span>
-<span class="co">## 6 hyppuric_acid_178_0_134_0  0.9449905 -1.734723e-18  2.257732 0.0413486219</span>
-<span class="co">##    adj.P.Val          B</span>
-<span class="co">## 1 0.03832964  0.4446795</span>
-<span class="co">## 2 0.69873710 -2.9730574</span>
-<span class="co">## 3 0.76412294 -3.5114557</span>
-<span class="co">## 4 0.76412294 -3.8963690</span>
-<span class="co">## 5 0.76412294 -4.0399615</span>
-<span class="co">## 6 0.76412294 -4.0846365</span></pre></body></html></div>
+<span class="co">##      rowname      logFC       AveExpr         t      P.Value    adj.P.Val</span>
+<span class="co">## 1 tryptophan -0.7043722 -2.526001e-18 -5.370089 8.483460e-07 2.545038e-05</span>
+<span class="co">## 2  ornithine -0.5793056 -7.017544e-05 -4.716228 1.086017e-05 1.564505e-04</span>
+<span class="co">## 3    lactate -0.7362500 -3.043375e-19 -4.557179 1.973487e-05 1.564505e-04</span>
+<span class="co">## 4     valine -0.6374500  3.347712e-18 -4.542278 2.086007e-05 1.564505e-04</span>
+<span class="co">## 5   pyruvate -0.6101333  1.754386e-05 -4.321312 4.696326e-05 2.817796e-04</span>
+<span class="co">## 6       a_kg -0.6932278  3.508772e-05 -4.197650 7.328780e-05 3.460676e-04</span>
+<span class="co">##          B</span>
+<span class="co">## 1 5.466927</span>
+<span class="co">## 2 3.026028</span>
+<span class="co">## 3 2.457038</span>
+<span class="co">## 4 2.404283</span>
+<span class="co">## 5 1.633631</span>
+<span class="co">## 6 1.212285</span></pre></body></html></div>
 </div>
 </div>
 <div id="multivariate-analysis" class="section level2">
@@ -271,13 +268,13 @@
                                <span class="kw">scale</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
                                <span class="kw">center</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">multiv_pca</span>$<span class="no">score_data</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>()
-<span class="co">##                 PC1     PC2     PC3     PC4     PC5</span>
-<span class="co">## Subject_157 -2.1331  0.6416 -1.7736 -0.7152  1.1245</span>
-<span class="co">## Subject_200 -1.2018  3.3485 -1.1165 -0.5593  0.2253</span>
-<span class="co">## Subject_133 -2.7435 -1.4739  1.8222 -4.0709 -2.5292</span>
-<span class="co">## Subject_250 -3.2063  3.6013 -2.8165  0.9181 -0.8596</span>
-<span class="co">## Subject_109 -0.8246  0.6975  2.0659  1.4457 -0.1973</span>
-<span class="co">## Subject_77  -1.4446  1.4515  4.5527  2.5258 -0.5139</span></pre></body></html></div>
+<span class="co">##                  PC1     PC2     PC3     PC4     PC5</span>
+<span class="co">## DMD004.1.U02 -2.5649  0.6355  0.7245  0.6534  0.2842</span>
+<span class="co">## DMD005.1.U02 -2.0100  0.5094  1.0782  0.7221  0.5130</span>
+<span class="co">## DMD007.1.U02 -1.3740 -0.8677  0.7206  0.1952 -0.1432</span>
+<span class="co">## DMD119.2.U02 -1.0940  0.6831 -0.4605  1.7888 -1.2811</span>
+<span class="co">## DMD137.1.U02 -1.0536 -1.0586  0.7100  0.3621  0.5450</span>
+<span class="co">## DMD148.2.U02 -2.8552  0.0986  0.4502 -0.2186 -0.0318</span></pre></body></html></div>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">p5</span> <span class="kw">&lt;-</span> <span class="no">multiv_pca</span>$<span class="no">screeplot</span> +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Scree Plot"</span>)
 
@@ -291,18 +288,12 @@
 <div id="random-forest" class="section level2">
 <h2 class="hasAnchor">
 <a href="#random-forest" class="anchor"></a>Random Forest</h2>
-<p>Here we will use the whole dataset because a larger sample size is needed to perform a random forest.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">imputed2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaImpute.html">PomaImpute</a></span>(<span class="no">st000284</span>, <span class="kw">ZerosAsNA</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">RemoveNA</span> <span class="kw">=</span> <span class="no">T</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"knn"</span>)
-<span class="co">## Warning in PomaImpute(st000284, ZerosAsNA = T, RemoveNA = T, cutoff = 20, : No</span>
-<span class="co">## missing values detected in your data</span>
-<span class="no">normalized2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">imputed2</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"log_pareto"</span>)
-
-<span class="no">rf_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaRandForest.html">PomaRandForest</a></span>(<span class="no">normalized2</span>, <span class="kw">folds</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">nvar</span> <span class="kw">=</span> <span class="fl">10</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">rf_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaRandForest.html">PomaRandForest</a></span>(<span class="no">normalized</span>, <span class="kw">folds</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">nvar</span> <span class="kw">=</span> <span class="fl">10</span>)</pre></body></html></div>
 <p>Confusion matrix of the random forest model:</p>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">rf_res</span>$<span class="no">confusion_matrix</span>
-<span class="co">##    C  H class.error</span>
-<span class="co">## C 14 11      0.4400</span>
-<span class="co">## H  9 19      0.3214</span></pre></body></html></div>
+<span class="co">##          Controls DMD class.error</span>
+<span class="co">## Controls        0   3      1.0000</span>
+<span class="co">## DMD             1  15      0.0625</span></pre></body></html></div>
 <p>Top 10 best predictors:</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">rf_res</span>$<span class="no">gini_plot</span></pre></body></html></div>
 <p><img src="POMA-demo_files/figure-html/unnamed-chunk-16-1.png" width="1600" style="display: block; margin: auto;"></p>
