@@ -38,9 +38,7 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages(c('remotes', 'BiocManager'))
-          BiocManager::install("mixOmics")
-          BiocManager::install("MSnbase")
+          install.packages(c('remotes'))
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
@@ -60,6 +58,12 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+          sudo apt install libboost-all-dev
+          sudo apt-get install libmpfr-dev
+          sudo apt-get install libnetcdf-dev
+          sudo su - -c "R -e \"install.packages('Rmpfr', repos = 'http://cran.rstudio.com/')\""
+          Rscript -e "install.packages('BiocManager')"
+          Rscript -e "BiocManager::install(c('mixOmics', 'MSnbase'))"
 
       - name: Install dependencies
         run: |
@@ -70,7 +74,7 @@ jobs:
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "error", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results
