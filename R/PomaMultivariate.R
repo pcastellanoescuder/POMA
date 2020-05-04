@@ -8,6 +8,7 @@
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.
 #' @param scale Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.
+#' @param load_length Numeric between 1 and 2. Define the length of biplot loadings. Default is 1.
 #' @param ellipse Logical that indicates whether a 95%CI ellipse should be plotted in scores plot. Default is TRUE.
 #' @param validation (Only for "plsda" and "splsda" methods) Validation method. Options are "Mfold" and "loo".
 #' @param folds (Only for "plsda" and "splsda" methods) Numeric. Number of folds for Mfold validation method (default is 5). If the validation method is loo, this value will become to 1.
@@ -33,6 +34,7 @@ PomaMultivariate <- function(data,
                              components = 5,
                              center = FALSE,
                              scale = FALSE,
+                             load_length = 1,
                              ellipse = TRUE,
                              validation = "Mfold",
                              folds = 5,
@@ -60,6 +62,9 @@ PomaMultivariate <- function(data,
   }
   if (!(validation %in% c("Mfold", "loo"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect validation method! Please choose 'Mfold' or 'loo'"))
+  }
+  if (load_length > 2 | load_length < 1) {
+    stop(crayon::red(clisymbols::symbol$cross, "load_length should be a number between 1 and 2..."))
   }
 
   Biobase::varLabels(data)[1] <- "Group"
@@ -103,7 +108,9 @@ PomaMultivariate <- function(data,
 
     PCi2 <- data.frame(pca_res2$x, Groups = Y)
 
-    PCAloadings <- data.frame(pca_res2$loadings$X)
+    lam <- (pca_res2$sdev[1:2] * sqrt(nrow(PCi2)))^load_length
+    len <- t(t(pca_res2$loadings$X[, 1:2]) * lam)*0.8
+    PCAloadings <- data.frame(pca_res2$loadings$X, to_x = len[,1], to_y = len[,2])
 
     biplot <- ggplot(PCi2, aes(x = PC1, y = PC2, col = Groups))+
       geom_point(size = 3, alpha = 0.5) +
@@ -113,11 +120,11 @@ PomaMultivariate <- function(data,
       {if(ellipse)stat_ellipse(type = "norm")} +
       geom_segment(data = PCAloadings,
                    aes(x = 0, y = 0,
-                       xend = (PC1*12),
-                       yend = (PC2*12)),
+                       xend = to_x,
+                       yend = to_y),
                    arrow = arrow(length = unit(1/2, "picas")), color = "grey19") +
-      annotate("text", x = (PCAloadings$PC1*12),
-               y = (PCAloadings$PC2*12),
+      annotate("text", x = PCAloadings$to_x,
+               y = PCAloadings$to_y,
                label = rownames(PCAloadings), size = 4)
 
     return(list(screeplot = screeplot, scoresplot = scoresplot,

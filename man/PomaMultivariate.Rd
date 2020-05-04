@@ -10,6 +10,7 @@ PomaMultivariate(
   components = 5,
   center = FALSE,
   scale = FALSE,
+  load_length = 1,
   ellipse = TRUE,
   validation = "Mfold",
   folds = 5,
@@ -27,6 +28,8 @@ PomaMultivariate(
 \item{center}{Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.}
 
 \item{scale}{Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.}
+
+\item{load_length}{Numeric between 1 and 2. Define the length of biplot loadings. Default is 1.}
 
 \item{ellipse}{Logical that indicates whether a 95\%CI ellipse should be plotted in scores plot. Default is TRUE.}
 

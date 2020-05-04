@@ -35,6 +35,8 @@ test_that("PomaMultivariate works", {
   expect_false(all(df_a$y == df_c$y))
   expect_false(all(df_b$y == df_d$y))
 
+  expect_error(PomaMultivariate(st000284, method = "pca", load_length = 2.1))
+  
   #### plsda
 
   multivariate_plsda_1 <- PomaMultivariate(st000284, method = "plsda", components = 5,
