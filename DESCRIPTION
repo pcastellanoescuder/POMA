@@ -48,7 +48,7 @@ Suggests:
     prettydoc
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Depends: R (>= 3.5)
+Depends: R (>= 3.6.0)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA
 BugReports: https://github.com/pcastellanoescuder/POMA/issues

@@ -1,4 +1,4 @@
-.onAttach <- function(...) {
+.onLoad <- function(...) {
   
   suppressWarnings({
     
