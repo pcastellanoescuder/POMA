@@ -25,6 +25,8 @@ PomaCorr(
 
 \item{type}{Character. Options are "full" (default), "lower" or "upper".}
 
+\item{show_corr}{Logical indicating if correlation coefficient for each pair of features should be plotted or not (default = FALSE). Only recomended for a few number of features.}
+
 \item{low}{Colour for low end of the gradient.}
 
 \item{outline}{Colour for the outline of the gradient.}
@@ -38,8 +40,6 @@ PomaCorr(
 \item{rho}{Only if "corr_type" is set to "glasso". This parameter indicates the regularization parameter for lasso (rho = 0 means no regularization).}
 
 \item{edge_labels}{Logical indicating if correlation coefficient will be plotted or not. Default is FALSE.}
-
-\item{show_labels}{Logical indicating if correlation coefficient for each pair of features should be plotted or not (default = FALSE). Only recomended for a few number of features.}
 }
 \value{
 A list with the results.

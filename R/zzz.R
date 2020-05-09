@@ -1,4 +1,4 @@
-.onLoad <- function(...) { # nocov start
+.onAttach <- function(...) { # nocov start
   
   suppressWarnings({
     

@@ -6,7 +6,7 @@
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param shape Visualization shape of correlation matrix. Allowed values are "square" (default) and "circle".
 #' @param type Character. Options are "full" (default), "lower" or "upper".
-#' @param show_labels Logical indicating if correlation coefficient for each pair of features should be plotted or not (default = FALSE). Only recomended for a few number of features.
+#' @param show_corr Logical indicating if correlation coefficient for each pair of features should be plotted or not (default = FALSE). Only recomended for a few number of features.
 #' @param low Colour for low end of the gradient.
 #' @param outline Colour for the outline of the gradient.
 #' @param high Colour for high end of the gradient.
