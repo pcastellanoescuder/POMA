@@ -43,10 +43,6 @@ PomaMSnSetClass <- function(target,
   rownames(features) <- rownames(target)
 
   ## create a MSnSet object
-
-  # target <- new("AnnotatedDataFrame", data = target)
-  # data <- new("MSnSet", exprs = t(features), phenoData = target)
-
   data <- MSnbase::MSnSet(exprs = t(features), pData = target)
   
   if(validObject(data))

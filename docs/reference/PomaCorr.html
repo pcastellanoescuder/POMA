@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • POMA</title>
+<title>Correlation Analysis — PomaCorr • POMA</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Correlation Analysis — PomaCorr" />
+<meta property="og:description" content="This function returns different correlation plots in both network and 2D formats and a table with all pairwise correlations in the data." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -66,7 +67,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -128,138 +129,89 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Correlation Analysis</h1>
+    <small class="dont-index">Source: <a href='https://github.com/pcastellanoescuder/POMA/blob/master/R/PomaCorr.R'><code>R/PomaCorr.R</code></a></small>
+    <div class="hidden name"><code>PomaCorr.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This function returns different correlation plots in both network and 2D formats and a table with all pairwise correlations in the data.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>PomaCorr</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>shape</span> <span class='kw'>=</span> <span class='st'>"square"</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"full"</span>,
+  <span class='kw'>show_corr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"#336B87"</span>,
+  <span class='kw'>outline</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
+  <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"#EA8620"</span>,
+  <span class='kw'>corr_type</span> <span class='kw'>=</span> <span class='st'>"cor"</span>,
+  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+  <span class='kw'>rho</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
+  <span class='kw'>edge_labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="PomaBoxplots.html">PomaBoxplots()</a></code> </p>
-        </td>
-        <td><p>Classical Boxplots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaCorr.html">PomaCorr()</a></code> </p>
-        </td>
-        <td><p>Correlation Analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaDensity.html">PomaDensity()</a></code> </p>
-        </td>
-        <td><p>Distribution Plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaHeatmap.html">PomaHeatmap()</a></code> </p>
-        </td>
-        <td><p>Classical Heatmap</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaImpute.html">PomaImpute()</a></code> </p>
-        </td>
-        <td><p>Collettion of Imputation Methods for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaLasso.html">PomaLasso()</a></code> </p>
-        </td>
-        <td><p>Lasso and Ridge Regularized Generalized Linear Models for Binary Outcomes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaLimma.html">PomaLimma()</a></code> </p>
-        </td>
-        <td><p>Implementation of limma R Package on Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaMSnSetClass.html">PomaMSnSetClass()</a></code> </p>
-        </td>
-        <td><p>Convert data frames to a MSnSet Object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaMultivariate.html">PomaMultivariate()</a></code> </p>
-        </td>
-        <td><p>Multivariate Statistical Methods for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaNorm.html">PomaNorm()</a></code> </p>
-        </td>
-        <td><p>Collection of Normalization Methods for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaOddsRatio.html">PomaOddsRatio()</a></code> </p>
-        </td>
-        <td><p>Logistic Regression Model Odds Ratios</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaRandForest.html">PomaRandForest()</a></code> </p>
-        </td>
-        <td><p>Classification Random Forest for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaRankProd.html">PomaRankProd()</a></code> </p>
-        </td>
-        <td><p>Rank Product/Rank Sum Analysis for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaUnivariate.html">PomaUnivariate()</a></code> </p>
-        </td>
-        <td><p>Univariate Statistical Methods for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaVolcano.html">PomaVolcano()</a></code> </p>
-        </td>
-        <td><p>Volcano Plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="st000284.html">st000284</a></code> </p>
-        </td>
-        <td><p>Colorectal Cancer Detection Using Targeted Serum Metabolic Profiling</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="st000336.html">st000336</a></code> </p>
-        </td>
-        <td><p>Targeted LC/MS of urine from boys with DMD and controls</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
+    </tr>
+    <tr>
+      <th>shape</th>
+      <td><p>Visualization shape of correlation matrix. Allowed values are "square" (default) and "circle".</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Character. Options are "full" (default), "lower" or "upper".</p></td>
+    </tr>
+    <tr>
+      <th>low</th>
+      <td><p>Colour for low end of the gradient.</p></td>
+    </tr>
+    <tr>
+      <th>outline</th>
+      <td><p>Colour for the outline of the gradient.</p></td>
+    </tr>
+    <tr>
+      <th>high</th>
+      <td><p>Colour for high end of the gradient.</p></td>
+    </tr>
+    <tr>
+      <th>corr_type</th>
+      <td><p>Type of graph to be made with correlation matrix. Options are "cor" (for global correlations), "pcor" (for partial correlations) and "glasso" (for gaussian graphical models). Default is "cor". See <code>glasso</code> R package for the last option.</p></td>
+    </tr>
+    <tr>
+      <th>threshold</th>
+      <td><p>Numeric indicatin correlation coefficient. Edges with absolute weight below this value are will be removed from the network.</p></td>
+    </tr>
+    <tr>
+      <th>rho</th>
+      <td><p>Only if "corr_type" is set to "glasso". This parameter indicates the regularization parameter for lasso (rho = 0 means no regularization).</p></td>
+    </tr>
+    <tr>
+      <th>edge_labels</th>
+      <td><p>Logical indicating if correlation coefficient will be plotted or not. Default is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>show_labels</th>
+      <td><p>Logical indicating if correlation coefficient for each pair of features should be plotted or not (default = FALSE). Only recomended for a few number of features.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A list with the results.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso</p>
+<p>Sacha Epskamp, Angelique O. J. Cramer, Lourens J. Waldorp, Verena D. Schmittmann, Denny Borsboom (2012). qgraph: Network Visualizations of Relationships in Psychometric Data. Journal of Statistical Software, 48(4), 1-18. URL http://www.jstatsoft.org/v48/i04/.</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

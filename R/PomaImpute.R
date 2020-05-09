@@ -130,6 +130,9 @@ PomaImpute <- function(data,
     c(data@processingData@processing,
       paste("Imputed (", method ,"): ", date(), sep = ""))
   dataImputed@processingData@cleaned <- TRUE
+  dataImputed@experimentData <- data@experimentData
+  dataImputed@qual <- data@qual
+    
   if (validObject(dataImputed))
     return(dataImputed)
 

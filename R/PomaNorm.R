@@ -82,6 +82,9 @@ PomaNorm <- function(data,
       paste("Normalised (", method ,"): ", date(), sep = ""))
   dataNormalized@processingData@normalised <- TRUE
   dataNormalized@processingData@cleaned <- data@processingData@cleaned
+  dataNormalized@experimentData <- data@experimentData
+  dataNormalized@qual <- data@qual
+  
   if (validObject(dataNormalized))
     return(dataNormalized)
 

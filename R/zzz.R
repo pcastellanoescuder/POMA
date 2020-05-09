@@ -1,4 +1,4 @@
-.onLoad <- function(...) {
+.onLoad <- function(...) { # nocov start
   
   suppressWarnings({
     
@@ -14,4 +14,4 @@
     
   })
   
-}
+} # nocov end

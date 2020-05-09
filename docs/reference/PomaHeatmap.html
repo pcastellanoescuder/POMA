@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • POMA</title>
+<title>Classical Heatmap — PomaHeatmap • POMA</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Classical Heatmap — PomaHeatmap" />
+<meta property="og:description" content="This function returns a basic heatmap plot made with base R." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -66,7 +67,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -128,138 +129,41 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Classical Heatmap</h1>
+    <small class="dont-index">Source: <a href='https://github.com/pcastellanoescuder/POMA/blob/master/R/PomaHeatmap.R'><code>R/PomaHeatmap.R</code></a></small>
+    <div class="hidden name"><code>PomaHeatmap.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This function returns a basic heatmap plot made with base R.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>PomaHeatmap</span>(<span class='no'>data</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale_by</span> <span class='kw'>=</span> <span class='st'>"features"</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="PomaBoxplots.html">PomaBoxplots()</a></code> </p>
-        </td>
-        <td><p>Classical Boxplots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaCorr.html">PomaCorr()</a></code> </p>
-        </td>
-        <td><p>Correlation Analysis</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaDensity.html">PomaDensity()</a></code> </p>
-        </td>
-        <td><p>Distribution Plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaHeatmap.html">PomaHeatmap()</a></code> </p>
-        </td>
-        <td><p>Classical Heatmap</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaImpute.html">PomaImpute()</a></code> </p>
-        </td>
-        <td><p>Collettion of Imputation Methods for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaLasso.html">PomaLasso()</a></code> </p>
-        </td>
-        <td><p>Lasso and Ridge Regularized Generalized Linear Models for Binary Outcomes</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaLimma.html">PomaLimma()</a></code> </p>
-        </td>
-        <td><p>Implementation of limma R Package on Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaMSnSetClass.html">PomaMSnSetClass()</a></code> </p>
-        </td>
-        <td><p>Convert data frames to a MSnSet Object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaMultivariate.html">PomaMultivariate()</a></code> </p>
-        </td>
-        <td><p>Multivariate Statistical Methods for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaNorm.html">PomaNorm()</a></code> </p>
-        </td>
-        <td><p>Collection of Normalization Methods for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaOddsRatio.html">PomaOddsRatio()</a></code> </p>
-        </td>
-        <td><p>Logistic Regression Model Odds Ratios</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaRandForest.html">PomaRandForest()</a></code> </p>
-        </td>
-        <td><p>Classification Random Forest for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaRankProd.html">PomaRankProd()</a></code> </p>
-        </td>
-        <td><p>Rank Product/Rank Sum Analysis for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaUnivariate.html">PomaUnivariate()</a></code> </p>
-        </td>
-        <td><p>Univariate Statistical Methods for Mass Spectrometry Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="PomaVolcano.html">PomaVolcano()</a></code> </p>
-        </td>
-        <td><p>Volcano Plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="st000284.html">st000284</a></code> </p>
-        </td>
-        <td><p>Colorectal Cancer Detection Using Targeted Serum Metabolic Profiling</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="st000336.html">st000336</a></code> </p>
-        </td>
-        <td><p>Targeted LC/MS of urine from boys with DMD and controls</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
+    </tr>
+    <tr>
+      <th>scale</th>
+      <td><p>Logical that indicates if heatmap values should be scaled. Default is TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>scale_by</th>
+      <td><p>Variable to scale heatmap values. Options are "samples" and "features". Option "samples" (default) will <code><a href='https://rdrr.io/r/base/scale.html'>scale()</a></code> each sample considering all features and option "features" will <code><a href='https://rdrr.io/r/base/scale.html'>scale()</a></code> each feature considering all samples.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A heatmap.</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

@@ -21,15 +21,18 @@ Imports:
     clisymbols,
     crayon,
     dplyr,
+    ggcorrplot,
     ggplot2,
     ggrepel,
+    glasso (>= 1.11),
     glmnet,
+    qgraph,
     impute,
     janitor,
     limma,
     magrittr,
-    mixOmics (>= 6.10.9),
-    MSnbase (>= 2.12.0),
+    mixOmics,
+    MSnbase,
     plotly,
     randomForest,
     RankProd,
@@ -48,7 +51,7 @@ Suggests:
     prettydoc
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Depends: R (>= 3.6.0)
+Depends: R (>= 3.5.0)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA
 BugReports: https://github.com/pcastellanoescuder/POMA/issues

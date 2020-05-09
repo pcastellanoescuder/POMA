@@ -26,7 +26,7 @@ PomaBoxplots <- function(data,
                          jitter = TRUE,
                          feature_name = NULL){
   
-  if (missing(data)) {
+  if(missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
   if(!(class(data) == "MSnSet")){
