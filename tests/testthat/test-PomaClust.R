@@ -12,15 +12,22 @@ test_that("PomaClust works", {
   c <- PomaClust(st000284, method = "maximum", k = 5, show_clusters = FALSE, show_labels = TRUE)
   d <- PomaClust(imp_st000336, method = "manhattan", k = 2, show_clusters = FALSE, show_labels = TRUE)
   
+  e <- PomaClust(st000284, method = "canberra", k = 6, show_clusters = FALSE, show_labels = TRUE, show_group = TRUE)
+  f <- PomaClust(imp_st000336, method = "minkowski", k = 4, show_clusters = TRUE, show_labels = TRUE, show_group = TRUE)
+  
   ## table
   
   expect_equal(nrow(a$mds_values), nrow(c$mds_values))
   expect_equal(nrow(b$mds_values), nrow(d$mds_values))
+  expect_equal(nrow(e$mds_values), nrow(a$mds_values))
+  expect_equal(nrow(f$mds_values), nrow(b$mds_values))
   
-  expect_equal(4, ncol(a$mds_values))
-  expect_equal(4, ncol(b$mds_values))
-  expect_equal(4, ncol(c$mds_values))
-  expect_equal(4, ncol(d$mds_values))
+  expect_equal(5, ncol(a$mds_values))
+  expect_equal(5, ncol(b$mds_values))
+  expect_equal(5, ncol(c$mds_values))
+  expect_equal(5, ncol(d$mds_values))
+  expect_equal(5, ncol(e$mds_values))
+  expect_equal(5, ncol(f$mds_values))
   
   ## plot
   
@@ -28,6 +35,8 @@ test_that("PomaClust works", {
   expect_equal(class(b$mds_plot)[2], "ggplot")
   expect_equal(class(c$mds_plot)[2], "ggplot")
   expect_equal(class(d$mds_plot)[2], "ggplot")
+  expect_equal(class(e$mds_plot)[2], "ggplot")
+  expect_equal(class(f$mds_plot)[2], "ggplot")
   
   ## errors
   

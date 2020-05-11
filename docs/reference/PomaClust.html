@@ -145,7 +145,8 @@
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"euclidean"</span>,
   <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>show_clusters</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>show_labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>show_labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show_group</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -157,7 +158,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra", "binary" and "minkowski". See <code>?dist()</code>.</p></td>
+      <td><p>Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See <code>?dist()</code>.</p></td>
     </tr>
     <tr>
       <th>k</th>
@@ -170,6 +171,10 @@
     <tr>
       <th>show_labels</th>
       <td><p>Logical indicating if sample names should be plotted or not.</p></td>
+    </tr>
+    <tr>
+      <th>show_group</th>
+      <td><p>Logical indicating if the original sample group from pData should be plotted instead of sample ID or not. Only works if show_labels is set to <code>TRUE</code>.</p></td>
     </tr>
     </table>
 

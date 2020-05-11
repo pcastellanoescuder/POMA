@@ -39,7 +39,7 @@ Imports:
     reshape2,
     snow,
     tibble,
-    tidyr (>= 1.0),
+    tidyr,
     stringr
 Suggests: 
     covr,
