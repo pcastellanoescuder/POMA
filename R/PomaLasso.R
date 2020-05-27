@@ -42,7 +42,7 @@ PomaLasso <- function(data,
   Biobase::varLabels(data)[1] <- "Group"
 
   if (length(levels(as.factor(Biobase::pData(data)$Group))) > 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "You data has more than two groups!"))
+    stop(crayon::red(clisymbols::symbol$cross, "You data have more than two groups!"))
   }
 
   X <- t(Biobase::exprs(data))

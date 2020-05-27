@@ -30,9 +30,9 @@ test_that("PomaMSnSetClass works", {
   
   ##
   
-  expect_false(all(colnames(features) == colnames(t(Biobase::exprs(a)))))
-  expect_false(all(colnames(target)[2:3] == colnames(Biobase::pData(a))))
-  expect_false(all(colnames(target2)[2:3] == colnames(Biobase::pData(b))))
+  expect_equal(colnames(features), colnames(t(Biobase::exprs(a))))
+  expect_equal(colnames(target)[2:3], colnames(Biobase::pData(a)))
+  expect_equal(colnames(target2)[2:3], colnames(Biobase::pData(b)))
 
 })
 

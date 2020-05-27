@@ -8,7 +8,7 @@ test_that("PomaLasso works", {
   normalized <- POMA::PomaNorm(imputed, method = "log_scaling")
 
   normalized_test <- POMA::PomaNorm(imputed, method = "log_scaling")
-  Biobase::pData(normalized_test)$Group <- c(rep("C", 30), rep("G", 27))
+  Biobase::pData(normalized_test)$Group <- c(rep("C", 30), rep("G", 20), rep("P", 7))
 
   lasso_res <- PomaLasso(normalized, method = "lasso")
   ridge_res <- PomaLasso(normalized, method = "ridge")
