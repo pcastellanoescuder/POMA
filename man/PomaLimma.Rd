@@ -4,7 +4,13 @@
 \alias{PomaLimma}
 \title{Implementation of limma R Package on Mass Spectrometry Data}
 \usage{
-PomaLimma(data, contrast = NULL, covariates = FALSE, adjust = "fdr")
+PomaLimma(
+  data,
+  contrast = NULL,
+  covariates = FALSE,
+  adjust = "fdr",
+  cutoff = NULL
+)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
@@ -14,6 +20,8 @@ PomaLimma(data, contrast = NULL, covariates = FALSE, adjust = "fdr")
 \item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{pData} will be used as covariables. Default = FALSE.}
 
 \item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
+
+\item{cutoff}{Default is NULL. If this value is replaced for a numeric value, the resultant table will contains only those features with an adjusted p-value below selected value.}
 }
 \value{
 A data frame with limma results.

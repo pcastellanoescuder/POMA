@@ -7,6 +7,7 @@
 #' @param contrast A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
 #' @param adjust Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
+#' @param cutoff Default is NULL. If this value is replaced for a numeric value, the resultant table will contains only those features with an adjusted p-value below selected value. 
 #'
 #' @export
 #'
@@ -16,12 +17,15 @@
 #'
 #' @importFrom limma makeContrasts lmFit contrasts.fit eBayes topTable
 #' @importFrom crayon red
+#' @importFrom magrittr %>%
+#' @importFrom dplyr filter
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
 PomaLimma <- function(data,
                       contrast = NULL,
                       covariates = FALSE,
-                      adjust = "fdr"){
+                      adjust = "fdr",
+                      cutoff = NULL){
 
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
@@ -65,11 +69,16 @@ PomaLimma <- function(data,
     res <- limma::topTable(modelstats, number = nrow(e),
                            coef = contrast, sort.by = "p", adjust.method = adjust)
 
+    if(!is.null(cutoff)){
+      res <- res %>%
+        dplyr::filter(adj.P.Val <= cutoff)
+    }
+    
     return(res)
 
   }
 
-  ####
+  ##
 
   else {
 
@@ -90,7 +99,13 @@ PomaLimma <- function(data,
     res2 <- limma::topTable(modelstats2, number = nrow(e) ,
                             coef = contrast, sort.by = "p", adjust.method = adjust)
 
+    if(!is.null(cutoff)){
+      res2 <- res2 %>%
+        dplyr::filter(adj.P.Val <= cutoff)
+    }
+    
     return(res2)
+    
   }
 
 }

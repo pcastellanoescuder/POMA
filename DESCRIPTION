@@ -27,7 +27,6 @@ Imports:
     glasso (>= 1.11),
     glmnet,
     impute,
-    janitor,
     limma,
     magrittr,
     mixOmics,

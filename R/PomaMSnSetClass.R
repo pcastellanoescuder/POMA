@@ -12,9 +12,9 @@
 #' @references Laurent Gatto and Kathryn S. Lilley. MSnbase - an R/Bioconductor package for isobaric tagged mass spectrometry data visualization, processing and quantitation. Bioinformatics 28, 288-289 (2012).
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom janitor clean_names
 #' @importFrom MSnbase MSnSet
 #' @importFrom tibble column_to_rownames remove_rownames
+#' @importFrom dplyr rename
 #' @importFrom magrittr %>%
 PomaMSnSetClass <- function(target,
                             features){
@@ -32,13 +32,13 @@ PomaMSnSetClass <- function(target,
     stop(crayon::red(clisymbols::symbol$cross, "target file is not a data.frame"))
   }
   
-  target <- as.data.frame(target)
-  target <- remove_rownames(target)
-  target <- target %>% janitor::clean_names()
-  colnames(target)[1] <- "ID"
-  target <- target %>% column_to_rownames("ID")
+  target <- target %>%
+    as.data.frame() %>% 
+    remove_rownames() %>%
+    rename("ID" = 1) %>% 
+    column_to_rownames("ID")
 
-  features <- features %>% as.data.frame() %>% janitor::clean_names()
+  features <- features %>% as.data.frame()
   features <- as.matrix(sapply(features, function(x)as.numeric(as.character(x))))
   rownames(features) <- rownames(target)
 
