@@ -22,7 +22,7 @@
 #' @importFrom randomForest rfImpute
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom Biobase varLabels pData exprs featureNames
 PomaImpute <- function(data,
                        ZerosAsNA = FALSE,
                        RemoveNA = TRUE,
@@ -71,6 +71,7 @@ PomaImpute <- function(data,
                           function(x) {100*(sum(is.na(x))/(sum(is.na(x))+sum(!is.na(x))))},
                           na.action = NULL)
     count_NA <- count_NA %>% dplyr::select(-Group)
+    colnames(count_NA) <- Biobase::featureNames(data)
     supress <- as.data.frame(lapply(count_NA, function(x) all(x > cutoff)))
     supress <- unlist(supress)
     depurdata <- to_imp_data[, 2:ncol(to_imp_data)][!supress]
