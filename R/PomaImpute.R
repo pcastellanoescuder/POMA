@@ -52,16 +52,21 @@ PomaImpute <- function(data,
   if (isTRUE(ZerosAsNA)){
     to_imp_data[to_imp_data == 0] <- NA
     to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
+    colnames(to_imp_data)[2:ncol(to_imp_data)] <- Biobase::featureNames(data)
 
   } else {
     to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
+    colnames(to_imp_data)[2:ncol(to_imp_data)] <- Biobase::featureNames(data)
   }
 
   ##
   
   percent_na <- sum(is.na(to_imp_data))
-  if (percent_na == 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "No missing values detected in your data"))
+  if (percent_na == 0 & method == "rf") {
+    stop(crayon::red(clisymbols::symbol$cross, "No missing values detected in your data. Use other method to skyp this error."))
+  }
+  if (percent_na == 0 & method != "rf") {
+    warning("No missing values detected in your data")
   }
   
   ##
@@ -71,9 +76,10 @@ PomaImpute <- function(data,
                           function(x) {100*(sum(is.na(x))/(sum(is.na(x))+sum(!is.na(x))))},
                           na.action = NULL)
     count_NA <- count_NA %>% dplyr::select(-Group)
-    colnames(count_NA) <- Biobase::featureNames(data)
-    supress <- as.data.frame(lapply(count_NA, function(x) all(x > cutoff)))
-    supress <- unlist(supress)
+    correct_names <- names(count_NA)
+    supress <- unlist(as.data.frame(lapply(count_NA, function(x) all(x > cutoff))))
+    names(supress) <- correct_names
+    correct_names <- names(supress[supress == "FALSE"])
     depurdata <- to_imp_data[, 2:ncol(to_imp_data)][!supress]
     depurdata <- sapply(depurdata, function(x) as.numeric(as.character(x)))
 
@@ -81,7 +87,8 @@ PomaImpute <- function(data,
 
     depurdata <- to_imp_data[, 2:ncol(to_imp_data)]
     depurdata <- sapply(depurdata, function(x) as.numeric(as.character(x)))
-
+    correct_names <- Biobase::featureNames(data)
+    
   }
 
   ##
@@ -123,6 +130,8 @@ PomaImpute <- function(data,
   }
 
   ##
+  
+  colnames(depurdata) <- correct_names
   
   target <- pData(data) %>% rownames_to_column() %>% as.data.frame()
   dataImputed <- PomaMSnSetClass(features = depurdata, target = target)

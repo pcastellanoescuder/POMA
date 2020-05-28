@@ -7,12 +7,14 @@ test_that("PomaImpute works", {
   data <- t(Biobase::exprs(st000284))
 
   data <- data*round(runif(n = 1, min = 0.01, max = 0.99), 3) # just to create decimals
-  data[1:4, 5] <- 0 # create some zeros in one group
-  data[73:77, 5] <- 0 # create some zeros in the other group
+  data[1:4, 5] <- 0 # create some zeros in the first group
+  data[73:77, 5] <- 0 # create some zeros in the second group
 
-  data[10:14, 5] <- NA # create some NA in one group (5/66 = 7.6% of NA)
-  data[78:81, 5] <- NA # create some NA in the other group (4/66 = 6.1% of NA)
+  data[10:14, 5] <- NA # create some NA in the first group
+  data[78:81, 5] <- NA # create some NA in the second group
 
+  colnames(data) <- gsub("_", ":", colnames(data))
+    
   target <- pData(st000284) %>% rownames_to_column() %>% as.data.frame()
   testimput <- PomaMSnSetClass(features = data, target = target)
 
@@ -29,7 +31,7 @@ test_that("PomaImpute works", {
   
   g <- PomaImpute(testimput, method = "half_min", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
   h <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
-
+  
   i <- PomaImpute(testimput, method = "half_min", ZerosAsNA = F, RemoveNA = F, cutoff = 1)
   j <- PomaImpute(testimput, method = "mean", ZerosAsNA = F, RemoveNA = F, cutoff = 1)
   k <- PomaImpute(testimput, method = "median", ZerosAsNA = F, RemoveNA = F, cutoff = 1)
@@ -55,7 +57,19 @@ test_that("PomaImpute works", {
   u <- PomaImpute(testimput2, method = "min")
   v <- PomaImpute(testimput2, method = "knn")
   
-  ####
+  Biobase::exprs(testimput)[5, 175:190] <- NA
+  h_1 <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 1)
+  
+  ##
+  
+  expect_equal(Biobase::featureNames(testimput)[1], Biobase::featureNames(h)[1])
+  expect_equal(length(Biobase::featureNames(testimput)), length(Biobase::featureNames(h)))
+  expect_false(length(Biobase::featureNames(testimput)) == length(Biobase::featureNames(h_1)))
+  
+  expect_equal(Biobase::featureNames(testimput)[1], Biobase::featureNames(n)[1])
+  expect_equal(length(Biobase::featureNames(testimput)), length(Biobase::featureNames(n)))
+  
+  ##
 
   expect_equal(a, b)
   expect_equal(b, c)
@@ -118,7 +132,8 @@ test_that("PomaImpute works", {
 
   ####
   
-  expect_error(PomaImpute(st000284, method = "knn"))
+  expect_warning(PomaImpute(st000284, method = "knn"))
+  expect_error(PomaImpute(st000284, method = "rf"))
   
   ##
   
