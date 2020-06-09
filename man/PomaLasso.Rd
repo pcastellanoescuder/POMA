@@ -2,24 +2,26 @@
 % Please edit documentation in R/PomaLasso.R
 \name{PomaLasso}
 \alias{PomaLasso}
-\title{Lasso and Ridge Regularized Generalized Linear Models for Binary Outcomes}
+\title{Lasso, Ridge and Elasticnet Regularized Generalized Linear Models for Binary Outcomes}
 \usage{
-PomaLasso(data, method = "lasso", nfolds = 10, lambda = NULL)
+PomaLasso(data, alpha = 1, ntest = 20, nfolds = 10, lambda = NULL)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
-\item{method}{Choose between lasso and ridge regression ("lasso", "ridge").}
+\item{alpha}{Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.}
+
+\item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is a 20 percent of observations.}
 
 \item{nfolds}{Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.}
 
 \item{lambda}{A user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on \code{nlambda} and \code{lambda.min.ratio}. See \code{?glmnet::glmnet()}.}
 }
 \value{
-A list with all results including plots and data frames.
+A list with all results including plots, data frames and resulting prediction model.
 }
 \description{
-PomaLasso() is an implementation of the lasso an ridge regression from \code{glmnet} package for binary outcomes.
+PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from \code{glmnet} package for binary outcomes.
 }
 \references{
 Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.

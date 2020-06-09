@@ -18,6 +18,7 @@ biocViews:
 Imports:
     Biobase,
     broom,
+    caret,
     clisymbols,
     crayon,
     dplyr,
