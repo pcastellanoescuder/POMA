@@ -38,8 +38,8 @@ PomaLasso <- function(data,
   if (alpha > 1 | alpha < 0) {
     stop(crayon::red(clisymbols::symbol$cross, "alpha must be a number between 0 and 1..."))
   }
-  if (ntest > 50 | ntest < 10) {
-    stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 10 and 50..."))
+  if (ntest > 50 | ntest < 0) {
+    stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 0 and 50..."))
   }
   
   Biobase::varLabels(data)[1] <- "Group"

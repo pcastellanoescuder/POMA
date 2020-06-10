@@ -1,4 +1,4 @@
-FROM r-base:3.6.1
+FROM r-base:3.5.0
 
 MAINTAINER Pol Castellano-Escuder <polcaes@gmail.com>
 
@@ -9,7 +9,8 @@ LABEL authors = "polcaes@gmail.com" \
 
 ## CRAN
 
-RUN R -e "install.packages(c('remotes', 'reshape2', 'ggplot2', 'tidyr', 'dplyr', 'tibble', 'stringr', 'caret', 'crayon', 'clisymbols', 'prettydoc', 'ggrepel', 'snow', 'magrittr', 'randomForest', 'broom', 'glmnet', 'plotly', 'BiocManager'), repos='http://cran.rstudio.com/')"
+RUN R -e "install.packages(c('remotes', 'reshape2', 'ggplot2', 'tidyr', 'dplyr', 'tibble', 'stringr', 'caret', 'crayon', 'clisymbols', 'prettydoc', 'ggrepel', 'snow', 'magrittr', 'randomForest', 'broom', 'glmnet', 'plotly', 'ggcorrplot', 'glasso', 'qgraph', 'vegan', 'BiocManager'), 
+repos='http://cran.rstudio.com/')"
 
 ## BIOCONDUCTOR
 

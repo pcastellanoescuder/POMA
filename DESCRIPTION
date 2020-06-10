@@ -38,9 +38,10 @@ Imports:
     RankProd,
     reshape2,
     snow,
+    stringr,
     tibble,
     tidyr,
-    stringr
+    vegan
 Suggests: 
     covr,
     tidyverse,
