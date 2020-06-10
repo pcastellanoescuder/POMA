@@ -11,7 +11,7 @@
 #'
 #' @export
 #'
-#' @return A list with all results including plots, data frames and resulting prediction model.
+#' @return A list with all results including plots, data frames and the resulting prediction model.
 #' @references Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.
 #' @author Pol Castellano-Escuder
 #'
@@ -38,14 +38,17 @@ PomaLasso <- function(data,
   if (alpha > 1 | alpha < 0) {
     stop(crayon::red(clisymbols::symbol$cross, "alpha must be a number between 0 and 1..."))
   }
-  if (ntest > 50 | ntest < 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 0 and 50..."))
+  if (ntest > 50 | ntest < 10) {
+    stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 10 and 50..."))
   }
   
   Biobase::varLabels(data)[1] <- "Group"
 
   if (length(levels(as.factor(Biobase::pData(data)$Group))) > 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "You data have more than two groups!"))
+    stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
+  }
+  if (length(levels(as.factor(Biobase::pData(data)$Group))) < 2) {
+    stop(crayon::red(clisymbols::symbol$cross, "Your data have less than two groups!"))
   }
 
   features <- t(Biobase::exprs(data))
@@ -54,22 +57,30 @@ PomaLasso <- function(data,
 
   n <- nrow(lasso_data)
   
-  ## TEST
-  idx_test <- sample(1:n, (ntest/100)*n, replace = FALSE)
-  
-  test <- lasso_data[idx_test ,]
-  test_x <- test[,-1]
-  test_y <- test[,1]
-  
-  ## TRAIN
-  train <- lasso_data[-idx_test ,]
-  train_x <- train[,-1]
-  train_y <- train[,1]
-  
   ## MODEL
-  
   if(ntest != 0){
+    
+    repeat{
+      
+      ## TEST
+      idx_test <- sample(1:n, (ntest/100)*n, replace = FALSE)
+      
+      test <- lasso_data[idx_test ,]
+      test_x <- test[,-1]
+      test_y <- test[,1]
+      
+      ## TRAIN
+      train <- lasso_data[-idx_test ,]
+      train_x <- train[,-1]
+      train_y <- train[,1]
+      
+      if(length(levels(as.factor(train_y))) == 2 & length(levels(as.factor(test_y)))){
+        break
+      }
+    }
+    
     cv_fit <- cv.glmnet(data.matrix(train_x), as.matrix(train_y), family = "binomial", nfolds = nfolds, lambda = lambda, alpha = alpha)
+    
   } 
   else {
     cv_fit <- cv.glmnet(features, response, family = "binomial", nfolds = nfolds, lambda = lambda, alpha = alpha)
@@ -97,7 +108,6 @@ PomaLasso <- function(data,
   if(ntest != 0){
     lasso_pred <- predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
     cm <- caret::confusionMatrix(as.factor(lasso_pred), as.factor(test_y))
-    accuracy <- cm$overall[1]
   }
   
   ## COEFFICIENT PLOT
@@ -115,7 +125,7 @@ PomaLasso <- function(data,
 
   if(ntest != 0){
     return(list(coefficients = final_coef, coefficientPlot = coefficientplot, cvLassoPlot = cvlasso,
-                confusionMatrix = cm$table, accuracy = accuracy, model = cv_fit))
+                confusionMatrix = cm, model = cv_fit))
   } else {
     return(list(coefficients = final_coef, coefficientPlot = coefficientplot, cvLassoPlot = cvlasso,
                 model = cv_fit))

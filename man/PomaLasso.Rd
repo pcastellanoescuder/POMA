@@ -18,7 +18,7 @@ PomaLasso(data, alpha = 1, ntest = 20, nfolds = 10, lambda = NULL)
 \item{lambda}{A user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on \code{nlambda} and \code{lambda.min.ratio}. See \code{?glmnet::glmnet()}.}
 }
 \value{
-A list with all results including plots, data frames and resulting prediction model.
+A list with all results including plots, data frames and the resulting prediction model.
 }
 \description{
 PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from \code{glmnet} package for binary outcomes.
