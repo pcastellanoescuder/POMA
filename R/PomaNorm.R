@@ -29,7 +29,7 @@ PomaNorm <- function(data,
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
   if (missing(method)) {
-    stop(crayon::red(clisymbols::symbol$cross, "Select a method!"))
+    warning("method argument is empty! log_pareto will be used")
   }
   if (!(method %in% c("none", "auto_scaling", "level_scaling", "log_scaling",
                       "log_transformation", "vast_scaling", "log_pareto"))) {

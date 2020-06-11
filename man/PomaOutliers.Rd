@@ -9,7 +9,7 @@ PomaOutliers(
   do = "clean",
   method = "euclidean",
   type = "median",
-  iqr = 1.5,
+  coef = 1.5,
   labels = FALSE
 )
 }
@@ -18,19 +18,19 @@ PomaOutliers(
 
 \item{do}{Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.}
 
-\item{method}{blabla}
+\item{method}{Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See \code{?dist()}.}
 
-\item{type}{blabla}
+\item{type}{Type of outliers analysis to perform. Options are "median" (default) and "centroid". See \code{vegan::betadisper}.}
 
-\item{iqr}{blabla}
+\item{coef}{This value corresponds to the classical 1.5 in \eqn{Q3 + 1.5*IQR} formula to detect outliers. By changing this value, the permissiveness in outlier detection will change.}
 
-\item{labels}{blabla}
+\item{labels}{Logical indicating if sample IDs should to be plotted or not.}
 }
 \value{
-A MSnSet object with cleaned data or different plots for the detailed analysis of outliers (depending on "do" parameter).
+A MSnSet object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
 }
 \description{
-blabla
+This function allows users to analyze outliers by different plots and remove them from an MSnSet object.
 }
 \author{
 Pol Castellano-Escuder

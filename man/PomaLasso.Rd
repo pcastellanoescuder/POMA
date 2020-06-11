@@ -4,14 +4,14 @@
 \alias{PomaLasso}
 \title{Lasso, Ridge and Elasticnet Regularized Generalized Linear Models for Binary Outcomes}
 \usage{
-PomaLasso(data, alpha = 1, ntest = 20, nfolds = 10, lambda = NULL)
+PomaLasso(data, alpha = 1, ntest = NULL, nfolds = 10, lambda = NULL)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
 \item{alpha}{Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.}
 
-\item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is a 20 percent of observations.}
+\item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).}
 
 \item{nfolds}{Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.}
 

@@ -5,7 +5,7 @@
 #'
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param alpha Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.
-#' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is a 20 percent of observations.
+#' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).
 #' @param nfolds Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.
 #' @param lambda A user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on `nlambda` and `lambda.min.ratio`. See `?glmnet::glmnet()`.
 #'
@@ -24,7 +24,7 @@
 #' @importFrom Biobase varLabels pData exprs
 PomaLasso <- function(data,
                       alpha = 1,
-                      ntest = 20,
+                      ntest = NULL,
                       nfolds = 10,
                       lambda = NULL){
 
@@ -38,8 +38,10 @@ PomaLasso <- function(data,
   if (alpha > 1 | alpha < 0) {
     stop(crayon::red(clisymbols::symbol$cross, "alpha must be a number between 0 and 1..."))
   }
-  if (ntest > 50 | ntest < 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 0 and 50..."))
+  if(!is.null(ntest)){
+    if (ntest > 50 | ntest < 5) {
+      stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 5 and 50..."))
+    }
   }
   
   Biobase::varLabels(data)[1] <- "Group"
@@ -58,7 +60,7 @@ PomaLasso <- function(data,
   n <- nrow(lasso_data)
   
   ## MODEL
-  if(ntest != 0){
+  if(!is.null(ntest)){
     
     repeat{
       
@@ -105,7 +107,7 @@ PomaLasso <- function(data,
   final_coef <- data.frame(feature = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x)
 
   ## MODEL VALIDATION
-  if(ntest != 0){
+  if(!is.null(ntest)){
     lasso_pred <- predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
     cm <- caret::confusionMatrix(as.factor(lasso_pred), as.factor(test_y))
   }
@@ -123,7 +125,7 @@ PomaLasso <- function(data,
     theme_bw() +
     theme(legend.position = "none")
 
-  if(ntest != 0){
+  if(!is.null(ntest)){
     return(list(coefficients = final_coef, coefficientPlot = coefficientplot, cvLassoPlot = cvlasso,
                 confusionMatrix = cm, model = cv_fit))
   } else {

@@ -13,10 +13,11 @@ test_that("PomaLasso works", {
   Biobase::pData(normalized_test)$Group <- c(rep("C", 30), rep("G", 20), rep("P", 7))
   Biobase::pData(normalized_test_less)$Group <- "Control"
 
-  lasso_res <- PomaLasso(normalized, alpha = 1, ntest = 0, nfolds = 10)
-  ridge_res <- PomaLasso(normalized, alpha = 0, ntest = 0, nfolds = 10)
-  enet_res <- PomaLasso(normalized, alpha = 0.5, ntest = 0, nfolds = 5)
-
+  lasso_res <- PomaLasso(normalized, alpha = 1, ntest = NULL, nfolds = 3)
+  ridge_res <- PomaLasso(normalized, alpha = 0, ntest = NULL, nfolds = 10)
+  enet_res <- PomaLasso(normalized, alpha = 0.5, ntest = NULL, nfolds = 5)
+  lasso_self_lambda <- PomaLasso(normalized, alpha = 1, ntest = NULL, nfolds = 10, lambda = seq(0.002, 20, length.out = 100))
+  
   ## TABLES
 
   expect_false(nrow(lasso_res$coefficients) == nrow(ridge_res$coefficients))
@@ -24,6 +25,7 @@ test_that("PomaLasso works", {
   
   expect_equal(ncol(lasso_res$coefficients), ncol(ridge_res$coefficients))
   expect_equal(ncol(ridge_res$coefficients), ncol(enet_res$coefficients))
+  expect_equal(ncol(lasso_res$coefficients), ncol(lasso_self_lambda$coefficients))
 
   ## PLOTS
 
@@ -40,14 +42,14 @@ test_that("PomaLasso works", {
 
   ## ERRORS
   
-  expect_error(PomaLasso(alpha = 2))
-  expect_error(PomaLasso(alpha = -0.5))
+  expect_error(PomaLasso(normalized, alpha = 2))
+  expect_error(PomaLasso(normalized, alpha = -0.5))
   expect_error(PomaLasso(iris, alpha = 1))
   expect_error(PomaLasso(normalized_test, alpha = 1))
   expect_error(PomaLasso(normalized_test_less, alpha = 1))
   expect_error(PomaLasso())
-  expect_error(PomaLasso(ntest = 60))
-  expect_error(PomaLasso(ntest = 2))
+  expect_error(PomaLasso(normalized, ntest = 60))
+  expect_error(PomaLasso(normalized, ntest = 2))
   
 })
 

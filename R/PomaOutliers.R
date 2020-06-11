@@ -1,35 +1,52 @@
 
 #' Remove and Analyze Outliers
 #'
-#' @description blabla
+#' @description This function allows users to analyze outliers by different plots and remove them from an MSnSet object.
 #'
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param do Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.
-#' @param method blabla
-#' @param type blabla
-#' @param iqr blabla
-#' @param labels blabla
+#' @param method Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See `?dist()`.
+#' @param type Type of outliers analysis to perform. Options are "median" (default) and "centroid". See `vegan::betadisper`.
+#' @param coef This value corresponds to the classical 1.5 in \eqn{Q3 + 1.5*IQR} formula to detect outliers. By changing this value, the permissiveness in outlier detection will change.
+#' @param labels Logical indicating if sample IDs should to be plotted or not.
 #'
 #' @export
 #'
-#' @return A MSnSet object with cleaned data or different plots for the detailed analysis of outliers (depending on "do" parameter).
+#' @return A MSnSet object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
 #' @importFrom dplyr select filter do group_by mutate rename
 #' @importFrom tibble rownames_to_column
 #' @importFrom magrittr %>%
-#' @importFrom ggrepel geom_label_repel geom_text_repel
+#' @importFrom ggrepel geom_label_repel
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase pData exprs sampleNames varLabels
 #' @importFrom vegan betadisper
-PomaOutliers <- function(data, # nocov start
+PomaOutliers <- function(data,
                          do = "clean",
                          method = "euclidean",
                          type = "median",
-                         iqr = 1.5,
+                         coef = 1.5,
                          labels = FALSE){
+  
+  if (missing(data)) {
+    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+  }
+  if(!(class(data) == "MSnSet")){
+    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
+                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  }
+  if (!(method %in% c("euclidean", "maximum", "manhattan", "canberra", "minkowski"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+  }
+  if (!(type %in% c("median", "centroid"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for type argument!"))
+  }
+  if (!(do %in% c("clean", "analyze"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for do argument!"))
+  }
   
   Biobase::varLabels(data)[1] <- "Group"
   groups <- Biobase::pData(data)$Group
@@ -42,7 +59,7 @@ PomaOutliers <- function(data, # nocov start
   distances <- vegan::betadisper(dd, groups, type = type, bias.adjust = FALSE, sqrt.dist = FALSE, add = FALSE)
   detect_outliers <- data.frame(distances = distances$distances, Groups = distances$group) 
   
-  limit <- data.frame(aggregate(detect_outliers$distances, list(detect_outliers$Groups), function(x) {quantile(x, 0.75) + iqr * IQR(x)}))
+  limit <- data.frame(aggregate(detect_outliers$distances, list(detect_outliers$Groups), function(x) {quantile(x, 0.75) + coef * IQR(x)}))
   colnames(limit)[1] <- "Groups"
   
   detect_outliers <- merge(detect_outliers, limit, by = "Groups")
@@ -77,11 +94,11 @@ PomaOutliers <- function(data, # nocov start
       geom_polygon(data = hulls, alpha = 0.5, aes(fill = Group)) +
       geom_point(aes(shape = Group), size = 3) +
       geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, label = rownames(centroids)), show.legend = F) +
-      {if(labels)ggrepel::geom_text_repel(aes(label = rownames(total_outliers)))} +
+      {if(labels)geom_text(aes(label = rownames(total_outliers)))} +
       theme_bw()
     
     distance_boxplot <- ggplot(detect_outliers, aes(Groups, distances, fill = Groups)) +
-      geom_boxplot() +
+      geom_boxplot(coef = coef) +
       ylab("Distance to group centroid") + 
       xlab("") +
       {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$outlier == 1,], aes(label = sample), na.rm = TRUE, size = 4, show.legend = F)} +
@@ -117,5 +134,5 @@ PomaOutliers <- function(data, # nocov start
     
   }
   
-} # nocov end
+}
 
