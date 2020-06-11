@@ -92,7 +92,7 @@ PomaOutliers <- function(data,
     
     polygon_plot <- ggplot(total_outliers, aes(x = PCoA1, y = PCoA2)) +
       geom_polygon(data = hulls, alpha = 0.5, aes(fill = Group)) +
-      geom_point(aes(shape = Group), size = 3) +
+      geom_point(aes(shape = Group), size = 3, alpha = 0.7) +
       geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, label = rownames(centroids)), show.legend = F) +
       {if(labels)geom_text(aes(label = rownames(total_outliers)))} +
       theme_bw()

@@ -58,20 +58,17 @@ PomaLasso <- function(data,
   lasso_data <- cbind(response, features)
 
   n <- nrow(lasso_data)
-  
-  ## MODEL
+
   if(!is.null(ntest)){
     
     repeat{
-      
-      ## TEST
+
       idx_test <- sample(1:n, (ntest/100)*n, replace = FALSE)
       
       test <- lasso_data[idx_test ,]
       test_x <- test[,-1]
       test_y <- test[,1]
-      
-      ## TRAIN
+
       train <- lasso_data[-idx_test ,]
       train_x <- train[,-1]
       train_y <- train[,1]
@@ -88,7 +85,6 @@ PomaLasso <- function(data,
     cv_fit <- cv.glmnet(features, response, family = "binomial", nfolds = nfolds, lambda = lambda, alpha = alpha)
   }
 
-  ## CROSS-VALIDATION PLOT
   tidied_cv <- broom::tidy(cv_fit)
   glance_cv <- broom::glance(cv_fit)
 
@@ -102,17 +98,14 @@ PomaLasso <- function(data,
     geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
     theme_bw()
 
-  ## COEFFICIENTS
   tmp_coeffs <- coef(cv_fit, s = "lambda.min")
   final_coef <- data.frame(feature = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x)
 
-  ## MODEL VALIDATION
   if(!is.null(ntest)){
     lasso_pred <- predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
     cm <- caret::confusionMatrix(as.factor(lasso_pred), as.factor(test_y))
   }
   
-  ## COEFFICIENT PLOT
   tidied_cv2 <- broom::tidy(cv_fit$glmnet.fit)
 
   coefficientplot <- ggplot(tidied_cv2, aes(lambda, estimate, color = term)) +

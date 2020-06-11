@@ -7,17 +7,20 @@ test_that("PomaOutliers works", {
   
   a <- st000284 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(do = "analyze")
   b <- st000284 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers()
-  
   c <- st000284 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(do = "analyze", coef = 3)
   d <- st000284 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(coef = 3)
 
   e <- st000336 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(do = "analyze")
   f <- st000336 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers()
-  
   g <- st000336 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(do = "analyze", coef = 3)
   h <- st000336 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(coef = 3)
   
-  ## TABLES
+  i <- st000336 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(do = "analyze", method = "maximum", type = "centroid", labels = TRUE)
+  j <- st000336 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(do = "analyze", method = "manhattan", type = "centroid", labels = FALSE)
+  k <- st000336 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(do = "analyze", method = "canberra", type = "centroid", labels = TRUE)
+  l <- st000336 %>% PomaImpute() %>% PomaNorm() %>% PomaOutliers(do = "analyze", method = "minkowski", type = "centroid", labels = FALSE)
+
+  ##
   
   expect_equal(nrow(a$outliers), nrow(Biobase::pData(st000284)) - nrow(Biobase::pData(b)))
   expect_equal(nrow(c$outliers), nrow(Biobase::pData(st000284)) - nrow(Biobase::pData(d)))
@@ -28,26 +31,31 @@ test_that("PomaOutliers works", {
   expect_false(nrow(a$outliers) == nrow(c$outliers))
   expect_false(nrow(e$outliers) == nrow(g$outliers))
   
+  expect_equal(ncol(i$outliers), ncol(j$outliers))
+  expect_equal(ncol(j$outliers), ncol(k$outliers))
+  expect_equal(ncol(k$outliers), ncol(l$outliers))
+  
   ## PLOTS
   
-  # df_a <- layer_data(lasso_res$coefficientPlot)
-  # df_b <- layer_data(ridge_res$coefficientPlot)
-  # df_e <- layer_data(enet_res$coefficientPlot)
-  # df_c <- layer_data(lasso_res$cvLassoPlot)
-  # 
-  # expect_false(length(df_a$y) == length(df_b$y))
-  # expect_false(length(df_a$y) == length(df_e$y))
+  df_i <- layer_data(i$polygon_plot)
+  df_j <- layer_data(j$polygon_plot)
+  
+  df_k <- layer_data(k$distance_boxplot)
+  df_l <- layer_data(l$distance_boxplot)
+  
+  expect_false(length(df_i$y) == length(df_j$y))
+  expect_equal(ncol(df_i), ncol(df_j))
+  
+  expect_false(all(df_k$ymin == df_l$ymin))
+  expect_equal(ncol(df_k), ncol(df_l))
   
   ## ERRORS
   
-  # expect_error(PomaOutliers(alpha = 2))
-  # expect_error(PomaOutliers(alpha = -0.5))
-  # expect_error(PomaOutliers(iris))
-  # expect_error(PomaOutliers(normalized_test, alpha = 1))
-  # expect_error(PomaOutliers(normalized_test_less, alpha = 1))
-  # expect_error(PomaOutliers())
-  # expect_error(PomaOutliers(ntest = 60))
-  # expect_error(PomaOutliers(ntest = 2))
+  expect_error(PomaOutliers())
+  expect_error(PomaOutliers(iris))
+  expect_error(PomaOutliers(st000284, method = "man"))
+  expect_error(PomaOutliers(st000284, type = "media"))
+  expect_error(PomaOutliers(st000284, do = "analise"))
   
 })
 
