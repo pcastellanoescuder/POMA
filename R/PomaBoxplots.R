@@ -7,6 +7,7 @@
 #' @param group Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.
 #' @param jitter Logical. If it's TRUE (default), the boxplot will show all points.
 #' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.
+#' @param label_size Numeric indicating the size of x-axis labels.
 #'
 #' @export
 #'
@@ -15,7 +16,7 @@
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
-#' @importFrom dplyr select group_by filter
+#' @importFrom dplyr select group_by filter rename
 #' @importFrom magrittr %>%
 #' @importFrom reshape2 melt
 #' @importFrom crayon red
@@ -24,7 +25,8 @@
 PomaBoxplots <- function(data,
                          group = "samples",
                          jitter = TRUE,
-                         feature_name = NULL){
+                         feature_name = NULL,
+                         label_size = 10){
   
   if(missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
@@ -36,9 +38,6 @@ PomaBoxplots <- function(data,
   if (!(group %in% c("samples", "features"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
   }
-  if (missing(group)) {
-    warning("group argument is empty! samples will be used")
-  }
   if (!is.null(feature_name)) {
     if(!isTRUE(all(feature_name %in% Biobase::featureNames(data)))){
       stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
@@ -46,17 +45,13 @@ PomaBoxplots <- function(data,
   }
   
   e <- t(Biobase::exprs(data))
-  pData <- Biobase::pData(data)
+  target <- Biobase::pData(data) %>%
+    rownames_to_column("ID") %>%
+    rename(Group = 2) %>%
+    select(ID, Group)
   
-  data <- cbind(pData, e)
-  data <- tibble::rownames_to_column(data, "ID")
-  
-  colnames(data)[2] <- c("Group")
-  data <- data %>% mutate(ID = as.character(ID))
-  
-  n_rem <- ncol(pData) - 1
-  data <- data[, c(1:2, (3 + n_rem):ncol(data))]
-  
+  data <- cbind(target, e)
+
   if(group == "samples"){
     
     data %>%
@@ -64,11 +59,11 @@ PomaBoxplots <- function(data,
       group_by(ID) %>%
       ggplot(aes(ID, value, color = Group)) +
       geom_boxplot() +
-      {if(jitter)geom_jitter(position = position_jitterdodge())} +
+      {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
       theme_bw() +
       xlab("") +
       ylab("Value") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size))
   }
   
   else {
@@ -81,11 +76,11 @@ PomaBoxplots <- function(data,
         group_by(Group) %>%
         ggplot(aes(variable, value, color = Group)) +
         geom_boxplot() +
-        {if(jitter)geom_jitter(position = position_jitterdodge())} +
+        {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
         theme_bw() +
         xlab("") +
         ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size))
       
     } else {
       
@@ -96,11 +91,11 @@ PomaBoxplots <- function(data,
         filter(variable %in% feature_name) %>%
         ggplot(aes(variable, value, color = Group)) +
         geom_boxplot() +
-        {if(jitter)geom_jitter(position = position_jitterdodge())} +
+        {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
         theme_bw() +
         xlab("") +
         ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size))
 
     }
   }

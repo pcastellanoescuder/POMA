@@ -4,7 +4,14 @@
 \alias{PomaLasso}
 \title{Lasso, Ridge and Elasticnet Regularized Generalized Linear Models for Binary Outcomes}
 \usage{
-PomaLasso(data, alpha = 1, ntest = NULL, nfolds = 10, lambda = NULL)
+PomaLasso(
+  data,
+  alpha = 1,
+  ntest = NULL,
+  nfolds = 10,
+  lambda = NULL,
+  labels = FALSE
+)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
@@ -16,6 +23,8 @@ PomaLasso(data, alpha = 1, ntest = NULL, nfolds = 10, lambda = NULL)
 \item{nfolds}{Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.}
 
 \item{lambda}{A user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on \code{nlambda} and \code{lambda.min.ratio}. See \code{?glmnet::glmnet()}.}
+
+\item{labels}{Logical indicating if feature names should be plotted in coefficient plot or not. Default is FALSE.}
 }
 \value{
 A list with all results including plots, data frames and the resulting prediction model.

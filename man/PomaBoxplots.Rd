@@ -4,7 +4,13 @@
 \alias{PomaBoxplots}
 \title{Classical Boxplots}
 \usage{
-PomaBoxplots(data, group = "samples", jitter = TRUE, feature_name = NULL)
+PomaBoxplots(
+  data,
+  group = "samples",
+  jitter = TRUE,
+  feature_name = NULL,
+  label_size = 10
+)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
@@ -14,6 +20,8 @@ PomaBoxplots(data, group = "samples", jitter = TRUE, feature_name = NULL)
 \item{jitter}{Logical. If it's TRUE (default), the boxplot will show all points.}
 
 \item{feature_name}{A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.}
+
+\item{label_size}{Numeric indicating the size of x-axis labels.}
 }
 \value{
 A ggplot2 object.

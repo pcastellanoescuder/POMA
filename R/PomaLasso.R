@@ -8,7 +8,8 @@
 #' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).
 #' @param nfolds Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.
 #' @param lambda A user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on `nlambda` and `lambda.min.ratio`. See `?glmnet::glmnet()`.
-#'
+#' @param labels Logical indicating if feature names should be plotted in coefficient plot or not. Default is FALSE.
+#' 
 #' @export
 #'
 #' @return A list with all results including plots, data frames and the resulting prediction model.
@@ -17,6 +18,8 @@
 #'
 #' @import ggplot2
 #' @importFrom broom tidy glance
+#' @importFrom dplyr arrange desc group_by slice
+#' @importFrom magrittr %>%
 #' @importFrom glmnet cv.glmnet
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
@@ -26,7 +29,8 @@ PomaLasso <- function(data,
                       alpha = 1,
                       ntest = NULL,
                       nfolds = 10,
-                      lambda = NULL){
+                      lambda = NULL,
+                      labels = FALSE){
 
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
@@ -107,7 +111,8 @@ PomaLasso <- function(data,
   }
   
   tidied_cv2 <- broom::tidy(cv_fit$glmnet.fit)
-
+  tidied_cv2_names <- tidied_cv2 %>% arrange(desc(abs(estimate))) %>% group_by(term) %>% dplyr::slice(1)
+  
   coefficientplot <- ggplot(tidied_cv2, aes(lambda, estimate, color = term)) +
     scale_x_log10() +
     xlab("log10(Lambda)") +
@@ -116,6 +121,7 @@ PomaLasso <- function(data,
     geom_vline(xintercept = glance_cv$lambda.min) +
     geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
     theme_bw() +
+    {if(labels)geom_label(data = tidied_cv2_names, aes(label = term))} +
     theme(legend.position = "none")
 
   if(!is.null(ntest)){

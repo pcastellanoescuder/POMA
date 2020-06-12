@@ -15,7 +15,7 @@
 #' @return A data frame with results.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom tibble column_to_rownames
+#' @importFrom tibble column_to_rownames rownames_to_column
 #' @importFrom dplyr select mutate filter bind_cols bind_rows 
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
@@ -43,9 +43,6 @@ PomaUnivariate <- function(data,
   }
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for adjust argument!"))
-  }
-  if (missing(adjust)) {
-    warning("adjust argument is empty! FDR will be used")
   }
 
   if(isTRUE(covariates) & ncol(pData(data)) == 1){
@@ -78,18 +75,21 @@ PomaUnivariate <- function(data,
   if(method == "ttest"){
 
     stat <- function(x){t.test(x ~ Group, na.rm = TRUE, alternative = c("two.sided"),
-                               var.equal = eval(parse(text = var_equal)),
-                               paired = eval(parse(text = paired)))$p.value}
+                               var.equal = var_equal, paired = paired)$p.value}
 
     p <- data.frame(pvalue = apply(FUN = stat, MARGIN = 2, X = e))
 
     p <- p %>%
-      mutate(adj_pvalue = p.adjust(pvalue, method = adjust))
+      rownames_to_column("ID") %>%
+      mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>%
+      column_to_rownames("ID")
     
     p <- bind_cols(group_means, p) %>%
+      rownames_to_column("ID") %>%
       mutate(Fold_Change_Ratio = as.numeric(round(group_means[,2]/group_means[,1], 3)),
-             Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3)))
-    p <- p[, c(1:2,5:6,3:4)]
+             Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
+      column_to_rownames("ID") %>%
+      select(1,2,5,6,3,4)
 
     return(p)
   }
@@ -102,7 +102,7 @@ PomaUnivariate <- function(data,
       p2 <- data.frame(pvalue = apply(FUN = stat2, MARGIN = 2, X = e))
 
       p2 <- p2 %>%
-        mutate(adj_pvalue = p.adjust(pvalue, method = adjust))
+        mutate(pvalueAdj = p.adjust(pvalue, method = adjust))
       
       p2 <- bind_cols(group_means, p2)
 
@@ -131,7 +131,7 @@ PomaUnivariate <- function(data,
       rownames(p3) <- colnames(e)
 
       p3 <- p3 %>%
-        mutate(adj_pvalue = p.adjust(pvalue, method = adjust))
+        mutate(pvalueAdj = p.adjust(pvalue, method = adjust))
 
       p3 <- bind_cols(group_means, p3)
 
@@ -144,15 +144,19 @@ PomaUnivariate <- function(data,
 
     non_param_mann <- data.frame(pvalue = apply(e, 2,
                                                  function(x){wilcox.test(x ~ as.factor(Group),
-                                                                         paired = eval(parse(text = paired)))$p.value}))
+                                                                         paired = paired)$p.value}))
 
     non_param_mann <- non_param_mann %>%
-      mutate(adj_pvalue = p.adjust(pvalue, method = adjust))
-
+      rownames_to_column("ID") %>%
+      mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>%
+      column_to_rownames("ID")
+    
     non_param_mann <- bind_cols(group_means, non_param_mann) %>%
+      rownames_to_column("ID") %>%
       mutate(Fold_Change_Ratio = as.numeric(round(group_means[,2]/group_means[,1], 3)),
-             Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3)))
-    non_param_mann <- non_param_mann[, c(1:2,5:6,3:4)]
+             Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
+      column_to_rownames("ID") %>%
+      select(1,2,5,6,3,4)
 
     return(non_param_mann)
   }
@@ -161,7 +165,7 @@ PomaUnivariate <- function(data,
 
     non_param_kru <- data.frame(pvalue = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$p.value}))
     non_param_kru <- non_param_kru %>%
-      mutate(adj_pvalue = p.adjust(pvalue, method = adjust),
+      mutate(pvalueAdj = p.adjust(pvalue, method = adjust),
              Kruskal_Wallis_Rank_Sum = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$statistic}))
 
     non_param_kru <- bind_cols(group_means, non_param_kru)

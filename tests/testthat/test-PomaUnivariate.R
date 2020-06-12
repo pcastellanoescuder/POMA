@@ -38,8 +38,6 @@ test_that("PomaUnivariate works", {
   
   ##
   
-  expect_warning(PomaUnivariate(st000284, covariates = T, method = "anova"))
-  
   expect_error(PomaUnivariate(st000284, covariates = T, method = "anov", adjust = "fdr"))
   expect_error(PomaUnivariate(st000284, covariates = T, adjust = "fdr"))
   

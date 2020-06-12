@@ -2,24 +2,22 @@ context("PomaBoxplots")
 
 test_that("PomaBoxplots works", {
   
-  # library(tidyverse)
-  
   data("st000284")
   
   norm_none <- PomaNorm(st000284, method = "none")
   norm_ls <- PomaNorm(st000284, method = "log_scaling")
   
-  a <- PomaBoxplots(norm_none)
-  b <- PomaBoxplots(norm_ls)
-  c <- PomaBoxplots(norm_none, group = "features")
-  d <- PomaBoxplots(norm_ls, group = "features")
+  a <- PomaBoxplots(norm_none, label_size = 12)
+  b <- PomaBoxplots(norm_ls, label_size = 10)
+  c <- PomaBoxplots(norm_none, group = "features", label_size = 8)
+  d <- PomaBoxplots(norm_ls, group = "features", label_size = 6)
   
-  e <- PomaBoxplots(norm_none, group = "samples")
+  e <- PomaBoxplots(norm_none, group = "samples", label_size = 2)
   
-  f <- PomaBoxplots(norm_none, group = "samples", jitter = T)
-  g <- PomaBoxplots(norm_none, group = "samples", jitter = F)
-  h <- PomaBoxplots(norm_none, group = "features", jitter = T)
-  i <- PomaBoxplots(norm_none, group = "features", jitter = F)
+  f <- PomaBoxplots(norm_none, group = "samples", jitter = T, label_size = 20)
+  g <- PomaBoxplots(norm_none, group = "samples", jitter = F, label_size = 15)
+  h <- PomaBoxplots(norm_none, group = "features", jitter = T, label_size = 20)
+  i <- PomaBoxplots(norm_none, group = "features", jitter = F, label_size = 15)
   
   j <- PomaBoxplots(norm_ls, group = "features", feature_name = "methyl_succinate")
   k <- PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
@@ -57,13 +55,7 @@ test_that("PomaBoxplots works", {
   
   ##
   
-  expect_warning(PomaBoxplots(norm_none))
-  expect_warning(PomaBoxplots(norm_ls))
-  
   expect_error(PomaBoxplots(norm_ls, group = "samp"))
-  
-  ##
-  
   expect_error(PomaBoxplots(group = "sample"))
   expect_error(PomaBoxplots(iris, group = "sample"))
   

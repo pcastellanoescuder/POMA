@@ -13,9 +13,9 @@ test_that("PomaLasso works", {
   Biobase::pData(normalized_test)$Group <- c(rep("C", 30), rep("G", 20), rep("P", 7))
   Biobase::pData(normalized_test_less)$Group <- "Control"
 
-  lasso_res <- PomaLasso(normalized, alpha = 1, ntest = NULL, nfolds = 3)
+  lasso_res <- PomaLasso(normalized, alpha = 1, ntest = NULL, nfolds = 3, labels = TRUE)
   ridge_res <- PomaLasso(normalized, alpha = 0, ntest = NULL, nfolds = 10)
-  enet_res <- PomaLasso(normalized, alpha = 0.5, ntest = NULL, nfolds = 5)
+  enet_res <- PomaLasso(normalized, alpha = 0.5, ntest = NULL, nfolds = 5, labels = TRUE)
   lasso_self_lambda <- PomaLasso(normalized, alpha = 1, ntest = NULL, nfolds = 10, lambda = seq(0.002, 20, length.out = 100))
   
   ## TABLES
