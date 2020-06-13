@@ -6,51 +6,49 @@
 \usage{
 PomaCorr(
   data,
+  method = "pearson",
   shape = "square",
   type = "full",
   show_corr = FALSE,
   low = "#336B87",
   outline = "white",
   high = "#EA8620",
+  label_size = 12,
   corr_type = "cor",
-  threshold = 0.4,
-  rho = 0.7,
-  edge_labels = FALSE
+  threshold = 0.7
 )
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
-\item{shape}{Visualization shape of correlation matrix. Allowed values are "square" (default) and "circle".}
+\item{method}{Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".}
 
-\item{type}{Character. Options are "full" (default), "lower" or "upper".}
+\item{shape}{Character ingicating shape of correlogram. Options are "square" (default) and "circle".}
 
-\item{show_corr}{Logical indicating if correlation coefficient for each pair of features should be plotted or not (default = FALSE). Only recomended for a few number of features.}
+\item{type}{Character indicating type of correlogram. Options are "full" (default), "lower" or "upper".}
 
-\item{low}{Colour for low end of the gradient.}
+\item{show_corr}{Logical indicating if correlation coefficient for each pair of features should be plotted in correlogram or not (default = FALSE). Only recomended for a low number of features.}
 
-\item{outline}{Colour for the outline of the gradient.}
+\item{low}{Colour for low end of the gradient in correlogram.}
 
-\item{high}{Colour for high end of the gradient.}
+\item{outline}{Colour for the outline of the gradient in correlogram.}
 
-\item{corr_type}{Type of graph to be made with correlation matrix. Options are "cor" (for global correlations), "pcor" (for partial correlations) and "glasso" (for gaussian graphical models). Default is "cor". See \code{glasso} R package for the last option.}
+\item{high}{Colour for high end of the gradient in correlogram.}
 
-\item{threshold}{Numeric indicatin correlation coefficient. Edges with absolute weight below this value are will be removed from the network.}
+\item{label_size}{Numeric indicating label size in correlogram.}
 
-\item{rho}{Only if "corr_type" is set to "glasso". This parameter indicates the regularization parameter for lasso (rho = 0 means no regularization).}
+\item{corr_type}{Type of network to be made with correlation matrix. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See \code{glasso} R package for the second option.}
 
-\item{edge_labels}{Logical indicating if correlation coefficient will be plotted or not. Default is FALSE.}
+\item{threshold}{Numeric indicatin correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See \code{glasso::glasso()}.}
 }
 \value{
 A list with the results.
 }
 \description{
-This function returns different correlation plots in both network and 2D formats and a table with all pairwise correlations in the data.
+This function returns different correlation plots (correlogram and network plots) and a table with all pairwise correlations in the data.
 }
 \references{
 Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso
-
-Sacha Epskamp, Angelique O. J. Cramer, Lourens J. Waldorp, Verena D. Schmittmann, Denny Borsboom (2012). qgraph: Network Visualizations of Relationships in Psychometric Data. Journal of Statistical Software, 48(4), 1-18. URL http://www.jstatsoft.org/v48/i04/.
 }
 \author{
 Pol Castellano-Escuder

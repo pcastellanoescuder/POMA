@@ -9,8 +9,8 @@ test_that("PomaCorr works", {
   a <- PomaCorr(st000284)
   b <- PomaCorr(imp_st000336)
   
-  c <- PomaCorr(st000284, corr_type = "glasso", threshold = 0.3, rho = 0.9)
-  d <- PomaCorr(imp_st000336 , corr_type = "glasso", threshold = 0.5, rho = 0.7)
+  c <- PomaCorr(st000284, corr_type = "glasso", threshold = 0.3, method = "spearman")
+  d <- PomaCorr(imp_st000336 , corr_type = "glasso", threshold = 0.5, type = "upper")
   
   ## table
   
@@ -33,15 +33,19 @@ test_that("PomaCorr works", {
   
   ## networks
   
-  expect_true(class(a$graph) == "qgraph")
-  expect_true(class(b$graph) == "qgraph")
-  expect_true(class(c$graph) == "qgraph")
-  expect_true(class(d$graph) == "qgraph")
+  expect_true(class(a$graph)[1] == "ggraph")
+  expect_true(class(b$graph)[1] == "ggraph")
+  expect_true(class(c$graph)[1] == "ggraph")
+  expect_true(class(d$graph)[1] == "ggraph")
   
-  expect_equal(113, nrow(a$graph$layout))
-  expect_equal(30, nrow(b$graph$layout))
-  expect_equal(113, nrow(c$graph$layout))
-  expect_equal(30, nrow(d$graph$layout))
+  expect_true(113 > nrow(a$graph$data))
+  expect_equal(6, ncol(a$graph$data))
+  
+  expect_true(30 > nrow(b$graph$data))
+  expect_equal(6, ncol(b$graph$data))
+  
+  expect_true(113 > nrow(c$graph$data))
+  expect_true(30 > nrow(d$graph$data))
   
   ## errors
   
@@ -50,6 +54,9 @@ test_that("PomaCorr works", {
   expect_error(PomaCorr(st000284, shape = "cir"))
   expect_error(PomaCorr(st000284, type = "lo"))
   expect_error(PomaCorr(st000284, corr_type = "co"))
+  expect_error(PomaCorr(st000284, threshold = 2))
+  expect_error(PomaCorr(st000284, threshold = -0.2))
+  expect_error(PomaCorr(st000284, method = "pear"))
   
 })
 
