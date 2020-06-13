@@ -37,7 +37,6 @@ Imports:
     randomForest,
     RankProd,
     reshape2,
-    snow,
     stringr,
     tibble,
     tidyr,
