@@ -70,7 +70,7 @@ PomaVolcano <- function(data,
     df <- data.frame(pvalue = df$pvalue, FC = log2(df$Fold_Change_Ratio), names = names)
   }
   else{
-    df <- data.frame(pvalue = df$adj_pvalue, FC = log2(df$Fold_Change_Ratio), names = names)
+    df <- data.frame(pvalue = df$pvalueAdj, FC = log2(df$Fold_Change_Ratio), names = names)
   }
 
   df <- mutate(df, threshold = as.factor(ifelse(df$pvalue >= pval_cutoff,
