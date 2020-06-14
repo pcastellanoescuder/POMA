@@ -15,7 +15,7 @@ PomaCorr(
   high = "#EA8620",
   label_size = 12,
   corr_type = "cor",
-  threshold = 0.7
+  coeff = 0.7
 )
 }
 \arguments{
@@ -39,7 +39,7 @@ PomaCorr(
 
 \item{corr_type}{Type of network to be made with correlation matrix. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See \code{glasso} R package for the second option.}
 
-\item{threshold}{Numeric indicatin correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See \code{glasso::glasso()}.}
+\item{coeff}{Numeric indicatin correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See \code{glasso::glasso()}.}
 }
 \value{
 A list with the results.

@@ -13,7 +13,7 @@
 #' @param high Colour for high end of the gradient in correlogram.
 #' @param label_size Numeric indicating label size in correlogram.
 #' @param corr_type Type of network to be made with correlation matrix. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See `glasso` R package for the second option.
-#' @param threshold Numeric indicatin correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See `glasso::glasso()`.
+#' @param coeff Numeric indicatin correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See `glasso::glasso()`.
 #' 
 #' @export
 #'
@@ -40,7 +40,7 @@ PomaCorr <- function(data,
                      high = "#EA8620",
                      label_size = 12,
                      corr_type = "cor",
-                     threshold = 0.7){
+                     coeff = 0.7){
   
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
@@ -58,8 +58,8 @@ PomaCorr <- function(data,
   if (!(corr_type %in% c("cor", "glasso"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for corr_type argument!"))
   }
-  if (threshold > 1 | threshold < 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "threshold must be a number between 0 and 1..."))
+  if (coeff > 1 | coeff < 0) {
+    stop(crayon::red(clisymbols::symbol$cross, "coeff must be a number between 0 and 1..."))
   }
   if (!(method %in% c("pearson", "kendall", "spearman"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
@@ -87,7 +87,7 @@ PomaCorr <- function(data,
   if(corr_type != "glasso"){
     
     graph_table <- correlations %>% 
-      filter(abs(corr) >= threshold)
+      filter(abs(corr) >= coeff)
     
     graph <- ggraph(graph_table, layout = "fr") +
       geom_edge_link(aes(edge_alpha = abs(corr), edge_width = abs(corr), color = corr)) +
@@ -99,7 +99,7 @@ PomaCorr <- function(data,
     
   } else {
     
-    data_glasso <- glasso::glasso(cor_matrix, rho = threshold)$w
+    data_glasso <- glasso::glasso(cor_matrix, rho = coeff)$w
     
     rownames(data_glasso) <- rownames(cor_matrix)
     colnames(data_glasso) <- colnames(cor_matrix)

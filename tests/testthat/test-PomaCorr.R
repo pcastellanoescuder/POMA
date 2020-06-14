@@ -9,8 +9,8 @@ test_that("PomaCorr works", {
   a <- PomaCorr(st000284)
   b <- PomaCorr(imp_st000336)
   
-  c <- PomaCorr(st000284, corr_type = "glasso", threshold = 0.3, method = "spearman")
-  d <- PomaCorr(imp_st000336 , corr_type = "glasso", threshold = 0.5, type = "upper")
+  c <- PomaCorr(st000284, corr_type = "glasso", coeff = 0.3, method = "spearman")
+  d <- PomaCorr(imp_st000336 , corr_type = "glasso", coeff = 0.5, type = "upper")
   
   ## table
   
@@ -54,8 +54,8 @@ test_that("PomaCorr works", {
   expect_error(PomaCorr(st000284, shape = "cir"))
   expect_error(PomaCorr(st000284, type = "lo"))
   expect_error(PomaCorr(st000284, corr_type = "co"))
-  expect_error(PomaCorr(st000284, threshold = 2))
-  expect_error(PomaCorr(st000284, threshold = -0.2))
+  expect_error(PomaCorr(st000284, coeff = 2))
+  expect_error(PomaCorr(st000284, coeff = -0.2))
   expect_error(PomaCorr(st000284, method = "pear"))
   
 })
