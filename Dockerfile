@@ -9,7 +9,7 @@ LABEL authors = "polcaes@gmail.com" \
 
 ## CRAN
 
-RUN R -e "install.packages(c('remotes', 'reshape2', 'ggplot2', 'tidyr', 'dplyr', 'tibble', 'stringr', 'caret', 'crayon', 'clisymbols', 'prettydoc', 'ggrepel', 'magrittr', 'randomForest', 'broom', 'glmnet', 'plotly', 'ggcorrplot', 'glasso', 'ggraph', 'vegan', 'BiocManager'), 
+RUN R -e "install.packages(c('remotes', 'reshape2', 'ggplot2', 'tidyr', 'dplyr', 'tibble', 'stringr', 'caret', 'crayon', 'clisymbols', 'patchwork', 'knitr', 'rmarkdown', 'ggrepel', 'magrittr', 'randomForest', 'broom', 'glmnet', 'plotly', 'ggcorrplot', 'glasso', 'ggraph', 'vegan', 'BiocManager'), 
 repos='http://cran.rstudio.com/')"
 
 ## BIOCONDUCTOR

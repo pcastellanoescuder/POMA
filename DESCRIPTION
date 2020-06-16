@@ -29,14 +29,17 @@ Imports:
     glasso (>= 1.11),
     glmnet,
     impute,
+    knitr,
     limma,
     magrittr,
     mixOmics,
     MSnbase (>= 2.12),
+    patchwork,
     plotly,
     randomForest,
     RankProd,
     reshape2,
+    rmarkdown,
     stringr,
     tibble,
     tidyr,
@@ -45,9 +48,6 @@ Suggests:
     covr,
     tidyverse,
     testthat (>= 2.3.2),
-    knitr,
-    rmarkdown,
-    patchwork,
     prettydoc
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
