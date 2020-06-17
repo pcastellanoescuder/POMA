@@ -80,7 +80,7 @@ var_zero <- e %>%
 
 # Know your data
 
-  + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**.    
+  + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**. `r ifelse(ncol(Biobase::pData(data)) > 1, paste0("Furthermore, **", ncol(Biobase::pData(data)) - 1,"** covariates have been found in your data. These covariates are **",noquote(paste(shQuote(paste0(colnames(Biobase::pData(data))[2:ncol(Biobase::pData(data))])), collapse=", ")),"**."), "")`          
 
   + A **`r round((sum(is.na(e))/(nrow(e)*ncol(e)))*100, 2)`%** of values in your data are NAs (missing values). `r ifelse(nrow(nas) >= 1, paste0("Variables that have NA values are **",noquote(paste(shQuote(paste0(nas$names," (",nas$number,")")), collapse=", ")),"**."), "")`
 
@@ -94,7 +94,8 @@ var_zero <- e %>%
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 summary_table1 <- data.frame(Samples = nrow(e),
-                             Features = ncol(e))
+                             Features = ncol(e),
+                             Covariates = ncol(Biobase::pData(data)) - 1)
 summary_table2 <- data.frame(Counts_Zero = sum(zeros$number),
                              Percent_Zero = paste(round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2), "%"))
 summary_table3 <- data.frame(Counts_NA = sum(is.na(e)),

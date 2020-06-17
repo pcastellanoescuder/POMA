@@ -89,6 +89,10 @@ PomaCorr <- function(data,
     graph_table <- correlations %>% 
       filter(abs(corr) >= coeff)
     
+    if (nrow(graph_table) < 1) {
+      stop(crayon::red(clisymbols::symbol$cross, "There are no feature pairs with selected coeff. Try with a lower value..."))
+    }
+    
     graph <- ggraph(graph_table, layout = "fr") +
       geom_edge_link(aes(edge_alpha = abs(corr), edge_width = abs(corr), color = corr)) +
       guides(edge_alpha = "none", edge_width = "none") +
@@ -110,7 +114,11 @@ PomaCorr <- function(data,
     colnames(data_glasso)[3] <- "corr"
     
     graph_table <- data_glasso %>% 
-      filter(abs(corr) != 0)
+      filter(corr != 0)
+    
+    if (nrow(graph_table) < 1) {
+      stop(crayon::red(clisymbols::symbol$cross, "There are no feature pairs with selected coeff. Try with a lower value..."))
+    }
     
     graph <- ggraph(graph_table, layout = "fr") +
       geom_edge_link(aes(edge_alpha = abs(corr), edge_width = abs(corr), color = corr)) +
@@ -122,7 +130,11 @@ PomaCorr <- function(data,
 
   }
   
-  return(list(correlations = correlations, corrplot = corrplot, graph = graph))
+  if(corr_type != "glasso"){
+    return(list(correlations = correlations, corrplot = corrplot, graph = graph))
+  } else{
+    return(list(correlations = correlations, corrplot = corrplot, graph = graph, data_glasso = data_glasso))
+  }
   
 }
 

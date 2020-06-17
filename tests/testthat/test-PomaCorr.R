@@ -12,6 +12,9 @@ test_that("PomaCorr works", {
   c <- PomaCorr(st000284, corr_type = "glasso", coeff = 0.3, method = "spearman")
   d <- PomaCorr(imp_st000336 , corr_type = "glasso", coeff = 0.5, type = "upper")
   
+  e <- PomaCorr(st000284, corr_type = "glasso", coeff = 0.5)
+  f <- PomaCorr(st000284, coeff = 0.5)
+  
   ## table
   
   expect_equal(((113*113)-113)/2, nrow(a$correlations))
@@ -23,6 +26,11 @@ test_that("PomaCorr works", {
   expect_equal(3, ncol(b$correlations))
   expect_equal(3, ncol(c$correlations))
   expect_equal(3, ncol(d$correlations))
+  
+  expect_equal(class(e$data_glasso), "data.frame")
+  expect_equal(ncol(e$data_glasso), 3)
+  expect_equal(ncol(e$data_glasso), ncol(a$correlations))
+  expect_equal(class(f$data_glasso), "NULL")
   
   ## corrplot
   
@@ -57,6 +65,8 @@ test_that("PomaCorr works", {
   expect_error(PomaCorr(st000284, coeff = 2))
   expect_error(PomaCorr(st000284, coeff = -0.2))
   expect_error(PomaCorr(st000284, method = "pear"))
+  expect_error(PomaCorr(st000284, corr_type = "cor", coeff = 1))
+  expect_error(PomaCorr(st000284, corr_type = "glasso", coeff = 1))
   
 })
 
