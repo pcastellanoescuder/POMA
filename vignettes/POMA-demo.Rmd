@@ -1,19 +1,20 @@
 ---
 title: "POMA Workflow Overview"
-author: "Pol Castellano-Escuder"
+author: 
+- name: Pol Castellano-Escuder
+  affiliation: University of Barcelona, Spain.
+  email: polcaes@gmail.com
 date: "`r Sys.Date()`"
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
-    toc: true
-    toc_depth: 4
-    number_sections: true
+output: 
+    BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{POMA Workflow Overview}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\VignetteEncoding{UTF-8}
+bibliography: ["POMA.bib"]
+biblio-style: apalike
+link-citations: true
 ---
 
 ```{r, include = FALSE}
@@ -37,7 +38,7 @@ devtools::install_github("pcastellanoescuder/POMA")
 library(POMA)
 library(ggplot2) # to tune POMA default plots
 library(patchwork) # to show plots together
-library(tidyverse) # it's just tidyverse;)
+library(tidyverse) # no need explanation;)
 ```
 
 # Load or Create an `MSnbase::MSnSet()` object
@@ -178,4 +179,12 @@ Top 10 best predictors:
 ```{r, fig.height = 4, fig.width = 8}
 rf_res$gini_plot
 ```
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+
+# References
 

@@ -1,19 +1,20 @@
 ---
-title: "Normalization"
-author: "Pol Castellano-Escuder"
+title: "POMA Normalization Methods"
+author: 
+- name: Pol Castellano-Escuder
+  affiliation: University of Barcelona, Spain.
+  email: polcaes@gmail.com
 date: "`r Sys.Date()`"
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
-    toc: true
-    toc_depth: 4
-    number_sections: true
+output: 
+    BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{Normalization}
+  %\VignetteIndexEntry{POMA Normalization Methods}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\VignetteEncoding{UTF-8}
+bibliography: ["POMA.bib"]
+biblio-style: apalike
+link-citations: true
 ---
 
 ```{r, include = FALSE}
@@ -24,38 +25,30 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Load POMA
+# Load Packages
 
 ```{r, warning = FALSE, message = FALSE, comment = FALSE}
 library(POMA)
 library(Biobase) # to subset example data
 library(ggplot2) # to tune POMA default plots
 library(patchwork) # to show plots together
-library(tidyverse) # it's just tidyverse;)
+library(tidyverse) # no need explanation;)
 ```
 
-# Load Data
+# Load Data and Imputation
 
-Let's create a smaller `MSnSet` object to better explore normalization effects.      
+Let's create a cleaned `MSnSet` object from example `st000336` data to explore normalization effects.      
 
 ```{r}
 # load example data
-data("st000284")
+data("st000336")
 
-# subset example data
-my_features <- t(exprs(st000284))[c(1:8, 120:127) ,]
-
-my_target <- pData(st000284)[c(1:8, 120:127) ,]
-my_target <- my_target %>% rownames_to_column("ID")
-
-# create a smaller MSnSet object from example data
-example_data <- PomaMSnSetClass(features = my_features, target = my_target)
+# imputation using the default method KNN
+example_data <- st000336 %>% PomaImpute()
 example_data
 ```
 
-# Normalization in `POMA`
-
-_We can skip the imputation step because example data doesn't has missing values._
+# Normalization
 
 Here we will evaluate ALL normalization methods that POMA offers on the same `MSnSet` object to compare them.  
 
@@ -176,4 +169,12 @@ p14 <- PomaDensity(log_pareto, group = "features") +
 
 p8 / (p9 + p10 + p11) / (p12 + p13 + p14)
 ```
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+
+# References
 

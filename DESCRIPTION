@@ -49,10 +49,10 @@ Imports:
     tidyr,
     vegan
 Suggests: 
+    BiocStyle,
     covr,
     tidyverse,
-    testthat (>= 2.3.2),
-    prettydoc
+    testthat (>= 2.3.2)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: R (>= 3.5.0)
