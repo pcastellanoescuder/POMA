@@ -14,7 +14,7 @@ repos='http://cran.rstudio.com/')"
 
 ## BIOCONDUCTOR
 
-RUN R -e "BiocManager::install(c('impute', 'RankProd', 'mixOmics', 'MSnbase', 'limma', 'Biobase'))"
+RUN R -e "BiocManager::install(c('impute', 'RankProd', 'mixOmics', 'MSnbase', 'limma', 'Biobase', 'ComplexHeatmap'))"
 
 # Install POMA from GitHub
 

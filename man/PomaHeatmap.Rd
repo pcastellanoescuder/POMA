@@ -4,14 +4,14 @@
 \alias{PomaHeatmap}
 \title{Classical Heatmap}
 \usage{
-PomaHeatmap(data, scale = TRUE, scale_by = "features")
+PomaHeatmap(data, sample_names = TRUE, feature_names = FALSE)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
-\item{scale}{Logical that indicates if heatmap values should be scaled. Default is TRUE.}
+\item{sample_names}{Logical indicating if sample names should be plotted or not. Default is TRUE.}
 
-\item{scale_by}{Variable to scale heatmap values. Options are "samples" and "features". Option "samples" (default) will \code{scale()} each sample considering all features and option "features" will \code{scale()} each feature considering all samples.}
+\item{feature_names}{Logical indicating if feature names should be plotted or not. Default is FALSE.}
 }
 \value{
 A heatmap.

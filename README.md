@@ -18,14 +18,16 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 
 <!-- badges: end -->
 
-[**POMA**](http://pcastellanoescuder.github.io/POMA/) is an R package
-that contains different robust functions for pre-processing, exploratory
-and statistical analysis of mass spectrometry data, such as metabolomics
-or proteomics. This package is based on the standardized
-[**MSnbase**](http://lgatto.github.io/MSnbase/) architecture, developed
-by [Laurent Gatto](http://lgatto.github.io/) in October 2010, to achieve
-the maximum flexibility and reproducibility and makes `POMA` compatible
-with pre-existing [Bioconductor](https://bioconductor.org) packages.
+[**POMA**](http://pcastellanoescuder.github.io/POMA/) introduces a
+structured, reproducible and easy use workflow for the visualization,
+preprocessement, exploratory and statistical analysis of mass
+spectrometry data. The main aim of `POMA` is to enable a flexible data
+cleaning and statistical analysis processes in one comprehensible and
+easy use R package. This package re-uses the standardized
+[**MSnbase**](http://lgatto.github.io/MSnbase/) data structures,
+developed by [Laurent Gatto](http://lgatto.github.io/), to achieve the
+maximum flexibility and reproducibility and makes `POMA` compatible with
+pre-existing [Bioconductor](https://bioconductor.org) packages.
 
 `POMA` also offers two different Shiny app modules both for Exploratory
 Data Analysis and Statistical Analysis that implements all `POMA`

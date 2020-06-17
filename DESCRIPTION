@@ -7,19 +7,23 @@ Authors@R:
            role = c("aut", "cre"),
            email = "polcaes@gmail.com",
            comment = c(ORCID = "0000-0001-6466-877X"))
-Description: POMA is an easy use R package that contains different robust functions for processing, 
-    exploratory analysis and statistical analysis of mass spectrometry data, such as metabolomics or proteomics. 
-    This package is based on the standardized "MSnbase" infrastructure to achieve maximum flexibility and reproducibility. 
-    This package also offers a Shiny app that implements all functions in an easy use web interface.
+Description: 
+    POMA introduces a structured, reproducible and easy use workflow for the visualization, preprocessement, 
+    exploratory and statistical analysis of mass spectrometry data. The main aim of POMA is to enable a flexible 
+    data cleaning and statistical analysis processes in one comprehensible and easy use R package. This package also 
+    offers a Shiny app user interface that implements all POMA functions.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 biocViews:
+    MassSpectrometry, Metabolomics, Proteomics, Workflow, Software, Visualization,
+    GUI, ReportWriting
 Imports:
     Biobase,
     broom,
     caret,
     clisymbols,
+    ComplexHeatmap,
     crayon,
     dplyr,
     ggcorrplot,
