@@ -16,6 +16,7 @@ PomaMultivariate(
   validation = "Mfold",
   folds = 5,
   nrepeat = 10,
+  vip = 1.5,
   num_features = 10
 )
 }
@@ -41,6 +42,8 @@ PomaMultivariate(
 \item{folds}{(Only for "plsda" and "splsda" methods) Numeric. Number of folds for Mfold validation method (default is 5). If the validation method is loo, this value will become to 1.}
 
 \item{nrepeat}{(Only for "plsda" and "splsda" methods) Numeric. Number of iterations for the validation method selected.}
+
+\item{vip}{(Only for "plsda" method) Numeric indicating VIP cutoff to select features that will be displayed in vip plot.}
 
 \item{num_features}{(Only for "splsda" method) Numeric. Number of variables selected to discriminate groups.}
 }

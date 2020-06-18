@@ -165,7 +165,7 @@ p5 + p6
 ## Random Forest
 
 ```{r}
-rf_res <- PomaRandForest(normalized, folds = 3, nvar = 10)
+rf_res <- PomaRandForest(normalized, ntest = 15, nvar = 10)
 ```
 
 Confusion matrix of the random forest model:  

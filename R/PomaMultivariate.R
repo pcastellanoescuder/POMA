@@ -14,6 +14,7 @@
 #' @param validation (Only for "plsda" and "splsda" methods) Validation method. Options are "Mfold" and "loo".
 #' @param folds (Only for "plsda" and "splsda" methods) Numeric. Number of folds for Mfold validation method (default is 5). If the validation method is loo, this value will become to 1.
 #' @param nrepeat (Only for "plsda" and "splsda" methods) Numeric. Number of iterations for the validation method selected.
+#' @param vip (Only for "plsda" method) Numeric indicating VIP cutoff to select features that will be displayed in vip plot.
 #' @param num_features (Only for "splsda" method) Numeric. Number of variables selected to discriminate groups.
 #'
 #' @export
@@ -23,7 +24,7 @@
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
-#' @importFrom dplyr select
+#' @importFrom dplyr select arrange desc filter
 #' @importFrom magrittr %>%
 #' @importFrom mixOmics pca plsda perf vip tune.splsda splsda selectVar
 #' @importFrom reshape2 melt
@@ -41,6 +42,7 @@ PomaMultivariate <- function(data,
                              validation = "Mfold",
                              folds = 5,
                              nrepeat = 10,
+                             vip = 1.5,
                              num_features = 10){
 
   if (missing(data)) {
@@ -178,13 +180,12 @@ PomaMultivariate <- function(data,
 
     ####
 
-    plsda_vip <- data.frame(mixOmics::vip(plsda_res))
-    plsda_vip <- plsda_vip[order(plsda_vip[,1], decreasing = T) ,]
+    plsda_vip <- data.frame(mixOmics::vip(plsda_res)) %>%
+      rownames_to_column("feature") %>%
+      arrange(desc(comp1))
 
-    plsda_vip <- plsda_vip %>% rownames_to_column("feature")
-    plsda_vip_top <- plsda_vip[1:15 ,]
-
-    plsda_vip_top <- plsda_vip_top %>%
+    plsda_vip_top <- plsda_vip %>%
+      filter(comp1 >= vip) %>%
       mutate(feature = factor(feature, levels = feature[order(comp1)]))
 
     vip_plsda_plot <- ggplot(plsda_vip_top, aes(x = feature, y = comp1, fill = NULL)) +
@@ -192,7 +193,7 @@ PomaMultivariate <- function(data,
       coord_flip() +
       ylab("VIP") +
       xlab("") +
-      geom_label(data = plsda_vip_top, aes(label = round(comp1, 2))) +
+      {if(nrow(plsda_vip_top) <= 10)geom_label(data = plsda_vip_top, aes(label = round(comp1, 2)))} +
       theme_bw()
 
     ####
