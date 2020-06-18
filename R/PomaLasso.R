@@ -77,7 +77,7 @@ PomaLasso <- function(data,
       train_x <- train[,-1]
       train_y <- train[,1]
       
-      if(length(levels(as.factor(train_y))) == 2 & length(levels(as.factor(test_y)))){
+      if(length(levels(as.factor(train_y))) == 2 & length(levels(as.factor(test_y))) == 2){
         break
       }
     }

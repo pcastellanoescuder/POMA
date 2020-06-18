@@ -111,17 +111,17 @@ PomaCorr <- function(data,
     data_glasso <- as.data.frame(as.table(data_glasso))
     data_glasso <- na.omit(data_glasso)
     data_glasso <- data_glasso[with(data_glasso, order(-Freq)), ]
-    colnames(data_glasso)[3] <- "corr"
+    colnames(data_glasso)[3] <- "EstimatedCorr"
     
     graph_table <- data_glasso %>% 
-      filter(corr != 0)
+      filter(EstimatedCorr != 0)
     
     if (nrow(graph_table) < 1) {
       stop(crayon::red(clisymbols::symbol$cross, "There are no feature pairs with selected coeff. Try with a lower value..."))
     }
     
     graph <- ggraph(graph_table, layout = "fr") +
-      geom_edge_link(aes(edge_alpha = abs(corr), edge_width = abs(corr), color = corr)) +
+      geom_edge_link(aes(edge_alpha = abs(EstimatedCorr), edge_width = abs(EstimatedCorr), color = EstimatedCorr)) +
       guides(edge_alpha = "none", edge_width = "none") +
       scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
       geom_node_point(color = "white", size = 5) +

@@ -194,7 +194,7 @@ outliers$polygon_plot
 # High Correlated Features (r > 0.97)
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-correlations <- PomaCorr(pre_processed, coeff = 0.97)
+correlations <- PomaCorr(pre_processed)
 high_correlations <- correlations$correlations %>% filter(abs(corr) > 0.97)
 ```
 

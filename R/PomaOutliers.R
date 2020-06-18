@@ -92,13 +92,13 @@ PomaOutliers <- function(data,
     
     polygon_plot <- ggplot(total_outliers, aes(x = PCoA1, y = PCoA2)) +
       geom_polygon(data = hulls, alpha = 0.5, aes(fill = Group)) +
-      geom_point(aes(shape = Group), size = 3, alpha = 0.7) +
+      {if(!labels)geom_point(aes(shape = Group), size = 3, alpha = 0.7)} +
       geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, label = rownames(centroids)), show.legend = F) +
       {if(labels)geom_text(aes(label = rownames(total_outliers)))} +
       theme_bw()
     
     distance_boxplot <- ggplot(detect_outliers, aes(Groups, distances, fill = Groups)) +
-      geom_boxplot(coef = coef) +
+      geom_boxplot(coef = coef, alpha = 0.8) +
       ylab("Distance to group centroid") + 
       xlab("") +
       {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$outlier == 1,], aes(label = sample), na.rm = TRUE, size = 4, show.legend = F)} +

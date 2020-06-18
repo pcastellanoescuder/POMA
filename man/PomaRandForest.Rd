@@ -6,7 +6,7 @@
 \usage{
 PomaRandForest(
   data,
-  folds = 3,
+  ntest = 20,
   ntree = 500,
   mtry = floor(sqrt(ncol(t(Biobase::exprs(data))))),
   nodesize = 1,
@@ -16,7 +16,7 @@ PomaRandForest(
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
 
-\item{folds}{Number of observations that will be used as test dataset. For example, if folds = 3, 1/3 of dataset will be used as train dataset.}
+\item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is 20\% of observations.}
 
 \item{ntree}{Number of trees to grow.}
 

@@ -9,7 +9,7 @@ PomaClust(
   method = "euclidean",
   k = 3,
   show_clusters = TRUE,
-  show_labels = FALSE,
+  labels = FALSE,
   show_group = FALSE
 )
 }
@@ -22,9 +22,9 @@ PomaClust(
 
 \item{show_clusters}{Logical indicating if clusters should be plotted or not. If this parameter is set to \code{FALSE} the resultant plot will be a classical 2-dimension MDS plot.}
 
-\item{show_labels}{Logical indicating if sample names should be plotted or not.}
+\item{labels}{Logical indicating if sample names should be plotted or not.}
 
-\item{show_group}{Logical indicating if the original sample group from pData should be plotted instead of sample ID or not. Only works if show_labels is set to \code{TRUE}.}
+\item{show_group}{Logical indicating if the original sample group from pData should be plotted instead of sample ID or not. Only works if labels is set to \code{TRUE}.}
 }
 \value{
 A list with the results.

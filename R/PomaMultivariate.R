@@ -8,6 +8,7 @@
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.
 #' @param scale Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.
+#' @param labels Logical indicating if sample names should be plotted or not.
 #' @param load_length Numeric between 1 and 2. Define the length of biplot loadings. Default is 1.
 #' @param ellipse Logical that indicates whether a 95%CI ellipse should be plotted in scores plot. Default is TRUE.
 #' @param validation (Only for "plsda" and "splsda" methods) Validation method. Options are "Mfold" and "loo".
@@ -34,6 +35,7 @@ PomaMultivariate <- function(data,
                              components = 5,
                              center = FALSE,
                              scale = FALSE,
+                             labels = FALSE,
                              load_length = 1,
                              ellipse = TRUE,
                              validation = "Mfold",
@@ -77,16 +79,17 @@ PomaMultivariate <- function(data,
     Y <- as.factor(Biobase::pData(data)$Group)
     pca_res <- mixOmics::pca(X, ncomp = components, center = center, scale = scale)
 
-    PCi <- data.frame(pca_res$x, Groups = Y)
+    PCi <- data.frame(pca_res$x, Groups = Y) %>% rownames_to_column("ID")
 
-    scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, col = Groups))+
-      geom_point(size = 3, alpha = 0.5) +
+    scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, col = Groups, label = ID)) +
+      {if(!labels)geom_point(size = 3, alpha = 0.5)} +
       xlab(paste0("PC1 (", round(100*(pca_res$explained_variance)[1], 2), "%)")) +
       ylab(paste0("PC2 (", round(100*(pca_res$explained_variance)[2], 2), "%)")) +
       {if(ellipse)stat_ellipse(type = "norm")} +
+      {if(labels)geom_text(aes(label = ID), show.legend = T)} +
       theme_bw()
 
-    ####
+    ##
 
     eigenvalues <- data.frame(Percent_Variance_Explained = round(pca_res$explained_variance*100, 4))
     eigenvalues <- eigenvalues %>% rownames_to_column("Principal_Component")
@@ -100,7 +103,7 @@ PomaMultivariate <- function(data,
 
     ####
 
-    score_data <- PCi %>% dplyr::select(-Groups) %>% round(4)
+    score_data <- PCi %>% dplyr::select(-Groups, -ID) %>% round(4)
 
     ####
 
@@ -139,13 +142,14 @@ PomaMultivariate <- function(data,
 
     plsda_res <- mixOmics::plsda(X, Y, ncomp = components)
 
-    PLSDAi <- data.frame(plsda_res$variates$X, Groups = Y)
+    PLSDAi <- data.frame(plsda_res$variates$X, Groups = Y) %>% rownames_to_column("ID")
 
-    scoresplot <- ggplot(PLSDAi, aes(x = comp1, y = comp2, col = Groups))+
-      geom_point(size=3,alpha=0.5) +
+    scoresplot <- ggplot(PLSDAi, aes(x = comp1, y = comp2, col = Groups, label = ID))+
+      {if(!labels)geom_point(size = 3, alpha = 0.5)} +
       xlab("Component 1") +
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
+      {if(labels)geom_text(aes(label = ID), show.legend = T)} +
       theme_bw()
 
     #####
@@ -177,13 +181,13 @@ PomaMultivariate <- function(data,
     plsda_vip <- data.frame(mixOmics::vip(plsda_res))
     plsda_vip <- plsda_vip[order(plsda_vip[,1], decreasing = T) ,]
 
-    plsda_vip <- plsda_vip %>% rownames_to_column("Variable")
+    plsda_vip <- plsda_vip %>% rownames_to_column("feature")
     plsda_vip_top <- plsda_vip[1:15 ,]
 
     plsda_vip_top <- plsda_vip_top %>%
-      mutate(Variable = factor(Variable, levels = Variable[order(comp1)]))
+      mutate(feature = factor(feature, levels = feature[order(comp1)]))
 
-    vip_plsda_plot <- ggplot(plsda_vip_top, aes(x = Variable, y = comp1, fill = NULL)) +
+    vip_plsda_plot <- ggplot(plsda_vip_top, aes(x = feature, y = comp1, fill = NULL)) +
       geom_bar(stat="identity", fill = rep(c("lightblue"), nrow(plsda_vip_top))) +
       coord_flip() +
       ylab("VIP") +
@@ -193,11 +197,11 @@ PomaMultivariate <- function(data,
 
     ####
 
-    scores_plsda <- PLSDAi %>% dplyr::select(-Groups) %>% round(4)
+    scores_plsda <- PLSDAi %>% dplyr::select(-Groups, -ID) %>% round(4)
 
     return(list(scoresplot = scoresplot, errors_plsda = errors_plsda,
                 errors_plsda_plot = errors_plsda_plot, plsda_vip_table = plsda_vip,
-                vip_plsda_plot = vip_plsda_plot, scores_plsda = scores_plsda))
+                vip_plsda_plot = vip_plsda_plot, score_data = scores_plsda))
   }
 
   else if (method == "splsda"){
@@ -227,7 +231,7 @@ PomaMultivariate <- function(data,
     bal_error_rate <- ggplot(data = errors_splsda, aes(x = features, y = value, group = variable)) +
       geom_line(aes(color=variable)) +
       geom_point(aes(color=variable)) +
-      geom_errorbar(aes(ymin = value-sd, ymax = value+sd), width=.1) +
+      geom_errorbar(aes(ymin = value-sd, ymax = value+sd, color = variable), width=.1) +
       theme_bw() +
       xlab("Number of features") +
       ylab("Error")
@@ -243,16 +247,17 @@ PomaMultivariate <- function(data,
 
     res_splsda <- mixOmics::splsda(X, Y, ncomp = ncompX, keepX = select_keepX)
 
-    SPLSDAi <- data.frame(res_splsda$variates$X, Groups = Y)
+    SPLSDAi <- data.frame(res_splsda$variates$X, Groups = Y) %>% rownames_to_column("ID")
 
-    splsda_scores_plot <- ggplot(SPLSDAi, aes(x = comp1, y = comp2, col = Groups)) +
-      geom_point(size=3,alpha=0.5) +
+    splsda_scores_plot <- ggplot(SPLSDAi, aes(x = comp1, y = comp2, col = Groups, label = ID)) +
+      {if(!labels)geom_point(size = 3, alpha = 0.5)} +
       xlab("Component 1") +
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
+      {if(labels)geom_text(aes(label = ID), show.legend = T)} +
       theme_bw()
 
-    scores_splsda <- SPLSDAi %>% dplyr::select(-Groups) %>% round(4)
+    scores_splsda <- SPLSDAi %>% dplyr::select(-Groups, -ID) %>% round(4)
 
     selected_variables <- mixOmics::selectVar(res_splsda, comp = 1)
     selected_variables <- round(selected_variables$value, 4)
@@ -261,8 +266,8 @@ PomaMultivariate <- function(data,
     ####
 
     return(list(ncomp = ncomp, select_keepX = select_keepX, errors_splsda = errors_splsda,
-                bal_error_rate = bal_error_rate, splsda_scores_plot = splsda_scores_plot,
-                scores_splsda = scores_splsda, selected_variables = selected_variables))
+                scoresplot = splsda_scores_plot, bal_error_rate = bal_error_rate,
+                score_data = scores_splsda, selected_variables = selected_variables))
 
   }
 

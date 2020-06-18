@@ -9,11 +9,11 @@ test_that("PomaClust works", {
   a <- PomaClust(st000284)
   b <- PomaClust(imp_st000336)
   
-  c <- PomaClust(st000284, method = "maximum", k = 5, show_clusters = FALSE, show_labels = TRUE)
-  d <- PomaClust(imp_st000336, method = "manhattan", k = 2, show_clusters = FALSE, show_labels = TRUE)
+  c <- PomaClust(st000284, method = "maximum", k = 5, show_clusters = FALSE, labels = TRUE)
+  d <- PomaClust(imp_st000336, method = "manhattan", k = 2, show_clusters = FALSE, labels = TRUE)
   
-  e <- PomaClust(st000284, method = "canberra", k = 6, show_clusters = FALSE, show_labels = TRUE, show_group = TRUE)
-  f <- PomaClust(imp_st000336, method = "minkowski", k = 4, show_clusters = TRUE, show_labels = TRUE, show_group = TRUE)
+  e <- PomaClust(st000284, method = "canberra", k = 6, show_clusters = FALSE, labels = TRUE, show_group = TRUE)
+  f <- PomaClust(imp_st000336, method = "minkowski", k = 4, show_clusters = TRUE, labels = TRUE, show_group = TRUE)
   
   ## table
   

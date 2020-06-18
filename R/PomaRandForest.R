@@ -4,7 +4,7 @@
 #' @description PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical `randomForest` R package.
 #'
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
-#' @param folds Number of observations that will be used as test dataset. For example, if folds = 3, 1/3 of dataset will be used as train dataset.
+#' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is 20% of observations.
 #' @param ntree Number of trees to grow.
 #' @param mtry Number of variables randomly sampled as candidates at each split. This value is set sqrt(p) (where p is number of variables in data) by default.
 #' @param nodesize Minimum size of terminal nodes. By default is equal to 1.
@@ -18,12 +18,14 @@
 #'
 #' @importFrom randomForest randomForest importance
 #' @import ggplot2
+#' @importFrom dplyr mutate
+#' @importFrom magrittr %>%
 #' @importFrom tibble rownames_to_column
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
 PomaRandForest <- function(data,
-                           folds = 3,
+                           ntest = 20,
                            ntree = 500,
                            mtry = floor(sqrt(ncol(t(Biobase::exprs(data))))),
                            nodesize = 1,
@@ -36,23 +38,45 @@ PomaRandForest <- function(data,
     stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
+  if (ntest > 50 | ntest < 5) {
+    stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 5 and 50..."))
+  }
+  
 
   Biobase::varLabels(data)[1] <- "Group"
   rf_data <- data.frame(cbind(Group = Biobase::pData(data)$Group, t(Biobase::exprs(data))))
-  rf_data[, 2:ncol(rf_data)] <- sapply(rf_data[, 2:ncol(rf_data)], as.numeric)
 
-  names <- data.frame(real_names = colnames(rf_data), new_names = NA)
-  names$new_names <- paste0("X", rownames(names))
+  names <- data.frame(real_names = colnames(rf_data), new_names = NA) %>%
+    mutate(new_names = paste0("X", rownames(.)))
 
   colnames(rf_data) <- names$new_names
   colnames(rf_data)[1] <- "Group"
 
-  # training Sample with 1/folds observations
-  train <- sample(1:nrow(rf_data), round(nrow(rf_data)/folds))
+  # TRAIN AND TEST
+  n <- nrow(rf_data)
+  
+  repeat{
+    
+    idx_test <- sample(1:n, (ntest/100)*n, replace = FALSE)
+    
+    test <- rf_data[idx_test ,]
+    test_x <- as.matrix(test[,-1])
+    test_y <- as.factor(test[,1])
+    
+    train <- rf_data[-idx_test ,]
+    train_x <- as.matrix(train[,-1])
+    train_y <- as.factor(train[,1])
+    
+    if(length(levels(as.factor(train_y))) == length(levels(as.factor(Biobase::pData(data)[,1]))) & 
+       length(levels(as.factor(test_y))) == length(levels(as.factor(Biobase::pData(data)[,1])))){
+      break
+    }
+  }
 
-  RF_model <- randomForest(as.factor(Group) ~ .,
-                           data = rf_data,
-                           subset = train,
+  RF_model <- randomForest(x = train_x,
+                           y = train_y,
+                           xtest = test_x,
+                           ytest = test_y,
                            ntree = ntree,
                            mtry = mtry,
                            nodesize = nodesize)
@@ -89,12 +113,13 @@ PomaRandForest <- function(data,
   importancia_pred1$MeanDecreaseGini <- round(importancia_pred1$MeanDecreaseGini, 4)
   colnames(importancia_pred1)[1] <- "Variable"
 
-  conf_mat <- round(as.data.frame(RF_model$confusion), 4)
+  conf_mat <- round(as.data.frame(RF_model$test$confusion), 4)
 
   return(list(importance_pred = importancia_pred1,
               error_tree = error_tree,
               gini_plot = Gini_plot,
               forest_data = forest_data,
-              confusion_matrix = conf_mat))
+              confusion_matrix = conf_mat,
+              model = RF_model))
 }
 
