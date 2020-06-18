@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lasso and Ridge Regularized Generalized Linear Models for Binary Outcomes — PomaLasso • POMA</title>
+<title>Lasso, Ridge and Elasticnet Regularized Generalized Linear Models for Binary Outcomes — PomaLasso • POMA</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Lasso and Ridge Regularized Generalized Linear Models for Binary Outcomes — PomaLasso" />
-<meta property="og:description" content="PomaLasso() is an implementation of the lasso an ridge regression from glmnet package for binary outcomes." />
+<meta property="og:title" content="Lasso, Ridge and Elasticnet Regularized Generalized Linear Models for Binary Outcomes — PomaLasso" />
+<meta property="og:description" content="PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from glmnet package for binary outcomes." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -106,9 +106,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -131,16 +134,23 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lasso and Ridge Regularized Generalized Linear Models for Binary Outcomes</h1>
+    <h1>Lasso, Ridge and Elasticnet Regularized Generalized Linear Models for Binary Outcomes</h1>
     <small class="dont-index">Source: <a href='https://github.com/pcastellanoescuder/POMA/blob/master/R/PomaLasso.R'><code>R/PomaLasso.R</code></a></small>
     <div class="hidden name"><code>PomaLasso.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>PomaLasso() is an implementation of the lasso an ridge regression from <code>glmnet</code> package for binary outcomes.</p>
+    <p>PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from <code>glmnet</code> package for binary outcomes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaLasso</span>(<span class='no'>data</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"lasso"</span>, <span class='kw'>nfolds</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>PomaLasso</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>ntest</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>nfolds</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,8 +160,12 @@
       <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
     </tr>
     <tr>
-      <th>method</th>
-      <td><p>Choose between lasso and ridge regression ("lasso", "ridge").</p></td>
+      <th>alpha</th>
+      <td><p>Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.</p></td>
+    </tr>
+    <tr>
+      <th>ntest</th>
+      <td><p>Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).</p></td>
     </tr>
     <tr>
       <th>nfolds</th>
@@ -161,11 +175,15 @@
       <th>lambda</th>
       <td><p>A user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on <code>nlambda</code> and <code>lambda.min.ratio</code>. See <code>?glmnet::glmnet()</code>.</p></td>
     </tr>
+    <tr>
+      <th>labels</th>
+      <td><p>Logical indicating if feature names should be plotted in coefficient plot or not. Default is FALSE.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with all results including plots and data frames.</p>
+    <p>A list with all results including plots, data frames and the resulting prediction model.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.</p>

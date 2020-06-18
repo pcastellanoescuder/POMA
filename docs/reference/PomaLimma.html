@@ -106,9 +106,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -140,7 +143,13 @@
     <p>PomaLimma() uses the classical limma package for MS data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaLimma</span>(<span class='no'>data</span>, <span class='kw'>contrast</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>)</pre>
+    <pre class="usage"><span class='fu'>PomaLimma</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>contrast</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>covariates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"fdr"</span>,
+  <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,6 +169,10 @@
     <tr>
       <th>adjust</th>
       <td><p>Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".</p></td>
+    </tr>
+    <tr>
+      <th>cutoff</th>
+      <td><p>Default is NULL. If this value is replaced for a numeric value, the resultant table will contains only those features with an adjusted p-value below selected value.</p></td>
     </tr>
     </table>
 

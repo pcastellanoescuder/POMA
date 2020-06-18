@@ -41,7 +41,7 @@ test_that("PomaMultivariate works", {
 
   multivariate_plsda_2 <- PomaMultivariate(st000284, method = "plsda", components = 4,
                                            center = TRUE, scale = TRUE,
-                                           validation = "loo", folds = 5, nrepeat = 1)
+                                           validation = "loo", folds = 5, nrepeat = 1, vip = 1)
 
   ##
 
@@ -49,7 +49,8 @@ test_that("PomaMultivariate works", {
   expect_false(nrow(multivariate_plsda_1$errors_plsda) == nrow(multivariate_plsda_2$errors_plsda))
 
   expect_false(ncol(multivariate_plsda_1$plsda_vip_table) == ncol(multivariate_plsda_2$plsda_vip_table))
-
+  expect_equal(nrow(multivariate_plsda_1$plsda_vip_table), nrow(multivariate_plsda_2$plsda_vip_table))
+  
   expect_false(ncol(multivariate_plsda_1$score_data) == ncol(multivariate_plsda_2$score_data))
 
   ##
@@ -64,7 +65,7 @@ test_that("PomaMultivariate works", {
 
   expect_false(ncol(df_a) == ncol(df_d))
   expect_equal(ncol(df_b$y), ncol(df_e$y))
-  expect_equal(length(df_c$y), length(df_f$y))
+  expect_false(length(df_c$y) == length(df_f$y))
 
   #### SPLSDA
 

@@ -106,9 +106,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -142,7 +145,7 @@
 
     <pre class="usage"><span class='fu'>PomaRandForest</span>(
   <span class='no'>data</span>,
-  <span class='kw'>folds</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>ntest</span> <span class='kw'>=</span> <span class='fl'>20</span>,
   <span class='kw'>ntree</span> <span class='kw'>=</span> <span class='fl'>500</span>,
   <span class='kw'>mtry</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/t.html'>t</a></span>(<span class='kw pkg'>Biobase</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Biobase/man/exprs.html'>exprs</a></span>(<span class='no'>data</span>))))),
   <span class='kw'>nodesize</span> <span class='kw'>=</span> <span class='fl'>1</span>,
@@ -157,8 +160,8 @@
       <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
     </tr>
     <tr>
-      <th>folds</th>
-      <td><p>Number of observations that will be used as test dataset. For example, if folds = 3, 1/3 of dataset will be used as train dataset.</p></td>
+      <th>ntest</th>
+      <td><p>Numeric indicating the percentage of observations that will be used as test set. Default is 20% of observations.</p></td>
     </tr>
     <tr>
       <th>ntree</th>

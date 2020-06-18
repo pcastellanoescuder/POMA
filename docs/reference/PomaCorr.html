@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Correlation Analysis — PomaCorr" />
-<meta property="og:description" content="This function returns different correlation plots in both network and 2D formats and a table with all pairwise correlations in the data." />
+<meta property="og:description" content="This function returns different correlation plots (correlogram and network plots) and a table with all pairwise correlations in the data." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -106,9 +106,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -137,21 +140,21 @@
     </div>
 
     <div class="ref-description">
-    <p>This function returns different correlation plots in both network and 2D formats and a table with all pairwise correlations in the data.</p>
+    <p>This function returns different correlation plots (correlogram and network plots) and a table with all pairwise correlations in the data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PomaCorr</span>(
   <span class='no'>data</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"pearson"</span>,
   <span class='kw'>shape</span> <span class='kw'>=</span> <span class='st'>"square"</span>,
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"full"</span>,
   <span class='kw'>show_corr</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>low</span> <span class='kw'>=</span> <span class='st'>"#336B87"</span>,
   <span class='kw'>outline</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
   <span class='kw'>high</span> <span class='kw'>=</span> <span class='st'>"#EA8620"</span>,
+  <span class='kw'>label_size</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>corr_type</span> <span class='kw'>=</span> <span class='st'>"cor"</span>,
-  <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
-  <span class='kw'>rho</span> <span class='kw'>=</span> <span class='fl'>0.7</span>,
-  <span class='kw'>edge_labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>coeff</span> <span class='kw'>=</span> <span class='fl'>0.7</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -162,44 +165,44 @@
       <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
     </tr>
     <tr>
+      <th>method</th>
+      <td><p>Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".</p></td>
+    </tr>
+    <tr>
       <th>shape</th>
-      <td><p>Visualization shape of correlation matrix. Allowed values are "square" (default) and "circle".</p></td>
+      <td><p>Character ingicating shape of correlogram. Options are "square" (default) and "circle".</p></td>
     </tr>
     <tr>
       <th>type</th>
-      <td><p>Character. Options are "full" (default), "lower" or "upper".</p></td>
+      <td><p>Character indicating type of correlogram. Options are "full" (default), "lower" or "upper".</p></td>
     </tr>
     <tr>
       <th>show_corr</th>
-      <td><p>Logical indicating if correlation coefficient for each pair of features should be plotted or not (default = FALSE). Only recomended for a few number of features.</p></td>
+      <td><p>Logical indicating if correlation coefficient for each pair of features should be plotted in correlogram or not (default = FALSE). Only recomended for a low number of features.</p></td>
     </tr>
     <tr>
       <th>low</th>
-      <td><p>Colour for low end of the gradient.</p></td>
+      <td><p>Colour for low end of the gradient in correlogram.</p></td>
     </tr>
     <tr>
       <th>outline</th>
-      <td><p>Colour for the outline of the gradient.</p></td>
+      <td><p>Colour for the outline of the gradient in correlogram.</p></td>
     </tr>
     <tr>
       <th>high</th>
-      <td><p>Colour for high end of the gradient.</p></td>
+      <td><p>Colour for high end of the gradient in correlogram.</p></td>
+    </tr>
+    <tr>
+      <th>label_size</th>
+      <td><p>Numeric indicating label size in correlogram.</p></td>
     </tr>
     <tr>
       <th>corr_type</th>
-      <td><p>Type of graph to be made with correlation matrix. Options are "cor" (for global correlations), "pcor" (for partial correlations) and "glasso" (for gaussian graphical models). Default is "cor". See <code>glasso</code> R package for the last option.</p></td>
+      <td><p>Type of network to be made with correlation matrix. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See <code>glasso</code> R package for the second option.</p></td>
     </tr>
     <tr>
-      <th>threshold</th>
-      <td><p>Numeric indicatin correlation coefficient. Edges with absolute weight below this value are will be removed from the network.</p></td>
-    </tr>
-    <tr>
-      <th>rho</th>
-      <td><p>Only if "corr_type" is set to "glasso". This parameter indicates the regularization parameter for lasso (rho = 0 means no regularization).</p></td>
-    </tr>
-    <tr>
-      <th>edge_labels</th>
-      <td><p>Logical indicating if correlation coefficient will be plotted or not. Default is FALSE.</p></td>
+      <th>coeff</th>
+      <td><p>Numeric indicatin correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See <code><a href='https://rdrr.io/pkg/glasso/man/glasso.html'>glasso::glasso()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -209,7 +212,6 @@
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso</p>
-<p>Sacha Epskamp, Angelique O. J. Cramer, Lourens J. Waldorp, Verena D. Schmittmann, Denny Borsboom (2012). qgraph: Network Visualizations of Relationships in Psychometric Data. Journal of Statistical Software, 48(4), 1-18. URL http://www.jstatsoft.org/v48/i04/.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

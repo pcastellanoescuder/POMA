@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Normalization • POMA</title>
+<title>POMA Normalization Methods • POMA</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Normalization">
+<script src="../pkgdown.js"></script><meta property="og:title" content="POMA Normalization Methods">
 <meta property="og:description" content="POMA">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -64,9 +64,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -89,10 +92,13 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Normalization</h1>
+      <h1 data-toc-skip>POMA Normalization Methods</h1>
                         <h4 class="author">Pol Castellano-Escuder</h4>
-            
-            <h4 class="date">2020-05-11</h4>
+            <address class="author_afil">
+      University of Barcelona, Spain.<br><a class="author_email" href="mailto:#"></a><a href="mailto:polcaes@gmail.com" class="email">polcaes@gmail.com</a>
+      </address>
+                  
+            <h4 class="date">2020-06-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/pcastellanoescuder/POMA/blob/master/vignettes/POMA-normalization.Rmd"><code>vignettes/POMA-normalization.Rmd</code></a></small>
       <div class="hidden name"><code>POMA-normalization.Rmd</code></div>
@@ -101,170 +107,210 @@
 
     
     
-<div id="load-poma" class="section level1">
+<div id="load-packages" class="section level1">
 <h1 class="hasAnchor">
-<a href="#load-poma" class="anchor"></a>Load POMA</h1>
+<a href="#load-packages" class="anchor"></a>Load Packages</h1>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">POMA</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Biobase</span>) <span class="co"># to subset example data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>) <span class="co"># to tune POMA default plots</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">patchwork</span>) <span class="co"># to show plots together</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>) <span class="co"># it's just tidyverse;)</span></pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Biobase</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)</pre></body></html></div>
 </div>
-<div id="load-data" class="section level1">
+<div id="load-data-and-imputation" class="section level1">
 <h1 class="hasAnchor">
-<a href="#load-data" class="anchor"></a>Load Data</h1>
-<p>Let’s create a smaller <code>MSnSet</code> object to better explore normalization effects.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># load example data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"st000284"</span>)
+<a href="#load-data-and-imputation" class="anchor"></a>Load Data and Imputation</h1>
+<p>Let’s create a cleaned <code>MSnSet</code> object from example <code>st000336</code> data to explore the normalization effects.</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"># load example data
+data("st000336")
 
-<span class="co"># subset example data</span>
-<span class="no">my_features</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">st000284</span>))[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>:<span class="fl">8</span>, <span class="fl">120</span>:<span class="fl">127</span>) ,]
-
-<span class="no">my_target</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/phenoData.html">pData</a></span>(<span class="no">st000284</span>)[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>:<span class="fl">8</span>, <span class="fl">120</span>:<span class="fl">127</span>) ,]
-<span class="no">my_target</span> <span class="kw">&lt;-</span> <span class="no">my_target</span> <span class="kw">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">"ID"</span>)
-
-<span class="co"># create a smaller MSnSet object from example data</span>
-<span class="no">example_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaMSnSetClass.html">PomaMSnSetClass</a></span>(<span class="kw">features</span> <span class="kw">=</span> <span class="no">my_features</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="no">my_target</span>)
-<span class="no">example_data</span>
-<span class="co">## MSnSet (storageMode: lockedEnvironment)</span>
-<span class="co">## assayData: 113 features, 16 samples </span>
-<span class="co">##   element names: exprs </span>
-<span class="co">## protocolData: none</span>
-<span class="co">## phenoData</span>
-<span class="co">##   sampleNames: sample_109 sample_11 ... sample_56 (16 total)</span>
-<span class="co">##   varLabels: factors age_at_consent ... alcohol_consumption (5 total)</span>
-<span class="co">##   varMetadata: labelDescription</span>
-<span class="co">## featureData: none</span>
-<span class="co">## experimentData: use 'experimentData(object)'</span>
-<span class="co">## Annotation:  </span>
-<span class="co">## - - - Processing information - - -</span>
-<span class="co">##  MSnbase version: 2.12.0</span></pre></body></html></div>
+# imputation using the default method KNN
+example_data &lt;- st000336 %&gt;% PomaImpute()
+example_data
+&gt; MSnSet (storageMode: lockedEnvironment)
+&gt; assayData: 30 features, 57 samples 
+&gt;   element names: exprs 
+&gt; protocolData: none
+&gt; phenoData
+&gt;   sampleNames: DMD004.1.U02 DMD005.1.U02 ... DMD173.1.U02 (57 total)
+&gt;   varLabels: Group steroids
+&gt;   varMetadata: labelDescription
+&gt; featureData: none
+&gt; experimentData: use 'experimentData(object)'
+&gt; Annotation:  
+&gt; - - - Processing information - - -
+&gt; Imputed (knn): Thu Jun 18 18:08:24 2020 
+&gt;  MSnbase version: 2.12.0</pre></body></html></div>
 </div>
-<div id="normalization-in-poma" class="section level1">
+<div id="normalization" class="section level1">
 <h1 class="hasAnchor">
-<a href="#normalization-in-poma" class="anchor"></a>Normalization in <code>POMA</code>
-</h1>
-<p><em>We can skip the imputation step because example data doesn’t has missing values.</em></p>
-<p>Here we will evaluate ALL normalization methods that POMA offers on the same <code>MSnSet</code> object to compare them.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">none</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"none"</span>, <span class="kw">round</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="no">auto_scaling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"auto_scaling"</span>, <span class="kw">round</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="no">level_scaling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"level_scaling"</span>, <span class="kw">round</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="no">log_scaling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"log_scaling"</span>, <span class="kw">round</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="no">log_transformation</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"log_transformation"</span>, <span class="kw">round</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="no">vast_scaling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"vast_scaling"</span>, <span class="kw">round</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="no">log_pareto</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"log_pareto"</span>, <span class="kw">round</span> <span class="kw">=</span> <span class="fl">3</span>)</pre></body></html></div>
+<a href="#normalization" class="anchor"></a>Normalization</h1>
+<p>Here we will evaluate ALL normalization methods that POMA offers on the same <code>MSnSet</code> object to compare them <span class="citation">(Berg et al. <a href="#ref-normalization">2006</a>)</span>.</p>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">none</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"none"</span>)
+<span class="no">auto_scaling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"auto_scaling"</span>)
+<span class="no">level_scaling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"level_scaling"</span>)
+<span class="no">log_scaling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"log_scaling"</span>)
+<span class="no">log_transformation</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"log_transformation"</span>)
+<span class="no">vast_scaling</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"vast_scaling"</span>)
+<span class="no">log_pareto</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaNorm.html">PomaNorm</a></span>(<span class="no">example_data</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"log_pareto"</span>)</pre></body></html></div>
 <div id="normalization-effect-on-data-dimensions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#normalization-effect-on-data-dimensions" class="anchor"></a>Normalization effect on data dimensions</h2>
-<p>When we check for the dimension of the data after normalization we can see that ALL methods have the same effect on data dimension. <code>PomaNorm</code> <strong>only</strong> change the data dimension when the data has <strong>features that only have zeros</strong> and when the data has <strong>features with 0 variance</strong>. Only in these two cases <code>PomaNorm</code> will remove features of the data, changing the data dimensions.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw pkg">Biobase</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">none</span>))
-<span class="co">## [1] 113  16</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw pkg">Biobase</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">auto_scaling</span>))
-<span class="co">## [1] 113  16</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw pkg">Biobase</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">level_scaling</span>))
-<span class="co">## [1] 113  16</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw pkg">Biobase</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">log_scaling</span>))
-<span class="co">## [1] 113  16</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw pkg">Biobase</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">log_transformation</span>))
-<span class="co">## [1] 113  16</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw pkg">Biobase</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">vast_scaling</span>))
-<span class="co">## [1] 113  16</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="kw pkg">Biobase</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html">exprs</a></span>(<span class="no">log_pareto</span>))
-<span class="co">## [1] 113  16</span></pre></body></html></div>
+<p>When we check for the dimension of the data after normalization we can see that ALL methods have the same effect on data dimension. <code>PomaNorm</code> <strong>only</strong> change the data dimension when the data have <strong>features that only have zeros</strong> and when the data have <strong>features with 0 variance</strong>. Only in these two cases <code>PomaNorm</code> will remove features of the data, changing the data dimensions.</p>
+<div class="sourceCode" id="cb4"><html><body><pre class="r">dim(Biobase::exprs(none))
+&gt; [1] 30 57
+dim(Biobase::exprs(auto_scaling))
+&gt; [1] 30 57
+dim(Biobase::exprs(level_scaling))
+&gt; [1] 30 57
+dim(Biobase::exprs(log_scaling))
+&gt; [1] 30 57
+dim(Biobase::exprs(log_transformation))
+&gt; [1] 30 57
+dim(Biobase::exprs(vast_scaling))
+&gt; [1] 30 57
+dim(Biobase::exprs(log_pareto))
+&gt; [1] 30 57</pre></body></html></div>
 </div>
 <div id="normalization-effect-on-samples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#normalization-effect-on-samples" class="anchor"></a>Normalization effect on samples</h2>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">p1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">none</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Not Normalized"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">auto_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Auto Scaling"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">level_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Level Scaling"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p4</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">log_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Scaling"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p5</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">log_transformation</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Transformation"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p6</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">vast_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Vast Scaling"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p7</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">log_pareto</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Pareto"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p1</span> / (<span class="no">p2</span> + <span class="no">p3</span> + <span class="no">p4</span>) / (<span class="no">p5</span> + <span class="no">p6</span> + <span class="no">p7</span>)</pre></body></html></div>
-<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-6-1.png" width="2000" style="display: block; margin: auto;"></p>
+<p>Here we can evaluate the different normalization effects on samples <span class="citation">(Berg et al. <a href="#ref-normalization">2006</a>)</span>.</p>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">none</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Not Normalized"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-6-1.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb6"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">auto_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Auto Scaling"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-6-2.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb7"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">level_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Level Scaling"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-6-3.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">log_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Scaling"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-6-4.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb9"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">log_transformation</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Transformation"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-6-5.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb10"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">vast_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Vast Scaling"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-6-6.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb11"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaBoxplots.html">PomaBoxplots</a></span>(<span class="no">log_pareto</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"samples"</span>, <span class="kw">jitter</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Pareto"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-6-7.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
 </div>
 <div id="normalization-effect-on-features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#normalization-effect-on-features" class="anchor"></a>Normalization effect on features</h2>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">p8</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">none</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Not Normalized"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p9</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">auto_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Auto Scaling"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p10</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">level_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Level Scaling"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p11</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">log_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Scaling"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p12</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">log_transformation</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Transformation"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p13</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">vast_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Vast Scaling"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p14</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">log_pareto</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Pareto"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span>(<span class="st">""</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"none"</span>,
-        <span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>())
-
-<span class="no">p8</span> / (<span class="no">p9</span> + <span class="no">p10</span> + <span class="no">p11</span>) / (<span class="no">p12</span> + <span class="no">p13</span> + <span class="no">p14</span>)</pre></body></html></div>
-<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-7-1.png" width="2000" style="display: block; margin: auto;"></p>
+<p>Here we can evaluate the different normalization effects on features.</p>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">none</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Not Normalized"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-7-1.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb13"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">auto_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Auto Scaling"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-7-2.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb14"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">level_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Level Scaling"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-7-3.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb15"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">log_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Scaling"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-7-4.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb16"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">log_transformation</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Transformation"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-7-5.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb17"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">vast_scaling</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Vast Scaling"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-7-6.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb18"><html><body><pre class="r">
+<span class="fu"><a href="../reference/PomaDensity.html">PomaDensity</a></span>(<span class="no">log_pareto</span>, <span class="kw">group</span> <span class="kw">=</span> <span class="st">"features"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Log Pareto"</span>)</pre></body></html></div>
+<p><img src="POMA-normalization_files/figure-html/unnamed-chunk-7-7.png" width="1458.33333333333" style="display: block; margin: auto;"></p>
+</div>
+</div>
+<div id="session-information" class="section level1">
+<h1 class="hasAnchor">
+<a href="#session-information" class="anchor"></a>Session Information</h1>
+<div class="sourceCode" id="cb19"><html><body><pre class="r">sessionInfo()
+&gt; R version 3.6.1 (2019-07-05)
+&gt; Platform: x86_64-apple-darwin15.6.0 (64-bit)
+&gt; Running under: macOS Catalina 10.15.4
+&gt; 
+&gt; Matrix products: default
+&gt; BLAS:   /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRblas.0.dylib
+&gt; LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
+&gt; 
+&gt; locale:
+&gt; [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+&gt; 
+&gt; attached base packages:
+&gt; [1] parallel  stats     graphics  grDevices utils     datasets  methods  
+&gt; [8] base     
+&gt; 
+&gt; other attached packages:
+&gt; [1] ggplot2_3.3.1       Biobase_2.46.0      BiocGenerics_0.32.0
+&gt; [4] POMA_0.99.0         BiocStyle_2.12.0   
+&gt; 
+&gt; loaded via a namespace (and not attached):
+&gt;   [1] backports_1.1.8       circlize_0.4.10       plyr_1.8.6           
+&gt;   [4] igraph_1.2.5          lazyeval_0.2.2        splines_3.6.1        
+&gt;   [7] gmp_0.6-0             BiocParallel_1.20.1   digest_0.6.25        
+&gt;  [10] foreach_1.5.0         htmltools_0.5.0.9000  viridis_0.5.1        
+&gt;  [13] magrittr_1.5          memoise_1.1.0         cluster_2.1.0        
+&gt;  [16] doParallel_1.0.15     limma_3.42.2          recipes_0.1.12       
+&gt;  [19] ComplexHeatmap_2.2.0  graphlayouts_0.7.0    gower_0.2.1          
+&gt;  [22] matrixStats_0.56.0    rARPACK_0.11-0        pkgdown_1.5.1        
+&gt;  [25] colorspace_1.4-1      ggrepel_0.8.2         xfun_0.14            
+&gt;  [28] dplyr_1.0.0.9000      jsonlite_1.6.1        crayon_1.3.4         
+&gt;  [31] impute_1.60.0         survival_3.1-12       iterators_1.0.12     
+&gt;  [34] glue_1.4.1            polyclip_1.10-0       gtable_0.3.0         
+&gt;  [37] ipred_0.9-9           zlibbioc_1.32.0       GetoptLong_1.0.0     
+&gt;  [40] RankProd_3.12.0       shape_1.4.4           Rmpfr_0.8-1          
+&gt;  [43] scales_1.1.1          vsn_3.54.0            Rcpp_1.0.4.6         
+&gt;  [46] mzR_2.20.0            viridisLite_0.3.0     clue_0.3-57          
+&gt;  [49] preprocessCore_1.48.0 clisymbols_1.2.0      stats4_3.6.1         
+&gt;  [52] lava_1.6.7            prodlim_2019.11.13    glmnet_4.0-2         
+&gt;  [55] httr_1.4.1            htmlwidgets_1.5.1     RColorBrewer_1.1-2   
+&gt;  [58] ellipsis_0.3.1        pkgconfig_2.0.3       XML_3.99-0.3         
+&gt;  [61] farver_2.0.3          nnet_7.3-14           caret_6.0-86         
+&gt;  [64] labeling_0.3          tidyselect_1.1.0      rlang_0.4.6          
+&gt;  [67] reshape2_1.4.4        ggcorrplot_0.1.3      munsell_0.5.0        
+&gt;  [70] tools_3.6.1           generics_0.0.2        broom_0.5.6          
+&gt;  [73] evaluate_0.14         stringr_1.4.0         mzID_1.24.0          
+&gt;  [76] yaml_2.2.1            ModelMetrics_1.2.2.2  knitr_1.28           
+&gt;  [79] fs_1.4.1              tidygraph_1.2.0       randomForest_4.6-14  
+&gt;  [82] purrr_0.3.4           ggraph_2.0.3          ncdf4_1.17           
+&gt;  [85] glasso_1.11           nlme_3.1-147          compiler_3.6.1       
+&gt;  [88] rstudioapi_0.11       plotly_4.9.2.1        png_0.1-7            
+&gt;  [91] affyio_1.56.0         tibble_3.0.1          tweenr_1.0.1         
+&gt;  [94] stringi_1.4.6         desc_1.2.0            RSpectra_0.16-0      
+&gt;  [97] MSnbase_2.12.0        lattice_0.20-41       ProtGenerics_1.18.0  
+&gt; [100] Matrix_1.2-18         permute_0.9-5         vegan_2.5-6          
+&gt; [103] vctrs_0.3.1           pillar_1.4.4          lifecycle_0.2.0      
+&gt; [106] BiocManager_1.30.10   MALDIquant_1.19.3     GlobalOptions_0.1.2  
+&gt; [109] data.table_1.12.8     corpcor_1.6.9         R6_2.4.1             
+&gt; [112] pcaMethods_1.78.0     affy_1.64.0           bookdown_0.18        
+&gt; [115] gridExtra_2.3         IRanges_2.20.2        codetools_0.2-16     
+&gt; [118] MASS_7.3-51.6         assertthat_0.2.1      rprojroot_1.3-2      
+&gt; [121] rjson_0.2.20          withr_2.2.0           S4Vectors_0.24.4     
+&gt; [124] mgcv_1.8-31           mixOmics_6.10.9       grid_3.6.1           
+&gt; [127] rpart_4.1-15          timeDate_3043.102     tidyr_1.1.0          
+&gt; [130] class_7.3-17          rmarkdown_2.2         ggforce_0.3.1        
+&gt; [133] pROC_1.16.2           lubridate_1.7.9       ellipse_0.4.2</pre></body></html></div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h1>
+<div id="refs" class="references">
+<div id="ref-normalization">
+<p>Berg, Robert A van den, Huub CJ Hoefsloot, Johan A Westerhuis, Age K Smilde, and Mariët J van der Werf. 2006. “Centering, Scaling, and Transformations: Improving the Biological Information Content of Metabolomics Data.” <em>BMC Genomics</em> 7 (1). Springer: 142.</p>
+</div>
 </div>
 </div>
   </div>

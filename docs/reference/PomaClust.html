@@ -106,9 +106,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -145,7 +148,7 @@
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"euclidean"</span>,
   <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>show_clusters</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>show_labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>show_group</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
@@ -169,12 +172,12 @@
       <td><p>Logical indicating if clusters should be plotted or not. If this parameter is set to <code>FALSE</code> the resultant plot will be a classical 2-dimension MDS plot.</p></td>
     </tr>
     <tr>
-      <th>show_labels</th>
+      <th>labels</th>
       <td><p>Logical indicating if sample names should be plotted or not.</p></td>
     </tr>
     <tr>
       <th>show_group</th>
-      <td><p>Logical indicating if the original sample group from pData should be plotted instead of sample ID or not. Only works if show_labels is set to <code>TRUE</code>.</p></td>
+      <td><p>Logical indicating if the original sample group from pData should be plotted instead of sample ID or not. Only works if labels is set to <code>TRUE</code>.</p></td>
     </tr>
     </table>
 

@@ -106,9 +106,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -140,7 +143,13 @@
     <p>PomaBoxplots() generates a boxplot for subjects or features. This boxplot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaBoxplots</span>(<span class='no'>data</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"samples"</span>, <span class='kw'>jitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>feature_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>PomaBoxplots</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>group</span> <span class='kw'>=</span> <span class='st'>"samples"</span>,
+  <span class='kw'>jitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>feature_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label_size</span> <span class='kw'>=</span> <span class='fl'>10</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,6 +169,10 @@
     <tr>
       <th>feature_name</th>
       <td><p>A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.</p></td>
+    </tr>
+    <tr>
+      <th>label_size</th>
+      <td><p>Numeric indicating the size of x-axis labels.</p></td>
     </tr>
     </table>
 

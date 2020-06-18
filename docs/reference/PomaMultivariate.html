@@ -106,9 +106,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -146,11 +149,13 @@
   <span class='kw'>components</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>center</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>load_length</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>ellipse</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>validation</span> <span class='kw'>=</span> <span class='st'>"Mfold"</span>,
   <span class='kw'>folds</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>nrepeat</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>vip</span> <span class='kw'>=</span> <span class='fl'>1.5</span>,
   <span class='kw'>num_features</span> <span class='kw'>=</span> <span class='fl'>10</span>
 )</pre>
 
@@ -178,6 +183,10 @@
       <td><p>Logical that indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is FALSE.</p></td>
     </tr>
     <tr>
+      <th>labels</th>
+      <td><p>Logical indicating if sample names should be plotted or not.</p></td>
+    </tr>
+    <tr>
       <th>load_length</th>
       <td><p>Numeric between 1 and 2. Define the length of biplot loadings. Default is 1.</p></td>
     </tr>
@@ -196,6 +205,10 @@
     <tr>
       <th>nrepeat</th>
       <td><p>(Only for "plsda" and "splsda" methods) Numeric. Number of iterations for the validation method selected.</p></td>
+    </tr>
+    <tr>
+      <th>vip</th>
+      <td><p>(Only for "plsda" method) Numeric indicating VIP cutoff to select features that will be displayed in vip plot.</p></td>
     </tr>
     <tr>
       <th>num_features</th>

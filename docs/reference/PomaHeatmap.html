@@ -106,9 +106,12 @@
       <a href="../articles/POMA-demo.html">POMA Workflow Overview</a>
     </li>
     <li>
-      <a href="../articles/POMA-normalization.html">Normalization</a>
+      <a href="../articles/POMA-normalization.html">POMA Normalization Methods</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -140,7 +143,7 @@
     <p>This function returns a basic heatmap plot made with base R.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PomaHeatmap</span>(<span class='no'>data</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>scale_by</span> <span class='kw'>=</span> <span class='st'>"features"</span>)</pre>
+    <pre class="usage"><span class='fu'>PomaHeatmap</span>(<span class='no'>data</span>, <span class='kw'>sample_names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>feature_names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,12 +153,12 @@
       <td><p>A MSnSet object. First <code>pData</code> column must be the subject group/type.</p></td>
     </tr>
     <tr>
-      <th>scale</th>
-      <td><p>Logical that indicates if heatmap values should be scaled. Default is TRUE.</p></td>
+      <th>sample_names</th>
+      <td><p>Logical indicating if sample names should be plotted or not. Default is TRUE.</p></td>
     </tr>
     <tr>
-      <th>scale_by</th>
-      <td><p>Variable to scale heatmap values. Options are "samples" and "features". Option "samples" (default) will <code><a href='https://rdrr.io/r/base/scale.html'>scale()</a></code> each sample considering all features and option "features" will <code><a href='https://rdrr.io/r/base/scale.html'>scale()</a></code> each feature considering all samples.</p></td>
+      <th>feature_names</th>
+      <td><p>Logical indicating if feature names should be plotted or not. Default is FALSE.</p></td>
     </tr>
     </table>
 
