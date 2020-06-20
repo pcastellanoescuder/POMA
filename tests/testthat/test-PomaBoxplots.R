@@ -14,10 +14,10 @@ test_that("PomaBoxplots works", {
   
   e <- PomaBoxplots(norm_none, group = "samples", label_size = 2)
   
-  f <- PomaBoxplots(norm_none, group = "samples", jitter = T, label_size = 20)
-  g <- PomaBoxplots(norm_none, group = "samples", jitter = F, label_size = 15)
-  h <- PomaBoxplots(norm_none, group = "features", jitter = T, label_size = 20)
-  i <- PomaBoxplots(norm_none, group = "features", jitter = F, label_size = 15)
+  f <- PomaBoxplots(norm_none, group = "samples", jitter = TRUE, label_size = 20)
+  g <- PomaBoxplots(norm_none, group = "samples", jitter = FALSE, label_size = 15)
+  h <- PomaBoxplots(norm_none, group = "features", jitter = TRUE, label_size = 20)
+  i <- PomaBoxplots(norm_none, group = "features", jitter = FALSE, label_size = 15)
   
   j <- PomaBoxplots(norm_ls, group = "features", feature_name = "methyl_succinate")
   k <- PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"))

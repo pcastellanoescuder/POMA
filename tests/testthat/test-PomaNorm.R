@@ -19,7 +19,7 @@ test_that("PomaNorm works", {
   target <- pData(st000284) %>% rownames_to_column() %>% as.data.frame()
   testnorm <- PomaMSnSetClass(features = data, target = target)
 
-  newdata <- POMA::PomaImpute(testnorm, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 2)
+  newdata <- POMA::PomaImpute(testnorm, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 2)
   newdata2 <- POMA::PomaNorm(newdata, method = "log_pareto")
 
   ####

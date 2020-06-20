@@ -18,29 +18,29 @@ test_that("PomaImpute works", {
   target <- pData(st000284) %>% rownames_to_column() %>% as.data.frame()
   testimput <- PomaMSnSetClass(features = data, target = target)
 
-  a <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = F, cutoff = 8))))
-  b <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = T, RemoveNA = F, cutoff = 8))))
-  c <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 8))))
-  d <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = T, RemoveNA = T, cutoff = 8))))
+  a <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 8))))
+  b <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = TRUE, RemoveNA = FALSE, cutoff = 8))))
+  c <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 8))))
+  d <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = TRUE, RemoveNA = TRUE, cutoff = 8))))
 
-  e <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20))))
-  f <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 10))))
+  e <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20))))
+  f <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 10))))
 
-  # e_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = F, RemoveNA = T, cutoff = 20))))
-  # f_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = F, RemoveNA = T, cutoff = 10))))
+  # e_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20))))
+  # f_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 10))))
   
-  g <- PomaImpute(testimput, method = "half_min", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
-  h <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
+  g <- PomaImpute(testimput, method = "half_min", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20)
+  h <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20)
   
-  i <- PomaImpute(testimput, method = "half_min", ZerosAsNA = F, RemoveNA = F, cutoff = 1)
-  j <- PomaImpute(testimput, method = "mean", ZerosAsNA = F, RemoveNA = F, cutoff = 1)
-  k <- PomaImpute(testimput, method = "median", ZerosAsNA = F, RemoveNA = F, cutoff = 1)
+  i <- PomaImpute(testimput, method = "half_min", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 1)
+  j <- PomaImpute(testimput, method = "mean", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 1)
+  k <- PomaImpute(testimput, method = "median", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 1)
 
-  l <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 20)
+  l <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20)
   m <- PomaImpute(testimput, method = "knn")
 
-  n <- PomaImpute(testimput, method = "none", RemoveNA = F, cutoff = 2)
-  o <- PomaImpute(testimput, method = "none", RemoveNA = F, cutoff = 5)
+  n <- PomaImpute(testimput, method = "none", RemoveNA = FALSE, cutoff = 2)
+  o <- PomaImpute(testimput, method = "none", RemoveNA = FALSE, cutoff = 5)
   p <- PomaImpute(testimput, method = "none", cutoff = 20)
   q <- PomaImpute(testimput, method = "min", cutoff = 20)
 
@@ -58,7 +58,7 @@ test_that("PomaImpute works", {
   v <- PomaImpute(testimput2, method = "knn")
   
   Biobase::exprs(testimput)[5, 175:190] <- NA
-  h_1 <- PomaImpute(testimput, method = "knn", ZerosAsNA = F, RemoveNA = T, cutoff = 1)
+  h_1 <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 1)
   
   ##
   

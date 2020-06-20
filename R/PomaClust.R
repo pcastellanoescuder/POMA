@@ -52,9 +52,9 @@ PomaClust <- function(data,
     as.data.frame() %>% 
     mutate(sample = rownames(target),
            group = target[,1],
-           cluster = as.factor(clusters$cluster)) %>%
-    dplyr::select(sample, group, cluster, V1, V2)
-  colnames(mds) <- c("sample", "group", "cluster", "Dim1", "Dim2")
+           clust = as.factor(clusters$cluster)) %>%
+    dplyr::select(sample, group, clust, V1, V2)
+  colnames(mds) <- c("sample", "group", "clust", "Dim1", "Dim2")
     
   ## plot
   
@@ -70,7 +70,7 @@ PomaClust <- function(data,
     
   } else{
     
-    mds_plot <- ggplot(mds, aes(x = Dim1, y = Dim2, color = cluster, shape = cluster)) +
+    mds_plot <- ggplot(mds, aes(x = Dim1, y = Dim2, color = clust, shape = clust)) +
       {if(!labels)geom_point(size = 3, alpha = 0.5)} +
       xlab("Dimension 1") +
       ylab("Dimension 2") +

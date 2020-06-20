@@ -98,7 +98,7 @@ This is a critical point in the workflow because all final statistical results w
 Often, due to biological and technical reasons, some features can not be identified or quantified in some samples in MS [@imputation]. **POMA** offers 7 different imputation methods to deal with this situation. Just run the following line of code to impute your missings!   
 
 ```{r}
-imputed <- PomaImpute(st000336, ZerosAsNA = T, RemoveNA = T, cutoff = 20, method = "knn")
+imputed <- PomaImpute(st000336, ZerosAsNA = TRUE, RemoveNA = TRUE, cutoff = 20, method = "knn")
 imputed
 ```
 
