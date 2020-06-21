@@ -25,6 +25,38 @@
 #' @importFrom clisymbols symbol
 #' @importFrom caret confusionMatrix
 #' @importFrom Biobase varLabels pData exprs
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000336")
+#' 
+#' # lasso
+#' st000336 %>%
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaLasso()
+#' 
+#' # elasticnet
+#' st000336 %>%
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaLasso(alpha = 0.5)
+#' 
+#' # ridge
+#' st000336 %>%
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaLasso(alpha = 0)
+#' 
+#' # prediction model using test set
+#' st000336 %>%
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaLasso(ntest = 15)
 PomaLasso <- function(data,
                       alpha = 1,
                       ntest = NULL,

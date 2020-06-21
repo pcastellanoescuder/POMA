@@ -24,6 +24,22 @@
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase pData exprs sampleNames varLabels
 #' @importFrom vegan betadisper
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000336")
+#' 
+#' # clean outliers
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers()
+#' 
+#' # analyze outliers
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers(do = "analyze")
 PomaOutliers <- function(data,
                          do = "clean",
                          method = "euclidean",

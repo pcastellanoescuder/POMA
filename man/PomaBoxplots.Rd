@@ -29,6 +29,20 @@ A ggplot2 object.
 \description{
 PomaBoxplots() generates a boxplot for subjects or features. This boxplot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 }
+\examples{
+library(POMA)
+data("st000284")
+
+# samples
+PomaBoxplots(st000284)
+
+# features
+PomaBoxplots(st000284, group = "features")
+             
+# concrete features
+PomaBoxplots(st000284, group = "features", 
+             feature_name = c("ornithine", "orotate"))
+}
 \author{
 Pol Castellano-Escuder
 }

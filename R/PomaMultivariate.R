@@ -31,6 +31,31 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000336")
+#' 
+#' # PCA
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaMultivariate(method = "pca")
+#' 
+#' # PLSDA
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaMultivariate(method = "plsda", vip = 1)
+#' 
+#' # sPLSDA
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaMultivariate(method = "splsda")
 PomaMultivariate <- function(data,
                              method = "pca",
                              components = 5,

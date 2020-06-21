@@ -29,6 +29,12 @@ A MSnSet object with cleaned data.
 \description{
 PomaImpute() offers different methods to impute missing values in MS data.
 }
+\examples{
+library(POMA)
+data("st000336")
+
+PomaImpute(st000336, method = "knn")
+}
 \references{
 Armitage, E. G., Godzien, J., Alonso‐Herranz, V., López‐Gonzálvez, Á., & Barbas, C. (2015). Missing value imputation strategies for metabolomics data. Electrophoresis, 36(24), 3050-3060.
 }

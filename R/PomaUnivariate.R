@@ -21,6 +21,25 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000336")
+#' data("st000284")
+#' 
+#' # ttest
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaUnivariate(method = "ttest")
+#' 
+#' # ANOVA
+#' st000284 %>% 
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOutliers() %>%
+#'   PomaUnivariate(method = "anova")
 PomaUnivariate <- function(data,
                            covariates = FALSE,
                            method = "ttest",

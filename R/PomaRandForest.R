@@ -24,6 +24,14 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000336")
+#' 
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaRandForest()
 PomaRandForest <- function(data,
                            ntest = 20,
                            ntree = 500,

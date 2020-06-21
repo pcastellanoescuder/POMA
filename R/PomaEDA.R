@@ -19,6 +19,12 @@
 #' @import patchwork
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000284")
+#' 
+#' PomaEDA(st000284)
 PomaEDA <- function(data, # nocov start
                     imputation = "knn",
                     normalization = "log_pareto",

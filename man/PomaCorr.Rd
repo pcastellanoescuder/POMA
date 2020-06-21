@@ -47,6 +47,17 @@ A list with the results.
 \description{
 This function returns different correlation plots (correlogram and network plots) and a table with all pairwise correlations in the data.
 }
+\examples{
+library(POMA)
+library(ggraph)
+data("st000284")
+
+# pearson correlation
+PomaCorr(st000284)
+
+# gaussian graphical model
+PomaCorr(st000284, corr_type = "glasso")
+}
 \references{
 Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso
 }

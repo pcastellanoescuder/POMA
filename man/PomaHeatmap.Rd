@@ -19,6 +19,14 @@ A heatmap.
 \description{
 This function returns a basic heatmap plot made with base R.
 }
+\examples{
+library(POMA)
+data("st000284")
+
+st000284 \%>\% 
+  PomaNorm() \%>\% 
+  PomaHeatmap()
+}
 \author{
 Pol Castellano-Escuder
 }

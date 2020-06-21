@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
       </span>
     </div>
 
@@ -166,6 +166,13 @@
 
     <p>A heatmap.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>POMA</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"st000284"</span>)
+
+<span class='no'>st000284</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaHeatmap</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='img'><img src='PomaHeatmap-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

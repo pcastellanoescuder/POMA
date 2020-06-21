@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
       </span>
     </div>
 
@@ -185,6 +185,46 @@
 
     <p>A MSnSet object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>POMA</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"st000336"</span>)
+
+<span class='co'># clean outliers</span>
+<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaOutliers</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt; MSnSet (storageMode: lockedEnvironment)
+#&gt; assayData: 30 features, 50 samples 
+#&gt;   element names: exprs 
+#&gt; protocolData: none
+#&gt; phenoData
+#&gt;   sampleNames: DMD004.1.U02 DMD005.1.U02 ... DMD173.1.U02 (50 total)
+#&gt;   varLabels: Group steroids
+#&gt;   varMetadata: labelDescription
+#&gt; featureData: none
+#&gt; experimentData: use 'experimentData(object)'
+#&gt; Annotation:  
+#&gt; - - - Processing information - - -
+#&gt; Imputed (knn): Sun Jun 21 19:43:37 2020 
+#&gt; Normalised (log_pareto): Sun Jun 21 19:43:37 2020 
+#&gt; Outliers removed (euclidean and median): Sun Jun 21 19:43:37 2020 
+#&gt;  MSnbase version: 2.12.0 </div><div class='input'>
+<span class='co'># analyze outliers</span>
+<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaOutliers</span>(<span class='kw'>do</span> <span class='kw'>=</span> <span class='st'>"analyze"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt; $polygon_plot</div><div class='img'><img src='PomaOutliers-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $distance_boxplot</div><div class='img'><img src='PomaOutliers-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $outliers
+#&gt;          sample    group distance_to_centroid limit_distance
+#&gt; 1  DMD119.2.U02 Controls             2.742576       2.290945
+#&gt; 2 DMD084.11.U02      DMD             4.522825       4.040548
+#&gt; 3 DMD087.12.U02      DMD             4.252170       4.040548
+#&gt; 4 DMD023.10.U02      DMD             5.653399       4.040548
+#&gt; 5 DMD046.11.U02      DMD             5.580959       4.040548
+#&gt; 6  DMD133.9.U02      DMD             5.349670       4.040548
+#&gt; 7 DMD135.10.U02      DMD             4.055233       4.040548
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

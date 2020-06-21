@@ -23,6 +23,12 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs featureNames
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000336")
+#' 
+#' PomaImpute(st000336, method = "knn")
 PomaImpute <- function(data,
                        ZerosAsNA = FALSE,
                        RemoveNA = TRUE,

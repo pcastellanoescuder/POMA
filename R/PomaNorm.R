@@ -17,6 +17,12 @@
 #' @importFrom tibble rownames_to_column
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000284")
+#' 
+#' PomaNorm(st000284, method = "log_pareto")
 PomaNorm <- function(data,
                      method = "log_pareto",
                      round = 3){

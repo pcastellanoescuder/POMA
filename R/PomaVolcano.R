@@ -27,6 +27,14 @@
 #' @importFrom clisymbols symbol
 #' @importFrom plotly ggplotly
 #' @importFrom Biobase varLabels pData exprs featureNames
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000336")
+#' 
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaVolcano()
 PomaVolcano <- function(data,
                         pval = "raw",
                         pval_cutoff = 0.05,

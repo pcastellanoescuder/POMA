@@ -21,6 +21,16 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase pData exprs featureNames
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000336")
+#' 
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaNorm() %>%
+#'   PomaOddsRatio(feature_name = c("glutamic_acid", "glutamine", 
+#'                                  "glycine", "histidine"))
 PomaOddsRatio <- function(data,
                           feature_name = NULL,
                           covariates = FALSE,

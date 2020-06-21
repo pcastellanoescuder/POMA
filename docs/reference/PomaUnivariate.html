@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
       </span>
     </div>
 
@@ -185,6 +185,311 @@
 
     <p>A data frame with results.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>POMA</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"st000336"</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"st000284"</span>)
+
+<span class='co'># ttest</span>
+<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaOutliers.html'>PomaOutliers</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaUnivariate</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ttest"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt;                    mean_Controls mean_DMD Fold_Change_Ratio Difference_Of_Means
+#&gt; x1_methylhistidine         -0.40     0.16            -0.400                0.56
+#&gt; x3_methylhistidine         -0.42     0.19            -0.452                0.61
+#&gt; alanine                    -0.32     0.11            -0.344                0.43
+#&gt; arginine                   -0.11     0.06            -0.545                0.17
+#&gt; asparagine                 -0.35     0.13            -0.371                0.48
+#&gt; aspartic_acid              -0.25     0.09            -0.360                0.34
+#&gt; glutamic_acid              -0.46     0.13            -0.283                0.59
+#&gt; glutamine                  -0.30     0.14            -0.467                0.44
+#&gt; glycine                    -0.26     0.15            -0.577                0.41
+#&gt; histidine                  -0.25     0.13            -0.520                0.38
+#&gt; isoleucine                 -0.47     0.14            -0.298                0.61
+#&gt; leucine                    -0.46     0.15            -0.326                0.61
+#&gt; lysine                     -0.28     0.11            -0.393                0.39
+#&gt; methionine                 -0.41     0.14            -0.341                0.55
+#&gt; ornithine                  -0.46     0.17            -0.370                0.63
+#&gt; phenylalanine              -0.43     0.15            -0.349                0.58
+#&gt; proline                    -0.27     0.09            -0.333                0.36
+#&gt; serine                     -0.37     0.16            -0.432                0.53
+#&gt; threonine                  -0.39     0.17            -0.436                0.56
+#&gt; tryptophan                 -0.60     0.18            -0.300                0.78
+#&gt; tyrosine                   -0.42     0.15            -0.357                0.57
+#&gt; valine                     -0.53     0.17            -0.321                0.70
+#&gt; x3_hba                     -0.39     0.14            -0.359                0.53
+#&gt; a_kg                       -0.46     0.18            -0.391                0.64
+#&gt; citrate                    -0.06     0.10            -1.667                0.16
+#&gt; fumarate                   -0.32     0.05            -0.156                0.37
+#&gt; lactate                    -0.59     0.19            -0.322                0.78
+#&gt; malate                     -0.38     0.10            -0.263                0.48
+#&gt; pyruvate                   -0.48     0.15            -0.312                0.63
+#&gt; succinate                  -0.30     0.09            -0.300                0.39
+#&gt;                          pvalue    pvalueAdj
+#&gt; x1_methylhistidine 9.302122e-08 3.100707e-07
+#&gt; x3_methylhistidine 7.822367e-03 9.025808e-03
+#&gt; alanine            6.617797e-04 8.631909e-04
+#&gt; arginine           4.796275e-01 4.796275e-01
+#&gt; asparagine         1.279748e-05 2.399528e-05
+#&gt; aspartic_acid      3.302402e-02 3.538287e-02
+#&gt; glutamic_acid      1.151414e-04 1.818022e-04
+#&gt; glutamine          5.716908e-04 7.795784e-04
+#&gt; glycine            3.978355e-03 4.972944e-03
+#&gt; histidine          4.126907e-04 5.895582e-04
+#&gt; isoleucine         1.947937e-08 1.369631e-07
+#&gt; leucine            1.463078e-07 4.389233e-07
+#&gt; lysine             2.922311e-02 3.247012e-02
+#&gt; methionine         7.418771e-08 3.100707e-07
+#&gt; ornithine          6.863241e-11 1.029486e-09
+#&gt; phenylalanine      3.093799e-08 1.546899e-07
+#&gt; proline            5.858996e-06 1.255499e-05
+#&gt; serine             2.282719e-08 1.369631e-07
+#&gt; threonine          3.918887e-06 9.043585e-06
+#&gt; tryptophan         8.406570e-14 2.521971e-12
+#&gt; tyrosine           3.013134e-06 7.532835e-06
+#&gt; valine             2.359345e-10 2.359345e-09
+#&gt; x3_hba             1.161299e-05 2.322598e-05
+#&gt; a_kg               1.834223e-04 2.751334e-04
+#&gt; citrate            1.707527e-01 1.766407e-01
+#&gt; fumarate           2.190298e-05 3.865233e-05
+#&gt; lactate            2.990736e-07 8.156552e-07
+#&gt; malate             5.579962e-05 9.299937e-05
+#&gt; pyruvate           8.744639e-08 3.100707e-07
+#&gt; succinate          6.246847e-03 7.496217e-03</div><div class='input'>
+<span class='co'># ANOVA</span>
+<span class='no'>st000284</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaOutliers.html'>PomaOutliers</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaUnivariate</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"anova"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: No missing values detected in your data</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt;                                mean_CRC mean_Healthy mean_Polyp       pvalue
+#&gt; x1_methyladenosine                 0.06        -0.06      -0.04 4.536408e-02
+#&gt; x1_methylhistamine                -0.04         0.01       0.07 1.580891e-01
+#&gt; x2_aminoadipate                   -0.15         0.00      -0.03 5.326932e-02
+#&gt; x2_deoxyuridine                   -0.13         0.03       0.06 4.109506e-05
+#&gt; x3_nitro_tyrosine                 -0.02        -0.03       0.05 1.580894e-01
+#&gt; x4_pyridoxic_acid                  0.02         0.00      -0.02 4.832485e-01
+#&gt; x5_hydroxytryptophan               0.03         0.00      -0.01 5.423561e-01
+#&gt; acetoacetate                       0.08         0.04       0.03 8.616282e-01
+#&gt; acetylcholine                     -0.09        -0.01       0.04 1.170646e-01
+#&gt; aconitate                         -0.08        -0.03      -0.01 5.875096e-01
+#&gt; adenosine                         -0.17        -0.04       0.18 1.888282e-02
+#&gt; adenylosuccinate                   0.17        -0.04      -0.05 1.361886e-02
+#&gt; adipic_acid                        0.06        -0.06      -0.02 4.479071e-01
+#&gt; alanine                           -0.10         0.02       0.07 7.458530e-03
+#&gt; allantoin                          0.17        -0.11      -0.06 1.797733e-03
+#&gt; alpha_ketoglutaric_acid           -0.11         0.04       0.04 5.294223e-04
+#&gt; aminoisobutyrate                  -0.01        -0.01      -0.03 8.487680e-01
+#&gt; amp                                0.00        -0.01       0.00 9.532497e-01
+#&gt; anthranilate                      -0.05        -0.03       0.04 5.898253e-01
+#&gt; arginine                           0.06        -0.04       0.00 1.249544e-01
+#&gt; asparagine                        -0.05         0.01       0.03 2.252417e-01
+#&gt; aspartic_acid                      0.16        -0.06      -0.09 4.882716e-03
+#&gt; betaine                           -0.03         0.00       0.02 6.529243e-01
+#&gt; biotin                            -0.09        -0.01       0.10 1.098738e-03
+#&gt; carnitine                         -0.06        -0.01       0.08 1.202954e-02
+#&gt; choline                           -0.03        -0.03      -0.01 8.537685e-01
+#&gt; citraconic_acid                   -0.10        -0.03       0.01 2.380732e-01
+#&gt; citrulline                        -0.01        -0.04       0.01 6.352719e-01
+#&gt; creatine                           0.06        -0.04       0.07 2.105085e-01
+#&gt; creatinine                        -0.11         0.00       0.00 2.034551e-02
+#&gt; cystamine                          0.04        -0.06      -0.06 4.392001e-01
+#&gt; cystathionine                      0.11        -0.16      -0.05 4.148625e-03
+#&gt; cystine                            0.03        -0.04       0.01 2.176889e-01
+#&gt; cytidine                           0.06        -0.05      -0.04 2.682480e-01
+#&gt; cytosine                           0.03         0.06      -0.16 5.687629e-01
+#&gt; d_ga3p_dhap                        0.00        -0.01       0.00 8.416138e-01
+#&gt; dimethylglycine                   -0.20         0.07       0.14 7.106257e-06
+#&gt; d_leucic_acid                      0.16        -0.03      -0.11 2.279582e-02
+#&gt; dtmp                              -0.02         0.01       0.01 6.421840e-01
+#&gt; epinephrine                        0.05        -0.04      -0.02 1.234946e-01
+#&gt; erythrose                          0.07        -0.06      -0.01 9.751357e-02
+#&gt; f16bp_f26bp                        0.00        -0.03       0.03 4.479266e-01
+#&gt; fructose                           0.06        -0.03       0.00 6.105609e-01
+#&gt; fumaric                            0.06        -0.05      -0.01 9.742969e-02
+#&gt; g16bp                              0.04        -0.06       0.03 4.721002e-02
+#&gt; gama_aminobutyrate                -0.14         0.02       0.07 8.987009e-05
+#&gt; glucoronate                       -0.11        -0.03      -0.04 5.624872e-01
+#&gt; glucose                            0.06        -0.06       0.03 5.117904e-02
+#&gt; glutamic_acid                      0.13        -0.05      -0.05 2.572918e-02
+#&gt; glutamine                         -0.12         0.04       0.05 4.897852e-05
+#&gt; glutaric_acid                      0.06        -0.02      -0.10 6.213796e-02
+#&gt; glyceraldehyde                     0.22        -0.07      -0.10 4.661308e-07
+#&gt; glycerate                         -0.08         0.00       0.04 2.756094e-01
+#&gt; glycerol_3_p                      -0.07         0.01       0.06 1.185341e-01
+#&gt; glycine                           -0.06        -0.02       0.00 5.482453e-01
+#&gt; glycochenodeoxycholate             0.31        -0.20      -0.18 4.568408e-05
+#&gt; glycocholate                       0.31        -0.19      -0.21 3.079631e-03
+#&gt; guanidinoacetate                  -0.03         0.02       0.04 4.305532e-01
+#&gt; guanosine                          0.13         0.13       0.05 8.044139e-01
+#&gt; histidine                         -0.17         0.10       0.05 5.183795e-06
+#&gt; homogentisate                     -0.09         0.04       0.04 1.581976e-02
+#&gt; homovanilate                       0.00        -0.04       0.04 3.161451e-01
+#&gt; hydroxyproline_aminolevulinate     0.12        -0.09      -0.09 3.956460e-03
+#&gt; hypoxanthine                      -0.06         0.02       0.07 1.754784e-01
+#&gt; hyppuric_acid                      0.27        -0.16      -0.22 8.111413e-06
+#&gt; imp                               -0.06         0.13      -0.08 9.527426e-03
+#&gt; inosine                            0.03         0.04       0.10 7.751630e-01
+#&gt; kynorenate                         0.09        -0.08      -0.07 7.549696e-03
+#&gt; lactate                            0.08        -0.06       0.02 3.870405e-02
+#&gt; leucine_iso_leucine               -0.08         0.01       0.08 1.325641e-02
+#&gt; linoleic_acid                     -0.19         0.02       0.11 2.515888e-04
+#&gt; linolenic_acid                    -0.25         0.07       0.12 6.592401e-07
+#&gt; l_kynurenine                       0.10        -0.05      -0.05 2.151269e-02
+#&gt; lysine                            -0.15         0.05       0.11 8.239314e-07
+#&gt; malate                            -0.08        -0.03       0.01 3.853944e-01
+#&gt; maleic_acid                        0.10        -0.06      -0.02 5.767748e-03
+#&gt; malonic_acid_3hba                 -0.26         0.12       0.07 2.124229e-03
+#&gt; margaric_acid                     -0.10         0.01       0.05 1.625414e-02
+#&gt; methionine                        -0.13         0.05       0.10 1.878475e-05
+#&gt; methyl_succinate                  -0.07         0.02       0.03 7.664566e-02
+#&gt; n2_n2_dimethylguanosine            0.03        -0.07      -0.07 1.099953e-01
+#&gt; n_acetyl_glycine                  -0.21         0.04       0.06 2.462168e-03
+#&gt; niacinamide                       -0.06        -0.04       0.04 4.584010e-01
+#&gt; oh_phenylpyruvate                  0.03        -0.05       0.03 2.506194e-01
+#&gt; ornithine                          0.01        -0.05       0.03 3.161896e-01
+#&gt; orotate                            0.04        -0.04      -0.12 3.645455e-02
+#&gt; oxalic_acid                        0.09        -0.08       0.04 1.037876e-02
+#&gt; oxaloacetate                       0.02         0.01      -0.11 1.288436e-01
+#&gt; pentothenate                      -0.10        -0.01       0.05 2.085314e-01
+#&gt; pep                               -0.12         0.01       0.07 3.361583e-03
+#&gt; phenylalanine                      0.00         0.00       0.02 8.802792e-01
+#&gt; proline                            0.07        -0.07      -0.02 3.910689e-02
+#&gt; propionate                        -0.03         0.01       0.02 7.963528e-01
+#&gt; pyridoxal_5_p                      0.01         0.05       0.10 5.119790e-01
+#&gt; pyroglutamic_acid                  0.00        -0.02      -0.03 9.137684e-01
+#&gt; pyruvate                           0.11        -0.10       0.03 2.142552e-02
+#&gt; reduced_glutatione                -0.03         0.05      -0.01 9.832080e-02
+#&gt; salicylurate                       0.04        -0.03       0.02 5.079468e-01
+#&gt; serine                            -0.03         0.00       0.03 4.606295e-01
+#&gt; shikimic_acid                      0.06         0.00      -0.02 8.162879e-01
+#&gt; sorbitol                          -0.03         0.01       0.07 2.127129e-01
+#&gt; succinate_methylmalonate          -0.02        -0.04      -0.01 7.783591e-01
+#&gt; taurine                           -0.03         0.00       0.08 1.130267e-01
+#&gt; threonine                         -0.05         0.02       0.07 7.581686e-02
+#&gt; trimethylamine_n_oxide             0.06        -0.06      -0.14 1.195902e-01
+#&gt; tryptophan                        -0.02         0.02       0.09 1.207189e-01
+#&gt; tyrosine                          -0.04         0.02       0.06 2.091160e-01
+#&gt; urate                             -0.09         0.03       0.04 1.077717e-02
+#&gt; uridine                           -0.15         0.02       0.11 4.011986e-05
+#&gt; valine                            -0.05         0.03       0.05 1.517422e-01
+#&gt; xanthine                          -0.12        -0.01       0.09 3.242901e-03
+#&gt; xanthosine                        -0.04        -0.06      -0.05 9.671710e-01
+#&gt; xanthurenate                      -0.07         0.03       0.09 1.056522e-02
+#&gt;                                   pvalueAdj
+#&gt; x1_methyladenosine             1.114378e-01
+#&gt; x1_methylhistamine             2.666284e-01
+#&gt; x2_aminoadipate                1.228456e-01
+#&gt; x2_deoxyuridine                5.031429e-04
+#&gt; x3_nitro_tyrosine              2.666284e-01
+#&gt; x4_pyridoxic_acid              6.205350e-01
+#&gt; x5_hydroxytryptophan           6.733882e-01
+#&gt; acetoacetate                   8.932476e-01
+#&gt; acetylcholine                  2.236269e-01
+#&gt; aconitate                      6.942735e-01
+#&gt; adenosine                      5.766916e-02
+#&gt; adenylosuccinate               4.526270e-02
+#&gt; adipic_acid                    5.954789e-01
+#&gt; alanine                        3.159687e-02
+#&gt; allantoin                      1.269649e-02
+#&gt; alpha_ketoglutaric_acid        4.273194e-03
+#&gt; aminoisobutyrate               8.932476e-01
+#&gt; amp                            9.617609e-01
+#&gt; anthranilate                   6.942735e-01
+#&gt; arginine                       2.241246e-01
+#&gt; asparagine                     3.439502e-01
+#&gt; aspartic_acid                  2.298946e-02
+#&gt; betaine                        7.378044e-01
+#&gt; biotin                         8.277158e-03
+#&gt; carnitine                      4.247933e-02
+#&gt; choline                        8.932476e-01
+#&gt; citraconic_acid                3.586969e-01
+#&gt; citrulline                     7.325074e-01
+#&gt; creatine                       3.338411e-01
+#&gt; creatinine                     6.050111e-02
+#&gt; cystamine                      5.954789e-01
+#&gt; cystathionine                  2.038238e-02
+#&gt; cystine                        3.369705e-01
+#&gt; cytidine                       3.936626e-01
+#&gt; cytosine                       6.837256e-01
+#&gt; d_ga3p_dhap                    8.932476e-01
+#&gt; dimethylglycine                1.527649e-04
+#&gt; d_leucic_acid                  6.282749e-02
+#&gt; dtmp                           7.329979e-01
+#&gt; epinephrine                    2.241246e-01
+#&gt; erythrose                      2.020045e-01
+#&gt; f16bp_f26bp                    5.954789e-01
+#&gt; fructose                       7.112720e-01
+#&gt; fumaric                        2.020045e-01
+#&gt; g16bp                          1.135049e-01
+#&gt; gama_aminobutyrate             8.462767e-04
+#&gt; glucoronate                    6.834522e-01
+#&gt; glucose                        1.204840e-01
+#&gt; glutamic_acid                  6.922375e-02
+#&gt; glutamine                      5.031429e-04
+#&gt; glutaric_acid                  1.404318e-01
+#&gt; glyceraldehyde                 3.103475e-05
+#&gt; glycerate                      3.992804e-01
+#&gt; glycerol_3_p                   2.236269e-01
+#&gt; glycine                        6.733882e-01
+#&gt; glycochenodeoxycholate         5.031429e-04
+#&gt; glycocholate                   1.808852e-02
+#&gt; guanidinoacetate               5.933233e-01
+#&gt; guanosine                      8.740267e-01
+#&gt; histidine                      1.464422e-04
+#&gt; homogentisate                  5.101992e-02
+#&gt; homovanilate                   4.466178e-01
+#&gt; hydroxyproline_aminolevulinate 2.032182e-02
+#&gt; hypoxanthine                   2.916039e-01
+#&gt; hyppuric_acid                  1.527649e-04
+#&gt; imp                            3.844997e-02
+#&gt; inosine                        8.622998e-01
+#&gt; kynorenate                     3.159687e-02
+#&gt; lactate                        9.820174e-02
+#&gt; leucine_iso_leucine            4.526270e-02
+#&gt; linoleic_acid                  2.186887e-03
+#&gt; linolenic_acid                 3.103475e-05
+#&gt; l_kynurenine                   6.077334e-02
+#&gt; lysine                         3.103475e-05
+#&gt; malate                         5.376490e-01
+#&gt; maleic_acid                    2.607022e-02
+#&gt; malonic_acid_3hba              1.411988e-02
+#&gt; margaric_acid                  5.101992e-02
+#&gt; methionine                     3.032396e-04
+#&gt; methyl_succinate               1.665569e-01
+#&gt; n2_n2_dimethylguanosine        2.219548e-01
+#&gt; n_acetyl_glycine               1.545694e-02
+#&gt; niacinamide                    5.982889e-01
+#&gt; oh_phenylpyruvate              3.726315e-01
+#&gt; ornithine                      4.466178e-01
+#&gt; orotate                        9.579916e-02
+#&gt; oxalic_acid                    3.928452e-02
+#&gt; oxaloacetate                   2.274895e-01
+#&gt; pentothenate                   3.338411e-01
+#&gt; pep                            1.808852e-02
+#&gt; phenylalanine                  9.042868e-01
+#&gt; proline                        9.820174e-02
+#&gt; propionate                     8.736686e-01
+#&gt; pyridoxal_5_p                  6.428180e-01
+#&gt; pyroglutamic_acid              9.302327e-01
+#&gt; pyruvate                       6.077334e-02
+#&gt; reduced_glutatione             2.020045e-01
+#&gt; salicylurate                   6.428180e-01
+#&gt; serine                         5.982889e-01
+#&gt; shikimic_acid                  8.784813e-01
+#&gt; sorbitol                       3.338411e-01
+#&gt; succinate_methylmalonate       8.622998e-01
+#&gt; taurine                        2.236269e-01
+#&gt; threonine                      1.665569e-01
+#&gt; trimethylamine_n_oxide         2.236269e-01
+#&gt; tryptophan                     2.236269e-01
+#&gt; tyrosine                       3.338411e-01
+#&gt; urate                          3.928452e-02
+#&gt; uridine                        5.031429e-04
+#&gt; valine                         2.637980e-01
+#&gt; xanthine                       1.808852e-02
+#&gt; xanthosine                     9.671710e-01
+#&gt; xanthurenate                   3.928452e-02</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -22,6 +22,20 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs featureNames
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000284")
+#' 
+#' # samples
+#' PomaBoxplots(st000284)
+#' 
+#' # features
+#' PomaBoxplots(st000284, group = "features")
+#'              
+#' # concrete features
+#' PomaBoxplots(st000284, group = "features", 
+#'              feature_name = c("ornithine", "orotate"))
 PomaBoxplots <- function(data,
                          group = "samples",
                          jitter = TRUE,

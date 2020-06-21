@@ -53,6 +53,31 @@ A list with all results for multivariate statistical analysis including plots an
 \description{
 PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 }
+\examples{
+library(POMA)
+data("st000336")
+
+# PCA
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaMultivariate(method = "pca")
+
+# PLSDA
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaMultivariate(method = "plsda", vip = 1)
+
+# sPLSDA
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaMultivariate(method = "splsda")
+}
 \author{
 Pol Castellano-Escuder
 }

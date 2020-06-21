@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
       </span>
     </div>
 
@@ -188,6 +188,193 @@
 
     <p>Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>POMA</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"st000336"</span>)
+
+<span class='co'># lasso</span>
+<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaOutliers.html'>PomaOutliers</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaLasso</span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt; $coefficients
+#&gt;         feature coefficient
+#&gt; 1   (Intercept)  4.14314732
+#&gt; 2 glutamic_acid  0.61277598
+#&gt; 3     ornithine  3.37541723
+#&gt; 4        serine  0.06972777
+#&gt; 5    tryptophan  4.14355388
+#&gt; 6          a_kg  1.96644027
+#&gt; 7       lactate  1.80931447
+#&gt; 8      pyruvate  1.96683983
+#&gt; 
+#&gt; $coefficientPlot</div><div class='img'><img src='PomaLasso-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $cvLassoPlot</div><div class='img'><img src='PomaLasso-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $model
+#&gt; 
+#&gt; Call:  cv.glmnet(x = features, y = response, lambda = lambda, nfolds = nfolds,      family = "binomial", alpha = alpha) 
+#&gt; 
+#&gt; Measure: Binomial Deviance 
+#&gt; 
+#&gt;      Lambda Measure     SE Nonzero
+#&gt; min 0.01272  0.2797 0.1081       7
+#&gt; 1se 0.04265  0.3808 0.1115       6
+#&gt; </div><div class='input'>
+<span class='co'># elasticnet</span>
+<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaOutliers.html'>PomaOutliers</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaLasso</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt; $coefficients
+#&gt;               feature coefficient
+#&gt; 1         (Intercept)  11.6161830
+#&gt; 2  x1_methylhistidine   3.6980407
+#&gt; 3  x3_methylhistidine   0.3724119
+#&gt; 4             alanine   0.8477445
+#&gt; 5            arginine   1.4004482
+#&gt; 6          asparagine   0.5538490
+#&gt; 7       aspartic_acid   0.1968801
+#&gt; 8       glutamic_acid   2.2706118
+#&gt; 9           glutamine  -0.7334443
+#&gt; 10            glycine   1.0612063
+#&gt; 11          histidine  -3.4420759
+#&gt; 12         isoleucine   2.8381721
+#&gt; 13            leucine   1.0355248
+#&gt; 14             lysine  -1.2023114
+#&gt; 15         methionine   1.2198740
+#&gt; 16          ornithine   5.4094846
+#&gt; 17      phenylalanine   1.2689602
+#&gt; 18             serine   4.4945826
+#&gt; 19         tryptophan   4.5082917
+#&gt; 20           tyrosine  -0.2905924
+#&gt; 21             valine   3.1066430
+#&gt; 22             x3_hba  -1.0462712
+#&gt; 23               a_kg   3.6854168
+#&gt; 24            citrate  -3.5875677
+#&gt; 25            lactate   3.3526632
+#&gt; 26             malate   1.0065610
+#&gt; 27           pyruvate   5.5705146
+#&gt; 
+#&gt; $coefficientPlot</div><div class='img'><img src='PomaLasso-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $cvLassoPlot</div><div class='img'><img src='PomaLasso-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $model
+#&gt; 
+#&gt; Call:  cv.glmnet(x = features, y = response, lambda = lambda, nfolds = nfolds,      family = "binomial", alpha = alpha) 
+#&gt; 
+#&gt; Measure: Binomial Deviance 
+#&gt; 
+#&gt;       Lambda Measure      SE Nonzero
+#&gt; min 0.000096  0.1308 0.07437      26
+#&gt; 1se 0.011016  0.2044 0.08210      17
+#&gt; </div><div class='input'>
+<span class='co'># ridge</span>
+<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaOutliers.html'>PomaOutliers</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaLasso</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt; $coefficients
+#&gt;               feature coefficient
+#&gt; 1         (Intercept)  4.21592957
+#&gt; 2  x1_methylhistidine  0.89040946
+#&gt; 3  x3_methylhistidine  0.19560532
+#&gt; 4             alanine  0.17482232
+#&gt; 5            arginine  0.38876951
+#&gt; 6          asparagine  0.27711395
+#&gt; 7       aspartic_acid  0.38201761
+#&gt; 8       glutamic_acid  0.85543010
+#&gt; 9           glutamine -0.29284489
+#&gt; 10            glycine  0.23106874
+#&gt; 11          histidine -0.80718648
+#&gt; 12         isoleucine  1.00373105
+#&gt; 13            leucine  0.55911257
+#&gt; 14             lysine -0.26771988
+#&gt; 15         methionine  0.62877344
+#&gt; 16          ornithine  1.54452521
+#&gt; 17      phenylalanine  0.52044761
+#&gt; 18            proline  0.19682711
+#&gt; 19             serine  0.99179103
+#&gt; 20          threonine  0.20931512
+#&gt; 21         tryptophan  1.28354051
+#&gt; 22           tyrosine  0.09582537
+#&gt; 23             valine  1.04010909
+#&gt; 24             x3_hba -0.07790600
+#&gt; 25               a_kg  0.91014701
+#&gt; 26            citrate -0.59867822
+#&gt; 27           fumarate  0.36141836
+#&gt; 28            lactate  1.09650839
+#&gt; 29             malate  0.60431732
+#&gt; 30           pyruvate  1.43910224
+#&gt; 31          succinate  0.11316997
+#&gt; 
+#&gt; $coefficientPlot</div><div class='img'><img src='PomaLasso-5.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $cvLassoPlot</div><div class='img'><img src='PomaLasso-6.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $model
+#&gt; 
+#&gt; Call:  cv.glmnet(x = features, y = response, lambda = lambda, nfolds = nfolds,      family = "binomial", alpha = alpha) 
+#&gt; 
+#&gt; Measure: Binomial Deviance 
+#&gt; 
+#&gt;      Lambda Measure      SE Nonzero
+#&gt; min 0.03009  0.2304 0.09314      30
+#&gt; 1se 0.12146  0.3229 0.10018      30
+#&gt; </div><div class='input'>
+<span class='co'># prediction model using test set</span>
+<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaOutliers.html'>PomaOutliers</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaLasso</span>(<span class='kw'>ntest</span> <span class='kw'>=</span> <span class='fl'>15</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground</span></div><div class='output co'>#&gt; <span class='warning'>Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground</span></div><div class='output co'>#&gt; $coefficients
+#&gt;              feature coefficient
+#&gt; 1        (Intercept) 10.18566113
+#&gt; 2 x3_methylhistidine  0.02683372
+#&gt; 3      aspartic_acid  1.67252848
+#&gt; 4          ornithine  0.58223605
+#&gt; 5         tryptophan 14.22407996
+#&gt; 6               a_kg  6.70371995
+#&gt; 7            lactate  9.75649704
+#&gt; 8           pyruvate  1.93112000
+#&gt; 
+#&gt; $coefficientPlot</div><div class='img'><img src='PomaLasso-7.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $cvLassoPlot</div><div class='img'><img src='PomaLasso-8.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $confusionMatrix
+#&gt; Confusion Matrix and Statistics
+#&gt; 
+#&gt;           Reference
+#&gt; Prediction 1 2
+#&gt;          1 2 1
+#&gt;          2 0 4
+#&gt;                                           
+#&gt;                Accuracy : 0.8571          
+#&gt;                  95% CI : (0.4213, 0.9964)
+#&gt;     No Information Rate : 0.7143          
+#&gt;     P-Value [Acc &gt; NIR] : 0.3605          
+#&gt;                                           
+#&gt;                   Kappa : 0.6957          
+#&gt;                                           
+#&gt;  Mcnemar's Test P-Value : 1.0000          
+#&gt;                                           
+#&gt;             Sensitivity : 1.0000          
+#&gt;             Specificity : 0.8000          
+#&gt;          Pos Pred Value : 0.6667          
+#&gt;          Neg Pred Value : 1.0000          
+#&gt;              Prevalence : 0.2857          
+#&gt;          Detection Rate : 0.2857          
+#&gt;    Detection Prevalence : 0.4286          
+#&gt;       Balanced Accuracy : 0.9000          
+#&gt;                                           
+#&gt;        'Positive' Class : 1               
+#&gt;                                           
+#&gt; 
+#&gt; $model
+#&gt; 
+#&gt; Call:  cv.glmnet(x = data.matrix(train_x), y = as.matrix(train_y), lambda = lambda,      nfolds = nfolds, family = "binomial", alpha = alpha) 
+#&gt; 
+#&gt; Measure: Binomial Deviance 
+#&gt; 
+#&gt;        Lambda Measure      SE Nonzero
+#&gt; min 0.0001771 0.03286 0.01597       7
+#&gt; 1se 0.0005937 0.04796 0.02158       7
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -21,6 +21,12 @@
 #' @importFrom Biobase exprs pData
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate select
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000284")
+#' 
+#' PomaClust(st000284)
 PomaClust <- function(data,
                       method = "euclidean",
                       k = 3,

@@ -32,6 +32,22 @@ A MSnSet object with cleaned data or different exploratory plots for the detaile
 \description{
 This function allows users to analyze outliers by different plots and remove them from an MSnSet object.
 }
+\examples{
+library(POMA)
+data("st000336")
+
+# clean outliers
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers()
+
+# analyze outliers
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers(do = "analyze")
+}
 \author{
 Pol Castellano-Escuder
 }

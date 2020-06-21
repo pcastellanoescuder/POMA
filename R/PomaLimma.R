@@ -21,6 +21,14 @@
 #' @importFrom dplyr filter
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000284")
+#' 
+#' st000284 %>%
+#'   PomaNorm() %>%
+#'   PomaLimma(contrast = "Healthy-CRC", adjust = "fdr")
 PomaLimma <- function(data,
                       contrast = NULL,
                       covariates = FALSE,

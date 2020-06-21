@@ -20,6 +20,20 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase pData exprs featureNames
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000284")
+#' 
+#' # samples
+#' PomaDensity(st000284)
+#' 
+#' # features
+#' PomaDensity(st000284, group = "features")
+#' 
+#' # concrete features
+#' PomaDensity(st000284, group = "features", 
+#'             feature_name = c("ornithine", "orotate"))
 PomaDensity <- function(data,
                         group = "samples",
                         feature_name = NULL){

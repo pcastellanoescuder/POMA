@@ -29,6 +29,14 @@ A data frame with limma results.
 \description{
 PomaLimma() uses the classical limma package for MS data.
 }
+\examples{
+library(POMA)
+data("st000284")
+
+st000284 \%>\%
+  PomaNorm() \%>\%
+  PomaLimma(contrast = "Healthy-CRC", adjust = "fdr")
+}
 \references{
 Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007
 }

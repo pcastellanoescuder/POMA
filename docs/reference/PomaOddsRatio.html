@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.6</span>
       </span>
     </div>
 
@@ -170,6 +170,22 @@
 
     <p>A data frame with the Odds Ratios for all features with their 95% confidence intervals and a ggplot2 object.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>POMA</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>"st000336"</span>)
+
+<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>PomaOddsRatio</span>(<span class='kw'>feature_name</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"glutamic_acid"</span>, <span class='st'>"glutamine"</span>,
+                                 <span class='st'>"glycine"</span>, <span class='st'>"histidine"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt; $OddsRatioTable
+#&gt;         feature OddsRatio      CILow    CIHigh
+#&gt; 1 glutamic_acid 3.7383663 1.01585929 13.757203
+#&gt; 2     glutamine 1.6734229 0.17863948 15.675953
+#&gt; 3       glycine 1.3362850 0.18392699  9.708513
+#&gt; 4     histidine 0.7351024 0.08493044  6.362566
+#&gt; 
+#&gt; $OddsRatioPlot</div><div class='img'><img src='PomaOddsRatio-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

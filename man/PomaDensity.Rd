@@ -19,6 +19,20 @@ A ggplot2 object.
 \description{
 PomaDensity() generates a density plot of not normalized and normalized MS data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 }
+\examples{
+library(POMA)
+data("st000284")
+
+# samples
+PomaDensity(st000284)
+
+# features
+PomaDensity(st000284, group = "features")
+
+# concrete features
+PomaDensity(st000284, group = "features", 
+            feature_name = c("ornithine", "orotate"))
+}
 \author{
 Pol Castellano-Escuder
 }

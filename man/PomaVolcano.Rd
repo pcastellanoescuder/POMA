@@ -47,6 +47,14 @@ A ggplot2 object.
 \description{
 PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values.
 }
+\examples{
+library(POMA)
+data("st000336")
+
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaVolcano()
+}
 \author{
 Pol Castellano-Escuder
 }

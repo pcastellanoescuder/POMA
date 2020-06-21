@@ -32,6 +32,25 @@ A data frame with results.
 \description{
 PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 }
+\examples{
+library(POMA)
+data("st000336")
+data("st000284")
+
+# ttest
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaUnivariate(method = "ttest")
+
+# ANOVA
+st000284 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaUnivariate(method = "anova")
+}
 \author{
 Pol Castellano-Escuder
 }

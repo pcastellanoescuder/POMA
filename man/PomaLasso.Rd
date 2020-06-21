@@ -32,6 +32,38 @@ A list with all results including plots, data frames and the resulting predictio
 \description{
 PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from \code{glmnet} package for binary outcomes.
 }
+\examples{
+library(POMA)
+data("st000336")
+
+# lasso
+st000336 \%>\%
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaLasso()
+
+# elasticnet
+st000336 \%>\%
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaLasso(alpha = 0.5)
+
+# ridge
+st000336 \%>\%
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaLasso(alpha = 0)
+
+# prediction model using test set
+st000336 \%>\%
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaOutliers() \%>\%
+  PomaLasso(ntest = 15)
+}
 \references{
 Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.
 }

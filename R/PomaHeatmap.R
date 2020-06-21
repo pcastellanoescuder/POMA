@@ -16,6 +16,14 @@
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase pData exprs
 #' @importFrom ComplexHeatmap HeatmapAnnotation Heatmap
+#' 
+#' @examples 
+#' library(POMA)
+#' data("st000284")
+#' 
+#' st000284 %>% 
+#'   PomaNorm() %>% 
+#'   PomaHeatmap()
 PomaHeatmap <- function(data, 
                         sample_names = TRUE,
                         feature_names = FALSE){

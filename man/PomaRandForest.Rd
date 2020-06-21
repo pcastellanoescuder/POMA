@@ -32,6 +32,14 @@ A list with all results for Random Forest including plots and data frames.
 \description{
 PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical \code{randomForest} R package.
 }
+\examples{
+library(POMA)
+data("st000336")
+
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaRandForest()
+}
 \references{
 A. Liaw and M. Wiener (2002). Classification and Regression by randomForest. R News 2(3), 18--22.
 }

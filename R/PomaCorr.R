@@ -30,6 +30,17 @@
 #' @importFrom Biobase exprs
 #' @importFrom ggcorrplot ggcorrplot
 #' @importFrom glasso glasso
+#' 
+#' @examples 
+#' library(POMA)
+#' library(ggraph)
+#' data("st000284")
+#' 
+#' # pearson correlation
+#' PomaCorr(st000284)
+#' 
+#' # gaussian graphical model
+#' PomaCorr(st000284, corr_type = "glasso")
 PomaCorr <- function(data,
                      method = "pearson",
                      shape = "square",
