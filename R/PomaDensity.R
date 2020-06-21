@@ -22,7 +22,6 @@
 #' @importFrom Biobase pData exprs featureNames
 #' 
 #' @examples 
-#' library(POMA)
 #' data("st000284")
 #' 
 #' # samples

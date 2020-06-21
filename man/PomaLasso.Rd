@@ -33,7 +33,6 @@ A list with all results including plots, data frames and the resulting predictio
 PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from \code{glmnet} package for binary outcomes.
 }
 \examples{
-library(POMA)
 data("st000336")
 
 # lasso

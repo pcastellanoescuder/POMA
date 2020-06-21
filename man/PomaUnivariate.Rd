@@ -33,7 +33,6 @@ A data frame with results.
 PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 }
 \examples{
-library(POMA)
 data("st000336")
 data("st000284")
 

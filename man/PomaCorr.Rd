@@ -48,7 +48,6 @@ A list with the results.
 This function returns different correlation plots (correlogram and network plots) and a table with all pairwise correlations in the data.
 }
 \examples{
-library(POMA)
 data("st000284")
 
 # pearson correlation

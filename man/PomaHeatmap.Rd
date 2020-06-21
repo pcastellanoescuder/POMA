@@ -20,7 +20,6 @@ A heatmap.
 This function returns a basic heatmap plot made with base R.
 }
 \examples{
-library(POMA)
 data("st000284")
 
 st000284 \%>\% 

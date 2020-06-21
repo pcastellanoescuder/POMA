@@ -20,7 +20,6 @@ A ggplot2 object.
 PomaDensity() generates a density plot of not normalized and normalized MS data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 }
 \examples{
-library(POMA)
 data("st000284")
 
 # samples

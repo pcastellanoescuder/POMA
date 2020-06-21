@@ -54,7 +54,6 @@ A list with all results for multivariate statistical analysis including plots an
 PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 }
 \examples{
-library(POMA)
 data("st000336")
 
 # PCA

@@ -33,7 +33,6 @@ A MSnSet object with cleaned data or different exploratory plots for the detaile
 This function allows users to analyze outliers by different plots and remove them from an MSnSet object.
 }
 \examples{
-library(POMA)
 data("st000336")
 
 # clean outliers

@@ -33,7 +33,6 @@ A list with the results.
 This function performs a classical multidimensional scaling (MDS) using all features in the data and computes a cluster analysis for \code{k} clusters. Then, the calculated clusters will be represented on a MDS plot.
 }
 \examples{
-library(POMA)
 data("st000284")
 
 PomaClust(st000284)

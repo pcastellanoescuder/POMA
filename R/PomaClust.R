@@ -23,7 +23,6 @@
 #' @importFrom dplyr mutate select
 #' 
 #' @examples 
-#' library(POMA)
 #' data("st000284")
 #' 
 #' PomaClust(st000284)

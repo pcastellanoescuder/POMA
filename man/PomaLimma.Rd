@@ -30,7 +30,6 @@ A data frame with limma results.
 PomaLimma() uses the classical limma package for MS data.
 }
 \examples{
-library(POMA)
 data("st000284")
 
 st000284 \%>\%

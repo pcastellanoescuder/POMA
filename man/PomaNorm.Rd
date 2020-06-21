@@ -20,7 +20,6 @@ A MSnSet object with normalized data.
 PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 }
 \examples{
-library(POMA)
 data("st000284")
 
 PomaNorm(st000284, method = "log_pareto")

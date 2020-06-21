@@ -25,7 +25,6 @@
 #' @importFrom Biobase varLabels pData exprs featureNames
 #' 
 #' @examples 
-#' library(POMA)
 #' data("st000336")
 #' 
 #' PomaImpute(st000336, method = "knn")

@@ -23,7 +23,6 @@
 #' @importFrom Biobase varLabels pData exprs
 #' 
 #' @examples 
-#' library(POMA)
 #' data("st000284")
 #' 
 #' st000284 %>%

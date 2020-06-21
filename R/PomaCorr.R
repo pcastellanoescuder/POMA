@@ -32,7 +32,6 @@
 #' @importFrom glasso glasso
 #' 
 #' @examples 
-#' library(POMA)
 #' data("st000284")
 #' 
 #' # pearson correlation

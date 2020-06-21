@@ -29,12 +29,6 @@ An exploratory data analysis PDF report.
 \description{
 This function automatically generates a PDF report with different exploratory plots and tables from an MSnSet object.
 }
-\examples{
-library(POMA)
-data("st000284")
-
-PomaEDA(st000284)
-}
 \author{
 Pol Castellano-Escuder
 }

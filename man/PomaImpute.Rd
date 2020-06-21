@@ -30,7 +30,6 @@ A MSnSet object with cleaned data.
 PomaImpute() offers different methods to impute missing values in MS data.
 }
 \examples{
-library(POMA)
 data("st000336")
 
 PomaImpute(st000336, method = "knn")

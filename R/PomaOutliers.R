@@ -26,7 +26,6 @@
 #' @importFrom vegan betadisper
 #' 
 #' @examples 
-#' library(POMA)
 #' data("st000336")
 #' 
 #' # clean outliers

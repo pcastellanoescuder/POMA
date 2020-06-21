@@ -22,7 +22,6 @@ A data frame with the Odds Ratios for all features with their 95\% confidence in
 PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.
 }
 \examples{
-library(POMA)
 data("st000336")
 
 st000336 \%>\% 

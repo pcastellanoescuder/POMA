@@ -30,7 +30,6 @@ A ggplot2 object.
 PomaBoxplots() generates a boxplot for subjects or features. This boxplot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 }
 \examples{
-library(POMA)
 data("st000284")
 
 # samples

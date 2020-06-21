@@ -23,7 +23,6 @@
 #' @importFrom Biobase pData exprs featureNames
 #' 
 #' @examples 
-#' library(POMA)
 #' data("st000336")
 #' 
 #' st000336 %>% 

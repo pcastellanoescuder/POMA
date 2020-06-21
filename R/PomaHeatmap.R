@@ -18,7 +18,6 @@
 #' @importFrom ComplexHeatmap HeatmapAnnotation Heatmap
 #' 
 #' @examples 
-#' library(POMA)
 #' data("st000284")
 #' 
 #' st000284 %>% 
