@@ -1,6 +1,6 @@
 Package: POMA
 Title: R Package for Statistical Analysis of Mass Spectrometry Data
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: 
     person(given = "Pol",
            family = "Castellano-Escuder",
@@ -55,7 +55,7 @@ Suggests:
     testthat (>= 2.3.2)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.0)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA
 BugReports: https://github.com/pcastellanoescuder/POMA/issues

@@ -45,7 +45,7 @@ PomaCorr <- function(data,
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
-  if(!(class(data) == "MSnSet")){
+  if(!is(data)[1] == "MSnSet"){
     stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
@@ -98,7 +98,7 @@ PomaCorr <- function(data,
       guides(edge_alpha = "none", edge_width = "none") +
       scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
       geom_node_point(color = "white", size = 5) +
-      geom_node_text(aes(label = name), repel = F) +
+      geom_node_text(aes(label = name), repel = FALSE) +
       theme_graph()
     
   } else {
@@ -125,7 +125,7 @@ PomaCorr <- function(data,
       guides(edge_alpha = "none", edge_width = "none") +
       scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
       geom_node_point(color = "white", size = 5) +
-      geom_node_text(aes(label = name), repel = F) +
+      geom_node_text(aes(label = name), repel = FALSE) +
       theme_graph()
 
   }

@@ -34,7 +34,7 @@ PomaOutliers <- function(data,
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
-  if(!(class(data) == "MSnSet")){
+  if(!is(data)[1] == "MSnSet"){
     stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
@@ -64,11 +64,11 @@ PomaOutliers <- function(data,
   
   detect_outliers <- merge(detect_outliers, limit, by = "Groups")
   detect_outliers <- detect_outliers %>% 
-    mutate(outlier = as.factor(ifelse(distances > x, 1, 0)),
+    mutate(out = as.factor(ifelse(distances > x, 1, 0)),
            sample = names)
   
   final_outliers <- detect_outliers %>%
-    filter(outlier == 1) %>%
+    filter(out == 1) %>%
     select(sample, Groups, distances, x) %>%
     rename(group = Groups,
            distance_to_centroid = distances,
@@ -93,7 +93,7 @@ PomaOutliers <- function(data,
     polygon_plot <- ggplot(total_outliers, aes(x = PCoA1, y = PCoA2)) +
       geom_polygon(data = hulls, alpha = 0.5, aes(fill = Group)) +
       {if(!labels)geom_point(aes(shape = Group), size = 3, alpha = 0.7)} +
-      geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, label = rownames(centroids)), show.legend = F) +
+      geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, label = rownames(centroids)), show.legend = FALSE) +
       {if(labels)geom_text(aes(label = rownames(total_outliers)))} +
       theme_bw()
     
@@ -101,7 +101,7 @@ PomaOutliers <- function(data,
       geom_boxplot(coef = coef, alpha = 0.8) +
       ylab("Distance to group centroid") + 
       xlab("") +
-      {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$outlier == 1,], aes(label = sample), na.rm = TRUE, size = 4, show.legend = F)} +
+      {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
       theme_bw() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
     

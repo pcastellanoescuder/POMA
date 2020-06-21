@@ -32,7 +32,7 @@ PomaImpute <- function(data,
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
-  if(!(class(data) == "MSnSet")){
+  if(!is(data)[1] == "MSnSet"){
     stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
@@ -99,22 +99,22 @@ PomaImpute <- function(data,
 
   else if (method == "half_min"){
     depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), min(x, na.rm = T)/2, x) else x})
+      if(is.numeric(x)) ifelse(is.na(x), min(x, na.rm = TRUE)/2, x) else x})
   }
 
   else if (method == "median"){
     depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), median(x,na.rm=T),x) else x})
+      if(is.numeric(x)) ifelse(is.na(x), median(x, na.rm = TRUE),x) else x})
   }
 
   else if (method == "mean"){
     depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), mean(x,na.rm=T),x) else x})
+      if(is.numeric(x)) ifelse(is.na(x), mean(x, na.rm = TRUE),x) else x})
   }
 
   else if (method == "min"){
     depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), min(x,na.rm=T),x) else x})
+      if(is.numeric(x)) ifelse(is.na(x), min(x, na.rm = TRUE),x) else x})
   }
 
   else if (method == "knn"){

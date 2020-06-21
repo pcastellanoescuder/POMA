@@ -48,7 +48,7 @@ PomaMultivariate <- function(data,
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
-  if(!(class(data) == "MSnSet")){
+  if(!is(data)[1] == "MSnSet"){
     stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
@@ -88,7 +88,7 @@ PomaMultivariate <- function(data,
       xlab(paste0("PC1 (", round(100*(pca_res$explained_variance)[1], 2), "%)")) +
       ylab(paste0("PC2 (", round(100*(pca_res$explained_variance)[2], 2), "%)")) +
       {if(ellipse)stat_ellipse(type = "norm")} +
-      {if(labels)geom_text(aes(label = ID), show.legend = T)} +
+      {if(labels)geom_text(aes(label = ID), show.legend = TRUE)} +
       theme_bw()
 
     ##
@@ -109,7 +109,7 @@ PomaMultivariate <- function(data,
 
     ####
 
-    pca_res2 <- mixOmics::pca(X, ncomp = components, center = T, scale = T)
+    pca_res2 <- mixOmics::pca(X, ncomp = components, center = TRUE, scale = TRUE)
 
     PCi2 <- data.frame(pca_res2$x, Groups = Y)
 
@@ -151,12 +151,11 @@ PomaMultivariate <- function(data,
       xlab("Component 1") +
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
-      {if(labels)geom_text(aes(label = ID), show.legend = T)} +
+      {if(labels)geom_text(aes(label = ID), show.legend = TRUE)} +
       theme_bw()
 
     #####
 
-    set.seed(69)
     perf_plsda <- mixOmics::perf(plsda_res, validation = validation, folds = folds,
                                 progressBar = TRUE, auc = TRUE, nrepeat = nrepeat)
 
@@ -255,7 +254,7 @@ PomaMultivariate <- function(data,
       xlab("Component 1") +
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
-      {if(labels)geom_text(aes(label = ID), show.legend = T)} +
+      {if(labels)geom_text(aes(label = ID), show.legend = TRUE)} +
       theme_bw()
 
     scores_splsda <- SPLSDAi %>% dplyr::select(-Groups, -ID) %>% round(4)

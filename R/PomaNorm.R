@@ -24,7 +24,7 @@ PomaNorm <- function(data,
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
-  if(!(class(data) == "MSnSet")){
+  if(!is(data)[1] == "MSnSet"){
     stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
@@ -49,15 +49,15 @@ PomaNorm <- function(data,
   }
 
   else if (method == "auto_scaling"){
-    normalized <- round(apply(to_norm_data, 2, function(x) (x-mean(x,na.rm=T))/sd(x,na.rm=T)), round)
+    normalized <- round(apply(to_norm_data, 2, function(x) (x-mean(x,na.rm=TRUE))/sd(x,na.rm=TRUE)), round)
   }
 
   else if (method == "level_scaling"){
-    normalized <- round(apply(to_norm_data, 2, function(x) (x-mean(x,na.rm=T))/mean(x,na.rm=T)), round)
+    normalized <- round(apply(to_norm_data, 2, function(x) (x-mean(x,na.rm=TRUE))/mean(x,na.rm=TRUE)), round)
   }
 
   else if (method == "log_scaling"){
-    normalized <- round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=T))/sd(log10(x+1),na.rm=T)), round)
+    normalized <- round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=TRUE))/sd(log10(x+1),na.rm=TRUE)), round)
   }
 
   else if (method == "log_transformation"){
@@ -65,11 +65,11 @@ PomaNorm <- function(data,
   }
 
   else if (method == "vast_scaling"){
-    normalized <- round(apply(to_norm_data, 2, function(x) ((x-mean(x,na.rm=T))/sd(x,na.rm=T))*(mean(x,na.rm=T)/sd(x,na.rm=T))), round)
+    normalized <- round(apply(to_norm_data, 2, function(x) ((x-mean(x,na.rm=TRUE))/sd(x,na.rm=TRUE))*(mean(x,na.rm=TRUE)/sd(x,na.rm=TRUE))), round)
   }
 
   else if (method == "log_pareto"){
-    normalized <- round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=T))/sqrt(sd(log10(x+1),na.rm=T))), round)
+    normalized <- round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=TRUE))/sqrt(sd(log10(x+1),na.rm=TRUE))), round)
   }
 
   ##

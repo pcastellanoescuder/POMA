@@ -14,12 +14,12 @@
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
-#' @importFrom dplyr select group_by filter
+#' @importFrom dplyr select group_by filter rename
 #' @importFrom magrittr %>%
 #' @importFrom reshape2 melt
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs featureNames
+#' @importFrom Biobase pData exprs featureNames
 PomaDensity <- function(data,
                         group = "samples",
                         feature_name = NULL){
@@ -27,7 +27,7 @@ PomaDensity <- function(data,
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
   }
-  if(!(class(data) == "MSnSet")){
+  if(!is(data)[1] == "MSnSet"){
     stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
@@ -44,17 +44,13 @@ PomaDensity <- function(data,
   }
 
   e <- t(Biobase::exprs(data))
-  pData <- Biobase::pData(data)
-
-  data <- cbind(pData, e)
-  data <- tibble::rownames_to_column(data, "ID")
-
-  colnames(data)[2] <- c("Group")
-  data <- data %>% mutate(ID = as.character(ID))
-
-  n_rem <- ncol(pData) - 1
-  data <- data[, c(1:2, (3 + n_rem):ncol(data))]
-
+  target <- Biobase::pData(data) %>%
+    rownames_to_column("ID") %>%
+    rename(Group = 2) %>%
+    select(ID, Group)
+  
+  data <- cbind(target, e)
+  
   if(group == "samples"){
 
     if (is.null(feature_name)){
