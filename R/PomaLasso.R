@@ -49,13 +49,6 @@
 #'   PomaNorm() %>%
 #'   PomaOutliers() %>%
 #'   PomaLasso(alpha = 0)
-#' 
-#' # prediction model using test set
-#' st000336 %>%
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaOutliers() %>%
-#'   PomaLasso(ntest = 15)
 PomaLasso <- function(data,
                       alpha = 1,
                       ntest = NULL,

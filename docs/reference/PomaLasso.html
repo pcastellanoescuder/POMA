@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">POMA</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.10</span>
       </span>
     </div>
 
@@ -316,63 +316,6 @@
 #&gt;      Lambda Measure      SE Nonzero
 #&gt; min 0.03009  0.2304 0.09314      30
 #&gt; 1se 0.12146  0.3229 0.10018      30
-#&gt; </div><div class='input'>
-<span class='co'># prediction model using test set</span>
-<span class='no'>st000336</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='PomaImpute.html'>PomaImpute</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='PomaNorm.html'>PomaNorm</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='PomaOutliers.html'>PomaOutliers</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>PomaLasso</span>(<span class='kw'>ntest</span> <span class='kw'>=</span> <span class='fl'>15</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! KNN will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: method argument is empty! log_pareto will be used</span></div><div class='output co'>#&gt; <span class='warning'>Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground</span></div><div class='output co'>#&gt; <span class='warning'>Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground</span></div><div class='output co'>#&gt; $coefficients
-#&gt;              feature coefficient
-#&gt; 1        (Intercept) 10.18566113
-#&gt; 2 x3_methylhistidine  0.02683372
-#&gt; 3      aspartic_acid  1.67252848
-#&gt; 4          ornithine  0.58223605
-#&gt; 5         tryptophan 14.22407996
-#&gt; 6               a_kg  6.70371995
-#&gt; 7            lactate  9.75649704
-#&gt; 8           pyruvate  1.93112000
-#&gt; 
-#&gt; $coefficientPlot</div><div class='img'><img src='PomaLasso-7.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; $cvLassoPlot</div><div class='img'><img src='PomaLasso-8.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; $confusionMatrix
-#&gt; Confusion Matrix and Statistics
-#&gt; 
-#&gt;           Reference
-#&gt; Prediction 1 2
-#&gt;          1 2 1
-#&gt;          2 0 4
-#&gt;                                           
-#&gt;                Accuracy : 0.8571          
-#&gt;                  95% CI : (0.4213, 0.9964)
-#&gt;     No Information Rate : 0.7143          
-#&gt;     P-Value [Acc &gt; NIR] : 0.3605          
-#&gt;                                           
-#&gt;                   Kappa : 0.6957          
-#&gt;                                           
-#&gt;  Mcnemar's Test P-Value : 1.0000          
-#&gt;                                           
-#&gt;             Sensitivity : 1.0000          
-#&gt;             Specificity : 0.8000          
-#&gt;          Pos Pred Value : 0.6667          
-#&gt;          Neg Pred Value : 1.0000          
-#&gt;              Prevalence : 0.2857          
-#&gt;          Detection Rate : 0.2857          
-#&gt;    Detection Prevalence : 0.4286          
-#&gt;       Balanced Accuracy : 0.9000          
-#&gt;                                           
-#&gt;        'Positive' Class : 1               
-#&gt;                                           
-#&gt; 
-#&gt; $model
-#&gt; 
-#&gt; Call:  cv.glmnet(x = data.matrix(train_x), y = as.matrix(train_y), lambda = lambda,      nfolds = nfolds, family = "binomial", alpha = alpha) 
-#&gt; 
-#&gt; Measure: Binomial Deviance 
-#&gt; 
-#&gt;        Lambda Measure      SE Nonzero
-#&gt; min 0.0001771 0.03286 0.01597       7
-#&gt; 1se 0.0005937 0.04796 0.02158       7
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

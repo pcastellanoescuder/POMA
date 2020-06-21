@@ -16,6 +16,18 @@
 #' @importFrom tibble column_to_rownames remove_rownames
 #' @importFrom dplyr rename
 #' @importFrom magrittr %>%
+#' 
+#' @examples 
+#' data(iris)
+#' 
+#' # create target: two column (or more) data frame with IDs and Group factor
+#' target <- data.frame(ID = 1:150, Group = iris$Species)
+#' 
+#' # create features: p column data frame (or matrix) with features
+#' features <- iris[,1:4]
+#' 
+#' # create an MSnSet object with POMA
+#' object <- PomaMSnSetClass(target = target, features = features)
 PomaMSnSetClass <- function(target,
                             features){
 

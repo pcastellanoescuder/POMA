@@ -55,13 +55,6 @@ st000336 \%>\%
   PomaNorm() \%>\%
   PomaOutliers() \%>\%
   PomaLasso(alpha = 0)
-
-# prediction model using test set
-st000336 \%>\%
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaOutliers() \%>\%
-  PomaLasso(ntest = 15)
 }
 \references{
 Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.
