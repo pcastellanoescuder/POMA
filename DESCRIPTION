@@ -1,6 +1,6 @@
 Package: POMA
 Title: R Package for Statistical Analysis of Mass Spectrometry Data
-Version: 0.99.6
+Version: 0.99.7
 Authors@R: 
     person(given = "Pol",
            family = "Castellano-Escuder",
@@ -16,8 +16,8 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 biocViews:
-    MassSpectrometry, Metabolomics, Proteomics, Workflow, Software, Visualization,
-    GUI, ReportWriting
+    MassSpectrometry, Metabolomics, Proteomics, Software, Visualization,
+    Preprocessing, GUI, ReportWriting
 Imports:
     Biobase,
     broom,
@@ -44,7 +44,6 @@ Imports:
     RankProd,
     reshape2,
     rmarkdown,
-    stringr,
     tibble,
     tidyr,
     vegan

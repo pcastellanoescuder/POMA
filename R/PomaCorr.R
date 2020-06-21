@@ -33,14 +33,15 @@
 #' 
 #' @examples 
 #' library(POMA)
-#' library(ggraph)
 #' data("st000284")
 #' 
 #' # pearson correlation
-#' PomaCorr(st000284)
+#' PomaCorr(st000284)$correlations
+#' PomaCorr(st000284)$corrplot
 #' 
 #' # gaussian graphical model
-#' PomaCorr(st000284, corr_type = "glasso")
+#' # library(ggraph)
+#' # PomaCorr(st000284, corr_type = "glasso")
 PomaCorr <- function(data,
                      method = "pearson",
                      shape = "square",

@@ -2,6 +2,8 @@ context("PomaCorr")
 
 test_that("PomaCorr works", {
   
+  library(ggraph)
+  
   data("st000284")
   data("st000336")
   imp_st000336 <- PomaImpute(st000336, method = "knn")

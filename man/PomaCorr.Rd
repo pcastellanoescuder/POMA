@@ -49,14 +49,15 @@ This function returns different correlation plots (correlogram and network plots
 }
 \examples{
 library(POMA)
-library(ggraph)
 data("st000284")
 
 # pearson correlation
-PomaCorr(st000284)
+PomaCorr(st000284)$correlations
+PomaCorr(st000284)$corrplot
 
 # gaussian graphical model
-PomaCorr(st000284, corr_type = "glasso")
+# library(ggraph)
+# PomaCorr(st000284, corr_type = "glasso")
 }
 \references{
 Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso
