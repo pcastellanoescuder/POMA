@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 inst/doc
-.Rproj
+*.Rproj
 .gitattributes

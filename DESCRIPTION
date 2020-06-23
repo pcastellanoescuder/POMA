@@ -1,6 +1,6 @@
 Package: POMA
 Title: R Package for Statistical Analysis of Mass Spectrometry Data
-Version: 0.99.10
+Version: 0.99.11
 Authors@R: 
     person(given = "Pol",
            family = "Castellano-Escuder",
