@@ -1,0 +1,40 @@
+authors:
+  Pol Castellano Escuder:
+    href: https://pcastellanoescuder.github.io
+
+template:
+  params:
+    bootswatch: spacelab
+
+navbar:
+  structure:
+    left:
+    - home
+    - reference
+    - articles
+    - news
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: |
+          POMA Demo
+        href: articles/POMA-demo.html
+      - text: |
+          POMA Normalization
+        href: articles/POMA-normalization.html
+    news:
+      text: Changelog
+      href: news/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/pcastellanoescuder/POMA
+      
+      
