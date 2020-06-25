@@ -5,3 +5,6 @@
 inst/doc
 *.Rproj
 .gitattributes
+Dockerfile
+pkgdown/
+docs/

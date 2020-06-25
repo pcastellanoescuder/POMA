@@ -1,3 +1,9 @@
+# POMA 0.99.16
+
+* BiocCeck requirements fixed
+* Examples added in functions
+* pkgdown files removed from master branch
+
 # POMA 0.99.0
 
 * POMA is now submitted to Bioconductor!
