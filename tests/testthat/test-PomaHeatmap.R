@@ -5,11 +5,11 @@ test_that("PomaHeatmap works", {
   data("st000284")
   data("st000336")
   
-  a <- PomaHeatmap(st000284, sample_names = TRUE, feature_names = FALSE)
-  b <- PomaHeatmap(st000284, sample_names = FALSE, feature_names = FALSE)
+  a <- PomaHeatmap(st000284, sample_names = TRUE, feature_names = FALSE, show_legend = TRUE)
+  b <- PomaHeatmap(st000284, sample_names = FALSE, feature_names = FALSE, show_legend = FALSE)
   
-  c <- PomaHeatmap(st000336, sample_names = TRUE, feature_names = TRUE)
-  d <- PomaHeatmap(st000336, sample_names = FALSE, feature_names = TRUE)
+  c <- PomaHeatmap(st000336, sample_names = TRUE, feature_names = TRUE, show_legend = TRUE)
+  d <- PomaHeatmap(st000336, sample_names = FALSE, feature_names = TRUE, show_legend = FALSE)
   
   ##
   

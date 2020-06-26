@@ -6,6 +6,7 @@
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param sample_names Logical indicating if sample names should be plotted or not. Default is TRUE.
 #' @param feature_names Logical indicating if feature names should be plotted or not. Default is FALSE.
+#' @param show_legend Logical indicating if legend should be plotted or not. Default is TRUE.
 #'
 #' @export
 #'
@@ -25,7 +26,8 @@
 #'   PomaHeatmap()
 PomaHeatmap <- function(data, 
                         sample_names = TRUE,
-                        feature_names = FALSE){
+                        feature_names = FALSE,
+                        show_legend = TRUE){
   
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
@@ -38,10 +40,12 @@ PomaHeatmap <- function(data,
   total <- Biobase::exprs(data)
   target <- Biobase::pData(data)
 
-  ha <- ComplexHeatmap::HeatmapAnnotation(df = data.frame(Group = target[,1]))
+  ha <- ComplexHeatmap::HeatmapAnnotation(df = data.frame(Group = target[,1]),
+                                          show_legend = show_legend)
 
   ComplexHeatmap::Heatmap(total, name = "Value", top_annotation = ha,
-                          show_row_names = feature_names, show_column_names = sample_names)
+                          show_row_names = feature_names, show_column_names = sample_names,
+                          show_heatmap_legend = show_legend)
   
 }
 

@@ -167,7 +167,7 @@ Once the data have been preprocessed, you can start with the statistical analysi
 
 ### Univariate Analysis
 
-**POMA** allows you to perform all of the most used univariate statistical methods in MS by using only one function! `PomaUnivariate` wrap 4 different univariate methods (ttest, ANOVA and ANCOVA, Wilcoxon test and Kruskal-Wallis Rank Sum Test) that you can perform changing only the "method argument".   
+**POMA** allows you to perform all of the most used univariate statistical methods in MS by using only one function! `PomaUnivariate` wrap 4 different univariate methods (ttest, ANOVA and ANCOVA, Wilcoxon test and Kruskal-Wallis Rank Sum Test) that you can perform changing only the "method" argument.   
 
 #### T-test
 

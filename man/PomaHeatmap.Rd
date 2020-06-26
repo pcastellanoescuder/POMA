@@ -4,7 +4,12 @@
 \alias{PomaHeatmap}
 \title{Classical Heatmap}
 \usage{
-PomaHeatmap(data, sample_names = TRUE, feature_names = FALSE)
+PomaHeatmap(
+  data,
+  sample_names = TRUE,
+  feature_names = FALSE,
+  show_legend = TRUE
+)
 }
 \arguments{
 \item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
@@ -12,6 +17,8 @@ PomaHeatmap(data, sample_names = TRUE, feature_names = FALSE)
 \item{sample_names}{Logical indicating if sample names should be plotted or not. Default is TRUE.}
 
 \item{feature_names}{Logical indicating if feature names should be plotted or not. Default is FALSE.}
+
+\item{show_legend}{Logical indicating if legend should be plotted or not. Default is TRUE.}
 }
 \value{
 A heatmap.

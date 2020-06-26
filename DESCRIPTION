@@ -1,6 +1,6 @@
 Package: POMA
 Title: R Package for Statistical Analysis of Mass Spectrometry Data
-Version: 0.99.17
+Version: 0.99.18
 Authors@R: 
     person(given = "Pol",
            family = "Castellano-Escuder",
@@ -26,6 +26,7 @@ Imports:
     ComplexHeatmap,
     crayon,
     dplyr,
+    e1071,
     ggcorrplot,
     ggplot2,
     ggraph,
