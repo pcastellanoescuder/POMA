@@ -17,6 +17,7 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
+#' @import e1071
 #' @importFrom broom tidy glance
 #' @importFrom dplyr arrange desc group_by slice
 #' @importFrom magrittr %>%
