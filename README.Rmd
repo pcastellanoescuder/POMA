@@ -19,12 +19,27 @@ output: github_document
 
 `POMA` also offers two different Shiny app modules both for Exploratory Data Analysis and Statistical Analysis that implements all `POMA` functions in a easy use web interface.     
 
-  - **POMA Shiny**: Shiny version of this package. https://github.com/pcastellanoescuder/POMA_Shiny  
+  - **POMA Shiny**: Shiny version of this package. https://github.com/pcastellanoescuder/POMAShiny  
   - **POMAcounts**: Shiny version for mass spectrometry spectral counts data based on [Bioconductor](https://bioconductor.org) packages [msmsEDA](https://bioconductor.org/packages/release/bioc/html/msmsEDA.html) and [msmsTests](https://bioconductor.org/packages/release/bioc/html/msmsTests.html). https://github.com/pcastellanoescuder/POMAcounts   
    
 The [github page](https://github.com/pcastellanoescuder/POMA) is for active development, issue tracking and forking/pulling purposes. To get an overview of the package, see the [*POMA-demo*](https://pcastellanoescuder.github.io/POMA/articles/POMA-demo.html) vignette.     
 
 ## Installation
+
+To install Bioconductor version:
+
+```{r, eval = FALSE}
+# install.packages("BiocManager")
+BiocManager::install("POMA")
+```
+
+If you need the GitHub version (not recommended unless you know what you are doing), use:
+
+```{r, eval = FALSE}
+BiocManager::install("pcastellanoescuder/POMA")
+```
+
+or
 
 ```{r, eval = FALSE}
 # install.packages("devtools")
