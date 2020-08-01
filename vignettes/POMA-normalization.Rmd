@@ -26,6 +26,15 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Installation
+
+Run the following code to install the Bioconductor version of package.        
+
+```{r, eval = FALSE}
+# install.packages("BiocManager")
+BiocManager::install("POMA")
+```
+
 # Load Packages
 
 ```{r, warning = FALSE, message = FALSE, comment = FALSE}

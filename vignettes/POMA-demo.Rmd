@@ -28,18 +28,11 @@ knitr::opts_chunk$set(
 
 # Installation
 
-Run the following code to install the Bioconductor version of package. **`POMA` is not yet in Bioconductor! Hope very soon...**    
+Run the following code to install the Bioconductor version of package.        
 
 ```{r, eval = FALSE}
 # install.packages("BiocManager")
 BiocManager::install("POMA")
-```
-
-Alternatively, you can install the latest development version of `POMA` from Github.    
-
-```{r, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("pcastellanoescuder/POMA")
 ```
 
 # Load POMA 
