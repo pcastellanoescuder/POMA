@@ -25,10 +25,10 @@ navbar:
       text: Articles
       menu:
       - text: |
-          `POMA` Demo
+          POMA Demo
         href: articles/POMA-demo.html
       - text: |
-          `POMA` Normalization
+          POMA Normalization
         href: articles/POMA-normalization.html
     news:
       text: Changelog
