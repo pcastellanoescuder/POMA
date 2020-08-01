@@ -10,7 +10,7 @@
     # shiny2 <- paste(crayon::blue(clisymbols::symbol$tick), paste(crayon::bold(orange("POMAcounts Shiny module (for mass spectrometry spectral counts): http://uebshiny.vhir.org:3838/POMAcounts"))))
     info <- paste(crayon::blue(clisymbols::symbol$info), crayon::bold(paste(orange("For more detailed package information please visit https://pcastellanoescuder.github.io/POMA/"))))
     
-    packageStartupMessage(paste(poma_welcome, ver, shiny1, shiny2, info, sep = "\n"))
+    packageStartupMessage(paste(poma_welcome, ver, shiny1, info, sep = "\n"))
     
   })
   
