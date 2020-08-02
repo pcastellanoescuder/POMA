@@ -25,11 +25,14 @@ navbar:
       text: Articles
       menu:
       - text: |
-          POMA Demo
+          POMA Workflow
         href: articles/POMA-demo.html
       - text: |
           POMA Normalization
         href: articles/POMA-normalization.html
+      - text: |
+          POMA EDA Example
+        href: articles/POMA-eda.html
     news:
       text: Changelog
       href: news/index.html

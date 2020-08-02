@@ -1,0 +1,233 @@
+---
+title: "POMA EDA Example"
+author: 
+- name: Pol Castellano-Escuder
+  affiliation: University of Barcelona, Spain.
+  email: polcaes@gmail.com
+date: "`r BiocStyle::doc_date()`"
+output: 
+    BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{POMA EDA Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+biblio-style: apalike
+link-citations: true
+---
+
+**Compiled date**: `r Sys.Date()`
+
+**Last edited**: 2020-08-02
+
+**License**: `r packageDescription("POMA")[["License"]]`
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.align = "center",
+  comment = ">"
+)
+```
+
+# Installation
+
+Run the following code to install the Bioconductor version of package.        
+
+```{r, eval = FALSE}
+# install.packages("BiocManager")
+BiocManager::install("POMA")
+```
+
+# Load POMA 
+
+```{r, warning = FALSE, message = FALSE, comment = FALSE}
+library(POMA)
+```
+
+# Automatic EDA Report 
+
+The following function will return an Exploratory Data Analysis (EDA) PDF report. The input object must be an **MSnSet** object.     
+
+```{r, warning = FALSE, message = FALSE, comment = FALSE, eval = FALSE}
+data("st000336")
+PomaEDA(st000336)
+```
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+library(patchwork)
+library(knitr)
+library(dplyr)
+library(tibble)
+library(ggplot2)
+library(reshape2)
+library(Biobase)
+
+e <- t(Biobase::exprs(st000336))
+target <- Biobase::pData(st000336) %>% rownames_to_column("ID") %>% rename(Group = 2) %>% select(ID, Group)
+```
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+imputed <- PomaImpute(st000336, method = "knn")
+pre_processed <- PomaNorm(imputed, method = "log_pareto") %>%
+  PomaOutliers(coef = 1.5)
+```
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+# zeros
+zeros <- data.frame(number = colSums(e == 0, na.rm = TRUE)) %>%
+  rownames_to_column("names") %>%
+  filter(number != 0)
+
+all_zero <- zeros %>% 
+  filter(number == nrow(e))
+
+# missing values
+nas <- data.frame(number = colSums(is.na(e))) %>%
+  rownames_to_column("names") %>%
+  filter(number != 0)
+
+# zero variance
+var_zero <- e %>%
+  as.data.frame() %>%
+  summarise_all(~ var(., na.rm = TRUE)) %>%
+  t() %>%
+  as.data.frame() %>%
+  rownames_to_column("names") %>%
+  filter(V1 == 0)
+```
+
+# Know your data
+
+  + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**. `r ifelse(ncol(Biobase::pData(st000336)) > 1, paste0("Furthermore, **", ncol(Biobase::pData(st000336)) - 1,"** covariates have been found in your data. These covariates are **",noquote(paste(shQuote(paste0(colnames(Biobase::pData(st000336))[2:ncol(Biobase::pData(st000336))])), collapse=", ")),"**."), "")`          
+
+  + A **`r round((sum(is.na(e))/(nrow(e)*ncol(e)))*100, 2)`%** of values in your data are NAs (missing values). `r ifelse(nrow(nas) >= 1, paste0("Variables that have NA values are **",noquote(paste(shQuote(paste0(nas$names," (",nas$number,")")), collapse=", ")),"**."), "")`
+
+  + A **`r round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2)`%** of values in your data are zeros. `r ifelse(nrow(zeros) >= 1, paste0("Variables that have zeros are **",noquote(paste(shQuote(paste0(zeros$names," (",zeros$number,")")), collapse=", ")),"**."), "")`
+  
+  + Removed from the exploratory data analysis **`r nrow(all_zero)`** features that only have zeros. `r ifelse(nrow(all_zero) >= 1, paste0("These variables are **",noquote(paste(shQuote(all_zero$names), collapse=", ")),"**."), "")` 
+  
+  + Removed from the exploratory data analysis **`r nrow(var_zero)`** features that have zero variance. `r ifelse(nrow(var_zero) >= 1, paste0("These variables are **",noquote(paste(shQuote(var_zero$names), collapse=", ")),"**."), "")`
+
+## Summary Table
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+summary_table1 <- data.frame(Samples = nrow(e),
+                             Features = ncol(e),
+                             Covariates = ncol(Biobase::pData(st000336)) - 1)
+summary_table2 <- data.frame(Counts_Zero = sum(zeros$number),
+                             Percent_Zero = paste(round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2), "%"))
+summary_table3 <- data.frame(Counts_NA = sum(is.na(e)),
+                             Percent_NA = paste(round((sum(is.na(e))/(nrow(e)*ncol(e)))*100, 2), "%")) 
+knitr::kable(summary_table1)
+knitr::kable(summary_table2)
+knitr::kable(summary_table3)
+```
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
+if (nrow(nas) >= 1){
+  ggplot(nas, aes(reorder(names, number), number, fill = number)) +
+    geom_col() +
+    ylab("Missing values") +
+    xlab("") +
+    ggtitle("Missing Value Plot") +
+    theme_bw() + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "none")
+}
+```
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
+if (nrow(zeros) >= 1){
+  ggplot(zeros, aes(reorder(names, number), number, fill = number)) +
+    geom_col() +
+    ylab("Zeros") +
+    xlab("") +
+    ggtitle("Zeros Plot") +
+    theme_bw() + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "none")
+}
+```
+
+## Samples by Group
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
+counts <- data.frame(table(target$Group))
+colnames(counts) <- c("Group", "Counts")
+
+ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
+  geom_col() +
+  ylab("Counts") +
+  xlab("") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none")
+```
+
+# Normalization Plots
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
+indNum <- nrow(Biobase::pData(pre_processed))
+jttr <- ifelse(indNum <= 10, TRUE, FALSE)
+
+p1 <- PomaBoxplots(imputed, jitter = jttr) +
+  xlab("Samples") +
+  ylab("Value") +
+  ggtitle("Not Normalized") +
+  theme(legend.position = "bottom")
+
+p2 <- PomaBoxplots(pre_processed, jitter = jttr) +
+  xlab("Samples") +
+  ylab("Value") +
+  ggtitle("Normalized ('log_pareto')") +
+  theme(legend.position = "bottom")
+
+p1 + p2
+```
+  
+# Group Distribution Plots
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
+p3 <- PomaDensity(imputed) +
+  ggtitle("Not Normalized")
+
+p4 <- PomaDensity(pre_processed) +
+    ggtitle("Normalized ('log_pareto')")
+
+p3/p4
+```
+
+# Outlier Detection
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+outliers <- st000336 %>% 
+  PomaImpute(method = "knn") %>%
+  PomaNorm(method = "log_pareto") %>%
+  PomaOutliers(do = "analyze", coef = 1.5)
+outliers$polygon_plot
+```
+
+**`r nrow(outliers$outliers)`** possible outliers detected in your data. `r ifelse(nrow(outliers$outliers) >= 1, paste0("These outliers are **",noquote(paste(shQuote(paste0(outliers$outliers$sample)), collapse=", ")),"**."), "")`
+
+# High Correlated Features (r > 0.97)
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+correlations <- PomaCorr(pre_processed)
+high_correlations <- correlations$correlations %>% filter(abs(corr) > 0.97)
+```
+
+There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$Var1, " - " , high_correlations$Var2)), collapse=", ")),"**."), "")`
+
+# Heatmap and Clustering
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
+PomaHeatmap(pre_processed)
+```
+
+# Principal Component Analysis
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
+PomaMultivariate(pre_processed, method = "pca")$scoresplot
+```
+

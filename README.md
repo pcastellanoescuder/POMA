@@ -44,8 +44,8 @@ functions in a easy use web interface.
 
 The [github page](https://github.com/pcastellanoescuder/POMA) is for
 active development, issue tracking and forking/pulling purposes. To get
-an overview of the package, see the
-[*POMA-demo*](https://pcastellanoescuder.github.io/POMA/articles/POMA-demo.html)
+an overview of the package, see the [*POMA
+Workflow*](https://pcastellanoescuder.github.io/POMA/articles/POMA-demo.html)
 vignette.
 
 ## Installation

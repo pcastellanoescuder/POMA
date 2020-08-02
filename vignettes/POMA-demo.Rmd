@@ -1,14 +1,14 @@
 ---
-title: "POMA Workflow Overview"
+title: "POMA Workflow"
 author: 
 - name: Pol Castellano-Escuder
   affiliation: University of Barcelona, Spain.
   email: polcaes@gmail.com
-date: "`r Sys.Date()`"
+date: "`r BiocStyle::doc_date()`"
 output: 
     BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{POMA Workflow Overview}
+  %\VignetteIndexEntry{POMA Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\VignetteEncoding{UTF-8}
@@ -17,10 +17,15 @@ biblio-style: apalike
 link-citations: true
 ---
 
+**Compiled date**: `r Sys.Date()`
+
+**Last edited**: 2020-08-01
+
+**License**: `r packageDescription("POMA")[["License"]]`
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  dpi = 200,
   fig.align = "center",
   comment = ">"
 )
