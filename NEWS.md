@@ -1,4 +1,4 @@
-# POMA 0.99.31
+# POMA 0.99.32
 
 * All Bioconductor issues in the review process have been addressed
 * POMA EDA vignette added 

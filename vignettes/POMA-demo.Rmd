@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2020-08-01
+**Last edited**: 2020-08-03
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -204,11 +204,6 @@ poma_pca <- PomaMultivariate(pre_processed, method = "pca")
 ```
 
 ```{r}
-poma_pca$screeplot +
-  ggtitle("Scree Plot")
-```
-
-```{r}
 poma_pca$scoresplot +
   ggtitle("Scores Plot")
 ```
@@ -252,12 +247,7 @@ PomaCorr(pre_processed, corr_type = "glasso", coeff = 0.6)$graph
 
 ```{r}
 # alpha = 1 for Lasso
-PomaLasso(pre_processed, alpha = 1)$coefficientPlot
-```
-
-```{r}
-# alpha = 0 for Ridge
-PomaLasso(pre_processed, alpha = 0)$coefficientPlot
+PomaLasso(pre_processed, alpha = 1, labels = TRUE)$coefficientPlot
 ```
 
 ### Random Forest
