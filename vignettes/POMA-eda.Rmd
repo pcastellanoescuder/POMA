@@ -50,7 +50,6 @@ library(POMA)
 The following function will return an Exploratory Data Analysis (EDA) PDF report. The input object must be an **MSnSet** object.     
 
 ```{r, warning = FALSE, message = FALSE, comment = FALSE, eval = FALSE}
-data("st000336")
 PomaEDA(st000336)
 ```
 
