@@ -50,6 +50,7 @@ library(POMA)
 The following function will return an Exploratory Data Analysis (EDA) PDF report. The input object must be an **MSnSet** object.     
 
 ```{r, warning = FALSE, message = FALSE, comment = FALSE, eval = FALSE}
+data("st000336")
 PomaEDA(st000336)
 ```
 
@@ -100,15 +101,15 @@ var_zero <- e %>%
 
 # Know your data
 
-  - Your data have **57** samples, **31** features and **2** groups, that are **‘Controls’, ‘DMD’**. Furthermore, **1** covariates have been found in your data. These covariates are **‘steroids’**.
+Your data have **57** samples, **31** features and **2** groups, that are **‘Controls’, ‘DMD’**. Furthermore, **1** covariates have been found in your data. These covariates are **‘steroids’**.      
 
-  - A **3.45%** of values in your data are NAs (missing values). Variables that have NA values are **‘aspartic_acid (5)’, ‘citrulline (28)’, ‘glutamic_acid (15)’, ‘methionine (3)’, ‘x3_hba (1)’, ‘a_kg (1)’, ‘citrate (2)’, ‘fumarate (1)’, ‘lactate (2)’, ‘malate (1)’, ‘pyruvate (1)’, ‘succinate (1)’**.
+A **3.45%** of values in your data are NAs (missing values). Variables that have NA values are **‘aspartic_acid (5)’, ‘citrulline (28)’, ‘glutamic_acid (15)’, ‘methionine (3)’, ‘x3_hba (1)’, ‘a_kg (1)’, ‘citrate (2)’, ‘fumarate (1)’, ‘lactate (2)’, ‘malate (1)’, ‘pyruvate (1)’, ‘succinate (1)’**.      
 
-  - A **0%** of values in your data are zeros.
+A **0%** of values in your data are zeros.     
 
-  - Removed from the exploratory data analysis **0** features that only have zeros.
+Removed from the exploratory data analysis **0** features that only have zeros.     
 
-  - Removed from the exploratory data analysis **0** features that have zero variance.
+Removed from the exploratory data analysis **0** features that have zero variance.      
 
 ## Summary Table
 
