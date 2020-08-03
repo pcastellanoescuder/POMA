@@ -107,7 +107,7 @@ PomaMultivariate <- function(data,
 
     PCi <- data.frame(pca_res$x, Groups = Y) %>% rownames_to_column("ID")
 
-    scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, col = Groups, label = ID)) +
+    scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, color = Groups, shape = Groups, label = ID)) +
       {if(!labels)geom_point(size = 3, alpha = 0.5)} +
       xlab(paste0("PC1 (", round(100*(pca_res$explained_variance)[1], 2), "%)")) +
       ylab(paste0("PC2 (", round(100*(pca_res$explained_variance)[2], 2), "%)")) +
@@ -141,7 +141,7 @@ PomaMultivariate <- function(data,
     len <- t(t(pca_res2$loadings$X[, 1:2]) * lam)*0.8
     PCAloadings <- data.frame(pca_res2$loadings$X, to_x = len[,1], to_y = len[,2])
 
-    biplot <- ggplot(PCi2, aes(x = PC1, y = PC2, col = Groups))+
+    biplot <- ggplot(PCi2, aes(x = PC1, y = PC2, color = Groups))+
       geom_point(size = 3, alpha = 0.5) +
       xlab(paste0("PC1 (", round(100*(pca_res2$explained_variance)[1], 2), "%)")) +
       ylab(paste0("PC2 (", round(100*(pca_res2$explained_variance)[2], 2), "%)")) +
@@ -170,7 +170,7 @@ PomaMultivariate <- function(data,
 
     PLSDAi <- data.frame(plsda_res$variates$X, Groups = Y) %>% rownames_to_column("ID")
 
-    scoresplot <- ggplot(PLSDAi, aes(x = comp1, y = comp2, col = Groups, label = ID))+
+    scoresplot <- ggplot(PLSDAi, aes(x = comp1, y = comp2, color = Groups, shape = Groups, label = ID))+
       {if(!labels)geom_point(size = 3, alpha = 0.5)} +
       xlab("Component 1") +
       ylab("Component 2") +
@@ -273,7 +273,7 @@ PomaMultivariate <- function(data,
 
     SPLSDAi <- data.frame(res_splsda$variates$X, Groups = Y) %>% rownames_to_column("ID")
 
-    splsda_scores_plot <- ggplot(SPLSDAi, aes(x = comp1, y = comp2, col = Groups, label = ID)) +
+    splsda_scores_plot <- ggplot(SPLSDAi, aes(x = comp1, y = comp2, color = Groups, shape = Groups, label = ID)) +
       {if(!labels)geom_point(size = 3, alpha = 0.5)} +
       xlab("Component 1") +
       ylab("Component 2") +

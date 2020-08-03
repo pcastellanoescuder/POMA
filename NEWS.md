@@ -1,3 +1,8 @@
+# POMA 0.99.27
+
+* All Bioconductor issues in the review process have been addressed
+* POMA EDA vignette added 
+
 # POMA 0.99.16
 
 * BiocCeck requirements fixed
