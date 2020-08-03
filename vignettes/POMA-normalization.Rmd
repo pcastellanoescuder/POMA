@@ -46,6 +46,7 @@ BiocManager::install("POMA")
 library(POMA)
 library(Biobase)
 library(ggplot2)
+library(patchwork)
 ```
 
 # Load Data and Imputation
@@ -94,26 +95,41 @@ dim(Biobase::exprs(log_pareto))
 Here we can evaluate the different normalization effects on samples [@normalization].   
 
 ```{r, message = FALSE, comment = FALSE, warning = FALSE}
-PomaBoxplots(none, group = "samples", jitter = FALSE) +
+a <- PomaBoxplots(none, group = "samples", jitter = FALSE) +
   ggtitle("Not Normalized")
 
-PomaBoxplots(auto_scaling, group = "samples", jitter = FALSE) +
-  ggtitle("Auto Scaling")
+b <- PomaBoxplots(auto_scaling, group = "samples", jitter = FALSE) +
+  ggtitle("Auto Scaling") +
+  theme(axis.text.x = element_blank(),
+        legend.position = "none")
 
-PomaBoxplots(level_scaling, group = "samples", jitter = FALSE) +
-  ggtitle("Level Scaling")
+c <- PomaBoxplots(level_scaling, group = "samples", jitter = FALSE) +
+  ggtitle("Level Scaling") +
+  theme(axis.text.x = element_blank(),
+        legend.position = "none")
 
-PomaBoxplots(log_scaling, group = "samples", jitter = FALSE) +
-  ggtitle("Log Scaling")
+d <- PomaBoxplots(log_scaling, group = "samples", jitter = FALSE) +
+  ggtitle("Log Scaling") +
+  theme(axis.text.x = element_blank(),
+        legend.position = "none")
 
-PomaBoxplots(log_transformation, group = "samples", jitter = FALSE) +
-  ggtitle("Log Transformation")
+e <- PomaBoxplots(log_transformation, group = "samples", jitter = FALSE) +
+  ggtitle("Log Transformation") +
+  theme(axis.text.x = element_blank(),
+        legend.position = "none")
 
-PomaBoxplots(vast_scaling, group = "samples", jitter = FALSE) +
-  ggtitle("Vast Scaling")
+f <- PomaBoxplots(vast_scaling, group = "samples", jitter = FALSE) +
+  ggtitle("Vast Scaling") +
+  theme(axis.text.x = element_blank(),
+        legend.position = "none")
 
-PomaBoxplots(log_pareto, group = "samples", jitter = FALSE) +
-  ggtitle("Log Pareto")
+g <- PomaBoxplots(log_pareto, group = "samples", jitter = FALSE) +
+  ggtitle("Log Pareto") +
+  theme(axis.text.x = element_blank(),
+        legend.position = "none")
+
+a  
+(b + c + d) / (e + f + g)
 ```
 
 ## Normalization effect on features
@@ -121,26 +137,41 @@ PomaBoxplots(log_pareto, group = "samples", jitter = FALSE) +
 Here we can evaluate the different normalization effects on features.   
 
 ```{r, message = FALSE, comment = FALSE, warning = FALSE}
-PomaDensity(none, group = "features") +
+h <- PomaDensity(none, group = "features") +
   ggtitle("Not Normalized")
 
-PomaDensity(auto_scaling, group = "features") +
-  ggtitle("Auto Scaling")
+i <- PomaDensity(auto_scaling, group = "features") +
+  ggtitle("Auto Scaling") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())
 
-PomaDensity(level_scaling, group = "features") +
-  ggtitle("Level Scaling")
+j <- PomaDensity(level_scaling, group = "features") +
+  ggtitle("Level Scaling") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())
 
-PomaDensity(log_scaling, group = "features") +
-  ggtitle("Log Scaling")
+k <- PomaDensity(log_scaling, group = "features") +
+  ggtitle("Log Scaling") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())
 
-PomaDensity(log_transformation, group = "features") +
-  ggtitle("Log Transformation")
+l <- PomaDensity(log_transformation, group = "features") +
+  ggtitle("Log Transformation") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())
 
-PomaDensity(vast_scaling, group = "features") +
-  ggtitle("Vast Scaling")
+m <- PomaDensity(vast_scaling, group = "features") +
+  ggtitle("Vast Scaling") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())
 
-PomaDensity(log_pareto, group = "features") +
-  ggtitle("Log Pareto")
+n <- PomaDensity(log_pareto, group = "features") +
+  ggtitle("Log Pareto") +
+  theme(axis.title.x = element_blank(),
+        axis.title.y = element_blank())
+
+h  
+(i + j + k) / (l + m + n)
 ```
 
 # Session Information
