@@ -97,17 +97,19 @@ var_zero <- e %>%
   filter(V1 == 0)
 ```
 
+**Generated EDA PDF report starts here.**    
+
 # Know your data
 
-  + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**. `r ifelse(ncol(Biobase::pData(st000336)) > 1, paste0("Furthermore, **", ncol(Biobase::pData(st000336)) - 1,"** covariates have been found in your data. These covariates are **",noquote(paste(shQuote(paste0(colnames(Biobase::pData(st000336))[2:ncol(Biobase::pData(st000336))])), collapse=", ")),"**."), "")`          
+  - Your data have **57** samples, **31** features and **2** groups, that are **‘Controls’, ‘DMD’**. Furthermore, **1** covariates have been found in your data. These covariates are **‘steroids’**.
 
-  + A **`r round((sum(is.na(e))/(nrow(e)*ncol(e)))*100, 2)`%** of values in your data are NAs (missing values). `r ifelse(nrow(nas) >= 1, paste0("Variables that have NA values are **",noquote(paste(shQuote(paste0(nas$names," (",nas$number,")")), collapse=", ")),"**."), "")`
+  - A **3.45%** of values in your data are NAs (missing values). Variables that have NA values are **‘aspartic_acid (5)’, ‘citrulline (28)’, ‘glutamic_acid (15)’, ‘methionine (3)’, ‘x3_hba (1)’, ‘a_kg (1)’, ‘citrate (2)’, ‘fumarate (1)’, ‘lactate (2)’, ‘malate (1)’, ‘pyruvate (1)’, ‘succinate (1)’**.
 
-  + A **`r round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2)`%** of values in your data are zeros. `r ifelse(nrow(zeros) >= 1, paste0("Variables that have zeros are **",noquote(paste(shQuote(paste0(zeros$names," (",zeros$number,")")), collapse=", ")),"**."), "")`
-  
-  + Removed from the exploratory data analysis **`r nrow(all_zero)`** features that only have zeros. `r ifelse(nrow(all_zero) >= 1, paste0("These variables are **",noquote(paste(shQuote(all_zero$names), collapse=", ")),"**."), "")` 
-  
-  + Removed from the exploratory data analysis **`r nrow(var_zero)`** features that have zero variance. `r ifelse(nrow(var_zero) >= 1, paste0("These variables are **",noquote(paste(shQuote(var_zero$names), collapse=", ")),"**."), "")`
+  - A **0%** of values in your data are zeros.
+
+  - Removed from the exploratory data analysis **0** features that only have zeros.
+
+  - Removed from the exploratory data analysis **0** features that have zero variance.
 
 ## Summary Table
 
@@ -208,7 +210,7 @@ outliers <- st000336 %>%
 outliers$polygon_plot
 ```
 
-**`r nrow(outliers$outliers)`** possible outliers detected in your data. `r ifelse(nrow(outliers$outliers) >= 1, paste0("These outliers are **",noquote(paste(shQuote(paste0(outliers$outliers$sample)), collapse=", ")),"**."), "")`
+**7** possible outliers detected in your data. These outliers are **‘DMD119.2.U02’, ‘DMD084.11.U02’, ‘DMD087.12.U02’, ‘DMD023.10.U02’, ‘DMD046.11.U02’, ‘DMD133.9.U02’, ‘DMD135.10.U02’**.
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 if(nrow(outliers$outliers) >= 1){
@@ -223,7 +225,7 @@ correlations <- PomaCorr(pre_processed)
 high_correlations <- correlations$correlations %>% filter(abs(corr) > 0.97)
 ```
 
-There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$Var1, " - " , high_correlations$Var2)), collapse=", ")),"**."), "")`
+There are **0** high correlated feature pairs in your data.
 
 # Heatmap and Clustering
 
