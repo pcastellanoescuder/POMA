@@ -1,3 +1,7 @@
+# POMA 0.99.34
+
+* POMA has been accepted to Bioconductor!
+
 # POMA 0.99.33
 
 * All Bioconductor issues in the review process have been addressed

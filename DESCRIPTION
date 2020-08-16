@@ -1,6 +1,6 @@
 Package: POMA
-Title: R Package for Statistical Analysis of Mass Spectrometry Data
-Version: 0.99.33
+Title: User-friendly Workflow for Pre-processing and Statistical Analysis of Mass Spectrometry Data   
+Version: 0.99.34
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -13,10 +13,10 @@ Authors@R:
              email = "asanchez@ub.edu",
              comment = c(ORCID = "0000-0002-8673-7737")))
 Description: 
-    POMA introduces a structured, reproducible and easy use workflow for the visualization, preprocessement, 
+    POMA introduces a structured, reproducible and easy use workflow for the visualization, pre-processing, 
     exploratory and statistical analysis of mass spectrometry data. The main aim of POMA is to enable a flexible 
-    data cleaning and statistical analysis processes in one comprehensible and easy use R package. This package also 
-    offers a Shiny app user interface that implements all POMA functions.
+    data cleaning and statistical analysis processes in one comprehensible and user-friendly R package. This package also 
+    has a Shiny app version that implements all POMA functions. See https://github.com/pcastellanoescuder/POMAShiny.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -47,7 +47,7 @@ Imports:
     patchwork,
     plotly,
     randomForest,
-    RankProd,
+    RankProd (>= 3.14),
     reshape2,
     rmarkdown,
     tibble,
