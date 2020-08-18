@@ -38,6 +38,9 @@ PomaRankProd <- function(data,
   if (!(method %in% c("pfp", "pval"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
+  if (sum(apply(t(Biobase::exprs(data)), 2, function(x){sum(x < 0, na.rm = TRUE)})) != 0) {
+    stop(crayon::red(clisymbols::symbol$cross, "Negative values detected in your data!"))
+  }
   if (missing(method)) {
     warning("method argument is empty! pfp method will be used")
   }
@@ -70,11 +73,15 @@ PomaRankProd <- function(data,
     stop(crayon::blue(clisymbols::symbol$info, "No significant features found..."))
   }
   
-  colnames(one)[3] <- paste0("FC: ", class1, "/", class2)
-  colnames(two)[3] <- paste0("FC: ", class1, "/", class2)
-
-  one <- one %>% dplyr::select(-gene.index)
-  two <- two %>% dplyr::select(-gene.index)
+  if(nrow(one) != 0){
+    colnames(one)[3] <- paste0("FC: ", class1, "/", class2)
+    one <- one %>% dplyr::rename(feature_index = gene.index)
+  }
+  
+  if(nrow(two) != 0){
+    colnames(two)[3] <- paste0("FC: ", class1, "/", class2)
+    two <- two %>% dplyr::rename(feature_index = gene.index)
+  }
 
   #### PLOT
 

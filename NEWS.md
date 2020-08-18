@@ -1,6 +1,7 @@
-# POMA 0.99.34
+# POMA 0.99.35
 
 * POMA has been accepted to Bioconductor!
+* PomaRankProd minor bug fixed
 
 # POMA 0.99.33
 
