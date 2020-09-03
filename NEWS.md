@@ -1,3 +1,7 @@
+# POMA 0.99.38
+
+* PomaOutliers bug fixed
+
 # POMA 0.99.37
 
 * POMA has been accepted to Bioconductor!

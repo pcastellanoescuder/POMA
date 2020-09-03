@@ -72,15 +72,14 @@ PomaOutliers <- function(data,
   
   dd <- dist(to_outliers, method = method)
   distances <- vegan::betadisper(dd, groups, type = type, bias.adjust = FALSE, sqrt.dist = FALSE, add = FALSE)
-  detect_outliers <- data.frame(distances = distances$distances, Groups = distances$group) 
+  detect_outliers <- data.frame(distances = distances$distances, Groups = distances$group, sample = names) 
   
   limit <- data.frame(aggregate(detect_outliers$distances, list(detect_outliers$Groups), function(x) {quantile(x, 0.75) + coef * IQR(x)}))
   colnames(limit)[1] <- "Groups"
   
   detect_outliers <- merge(detect_outliers, limit, by = "Groups")
   detect_outliers <- detect_outliers %>% 
-    mutate(out = as.factor(ifelse(distances > x, 1, 0)),
-           sample = names)
+    mutate(out = as.factor(ifelse(distances > x, 1, 0)))
   
   final_outliers <- detect_outliers %>%
     filter(out == 1) %>%
@@ -97,19 +96,21 @@ PomaOutliers <- function(data,
     centroids <- data.frame(distances$centroids)
     
     total_outliers <- vectors %>%
-      mutate(Group = groups) 
+      rownames_to_column("sample") %>%
+      mutate(Group = groups)
     
     find_hull <- function(x){x[chull(x$PCoA1, x$PCoA2) ,]}
     
     hulls <- total_outliers %>% 
+      select(-sample) %>%
       group_by(Group) %>% 
       dplyr::do(find_hull(.))
     
     polygon_plot <- ggplot(total_outliers, aes(x = PCoA1, y = PCoA2)) +
       geom_polygon(data = hulls, alpha = 0.5, aes(fill = Group)) +
       {if(!labels)geom_point(aes(shape = Group), size = 3, alpha = 0.7)} +
-      geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, label = rownames(centroids)), show.legend = FALSE) +
-      {if(labels)geom_text(aes(label = rownames(total_outliers)))} +
+      geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
+      {if(labels)geom_text(aes(label = sample))} +
       theme_bw()
     
     distance_boxplot <- ggplot(detect_outliers, aes(Groups, distances, fill = Groups)) +
