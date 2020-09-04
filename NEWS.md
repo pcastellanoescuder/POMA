@@ -1,6 +1,7 @@
-# POMA 0.99.38
+# POMA 0.99.39
 
 * PomaOutliers bug fixed
+* New references in PomaRankProd help
 
 # POMA 0.99.37
 
