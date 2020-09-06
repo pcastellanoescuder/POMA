@@ -1,6 +1,6 @@
 ---
-title: "POMA: R Package for Statistical Analysis of Mass Spectrometry Data"
-subtitle: "Exploratory Data Analysis"
+title: "POMA `r paste0('(', packageVersion('POMA'), ')')`: Exploratory Data Analysis Report"
+subtitle: '`r username`'
 date: '`r format(Sys.Date(), "%B, %Y")`'
 output:
   pdf_document:

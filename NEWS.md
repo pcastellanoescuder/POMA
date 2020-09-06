@@ -1,7 +1,8 @@
-# POMA 0.99.39
+# POMA 0.99.40
 
 * PomaOutliers bug fixed
 * New references in PomaRankProd help
+* PomaLimma and PomaUnivariate bug related with one covariate analysis fixed
 
 # POMA 0.99.37
 

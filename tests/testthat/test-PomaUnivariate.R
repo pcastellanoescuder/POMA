@@ -20,6 +20,9 @@ test_that("PomaUnivariate works", {
   univ_kruskal <- PomaUnivariate(st000284, method = "kruskal", adjust = "fdr")
   univ_kruskal2 <- PomaUnivariate(st000284, method = "kruskal", adjust = "BY")
 
+  one_cov1 <- PomaUnivariate(st000336, covariates = FALSE, method = "anova", adjust = "fdr")
+  one_cov2 <- PomaUnivariate(st000336, covariates = TRUE, method = "anova", adjust = "fdr")
+  
   ##
 
   expect_equal(dims_for_ttest_and_mann, dim(univ_ttest))
@@ -35,6 +38,9 @@ test_that("PomaUnivariate works", {
   expect_false(all(univ_kruskal == univ_kruskal2))
   expect_equal(dims_for_krusk, dim(univ_kruskal))
   expect_equal(dims_for_krusk, dim(univ_kruskal2))
+  
+  expect_equal(dim(one_cov1), dim(one_cov2))
+  expect_false(all(one_cov1$pvalue == one_cov2$pvalue))
   
   ##
   

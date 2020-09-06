@@ -129,7 +129,12 @@ PomaUnivariate <- function(data,
     }
     else{
 
-      covariate_uni <- pData(data)[, 2:ncol(pData(data))]
+      covariate_uni <- as.data.frame(pData(data)[, 2:ncol(pData(data))])
+      
+      if(ncol(covariate_uni) == 1){
+        colnames(covariate_uni) <- colnames(pData(data))[2]
+      }
+      
       covariate_uni <- sapply(covariate_uni, as.numeric)
 
       model_names <- paste0(paste0(colnames(covariate_uni), collapse = " + "), " + Group")

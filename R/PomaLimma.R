@@ -89,7 +89,11 @@ PomaLimma <- function(data,
 
   else {
 
-    covariates <- pData(data)[, 2:ncol(pData(data))]
+    covariates <- as.data.frame(pData(data)[, 2:ncol(pData(data))])
+    
+    if(ncol(covariates) == 1){
+      colnames(covariates) <- colnames(pData(data))[2]
+    }
 
     form <- as.formula(noquote(paste("~ 0 + fac1 + ", paste0(colnames(covariates), collapse = " + ", sep=""), sep = "")))
 
