@@ -1,8 +1,9 @@
-# POMA 0.99.40
+# POMA 0.99.41
 
 * PomaOutliers bug fixed
 * New references in PomaRankProd help
 * PomaLimma and PomaUnivariate bug related with one covariate analysis fixed
+* The "elbow" method to calculate the optimum number of clusters has been added in PomaClust function
 
 # POMA 0.99.37
 

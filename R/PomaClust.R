@@ -5,7 +5,8 @@
 #' 
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param method Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See `?dist()`.
-#' @param k Number of clusters.
+#' @param k Number of clusters (default is `NA`). The optimum number of clusters will be used by default.
+#' @param k_max Number of clusters among which the optimal one will be selected.
 #' @param show_clusters Logical indicating if clusters should be plotted or not. If this parameter is set to `FALSE` the resultant plot will be a classical 2-dimension MDS plot.
 #' @param labels Logical indicating if sample names should be plotted or not.
 #' @param show_group Logical indicating if the original sample group from pData should be plotted instead of sample ID or not. Only works if labels is set to `TRUE`.
@@ -28,7 +29,8 @@
 #' PomaClust(st000284)
 PomaClust <- function(data,
                       method = "euclidean",
-                      k = 3,
+                      k = NA,
+                      k_max = 15,
                       show_clusters = TRUE,
                       labels = FALSE,
                       show_group = FALSE){
@@ -47,7 +49,41 @@ PomaClust <- function(data,
   e <- t(Biobase::exprs(data))
   target <- Biobase::pData(data)
   
+  ## Optimum number of clusters
+  
+  wss <- data.frame(wss = sapply(1:k_max, function(k){kmeans(e, k)$tot.withinss})) %>%
+    mutate(k = 1:k_max)
+  
+  i1 <- which.min(wss$k)
+  i2 <- which.max(wss$k)
+  slope <- (wss$wss[i2] - wss$wss[i1]) / (wss$k[i2] - wss$k[i1])
+  int <- wss$wss[i1] - slope*wss$k[i1]
+  
+  perpslope <- -1/slope
+  perpint <- wss$wss - perpslope*wss$k
+  
+  xcross <- (int - perpint) / (perpslope - slope)
+  ycross <- slope*xcross + int
+  
+  dists <- sqrt((wss$k - xcross)^2 + (wss$wss - ycross)^2)
+  
+  elbowi <- which.max(dists)
+  
+  optimum_clusters <- ggplot(wss, aes(as.factor(k), wss, group = 1)) +
+    geom_point() +
+    geom_line() +
+    xlab("Number of clusters") +
+    ylab("Within-cluster sum of squares") +
+    # geom_segment(data = wss, aes(x = i1, y = wss[i1], xend = i2, yend = wss[i2]), lty = 2, lwd = 0.2) +
+    # geom_segment(data = wss, aes(x = k[elbowi], y = wss[elbowi], xend = xcross[elbowi], yend = ycross[elbowi]), lty = 1, lwd = 0.2, color = "red") +
+    geom_point(aes(x = k[elbowi], y = wss[elbowi]), color = "red", size = 2) +
+    theme_bw()
+  
   ## MDS and kmeans
+  
+  if(is.na(k)){
+    k <- elbowi
+  }
   
   clusters <- kmeans(e, centers = k)
   
@@ -63,7 +99,7 @@ PomaClust <- function(data,
     
   ## plot
   
-  if(!isTRUE(show_clusters)){
+  if(!show_clusters){
     
     mds_plot <- ggplot(mds, aes(x = Dim1, y = Dim2)) +
       {if(!labels)geom_point(size = 3, alpha = 0.5)} +
@@ -75,7 +111,7 @@ PomaClust <- function(data,
     
   } else{
     
-    mds_plot <- ggplot(mds, aes(x = Dim1, y = Dim2, color = clust, shape = clust)) +
+    mds_plot <- ggplot(mds, aes(x = Dim1, y = Dim2, color = clust)) +
       {if(!labels)geom_point(size = 3, alpha = 0.5)} +
       xlab("Dimension 1") +
       ylab("Dimension 2") +
@@ -84,7 +120,8 @@ PomaClust <- function(data,
       {if(labels & !show_group)geom_text(aes(label = sample), show.legend = FALSE)}
   }
   
-  return(list(mds_values = mds, mds_plot = mds_plot))
+  return(list(mds_values = mds, optimum_cluster_num = elbowi, 
+              optimum_cluster_plot = optimum_clusters, mds_plot = mds_plot))
   
 }
 

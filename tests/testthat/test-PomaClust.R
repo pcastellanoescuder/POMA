@@ -15,6 +15,9 @@ test_that("PomaClust works", {
   e <- PomaClust(st000284, method = "canberra", k = 6, show_clusters = FALSE, labels = TRUE, show_group = TRUE)
   f <- PomaClust(imp_st000336, method = "minkowski", k = 4, show_clusters = TRUE, labels = TRUE, show_group = TRUE)
   
+  g <- PomaClust(st000284)
+  h <- PomaClust(st000284, k = 3)
+  
   ## table
   
   expect_equal(nrow(a$mds_values), nrow(c$mds_values))
@@ -37,6 +40,18 @@ test_that("PomaClust works", {
   expect_equal(class(d$mds_plot)[2], "ggplot")
   expect_equal(class(e$mds_plot)[2], "ggplot")
   expect_equal(class(f$mds_plot)[2], "ggplot")
+  
+  ## optimum clusters
+  
+  expect_equal(class(g$optimum_cluster_plot)[2], "ggplot")
+  expect_equal(class(h$optimum_cluster_plot)[2], "ggplot")
+  
+  expect_equal(g$optimum_cluster_num, h$optimum_cluster_num)
+  
+  expect_equal(5, ncol(g$mds_values))
+  expect_equal(5, ncol(h$mds_values))
+  
+  expect_false(length(levels(g$mds_values$clust)) == length(levels(h$mds_values$clust)))
   
   ## errors
   

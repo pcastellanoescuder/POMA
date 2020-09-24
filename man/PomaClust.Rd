@@ -7,7 +7,8 @@
 PomaClust(
   data,
   method = "euclidean",
-  k = 3,
+  k = NA,
+  k_max = 15,
   show_clusters = TRUE,
   labels = FALSE,
   show_group = FALSE
@@ -18,7 +19,9 @@ PomaClust(
 
 \item{method}{Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See \code{?dist()}.}
 
-\item{k}{Number of clusters.}
+\item{k}{Number of clusters (default is \code{NA}). The optimum number of clusters will be used by default.}
+
+\item{k_max}{Number of clusters among which the optimal one will be selected.}
 
 \item{show_clusters}{Logical indicating if clusters should be plotted or not. If this parameter is set to \code{FALSE} the resultant plot will be a classical 2-dimension MDS plot.}
 

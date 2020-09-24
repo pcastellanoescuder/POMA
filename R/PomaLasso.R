@@ -123,8 +123,8 @@ PomaLasso <- function(data,
     scale_x_log10() +
     xlab("log10(Lambda)") +
     ylab("Estimate") +
-    geom_vline(xintercept = glance_cv$lambda.min) +
-    geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
+    geom_vline(xintercept = glance_cv$lambda.min, lty = 2) +
+    # geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
     theme_bw()
 
   tmp_coeffs <- coef(cv_fit, s = "lambda.min")
@@ -143,8 +143,8 @@ PomaLasso <- function(data,
     xlab("log10(Lambda)") +
     ylab("Coefficients") +
     geom_line() +
-    geom_vline(xintercept = glance_cv$lambda.min) +
-    geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
+    geom_vline(xintercept = glance_cv$lambda.min, lty = 2) +
+    # geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
     theme_bw() +
     {if(labels)geom_label(data = tidied_cv2_names, aes(label = term))} +
     theme(legend.position = "none")
