@@ -43,6 +43,9 @@ PomaMSnSetClass <- function(target,
   if(!is.data.frame(target)){
     stop(crayon::red(clisymbols::symbol$cross, "target file is not a data.frame"))
   }
+  if(sum(sapply(target, function(x)sum(is.na(x)))) > 0){
+    stop(crayon::red(clisymbols::symbol$cross, "missing values not allowed in target file"))
+  }
   
   target <- target %>%
     as.data.frame() %>% 

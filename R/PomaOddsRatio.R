@@ -66,7 +66,7 @@ PomaOddsRatio <- function(data,
     e <- as.data.frame(e)
   }
 
-  if(isTRUE(covariates)){
+  if(covariates){
     data <- bind_cols(pData, e)
     data$Group <- as.factor(data$Group)
 

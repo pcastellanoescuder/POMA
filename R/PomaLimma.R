@@ -61,7 +61,7 @@ PomaLimma <- function(data,
   contrasts <- levels(as.factor(Group))
   fac1 <- as.factor(Group)
 
-  if (isFALSE(covariates)){
+  if (!covariates){
 
     initialmodel <- model.matrix( ~ 0 + fac1)
     colnames(initialmodel) <- contrasts
@@ -97,7 +97,7 @@ PomaLimma <- function(data,
 
     form <- as.formula(noquote(paste("~ 0 + fac1 + ", paste0(colnames(covariates), collapse = " + ", sep=""), sep = "")))
 
-    initialmodel2 <- model.matrix(form , covariates)
+    initialmodel2 <- model.matrix(form, covariates)
     colnames(initialmodel2)[1:length(levels(fac1))] <- contrasts
 
     cont.matrix2 <- limma::makeContrasts(contrasts = contrast,

@@ -114,7 +114,7 @@ PomaUnivariate <- function(data,
 
   else if(method == "anova"){
 
-    if(!isTRUE(covariates)){
+    if(!covariates){
 
       stat2 <- function(x){anova(aov(x ~ Group))$"Pr(>F)"[1]}
       p2 <- data.frame(pvalue = apply(FUN = stat2, MARGIN = 2, X = e))
