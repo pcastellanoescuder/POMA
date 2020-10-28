@@ -54,11 +54,10 @@ vignette.
 
 ## Installation
 
-To install Bioconductor devel version:
+To install Bioconductor version:
 
 ``` r
 # install.packages("BiocManager")
-BiocManager::install(version = 'devel') # Install BiocManager devel version
 BiocManager::install("POMA")
 ```
 

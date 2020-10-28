@@ -28,11 +28,10 @@ The [github page](https://github.com/pcastellanoescuder/POMA) is for active deve
 
 ## Installation
 
-To install Bioconductor devel version:
+To install Bioconductor version:
 
 ```{r, eval = FALSE}
 # install.packages("BiocManager")
-BiocManager::install(version = 'devel') # Install BiocManager devel version
 BiocManager::install("POMA")
 ```
 
