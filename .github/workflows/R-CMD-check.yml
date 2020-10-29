@@ -64,6 +64,11 @@ jobs:
           sudo su - -c "R -e \"install.packages('Rmpfr', repos = 'http://cran.rstudio.com/')\""
           Rscript -e "install.packages('BiocManager')"
           Rscript -e "BiocManager::install(c('mixOmics', 'MSnbase'))"
+          
+      - name: Install X11 dependencies on MacOS
+        if: runner.os == 'macOS'
+        run: |
+          brew cask install xquartz
 
       - name: Install dependencies
         run: |
