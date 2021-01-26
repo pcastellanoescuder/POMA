@@ -121,7 +121,7 @@ PomaMultivariate <- function(data,
     eigenvalues <- eigenvalues %>% rownames_to_column("Principal_Component")
 
     screeplot <- ggplot(eigenvalues, aes(x = Principal_Component, y = Percent_Variance_Explained, fill = NULL)) +
-      geom_bar(stat = "identity", fill = rep(c("lightblue"), nrow(eigenvalues))) +
+      geom_bar(stat = "identity", fill = rep("lightblue", nrow(eigenvalues))) +
       xlab("Principal Component") +
       ylab("% Variance Explained") +
       geom_label(data = eigenvalues, aes(label =  paste0(round(Percent_Variance_Explained, 3), "%"))) +
@@ -191,8 +191,8 @@ PomaMultivariate <- function(data,
       round(4) %>%
       rownames_to_column("Component")
 
-    errors_plsda1 <- reshape2::melt(ber, id.vars=c("Component"))
-    errors_plsda2 <- reshape2::melt(overall, id.vars=c("Component"))
+    errors_plsda1 <- reshape2::melt(ber, id.vars = "Component")
+    errors_plsda2 <- reshape2::melt(overall, id.vars = "Component")
     errors_plsda <- rbind(errors_plsda1, errors_plsda2)
 
     errors_plsda_plot <- ggplot(data = errors_plsda, aes(x = Component, y = value, group = variable)) +
@@ -212,7 +212,7 @@ PomaMultivariate <- function(data,
       mutate(feature = factor(feature, levels = feature[order(comp1)]))
 
     vip_plsda_plot <- ggplot(plsda_vip_top, aes(x = feature, y = comp1, fill = NULL)) +
-      geom_bar(stat="identity", fill = rep(c("lightblue"), nrow(plsda_vip_top))) +
+      geom_bar(stat = "identity", fill = rep("lightblue", nrow(plsda_vip_top))) +
       coord_flip() +
       ylab("VIP") +
       xlab("") +
@@ -245,10 +245,10 @@ PomaMultivariate <- function(data,
 
     errors_splsda_out <- data.frame(tune_splsda$error.rate) %>% round(4) %>%
       rownames_to_column("features")
-    errors_splsda <- reshape2::melt(errors_splsda_out, id.vars=c("features"))
+    errors_splsda <- reshape2::melt(errors_splsda_out, id.vars = "features")
 
     errors_sd <- data.frame(tune_splsda$error.rate.sd) %>% rownames_to_column("features_sd")
-    errors_sd <- reshape2::melt(errors_sd, id.vars=c("features_sd"))
+    errors_sd <- reshape2::melt(errors_sd, id.vars = "features_sd")
 
     errors_splsda <- cbind(errors_splsda, sd = errors_sd[,3])
 

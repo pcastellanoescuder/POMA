@@ -1,3 +1,7 @@
+# POMA 1.0.0
+
+* Released to Bioconductor 3.12
+
 # POMA 0.99.45
 
 * PomaOutliers bug fixed

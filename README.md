@@ -11,30 +11,36 @@ Status](https://travis-ci.org/pcastellanoescuder/POMA.svg?branch=master)](https:
 status](https://ci.appveyor.com/api/projects/status/github/pcastellanoescuder/POMA?branch=master&svg=true)](https://ci.appveyor.com/project/pcastellanoescuder/POMA)
 [![Actions
 Status](https://github.com/pcastellanoescuder/POMA/workflows/R-CMD-check/badge.svg)](https://github.com/pcastellanoescuder/POMA/actions)
-[![Bioc
-Status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)
+[![Bioc release
+status](https://bioconductor.org/shields/build/release/bioc/POMA.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/POMA/)
+[![Bioc devel
+status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)
 [![Codecov test
 coverage](https://codecov.io/gh/pcastellanoescuder/POMA/branch/master/graph/badge.svg)](https://codecov.io/gh/pcastellanoescuder/POMA?branch=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/pcastellanoescuder/POMA/badge)](https://www.codefactor.io/repository/github/pcastellanoescuder/POMA)
 [![Last
 Commit](https://img.shields.io/github/last-commit/pcastellanoescuder/POMA.svg)](https://github.com/pcastellanoescuder/POMA/commits/master)
+[![BioC released
+version](https://img.shields.io/badge/release%20version-1.0.0-blue.svg)](https://www.bioconductor.org/packages/POMA)
+[![Downloads
+month](https://img.shields.io/badge/download-33/month-blue.svg)](https://bioconductor.org/packages/stats/bioc/POMA)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 <!-- badges: end -->
 
 [**POMA**](http://pcastellanoescuder.github.io/POMA/) introduces a
-structured, reproducible and easy use workflow for the visualization,
-pre-processing, exploratory and statistical analysis of mass
-spectrometry data. The main aim of `POMA` is to enable a flexible data
-cleaning and statistical analysis processes in one comprehensible and
-user-friendly R package. This package uses the standardized
-[**MSnbase**](http://lgatto.github.io/MSnbase/) data structures,
-developed by [Laurent Gatto](http://lgatto.github.io/), to achieve the
-maximum flexibility and reproducibility and makes `POMA` compatible with
-pre-existing [Bioconductor](https://bioconductor.org) packages.
+structured, reproducible and easy-to-use workflow for the visualization,
+pre-processing, exploratory data analysis and statistical analysis of
+mass spectrometry data. The main aim of `POMA` is to enable a flexible
+data cleaning and statistical analysis processes in one comprehensible
+and user-friendly R package. This package uses the standardized
+[**MSnbase**](http://lgatto.github.io/MSnbase/) data structures, to
+achieve the maximum flexibility and reproducibility and makes `POMA`
+compatible with other [Bioconductor](https://bioconductor.org) packages.
 
-`POMA` also has two different Shiny app modules both for Exploratory
-Data Analysis and Statistical Analysis that implement all `POMA`
+`POMA` also has two different Shiny app modules both for exploratory
+data analysis and statistical analysis that implement all `POMA`
 functions in two user-friendly web interfaces.
 
   - **POMAShiny**: Shiny version of this package.
@@ -54,11 +60,10 @@ vignette.
 
 ## Installation
 
-To install Bioconductor devel version:
+To install Bioconductor version:
 
 ``` r
 # install.packages("BiocManager")
-BiocManager::install(version = 'devel') # Install BiocManager devel version
 BiocManager::install("POMA")
 ```
 

@@ -16,7 +16,7 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom tibble column_to_rownames rownames_to_column
-#' @importFrom dplyr select mutate filter bind_cols bind_rows 
+#' @importFrom dplyr select mutate filter bind_cols bind_rows summarise_all group_by
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
@@ -71,28 +71,24 @@ PomaUnivariate <- function(data,
   Group <- as.factor(Biobase::pData(data)$Group)
   e <- t(Biobase::exprs(data))
 
-  ## calcule means
+  ## group means
   
-  group_means <- e %>% 
+  group_means <- e %>%
     as.data.frame() %>% 
-    mutate(group = Group)
+    mutate(group = Group) %>%
+    group_by(group) %>%
+    summarise_all(list(~ mean(., na.rm = TRUE))) %>%
+    column_to_rownames("group") %>%
+    t() %>%
+    as.data.frame()
   
-  suppressWarnings({
-    group_means <- data.frame(aggregate(group_means, by = list(group_means$group), FUN = mean)) %>% 
-      column_to_rownames("Group.1") %>% 
-      t() %>% 
-      as.data.frame() %>% 
-      round(2) %>% 
-      filter(rownames(.) != "group")
-    
-    colnames(group_means) <- paste0("mean_", colnames(group_means))
-  })
+  colnames(group_means) <- paste0("mean_", colnames(group_means))
   
   ##
   
   if(method == "ttest"){
 
-    stat <- function(x){t.test(x ~ Group, na.rm = TRUE, alternative = c("two.sided"),
+    stat <- function(x){t.test(x ~ Group, na.rm = TRUE, alternative = "two.sided",
                                var.equal = var_equal, paired = paired)$p.value}
 
     p <- data.frame(pvalue = apply(FUN = stat, MARGIN = 2, X = e))

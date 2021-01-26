@@ -109,7 +109,7 @@ PomaCorr <- function(data,
       guides(edge_alpha = "none", edge_width = "none") +
       scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
       geom_node_point(color = "white", size = 5) +
-      geom_node_text(aes(label = name), repel = FALSE) +
+      geom_node_label(aes(label = name), repel = FALSE) +
       theme_graph()
     
   } else {
@@ -136,7 +136,7 @@ PomaCorr <- function(data,
       guides(edge_alpha = "none", edge_width = "none") +
       scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
       geom_node_point(color = "white", size = 5) +
-      geom_node_text(aes(label = name), repel = FALSE) +
+      geom_node_label(aes(label = name), repel = FALSE) +
       theme_graph()
 
   }

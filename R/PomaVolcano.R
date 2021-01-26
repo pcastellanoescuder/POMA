@@ -25,7 +25,6 @@
 #' @importFrom dplyr mutate
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom plotly ggplotly
 #' @importFrom Biobase varLabels pData exprs featureNames
 #' 
 #' @examples 
@@ -106,7 +105,12 @@ PomaVolcano <- function(data,
     scale_color_manual(values = c("Down-regulated" = "#E64B35", "Up-regulated" = "#3182bd", "none" = "#636363"))
 
   if(interactive){
-    volcanoP <- plotly::ggplotly(volcanoP)
+    if("plotly" %in% (.packages())){
+      volcanoP <- plotly::ggplotly(volcanoP)
+    }
+    else{
+      warning("Package 'plotly' is required for an interactive volcano plot\nUse 'install.packages('plotly')'")
+    }
   }
 
   return(volcanoP)

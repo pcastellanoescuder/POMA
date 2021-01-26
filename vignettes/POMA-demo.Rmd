@@ -51,6 +51,7 @@ You can also load some additional packages that will be very useful in this vign
 ```{r, warning = FALSE, message = FALSE, comment = FALSE}
 library(ggplot2)
 library(ggraph)
+library(plotly)
 ```
 
 # The POMA Workflow

@@ -27,6 +27,7 @@ test_that("PomaVolcano works", {
   
   expect_warning(PomaVolcano(st000336, adjust = "fdr"))
   expect_warning(PomaVolcano(st000336, pval = "raw"))
+  expect_warning(PomaVolcano(st000336, pval = "raw", adjust = "fdr", interactive = TRUE))
   
   expect_error(PomaVolcano(st000336, pval = "ra", adjust = "fdr"))
   expect_error(PomaVolcano(st000336, pval = "raw", adjust = "fd"))
