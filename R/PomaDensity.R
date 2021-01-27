@@ -6,7 +6,8 @@
 #' @param data A MSnSet object. First `pData` column must be the subject group/type.
 #' @param group Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.
 #' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a density plot of all variables will be created.
-#'
+#' @param legend_position Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".
+#' 
 #' @export
 #'
 #' @return A ggplot2 object.
@@ -16,9 +17,9 @@
 #' @importFrom tibble rownames_to_column
 #' @importFrom dplyr select group_by filter rename
 #' @importFrom magrittr %>%
-#' @importFrom reshape2 melt
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
+#' @importFrom tidyr pivot_longer
 #' @importFrom Biobase pData exprs featureNames
 #' 
 #' @examples 
@@ -35,7 +36,8 @@
 #'             feature_name = c("ornithine", "orotate"))
 PomaDensity <- function(data,
                         group = "samples",
-                        feature_name = NULL){
+                        feature_name = NULL,
+                        legend_position = "bottom"){
 
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
@@ -48,12 +50,15 @@ PomaDensity <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
   }
   if (missing(group)) {
-    warning("group argument is empty! samples will be used")
+    message("group argument is empty! samples will be used")
   }
   if (!is.null(feature_name)) {
     if(!isTRUE(all(feature_name %in% Biobase::featureNames(data)))){
       stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
     }
+  }
+  if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
   }
 
   e <- t(Biobase::exprs(data))
@@ -69,25 +74,29 @@ PomaDensity <- function(data,
     if (is.null(feature_name)){
       
       data %>%
-        reshape2::melt() %>%
-        group_by(ID) %>%
+        pivot_longer(cols = -c(ID, Group)) %>%
         ggplot(aes(value, fill = Group)) +
         geom_density(alpha = 0.4) +
         xlab("Value") +
         ylab("Density") +
-        theme_bw()
+        theme_bw() +
+        theme(legend.title = element_blank(),
+              legend.position = legend_position) +
+        scale_fill_viridis_d()
       
     } else {
       
       data %>%
-        reshape2::melt() %>%
-        group_by(ID) %>%
-        filter(variable %in% feature_name) %>%
+        pivot_longer(cols = -c(ID, Group)) %>%
+        filter(name %in% feature_name) %>%
         ggplot(aes(value, fill = Group)) +
         geom_density(alpha = 0.4) +
         xlab("Value") +
         ylab("Density") +
-        theme_bw()
+        theme_bw() +
+        theme(legend.title = element_blank(),
+              legend.position = legend_position) +
+        scale_fill_viridis_d()
       
     }
 
@@ -97,38 +106,29 @@ PomaDensity <- function(data,
 
       data %>%
         dplyr::select(-ID) %>%
-        reshape2::melt() %>%
-        group_by(Group) %>%
-        ggplot(aes(value, fill = variable)) +
+        pivot_longer(cols = -Group) %>%
+        ggplot(aes(value, fill = name)) +
         geom_density(alpha = 0.4) +
         theme_bw() +
         xlab("Value") +
         ylab("Density") +
-        theme(legend.position = "none")
+        theme(legend.position = "none") +
+        scale_fill_viridis_d()
 
     } else {
       
       data %>%
         dplyr::select(-ID) %>%
-        reshape2::melt() %>%
-        group_by(Group) %>%
-        filter(variable %in% feature_name) %>%
-        ggplot(aes(value, fill = variable)) + 
+        pivot_longer(cols = -Group) %>%
+        filter(name %in% feature_name) %>%
+        ggplot(aes(value, fill = name)) + 
         geom_density(alpha = 0.4) +
         theme_bw() +
         xlab("Value") +
-        ylab("Density")
-      
-      # data %>%
-      #   dplyr::select(-ID) %>%
-      #   reshape2::melt() %>%
-      #   group_by(Group) %>%
-      #   filter(variable %in% feature_name) %>%
-      #   ggplot(aes(value, fill = interaction(variable, Group))) + 
-      #   geom_density(alpha = 0.4) +
-      #   theme_bw() +
-      #   xlab("Value") +
-      #   ylab("Density")
+        ylab("Density") +
+        theme(legend.title = element_blank(),
+              legend.position = legend_position) +
+        scale_fill_viridis_d()
 
     }
   }

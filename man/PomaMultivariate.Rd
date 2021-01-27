@@ -17,7 +17,8 @@ PomaMultivariate(
   folds = 5,
   nrepeat = 10,
   vip = 1.5,
-  num_features = 10
+  num_features = 10,
+  legend_position = "bottom"
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ PomaMultivariate(
 \item{vip}{(Only for "plsda" method) Numeric indicating VIP cutoff to select features that will be displayed in vip plot.}
 
 \item{num_features}{(Only for "splsda" method) Numeric. Number of variables selected to discriminate groups.}
+
+\item{legend_position}{Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".}
 }
 \value{
 A list with all results for multivariate statistical analysis including plots and data frames.

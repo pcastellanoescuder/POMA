@@ -60,7 +60,6 @@ library(knitr)
 library(dplyr)
 library(tibble)
 library(ggplot2)
-library(reshape2)
 library(Biobase)
 
 e <- t(Biobase::exprs(st000336))

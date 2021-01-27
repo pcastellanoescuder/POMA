@@ -1,3 +1,8 @@
+## POMA 1.1.9
+
+* Remove `reshape2` package from Imports
+* Implement viridis palette for `PomaBoxplots`, `PomaDensity`, and `PomaMultivariate`
+
 ## POMA 1.1.8
 
 * `PomaNorm` and `PomaImpute` warnings when methos parameter is missing passed to messages

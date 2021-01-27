@@ -9,7 +9,8 @@ PomaBoxplots(
   group = "samples",
   jitter = TRUE,
   feature_name = NULL,
-  label_size = 10
+  label_size = 10,
+  legend_position = "bottom"
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ PomaBoxplots(
 \item{feature_name}{A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.}
 
 \item{label_size}{Numeric indicating the size of x-axis labels.}
+
+\item{legend_position}{Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".}
 }
 \value{
 A ggplot2 object.

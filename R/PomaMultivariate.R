@@ -16,6 +16,7 @@
 #' @param nrepeat (Only for "plsda" and "splsda" methods) Numeric. Number of iterations for the validation method selected.
 #' @param vip (Only for "plsda" method) Numeric indicating VIP cutoff to select features that will be displayed in vip plot.
 #' @param num_features (Only for "splsda" method) Numeric. Number of variables selected to discriminate groups.
+#' @param legend_position Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".
 #'
 #' @export
 #'
@@ -25,9 +26,9 @@
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
 #' @importFrom dplyr select arrange desc filter
+#' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 #' @importFrom mixOmics pca plsda perf vip tune.splsda splsda selectVar
-#' @importFrom reshape2 melt
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs
@@ -67,7 +68,8 @@ PomaMultivariate <- function(data,
                              folds = 5,
                              nrepeat = 10,
                              vip = 1.5,
-                             num_features = 10){
+                             num_features = 10,
+                             legend_position = "bottom"){
 
   if (missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
@@ -83,9 +85,8 @@ PomaMultivariate <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
   if (missing(validation)) {
-    validation <- "Mfold"
     if (method %in% c("plsda", "splsda")){
-      warning("validation argument is empty! Mfold will be used")
+      message("validation argument is empty! Mfold will be used")
     }
   }
   if (!(validation %in% c("Mfold", "loo"))) {
@@ -94,7 +95,10 @@ PomaMultivariate <- function(data,
   if (load_length > 2 | load_length < 1) {
     stop(crayon::red(clisymbols::symbol$cross, "load_length should be a number between 1 and 2..."))
   }
-
+  if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
+  }
+  
   Biobase::varLabels(data)[1] <- "Group"
 
   df <- t(Biobase::exprs(data))
@@ -105,7 +109,8 @@ PomaMultivariate <- function(data,
     Y <- as.factor(Biobase::pData(data)$Group)
     pca_res <- mixOmics::pca(X, ncomp = components, center = center, scale = scale)
 
-    PCi <- data.frame(pca_res$x, Groups = Y) %>% rownames_to_column("ID")
+    PCi <- data.frame(pca_res$x, Groups = Y) %>% 
+      rownames_to_column("ID")
 
     scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, color = Groups, shape = Groups, label = ID)) +
       {if(!labels)geom_point(size = 3, alpha = 0.5)} +
@@ -113,19 +118,24 @@ PomaMultivariate <- function(data,
       ylab(paste0("PC2 (", round(100*(pca_res$explained_variance)[2], 2), "%)")) +
       {if(ellipse)stat_ellipse(type = "norm")} +
       {if(labels)geom_text(aes(label = ID), show.legend = TRUE)} +
-      theme_bw()
+      theme_bw() +
+      theme(legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_colour_viridis_d()
 
     ##
 
-    eigenvalues <- data.frame(Percent_Variance_Explained = round(pca_res$explained_variance*100, 4))
-    eigenvalues <- eigenvalues %>% rownames_to_column("Principal_Component")
+    eigenvalues <- data.frame(Percent_Variance_Explained = round(pca_res$explained_variance*100, 3)) %>% 
+      rownames_to_column("Principal_Component")
 
-    screeplot <- ggplot(eigenvalues, aes(x = Principal_Component, y = Percent_Variance_Explained, fill = NULL)) +
-      geom_bar(stat = "identity", fill = rep("lightblue", nrow(eigenvalues))) +
+    screeplot <- ggplot(eigenvalues, aes(x = reorder(Principal_Component, -Percent_Variance_Explained), y = Percent_Variance_Explained, fill = Percent_Variance_Explained)) +
+      geom_bar(stat = "identity") +
       xlab("Principal Component") +
       ylab("% Variance Explained") +
-      geom_label(data = eigenvalues, aes(label =  paste0(round(Percent_Variance_Explained, 3), "%"))) +
-      theme_bw()
+      theme_bw() +
+      theme(legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_fill_continuous(type = "viridis")
 
     ####
 
@@ -154,7 +164,10 @@ PomaMultivariate <- function(data,
                    arrow = arrow(length = unit(1/2, "picas")), color = "grey19") +
       annotate("text", x = PCAloadings$to_x,
                y = PCAloadings$to_y,
-               label = rownames(PCAloadings), size = 4)
+               label = rownames(PCAloadings), size = 4) +
+      theme(legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_colour_viridis_d()
 
     return(list(screeplot = screeplot, scoresplot = scoresplot,
                 score_data = score_data, eigenvalues = eigenvalues, biplot = biplot))
@@ -168,7 +181,8 @@ PomaMultivariate <- function(data,
 
     plsda_res <- mixOmics::plsda(X, Y, ncomp = components)
 
-    PLSDAi <- data.frame(plsda_res$variates$X, Groups = Y) %>% rownames_to_column("ID")
+    PLSDAi <- data.frame(plsda_res$variates$X, Groups = Y) %>% 
+      rownames_to_column("ID")
 
     scoresplot <- ggplot(PLSDAi, aes(x = comp1, y = comp2, color = Groups, shape = Groups, label = ID))+
       {if(!labels)geom_point(size = 3, alpha = 0.5)} +
@@ -176,7 +190,10 @@ PomaMultivariate <- function(data,
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
       {if(labels)geom_text(aes(label = ID), show.legend = TRUE)} +
-      theme_bw()
+      theme_bw() +
+      theme(legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_colour_viridis_d()
 
     #####
 
@@ -185,21 +202,24 @@ PomaMultivariate <- function(data,
 
     overall <- data.frame(perf_plsda$error.rate[1]) %>%
       round(4) %>%
-      rownames_to_column("Component")
+      rownames_to_column("Component") %>%
+      pivot_longer(cols = -Component)
 
     ber <- data.frame(perf_plsda$error.rate[2]) %>%
       round(4) %>%
-      rownames_to_column("Component")
+      rownames_to_column("Component") %>%
+      pivot_longer(cols = -Component)
 
-    errors_plsda1 <- reshape2::melt(ber, id.vars = "Component")
-    errors_plsda2 <- reshape2::melt(overall, id.vars = "Component")
-    errors_plsda <- rbind(errors_plsda1, errors_plsda2)
+    errors_plsda <- rbind(ber, overall)
 
-    errors_plsda_plot <- ggplot(data = errors_plsda, aes(x = Component, y = value, group = variable)) +
-      geom_line(aes(color=variable)) +
-      geom_point(aes(color=variable)) +
+    errors_plsda_plot <- ggplot(data = errors_plsda, aes(x = Component, y = value, group = name)) +
+      geom_line(aes(color = name)) +
+      geom_point(aes(color = name)) +
       ylab("Error") +
-      theme_bw()
+      theme_bw() +
+      theme(legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_colour_viridis_d()
 
     ####
 
@@ -211,13 +231,16 @@ PomaMultivariate <- function(data,
       filter(comp1 >= vip) %>%
       mutate(feature = factor(feature, levels = feature[order(comp1)]))
 
-    vip_plsda_plot <- ggplot(plsda_vip_top, aes(x = feature, y = comp1, fill = NULL)) +
-      geom_bar(stat = "identity", fill = rep("lightblue", nrow(plsda_vip_top))) +
+    vip_plsda_plot <- ggplot(plsda_vip_top, aes(x = reorder(feature, comp1), y = comp1, fill = comp1)) +
+      geom_bar(stat = "identity") +
       coord_flip() +
       ylab("VIP") +
       xlab("") +
-      {if(nrow(plsda_vip_top) <= 10)geom_label(data = plsda_vip_top, aes(label = round(comp1, 2)))} +
-      theme_bw()
+      # {if(nrow(plsda_vip_top) <= 10)geom_label(data = plsda_vip_top, aes(label = round(comp1, 2)))} +
+      theme_bw() +
+      theme(legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_fill_continuous(type = "viridis")
 
     ####
 
@@ -243,22 +266,27 @@ PomaMultivariate <- function(data,
     ncomp <- tune_splsda$choice.ncomp$ncomp # optimal number of components based on t-tests
     select_keepX <- tune_splsda$choice.keepX[1:ncomp]  # optimal number of variables to select
 
-    errors_splsda_out <- data.frame(tune_splsda$error.rate) %>% round(4) %>%
-      rownames_to_column("features")
-    errors_splsda <- reshape2::melt(errors_splsda_out, id.vars = "features")
+    errors_splsda <- data.frame(tune_splsda$error.rate) %>% 
+      round(4) %>%
+      rownames_to_column("features") %>%
+      pivot_longer(cols = -features)
 
-    errors_sd <- data.frame(tune_splsda$error.rate.sd) %>% rownames_to_column("features_sd")
-    errors_sd <- reshape2::melt(errors_sd, id.vars = "features_sd")
+    errors_sd <- data.frame(tune_splsda$error.rate.sd) %>% 
+      rownames_to_column("features_sd") %>%
+      pivot_longer(cols = -features_sd)
 
-    errors_splsda <- cbind(errors_splsda, sd = errors_sd[,3])
+    errors_splsda <- cbind(errors_splsda, sd = errors_sd$value)
 
-    bal_error_rate <- ggplot(data = errors_splsda, aes(x = features, y = value, group = variable)) +
-      geom_line(aes(color=variable)) +
-      geom_point(aes(color=variable)) +
-      geom_errorbar(aes(ymin = value-sd, ymax = value+sd, color = variable), width=.1) +
+    bal_error_rate <- ggplot(data = errors_splsda, aes(x = features, y = value, group = name)) +
+      geom_line(aes(color = name)) +
+      geom_point(aes(color = name)) +
+      geom_errorbar(aes(ymin = value-sd, ymax = value+sd, color = name), width=.1) +
       theme_bw() +
       xlab("Number of features") +
-      ylab("Error")
+      ylab("Error") +
+      theme(legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_colour_viridis_d()
 
     ####
 
@@ -279,7 +307,10 @@ PomaMultivariate <- function(data,
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
       {if(labels)geom_text(aes(label = ID), show.legend = TRUE)} +
-      theme_bw()
+      theme_bw() +
+      theme(legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_colour_viridis_d()
 
     scores_splsda <- SPLSDAi %>% dplyr::select(-Groups, -ID) %>% round(4)
 

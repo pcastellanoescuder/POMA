@@ -8,6 +8,7 @@
 #' @param jitter Logical. If it's TRUE (default), the boxplot will show all points.
 #' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.
 #' @param label_size Numeric indicating the size of x-axis labels.
+#' @param legend_position Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".
 #'
 #' @export
 #'
@@ -16,9 +17,9 @@
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
-#' @importFrom dplyr select group_by filter rename
+#' @importFrom dplyr select filter rename
+#' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
-#' @importFrom reshape2 melt
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom Biobase varLabels pData exprs featureNames
@@ -39,7 +40,8 @@ PomaBoxplots <- function(data,
                          group = "samples",
                          jitter = TRUE,
                          feature_name = NULL,
-                         label_size = 10){
+                         label_size = 10,
+                         legend_position = "bottom"){
   
   if(missing(data)) {
     stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
@@ -56,6 +58,9 @@ PomaBoxplots <- function(data,
       stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
     }
   }
+  if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
+    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
+  }
   
   e <- t(Biobase::exprs(data))
   target <- Biobase::pData(data) %>%
@@ -68,15 +73,17 @@ PomaBoxplots <- function(data,
   if(group == "samples"){
     
     data %>%
-      reshape2::melt() %>%
-      group_by(ID) %>%
+      pivot_longer(cols = -c(ID, Group)) %>%
       ggplot(aes(ID, value, color = Group)) +
       geom_boxplot() +
       {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
       theme_bw() +
       xlab("") +
       ylab("Value") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
+            legend.title = element_blank(),
+            legend.position = legend_position) +
+      scale_colour_viridis_d()
   }
   
   else {
@@ -85,30 +92,34 @@ PomaBoxplots <- function(data,
       
       data %>%
         dplyr::select(-ID) %>%
-        reshape2::melt() %>%
-        group_by(Group) %>%
-        ggplot(aes(variable, value, color = Group)) +
+        pivot_longer(cols = -Group) %>%
+        ggplot(aes(name, value, color = Group)) +
         geom_boxplot() +
         {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
         theme_bw() +
         xlab("") +
         ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
+              legend.title = element_blank(),
+              legend.position = legend_position) +
+        scale_colour_viridis_d()
       
     } else {
       
       data %>%
         dplyr::select(-ID) %>%
-        reshape2::melt() %>%
-        group_by(Group) %>%
-        filter(variable %in% feature_name) %>%
-        ggplot(aes(variable, value, color = Group)) +
+        pivot_longer(cols = -Group) %>%
+        filter(name %in% feature_name) %>%
+        ggplot(aes(name, value, color = Group)) +
         geom_boxplot() +
         {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
         theme_bw() +
         xlab("") +
         ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
+              legend.title = element_blank(),
+              legend.position = legend_position) +
+        scale_colour_viridis_d()
 
     }
   }

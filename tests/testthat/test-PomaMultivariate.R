@@ -104,7 +104,7 @@ test_that("PomaMultivariate works", {
   expect_error(PomaMultivariate(st000284, method = "pc", components = 5))
   expect_error(PomaMultivariate(st000284))
   expect_error(PomaMultivariate(st000284, method = "plsda", validation = "Mfo"))
-  expect_warning(PomaMultivariate(st000284, method = "plsda"))
+  expect_message(PomaMultivariate(st000284, method = "plsda"))
   expect_error(PomaMultivariate(st000284, method = "pca", load_length = 2.1))
   expect_error(PomaMultivariate(st000284, method = "pca", load_length = 0.9))
   

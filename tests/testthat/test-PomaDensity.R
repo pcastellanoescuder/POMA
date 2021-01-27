@@ -38,8 +38,8 @@ test_that("PomaDensity works", {
 
   expect_equal(df_a, df_e)
 
-  expect_warning(PomaDensity(norm_none))
-  expect_warning(PomaDensity(norm_ls))
+  expect_message(PomaDensity(norm_none))
+  expect_message(PomaDensity(norm_ls))
 
   expect_error(PomaDensity(norm_ls, group = "samp"))
   expect_error(PomaDensity(norm_ls, group = "features", feature_name = "hello"))
@@ -52,6 +52,7 @@ test_that("PomaDensity works", {
   
   expect_error(PomaDensity(group = "sample"))
   expect_error(PomaDensity(iris, group = "sample"))
+  expect_error(PomaDensity(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"), legend_position = "no"))
   
 })
 
