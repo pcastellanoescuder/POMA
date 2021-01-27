@@ -1,17 +1,12 @@
 Package: POMA
 Title: User-friendly Workflow for Pre-processing and Statistical Analysis of Mass Spectrometry Data   
-Version: 1.1.7
+Version: 1.1.8
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
              role = c("aut", "cre"),
              email = "polcaes@gmail.com",
              comment = c(ORCID = "0000-0001-6466-877X")),
-      person(given = "Raúl",
-             family = "González-Domínguez",
-             role = "aut",
-             email = "raul.gonzalez@ub.edu",
-             comment = c(ORCID = "0000-0002-7640-8833")),
       person(given = "Cristina",
              family = "Andrés-Lacueva",
              role = "aut",

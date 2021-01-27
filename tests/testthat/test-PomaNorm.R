@@ -39,7 +39,7 @@ test_that("PomaNorm works", {
   expect_equal(f, g)
 
   expect_error(PomaNorm(newdata, method = "log", round = 2))
-  expect_warning(PomaNorm(newdata))
+  expect_message(PomaNorm(newdata))
 
   expect_true(newdata2@processingData@cleaned)
   expect_true(newdata2@processingData@normalised)

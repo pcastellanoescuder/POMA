@@ -45,7 +45,7 @@ PomaImpute <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
   if (missing(method)) {
-    warning("method argument is empty! KNN will be used")
+    message("method argument is empty! KNN will be used")
   }
 
   Biobase::varLabels(data)[1] <- "Group"
@@ -68,10 +68,10 @@ PomaImpute <- function(data,
   
   percent_na <- sum(is.na(to_imp_data))
   if (percent_na == 0 & method == "rf") {
-    stop(crayon::red(clisymbols::symbol$cross, "No missing values detected in your data. Use other method to skyp this error."))
+    stop(crayon::red(clisymbols::symbol$cross, "No missing values detected in your data"))
   }
   if (percent_na == 0 & method != "rf") {
-    warning("No missing values detected in your data")
+    message("No missing values detected in your data")
   }
   
   ##

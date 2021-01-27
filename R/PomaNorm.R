@@ -34,7 +34,7 @@ PomaNorm <- function(data,
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
   if (missing(method)) {
-    warning("method argument is empty! log_pareto will be used")
+    message("method argument is empty! log_pareto will be used")
   }
   if (!(method %in% c("none", "auto_scaling", "level_scaling", "log_scaling",
                       "log_transformation", "vast_scaling", "log_pareto"))) {
@@ -84,7 +84,7 @@ PomaNorm <- function(data,
   
   dataNormalized@processingData@processing <-
     c(data@processingData@processing,
-      paste("Normalised (", method ,"): ", date(), sep = ""))
+      paste("Normalized (", method ,"): ", date(), sep = ""))
   dataNormalized@processingData@normalised <- TRUE
   dataNormalized@processingData@cleaned <- data@processingData@cleaned
   dataNormalized@experimentData <- data@experimentData

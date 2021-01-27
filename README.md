@@ -11,21 +11,18 @@ Status](https://travis-ci.org/pcastellanoescuder/POMA.svg?branch=master)](https:
 status](https://ci.appveyor.com/api/projects/status/github/pcastellanoescuder/POMA?branch=master&svg=true)](https://ci.appveyor.com/project/pcastellanoescuder/POMA)
 [![Actions
 Status](https://github.com/pcastellanoescuder/POMA/workflows/R-CMD-check/badge.svg)](https://github.com/pcastellanoescuder/POMA/actions)
-[![Bioc release
-status](https://bioconductor.org/shields/build/release/bioc/POMA.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/POMA/)
-[![Bioc devel
-status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)
 [![Codecov test
 coverage](https://codecov.io/gh/pcastellanoescuder/POMA/branch/master/graph/badge.svg)](https://codecov.io/gh/pcastellanoescuder/POMA?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/pcastellanoescuder/POMA/badge)](https://www.codefactor.io/repository/github/pcastellanoescuder/POMA)
 [![Last
 Commit](https://img.shields.io/github/last-commit/pcastellanoescuder/POMA.svg)](https://github.com/pcastellanoescuder/POMA/commits/master)
-[![BioC released
-version](https://img.shields.io/badge/release%20version-1.0.0-blue.svg)](https://www.bioconductor.org/packages/POMA)
-[![Downloads
-month](https://img.shields.io/badge/download-33/month-blue.svg)](https://bioconductor.org/packages/stats/bioc/POMA)
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+| *Bioconductor* branch                                                   | Status                                                                                                                                                  | Version                                                                                                                               | Dependencies                                                                                                                                         | Rank                                                                                                                         |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [Release](http://bioconductor.org/packages/release/bioc/html/POMA.html) | [![Bioc release status](https://bioconductor.org/shields/build/release/bioc/POMA.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/POMA/) | [![BioC released version](https://img.shields.io/badge/release%20version-1.0.0-blue.svg)](https://www.bioconductor.org/packages/POMA) | [![Dependencies](http://bioconductor.org/shields/dependencies/release/POMA.svg)](http://bioconductor.org/packages/release/bioc/html/POMA.html#since) | [![Rank](http://www.bioconductor.org/shields/downloads/release/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA) |
+| [Devel](http://bioconductor.org/packages/devel/bioc/html/POMA.html)     | [![Bioc devel status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)       |                                                                                                                                       | [![Dependencies](http://bioconductor.org/shields/dependencies/devel/POMA.svg)](http://bioconductor.org/packages/devel/bioc/html/POMA.html#since)     | [![Rank](http://www.bioconductor.org/shields/downloads/devel/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA)   |
 
 <!-- badges: end -->
 

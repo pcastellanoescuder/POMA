@@ -122,8 +122,8 @@ test_that("PomaImpute works", {
   ####
 
   expect_error(PomaImpute(testimput, method = "non"))
-  expect_warning(PomaImpute(testimput))
-  expect_warning(PomaImpute(testimput2))
+  expect_message(PomaImpute(testimput))
+  expect_message(PomaImpute(testimput2))
 
   ####
 
@@ -132,7 +132,7 @@ test_that("PomaImpute works", {
 
   ####
   
-  expect_warning(PomaImpute(st000284, method = "knn"))
+  expect_message(PomaImpute(st000284, method = "knn"))
   expect_error(PomaImpute(st000284, method = "rf"))
   
   ##
