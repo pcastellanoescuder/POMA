@@ -1,4 +1,4 @@
-## POMA 1.1.9
+## POMA 1.1.10
 
 * Remove `reshape2` package from Imports
 * Implement viridis palette for `PomaBoxplots`, `PomaDensity`, and `PomaMultivariate`

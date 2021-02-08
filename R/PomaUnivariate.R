@@ -15,7 +15,7 @@
 #' @return A data frame with results.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom tibble column_to_rownames rownames_to_column
+#' @importFrom tibble column_to_rownames rownames_to_column remove_rownames
 #' @importFrom dplyr select mutate filter bind_cols bind_rows summarise_all group_by
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
@@ -78,6 +78,7 @@ PomaUnivariate <- function(data,
     mutate(group = Group) %>%
     group_by(group) %>%
     summarise_all(list(~ mean(., na.rm = TRUE))) %>%
+    remove_rownames() %>%
     column_to_rownames("group") %>%
     t() %>%
     as.data.frame()
