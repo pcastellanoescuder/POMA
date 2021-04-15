@@ -10,8 +10,8 @@ test_that("PomaLasso works", {
 
   normalized_test <- normalized
   normalized_test_less <- normalized
-  MSnbase::pData(normalized_test)$Group <- c(rep("C", 30), rep("G", 20), rep("P", 7))
-  MSnbase::pData(normalized_test_less)$Group <- "Control"
+  MSnbase::pData(normalized_test)[,1] <- c(rep("C", 30), rep("G", 20), rep("P", 7))
+  MSnbase::pData(normalized_test_less)[,1] <- "Control"
 
   lasso_res <- PomaLasso(normalized, alpha = 1, ntest = NULL, nfolds = 3, labels = TRUE)
   ridge_res <- PomaLasso(normalized, alpha = 0, ntest = NULL, nfolds = 10)
