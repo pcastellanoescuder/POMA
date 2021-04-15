@@ -22,7 +22,7 @@
 #' @import ggplot2
 #' @importFrom crayon red blue
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom MSnbase pData exprs
 PomaRankProd <- function(data,
                          logged = TRUE,
                          logbase = 2,
@@ -40,15 +40,14 @@ PomaRankProd <- function(data,
   if (!(method %in% c("pfp", "pval"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
-  if (sum(apply(t(Biobase::exprs(data)), 2, function(x){sum(x < 0, na.rm = TRUE)})) != 0) {
+  if (sum(apply(t(MSnbase::exprs(data)), 2, function(x){sum(x < 0, na.rm = TRUE)})) != 0) {
     stop(crayon::red(clisymbols::symbol$cross, "Negative values detected in your data!"))
   }
   if (missing(method)) {
     warning("method argument is empty! pfp method will be used")
   }
 
-  Biobase::varLabels(data)[1] <- "Group"
-  Group <- as.factor(Biobase::pData(data)$Group)
+  Group <- as.factor(MSnbase::pData(data)[,1])
 
   if (length(levels(Group)) != 2) {
     stop(crayon::red(clisymbols::symbol$cross, "Data must have two groups..."))
@@ -59,7 +58,7 @@ PomaRankProd <- function(data,
   class1 <- levels(as.factor(Group))[1]
   class2 <- levels(as.factor(Group))[2]
 
-  RP <- RankProducts(Biobase::exprs(data), data_class, logged = logged, na.rm = TRUE, plot = FALSE,
+  RP <- RankProducts(MSnbase::exprs(data), data_class, logged = logged, na.rm = TRUE, plot = FALSE,
                      RandomPairs = paired,
                      rand = 123,
                      gene.names = rownames(data))

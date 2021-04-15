@@ -36,7 +36,7 @@ test_that("PomaLimma works", {
   
   ####
 
-  Biobase::pData(st000284) <- Biobase::pData(st000284)[1]
+  MSnbase::pData(st000284) <- MSnbase::pData(st000284)[1]
   expect_error(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fdr"))
   expect_error(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fd"))
   

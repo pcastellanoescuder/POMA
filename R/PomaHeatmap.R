@@ -15,7 +15,7 @@
 #'
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase pData exprs
+#' @importFrom MSnbase pData exprs
 #' @importFrom ComplexHeatmap HeatmapAnnotation Heatmap
 #' 
 #' @examples 
@@ -37,14 +37,16 @@ PomaHeatmap <- function(data,
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
   
-  total <- Biobase::exprs(data)
-  target <- Biobase::pData(data)
+  total <- MSnbase::exprs(data)
+  target <- MSnbase::pData(data)
 
   ha <- ComplexHeatmap::HeatmapAnnotation(df = data.frame(Group = target[,1]),
                                           show_legend = show_legend)
 
-  ComplexHeatmap::Heatmap(total, name = "Value", top_annotation = ha,
-                          show_row_names = feature_names, show_column_names = sample_names,
+  ComplexHeatmap::Heatmap(total, name = "Value", 
+                          top_annotation = ha,
+                          show_row_names = feature_names, 
+                          show_column_names = sample_names,
                           show_heatmap_legend = show_legend)
   
 }

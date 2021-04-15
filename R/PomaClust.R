@@ -19,7 +19,7 @@
 #' @import ggplot2
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase exprs pData
+#' @importFrom MSnbase exprs pData
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate select
 #' 
@@ -46,8 +46,8 @@ PomaClust <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
   
-  e <- t(Biobase::exprs(data))
-  target <- Biobase::pData(data)
+  e <- t(MSnbase::exprs(data))
+  target <- MSnbase::pData(data)
   
   ## Optimum number of clusters
   

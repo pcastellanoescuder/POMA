@@ -16,7 +16,7 @@
 #' @importFrom crayon red
 #' @importFrom tibble rownames_to_column
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
 #' data("st000284")
@@ -41,7 +41,7 @@ PomaNorm <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
 
-  to_norm_data <- t(Biobase::exprs(data))
+  to_norm_data <- t(MSnbase::exprs(data))
 
   # remove columns that only have zeros
   to_norm_data <- to_norm_data[, apply(to_norm_data, 2, function(x) !all(x==0))]

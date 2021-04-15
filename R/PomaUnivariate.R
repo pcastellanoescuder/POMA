@@ -20,7 +20,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
 #' data("st000336")
@@ -67,9 +67,8 @@ PomaUnivariate <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
   }
 
-  Biobase::varLabels(data)[1] <- "Group"
-  Group <- as.factor(Biobase::pData(data)$Group)
-  e <- t(Biobase::exprs(data))
+  Group <- as.factor(MSnbase::pData(data)[,1])
+  e <- t(MSnbase::exprs(data))
 
   ## group means
   

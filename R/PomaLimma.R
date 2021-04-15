@@ -20,7 +20,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
 #' data("st000284")
@@ -54,9 +54,8 @@ PomaLimma <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
   }
 
-  Biobase::varLabels(data)[1] <- "Group"
-  Group <- Biobase::pData(data)$Group
-  e <- Biobase::exprs(data)
+  Group <- MSnbase::pData(data)[,1]
+  e <- MSnbase::exprs(data)
 
   contrasts <- levels(as.factor(Group))
   fac1 <- as.factor(Group)

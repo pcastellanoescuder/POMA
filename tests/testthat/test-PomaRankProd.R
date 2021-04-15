@@ -4,13 +4,13 @@ test_that("PomaRankProd works", {
 
   data("st000284")
   
-  target <- Biobase::pData(st000284)[1:100,] %>% tibble::rownames_to_column("ID")
-  e <- Biobase::exprs(st000284)[,1:100]
+  target <- MSnbase::pData(st000284)[1:100,] %>% tibble::rownames_to_column("ID")
+  e <- MSnbase::exprs(st000284)[,1:100]
   
   data <- PomaMSnSetClass(target = target, features = t(e))
   
   toy_data <- POMA::PomaNorm(data, method = "log_scaling")
-  Biobase::pData(toy_data)$groups <- c(rep("C", 25), rep("G", 25))
+  MSnbase::pData(toy_data)$groups <- c(rep("C", 25), rep("G", 25))
 
   ##
 

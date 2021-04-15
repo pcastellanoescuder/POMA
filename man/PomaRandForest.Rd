@@ -8,7 +8,7 @@ PomaRandForest(
   data,
   ntest = 20,
   ntree = 500,
-  mtry = floor(sqrt(ncol(t(Biobase::exprs(data))))),
+  mtry = floor(sqrt(ncol(t(MSnbase::exprs(data))))),
   nodesize = 1,
   nvar = 20
 )

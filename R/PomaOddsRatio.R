@@ -20,7 +20,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase pData exprs featureNames
+#' @importFrom MSnbase pData exprs featureNames
 #' 
 #' @examples 
 #' data("st000336")
@@ -43,7 +43,7 @@ PomaOddsRatio <- function(data,
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
   if (!is.null(feature_name)) {
-    if(!isTRUE(all(feature_name %in% Biobase::featureNames(data)))){
+    if(!isTRUE(all(feature_name %in% MSnbase::featureNames(data)))){
       stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
     }
   }
@@ -51,8 +51,8 @@ PomaOddsRatio <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
   }
 
-  e <- data.frame(t(Biobase::exprs(data)))
-  pData <- Biobase::pData(data)
+  e <- data.frame(t(MSnbase::exprs(data)))
+  pData <- MSnbase::pData(data)
   colnames(pData)[1] <- "Group"
 
   if(!is.null(feature_name)){

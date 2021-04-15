@@ -27,7 +27,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase exprs
+#' @importFrom MSnbase exprs
 #' @importFrom ggcorrplot ggcorrplot
 #' @importFrom glasso glasso
 #' 
@@ -76,7 +76,7 @@ PomaCorr <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
   }
   
-  total <- t(Biobase::exprs(data))
+  total <- t(MSnbase::exprs(data))
   cor_matrix <- cor(total, method = method)
   
   ## Pairwise correlations

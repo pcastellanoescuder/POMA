@@ -25,7 +25,7 @@
 #' @importFrom dplyr mutate
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs featureNames
+#' @importFrom MSnbase pData featureNames
 #' 
 #' @examples 
 #' data("st000336")
@@ -52,7 +52,7 @@ PomaVolcano <- function(data,
     stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
                 " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
   }
-  if (length(table(Biobase::pData(data)[1])) > 2) {
+  if (length(table(MSnbase::pData(data)[1])) > 2) {
     stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
   }
   if (missing(pval)) {

@@ -20,7 +20,7 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom tidyr pivot_longer
-#' @importFrom Biobase pData exprs featureNames
+#' @importFrom MSnbase pData exprs featureNames
 #' 
 #' @examples 
 #' data("st000284")
@@ -53,7 +53,7 @@ PomaDensity <- function(data,
     message("group argument is empty! samples will be used")
   }
   if (!is.null(feature_name)) {
-    if(!isTRUE(all(feature_name %in% Biobase::featureNames(data)))){
+    if(!isTRUE(all(feature_name %in% MSnbase::featureNames(data)))){
       stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
     }
   }
@@ -61,8 +61,8 @@ PomaDensity <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
   }
 
-  e <- t(Biobase::exprs(data))
-  target <- Biobase::pData(data) %>%
+  e <- t(MSnbase::exprs(data))
+  target <- MSnbase::pData(data) %>%
     rownames_to_column("ID") %>%
     rename(Group = 2) %>%
     select(ID, Group)

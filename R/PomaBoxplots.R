@@ -22,7 +22,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs featureNames
+#' @importFrom MSnbase pData exprs featureNames
 #' 
 #' @examples 
 #' data("st000284")
@@ -54,7 +54,7 @@ PomaBoxplots <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
   }
   if (!is.null(feature_name)) {
-    if(!isTRUE(all(feature_name %in% Biobase::featureNames(data)))){
+    if(!isTRUE(all(feature_name %in% MSnbase::featureNames(data)))){
       stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
     }
   }
@@ -62,8 +62,8 @@ PomaBoxplots <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
   }
   
-  e <- t(Biobase::exprs(data))
-  target <- Biobase::pData(data) %>%
+  e <- t(MSnbase::exprs(data))
+  target <- MSnbase::pData(data) %>%
     rownames_to_column("ID") %>%
     rename(Group = 2) %>%
     select(ID, Group)

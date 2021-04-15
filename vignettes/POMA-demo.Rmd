@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2020-08-03
+**Last edited**: 2021-04-15
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -171,7 +171,8 @@ Once the data have been preprocessed, you can start with the statistical analysi
 #### T-test
 
 ```{r}
-PomaUnivariate(pre_processed, method = "ttest") %>% head()
+PomaUnivariate(pre_processed, method = "ttest") %>% 
+  head()
 ```
 
 You can also compute a volcano plot using the T-test results. _Note that we're using the non-normalized object to avoid negative values in our data._
@@ -183,7 +184,8 @@ PomaVolcano(imputed, pval = "adjusted")
 #### Wilcoxon Test
 
 ```{r, warning = FALSE}
-PomaUnivariate(pre_processed, method = "mann") %>% head()
+PomaUnivariate(pre_processed, method = "mann") %>% 
+  head()
 ```
 
 ### Limma
@@ -191,7 +193,8 @@ PomaUnivariate(pre_processed, method = "mann") %>% head()
 Other of the wide used statistical methods in many different omics, such as epigenomics or transcriptomics, is **limma** [@limma]. **POMA** provides an easy use implementation of _limma_ you only have to specify the desired contrast to compute.     
 
 ```{r}
-PomaLimma(pre_processed, contrast = "Controls-DMD", adjust = "fdr") %>% head()
+PomaLimma(pre_processed, contrast = "Controls-DMD", adjust = "fdr") %>% 
+  head()
 ```
 
 ### Multivariate Analysis

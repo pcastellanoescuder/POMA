@@ -22,7 +22,7 @@
 #' @importFrom randomForest rfImpute
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs featureNames
+#' @importFrom MSnbase pData exprs featureNames
 #' 
 #' @examples 
 #' data("st000336")
@@ -48,20 +48,19 @@ PomaImpute <- function(data,
     message("method argument is empty! KNN will be used")
   }
 
-  Biobase::varLabels(data)[1] <- "Group"
-  samples_groups <- Biobase::pData(data)$Group
-  to_imp_data <- t(Biobase::exprs(data))
+  samples_groups <- MSnbase::pData(data)[,1]
+  to_imp_data <- t(MSnbase::exprs(data))
   
   ##
   
   if (isTRUE(ZerosAsNA)){
     to_imp_data[to_imp_data == 0] <- NA
     to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
-    colnames(to_imp_data)[2:ncol(to_imp_data)] <- Biobase::featureNames(data)
+    colnames(to_imp_data)[2:ncol(to_imp_data)] <- MSnbase::featureNames(data)
 
   } else {
     to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
-    colnames(to_imp_data)[2:ncol(to_imp_data)] <- Biobase::featureNames(data)
+    colnames(to_imp_data)[2:ncol(to_imp_data)] <- MSnbase::featureNames(data)
   }
 
   ##
@@ -92,7 +91,7 @@ PomaImpute <- function(data,
 
     depurdata <- to_imp_data[, 2:ncol(to_imp_data)]
     depurdata <- sapply(depurdata, function(x) as.numeric(as.character(x)))
-    correct_names <- Biobase::featureNames(data)
+    correct_names <- MSnbase::featureNames(data)
     
   }
 

@@ -1,6 +1,6 @@
 Package: POMA
 Title: User-friendly Workflow for Pre-processing and Statistical Analysis of Mass Spectrometry Data   
-Version: 1.1.10
+Version: 1.1.11
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -29,7 +29,6 @@ biocViews:
     MassSpectrometry, Metabolomics, Proteomics, Software, Visualization,
     Preprocessing, Normalization, ReportWriting
 Imports:
-    Biobase,
     broom,
     caret,
     clisymbols,

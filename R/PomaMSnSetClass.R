@@ -14,7 +14,7 @@
 #'
 #' @importFrom MSnbase MSnSet
 #' @importFrom tibble column_to_rownames remove_rownames
-#' @importFrom dplyr rename
+#' @importFrom dplyr rename mutate
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
@@ -50,7 +50,9 @@ PomaMSnSetClass <- function(target,
   target <- target %>%
     as.data.frame() %>% 
     remove_rownames() %>%
-    rename("ID" = 1) %>% 
+    rename(ID = 1,
+           group = 2) %>% 
+    mutate(group = as.factor(group)) %>%
     column_to_rownames("ID")
 
   features <- features %>% as.data.frame()

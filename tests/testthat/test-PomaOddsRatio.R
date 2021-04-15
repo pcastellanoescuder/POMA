@@ -73,7 +73,7 @@ test_that("PomaOddsRatio works", {
 
   ##
 
-  Biobase::pData(imputed) <- Biobase::pData(imputed)[1]
+  MSnbase::pData(imputed) <- MSnbase::pData(imputed)[1]
   expect_error(PomaOddsRatio(imputed, covariates = TRUE))
   
   ##

@@ -20,7 +20,7 @@ test_that("PomaMSnSetClass works", {
 
   ##
 
-  expect_false(all(Biobase::sampleNames(a) == Biobase::sampleNames(b)))
+  expect_false(all(MSnbase::sampleNames(a) == MSnbase::sampleNames(b)))
 
   ##
 
@@ -31,9 +31,9 @@ test_that("PomaMSnSetClass works", {
   
   ##
   
-  expect_equal(colnames(features), colnames(t(Biobase::exprs(a))))
-  expect_equal(colnames(target)[2:3], colnames(Biobase::pData(a)))
-  expect_equal(colnames(target2)[2:3], colnames(Biobase::pData(b)))
+  expect_equal(colnames(features), colnames(t(MSnbase::exprs(a))))
+  expect_equal(colnames(target)[2:3], colnames(MSnbase::pData(a)))
+  expect_equal(colnames(target2)[2:3], colnames(MSnbase::pData(b)))
 
   ##
   

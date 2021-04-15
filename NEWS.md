@@ -1,6 +1,6 @@
-## POMA 1.1.10
+## POMA 1.1.11
 
-* Remove `reshape2` package from Imports
+* Remove `reshape2` and `Biobase` packages from Imports
 * Implement viridis palette for `PomaBoxplots`, `PomaDensity`, and `PomaMultivariate`
 
 ## POMA 1.1.8

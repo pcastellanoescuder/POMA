@@ -18,8 +18,8 @@ test_that("PomaHeatmap works", {
   
   expect_false(length(a@matrix) == length(d@matrix))
   
-  expect_equal(length(a@row_order), ncol(t(Biobase::exprs(st000284))))
-  expect_equal(length(d@row_order), ncol(t(Biobase::exprs(st000336))))
+  expect_equal(length(a@row_order), ncol(t(MSnbase::exprs(st000284))))
+  expect_equal(length(d@row_order), ncol(t(MSnbase::exprs(st000336))))
   
   ##
   

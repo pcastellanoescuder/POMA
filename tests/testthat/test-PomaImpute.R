@@ -4,7 +4,7 @@ test_that("PomaImpute works", {
 
   data("st000284")
 
-  data <- t(Biobase::exprs(st000284))
+  data <- t(MSnbase::exprs(st000284))
 
   data <- data*round(runif(n = 1, min = 0.01, max = 0.99), 3) # just to create decimals
   data[1:4, 5] <- 0 # create some zeros in the first group
@@ -18,16 +18,16 @@ test_that("PomaImpute works", {
   target <- pData(st000284) %>% rownames_to_column() %>% as.data.frame()
   testimput <- PomaMSnSetClass(features = data, target = target)
 
-  a <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 8))))
-  b <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = TRUE, RemoveNA = FALSE, cutoff = 8))))
-  c <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 8))))
-  d <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = TRUE, RemoveNA = TRUE, cutoff = 8))))
+  a <- ncol(t(MSnbase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 8))))
+  b <- ncol(t(MSnbase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = TRUE, RemoveNA = FALSE, cutoff = 8))))
+  c <- ncol(t(MSnbase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 8))))
+  d <- ncol(t(MSnbase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = TRUE, RemoveNA = TRUE, cutoff = 8))))
 
-  e <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20))))
-  f <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 10))))
+  e <- ncol(t(MSnbase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20))))
+  f <- ncol(t(MSnbase::exprs(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 10))))
 
-  # e_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20))))
-  # f_rf <- ncol(t(Biobase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 10))))
+  # e_rf <- ncol(t(MSnbase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20))))
+  # f_rf <- ncol(t(MSnbase::exprs(PomaImpute(testimput, method = "rf", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 10))))
   
   g <- PomaImpute(testimput, method = "half_min", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20)
   h <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20)
@@ -44,7 +44,7 @@ test_that("PomaImpute works", {
   p <- PomaImpute(testimput, method = "none", cutoff = 20)
   q <- PomaImpute(testimput, method = "min", cutoff = 20)
 
-  data2 <- t(Biobase::exprs(testimput))
+  data2 <- t(MSnbase::exprs(testimput))
 
   data2[1:4, 5] <- 1000
   data2[73:77, 5] <- 1000
@@ -57,17 +57,17 @@ test_that("PomaImpute works", {
   u <- PomaImpute(testimput2, method = "min")
   v <- PomaImpute(testimput2, method = "knn")
   
-  Biobase::exprs(testimput)[5, 175:190] <- NA
+  MSnbase::exprs(testimput)[5, 175:190] <- NA
   h_1 <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 1)
   
   ##
   
-  expect_equal(Biobase::featureNames(testimput)[1], Biobase::featureNames(h)[1])
-  expect_equal(length(Biobase::featureNames(testimput)), length(Biobase::featureNames(h)))
-  expect_false(length(Biobase::featureNames(testimput)) == length(Biobase::featureNames(h_1)))
+  expect_equal(MSnbase::featureNames(testimput)[1], MSnbase::featureNames(h)[1])
+  expect_equal(length(MSnbase::featureNames(testimput)), length(MSnbase::featureNames(h)))
+  expect_false(length(MSnbase::featureNames(testimput)) == length(MSnbase::featureNames(h_1)))
   
-  expect_equal(Biobase::featureNames(testimput)[1], Biobase::featureNames(n)[1])
-  expect_equal(length(Biobase::featureNames(testimput)), length(Biobase::featureNames(n)))
+  expect_equal(MSnbase::featureNames(testimput)[1], MSnbase::featureNames(n)[1])
+  expect_equal(length(MSnbase::featureNames(testimput)), length(MSnbase::featureNames(n)))
   
   ##
 
@@ -94,8 +94,8 @@ test_that("PomaImpute works", {
   expect_false(all(exprs(j) == exprs(k)))
   expect_false(all(exprs(k) == exprs(i)))
 
-  expect_equal(Biobase::exprs(l), Biobase::exprs(m))
-  expect_equal(Biobase::exprs(n), Biobase::exprs(o))
+  expect_equal(MSnbase::exprs(l), MSnbase::exprs(m))
+  expect_equal(MSnbase::exprs(n), MSnbase::exprs(o))
   expect_true(all(exprs(p) == exprs(q)))
 
   expect_equal(dim(r), dim(s))
@@ -163,12 +163,12 @@ test_that("PomaImpute works", {
 #   
 #   ##
 #   
-#   expect_false(all(Biobase::exprs(a_2) == Biobase::exprs(b_2)))
-#   expect_false(all(Biobase::exprs(b_2) == Biobase::exprs(c_2)))
-#   expect_false(all(Biobase::exprs(c_2) == Biobase::exprs(d_2)))
-#   expect_false(all(Biobase::exprs(d_2) == Biobase::exprs(e_2)))
-#   expect_false(all(Biobase::exprs(e_2) == Biobase::exprs(f_2)))
-#   expect_false(all(Biobase::exprs(f_2) == Biobase::exprs(a_2)))
+#   expect_false(all(MSnbase::exprs(a_2) == MSnbase::exprs(b_2)))
+#   expect_false(all(MSnbase::exprs(b_2) == MSnbase::exprs(c_2)))
+#   expect_false(all(MSnbase::exprs(c_2) == MSnbase::exprs(d_2)))
+#   expect_false(all(MSnbase::exprs(d_2) == MSnbase::exprs(e_2)))
+#   expect_false(all(MSnbase::exprs(e_2) == MSnbase::exprs(f_2)))
+#   expect_false(all(MSnbase::exprs(f_2) == MSnbase::exprs(a_2)))
 #   
 #   ##
 #   

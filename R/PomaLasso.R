@@ -25,7 +25,7 @@
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
 #' @importFrom caret confusionMatrix
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
 #' data("st000336")
@@ -72,18 +72,15 @@ PomaLasso <- function(data,
       stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 5 and 50..."))
     }
   }
-  
-  Biobase::varLabels(data)[1] <- "Group"
-
-  if (length(levels(as.factor(Biobase::pData(data)$Group))) > 2) {
+  if (length(levels(as.factor(MSnbase::pData(data)[,1]))) > 2) {
     stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
   }
-  if (length(levels(as.factor(Biobase::pData(data)$Group))) < 2) {
+  if (length(levels(as.factor(MSnbase::pData(data)[,1]))) < 2) {
     stop(crayon::red(clisymbols::symbol$cross, "Your data have less than two groups!"))
   }
 
-  features <- t(Biobase::exprs(data))
-  response <- as.factor(Biobase::pData(data)$Group)
+  features <- t(MSnbase::exprs(data))
+  response <- as.factor(MSnbase::pData(data)[,1])
   lasso_data <- cbind(response, features)
 
   n <- nrow(lasso_data)

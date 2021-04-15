@@ -18,7 +18,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2020-08-03
+**Last edited**: 2021-04-15
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -60,10 +60,13 @@ library(knitr)
 library(dplyr)
 library(tibble)
 library(ggplot2)
-library(Biobase)
+library(MSnbase)
 
-e <- t(Biobase::exprs(st000336))
-target <- Biobase::pData(st000336) %>% rownames_to_column("ID") %>% rename(Group = 2) %>% select(ID, Group)
+e <- t(MSnbase::exprs(st000336))
+target <- MSnbase::pData(st000336) %>% 
+  rownames_to_column("ID") %>% 
+  rename(Group = 2) %>% 
+  select(ID, Group)
 ```
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
@@ -115,7 +118,7 @@ var_zero <- e %>%
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 summary_table1 <- data.frame(Samples = nrow(e),
                              Features = ncol(e),
-                             Covariates = ncol(Biobase::pData(st000336)) - 1)
+                             Covariates = ncol(MSnbase::pData(st000336)) - 1)
 summary_table2 <- data.frame(Counts_Zero = sum(zeros$number),
                              Percent_Zero = paste(round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2), "%"))
 summary_table3 <- data.frame(Counts_NA = sum(is.na(e)),
@@ -169,7 +172,7 @@ ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
 # Normalization Plots
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-indNum <- nrow(Biobase::pData(pre_processed))
+indNum <- nrow(MSnbase::pData(pre_processed))
 jttr <- ifelse(indNum <= 10, TRUE, FALSE)
 
 p1 <- PomaBoxplots(imputed, jitter = jttr) +

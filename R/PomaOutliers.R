@@ -22,7 +22,7 @@
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase pData exprs sampleNames varLabels
+#' @importFrom MSnbase pData exprs sampleNames
 #' @importFrom vegan betadisper
 #' 
 #' @examples 
@@ -62,11 +62,10 @@ PomaOutliers <- function(data,
   if (!(do %in% c("clean", "analyze"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for do argument!"))
   }
-  
-  Biobase::varLabels(data)[1] <- "Group"
-  groups <- Biobase::pData(data)$Group
-  names <- Biobase::sampleNames(data)
-  to_outliers <- t(Biobase::exprs(data))
+
+  groups <- MSnbase::pData(data)[,1]
+  names <- MSnbase::sampleNames(data)
+  to_outliers <- t(MSnbase::exprs(data))
   
   ##
   

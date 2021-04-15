@@ -4,7 +4,7 @@ test_that("PomaNorm works", {
 
   data("st000284")
 
-  data <- t(Biobase::exprs(st000284))
+  data <- t(MSnbase::exprs(st000284))
 
   data <- data*round(runif(n=1, min = 0.01, max = 0.99), 3) # just to create decimals
   data[1:4, 5] <- 0 # create some zeros in one group

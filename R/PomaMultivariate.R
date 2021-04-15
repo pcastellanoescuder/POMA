@@ -31,7 +31,7 @@
 #' @importFrom mixOmics pca plsda perf vip tune.splsda splsda selectVar
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
 #' data("st000336")
@@ -98,15 +98,13 @@ PomaMultivariate <- function(data,
   if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
     stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
   }
-  
-  Biobase::varLabels(data)[1] <- "Group"
 
-  df <- t(Biobase::exprs(data))
+  df <- t(MSnbase::exprs(data))
 
   if(method == "pca"){
 
     X <- as.matrix(df)
-    Y <- as.factor(Biobase::pData(data)$Group)
+    Y <- as.factor(MSnbase::pData(data)[,1])
     pca_res <- mixOmics::pca(X, ncomp = components, center = center, scale = scale)
 
     PCi <- data.frame(pca_res$x, Groups = Y) %>% 
@@ -177,7 +175,7 @@ PomaMultivariate <- function(data,
   else if (method == "plsda"){
 
     X <- as.matrix(df)
-    Y <- as.factor(Biobase::pData(data)$Group)
+    Y <- as.factor(MSnbase::pData(data)[,1])
 
     plsda_res <- mixOmics::plsda(X, Y, ncomp = components)
 
@@ -254,7 +252,7 @@ PomaMultivariate <- function(data,
   else if (method == "splsda"){
 
     X <- as.matrix(df)
-    Y <- as.factor(Biobase::pData(data)$Group)
+    Y <- as.factor(MSnbase::pData(data)[,1])
 
     list_keepX <- c(1:num_features)
 

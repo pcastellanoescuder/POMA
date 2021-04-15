@@ -23,7 +23,7 @@
 #' @importFrom tibble rownames_to_column
 #' @importFrom crayon red
 #' @importFrom clisymbols symbol
-#' @importFrom Biobase varLabels pData exprs
+#' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
 #' data("st000336")
@@ -34,7 +34,7 @@
 PomaRandForest <- function(data,
                            ntest = 20,
                            ntree = 500,
-                           mtry = floor(sqrt(ncol(t(Biobase::exprs(data))))),
+                           mtry = floor(sqrt(ncol(t(MSnbase::exprs(data))))),
                            nodesize = 1,
                            nvar = 20){
 
@@ -49,9 +49,7 @@ PomaRandForest <- function(data,
     stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 5 and 50..."))
   }
   
-
-  Biobase::varLabels(data)[1] <- "Group"
-  rf_data <- data.frame(cbind(Group = Biobase::pData(data)$Group, t(Biobase::exprs(data))))
+  rf_data <- data.frame(cbind(Group = MSnbase::pData(data)[,1], t(MSnbase::exprs(data))))
 
   names <- data.frame(real_names = colnames(rf_data), new_names = NA) %>%
     mutate(new_names = paste0("X", rownames(.)))
@@ -74,8 +72,8 @@ PomaRandForest <- function(data,
     train_x <- as.matrix(train[,-1])
     train_y <- as.factor(train[,1])
     
-    if(length(levels(as.factor(train_y))) == length(levels(as.factor(Biobase::pData(data)[,1]))) & 
-       length(levels(as.factor(test_y))) == length(levels(as.factor(Biobase::pData(data)[,1])))){
+    if(length(levels(as.factor(train_y))) == length(levels(as.factor(MSnbase::pData(data)[,1]))) & 
+       length(levels(as.factor(test_y))) == length(levels(as.factor(MSnbase::pData(data)[,1])))){
       break
     }
   }
