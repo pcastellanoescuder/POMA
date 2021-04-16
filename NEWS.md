@@ -1,7 +1,8 @@
-## POMA 1.1.12
+## POMA 1.1.13
 
 * Remove `reshape2` and `Biobase` packages from Imports
 * Implement viridis palette for `PomaBoxplots`, `PomaDensity`, and `PomaMultivariate`
+* Update `mixOmics` output names in `PomaMultivariate`
 
 ## POMA 1.1.8
 

@@ -107,7 +107,7 @@ PomaMultivariate <- function(data,
     Y <- as.factor(MSnbase::pData(data)[,1])
     pca_res <- mixOmics::pca(X, ncomp = components, center = center, scale = scale)
 
-    PCi <- data.frame(pca_res$x, Groups = Y) %>% 
+    PCi <- data.frame(pca_res$variates$X, Groups = Y) %>% 
       rownames_to_column("ID")
 
     scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, color = Groups, shape = Groups, label = ID)) +
@@ -123,7 +123,7 @@ PomaMultivariate <- function(data,
 
     ##
 
-    eigenvalues <- data.frame(Percent_Variance_Explained = round(pca_res$explained_variance*100, 3)) %>% 
+    eigenvalues <- data.frame(Percent_Variance_Explained = round(pca_res$prop_expl_var$X*100, 3)) %>% 
       rownames_to_column("Principal_Component")
 
     screeplot <- ggplot(eigenvalues, aes(x = reorder(Principal_Component, -Percent_Variance_Explained), y = Percent_Variance_Explained, fill = Percent_Variance_Explained)) +
@@ -143,7 +143,7 @@ PomaMultivariate <- function(data,
 
     pca_res2 <- mixOmics::pca(X, ncomp = components, center = TRUE, scale = TRUE)
 
-    PCi2 <- data.frame(pca_res2$x, Groups = Y)
+    PCi2 <- data.frame(pca_res2$variates$X, Groups = Y)
 
     lam <- (pca_res2$sdev[1:2] * sqrt(nrow(PCi2)))^load_length
     len <- t(t(pca_res2$loadings$X[, 1:2]) * lam)*0.8
@@ -196,7 +196,7 @@ PomaMultivariate <- function(data,
     #####
 
     perf_plsda <- mixOmics::perf(plsda_res, validation = validation, folds = folds,
-                                progressBar = TRUE, auc = TRUE, nrepeat = nrepeat)
+                                 progressBar = TRUE, auc = TRUE, nrepeat = nrepeat)
 
     overall <- data.frame(perf_plsda$error.rate[1]) %>%
       round(4) %>%

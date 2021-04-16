@@ -1,6 +1,6 @@
 Package: POMA
 Title: User-friendly Workflow for Pre-processing and Statistical Analysis of Mass Spectrometry Data   
-Version: 1.1.12
+Version: 1.1.13
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
