@@ -57,7 +57,7 @@ test_that("PomaImpute works", {
   u <- PomaImpute(testimput2, method = "min")
   v <- PomaImpute(testimput2, method = "knn")
   
-  MSnbase::exprs(testimput)[5, 175:190] <- NA
+  Biobase::exprs(testimput)[5, 175:190] <- NA
   h_1 <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 1)
   
   ##

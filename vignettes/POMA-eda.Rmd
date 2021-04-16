@@ -18,7 +18,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2021-04-15
+**Last edited**: 2021-04-16
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -65,7 +65,7 @@ library(MSnbase)
 e <- t(MSnbase::exprs(st000336))
 target <- MSnbase::pData(st000336) %>% 
   rownames_to_column("ID") %>% 
-  rename(Group = 2) %>% 
+  dplyr::rename(Group = 2) %>% 
   select(ID, Group)
 ```
 
