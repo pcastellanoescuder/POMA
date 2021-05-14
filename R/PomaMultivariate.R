@@ -111,9 +111,9 @@ PomaMultivariate <- function(data,
       rownames_to_column("ID")
 
     scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, color = Groups, shape = Groups, label = ID)) +
-      {if(!labels)geom_point(size = 3, alpha = 0.5)} +
-      xlab(paste0("PC1 (", round(100*(pca_res$explained_variance)[1], 2), "%)")) +
-      ylab(paste0("PC2 (", round(100*(pca_res$explained_variance)[2], 2), "%)")) +
+      {if(!labels)geom_point(size = 3, alpha = 0.8)} +
+      xlab(paste0("PC1 (", round(100*(pca_res$prop_expl_var$X)[1], 2), "%)")) +
+      ylab(paste0("PC2 (", round(100*(pca_res$prop_expl_var$X)[2], 2), "%)")) +
       {if(ellipse)stat_ellipse(type = "norm")} +
       {if(labels)geom_text(aes(label = ID), show.legend = TRUE)} +
       theme_bw() +
@@ -150,9 +150,9 @@ PomaMultivariate <- function(data,
     PCAloadings <- data.frame(pca_res2$loadings$X, to_x = len[,1], to_y = len[,2])
 
     biplot <- ggplot(PCi2, aes(x = PC1, y = PC2, color = Groups))+
-      geom_point(size = 3, alpha = 0.5) +
-      xlab(paste0("PC1 (", round(100*(pca_res2$explained_variance)[1], 2), "%)")) +
-      ylab(paste0("PC2 (", round(100*(pca_res2$explained_variance)[2], 2), "%)")) +
+      geom_point(size = 3, alpha = 0.8) +
+      xlab(paste0("PC1 (", round(100*(pca_res2$prop_expl_var$X)[1], 2), "%)")) +
+      ylab(paste0("PC2 (", round(100*(pca_res2$prop_expl_var$X)[2], 2), "%)")) +
       theme_bw() +
       {if(ellipse)stat_ellipse(type = "norm")} +
       geom_segment(data = PCAloadings,
@@ -183,7 +183,7 @@ PomaMultivariate <- function(data,
       rownames_to_column("ID")
 
     scoresplot <- ggplot(PLSDAi, aes(x = comp1, y = comp2, color = Groups, shape = Groups, label = ID))+
-      {if(!labels)geom_point(size = 3, alpha = 0.5)} +
+      {if(!labels)geom_point(size = 3, alpha = 0.8)} +
       xlab("Component 1") +
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
@@ -300,7 +300,7 @@ PomaMultivariate <- function(data,
     SPLSDAi <- data.frame(res_splsda$variates$X, Groups = Y) %>% rownames_to_column("ID")
 
     splsda_scores_plot <- ggplot(SPLSDAi, aes(x = comp1, y = comp2, color = Groups, shape = Groups, label = ID)) +
-      {if(!labels)geom_point(size = 3, alpha = 0.5)} +
+      {if(!labels)geom_point(size = 3, alpha = 0.8)} +
       xlab("Component 1") +
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
