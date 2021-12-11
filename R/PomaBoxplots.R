@@ -20,7 +20,7 @@
 #' @importFrom dplyr select filter rename
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
-#' @importFrom MSnbase pData exprs featureNames
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000284")

@@ -25,7 +25,7 @@
 #' @importFrom ggplot2 theme_bw
 #' @importFrom dplyr filter
 #' @importFrom magrittr %>%
-#' @importFrom MSnbase exprs
+#' @importFrom SummarizedExperiment assay colData
 #' @importFrom ggcorrplot ggcorrplot
 #' @importFrom glasso glasso
 #' 

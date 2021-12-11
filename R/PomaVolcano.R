@@ -23,7 +23,7 @@
 #' @import ggplot2
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom dplyr mutate
-#' @importFrom MSnbase pData featureNames
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")

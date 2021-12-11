@@ -18,7 +18,7 @@
 #' @importFrom tibble column_to_rownames rownames_to_column remove_rownames
 #' @importFrom dplyr select mutate filter bind_cols bind_rows summarise_all group_by
 #' @importFrom magrittr %>%
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")

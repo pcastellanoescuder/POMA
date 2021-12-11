@@ -17,7 +17,7 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
-#' @importFrom MSnbase exprs pData
+#' @importFrom SummarizedExperiment assay colData
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate select
 #' 

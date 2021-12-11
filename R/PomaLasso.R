@@ -23,7 +23,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom glmnet cv.glmnet
 #' @importFrom caret confusionMatrix
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")

@@ -18,7 +18,7 @@
 #' @importFrom limma makeContrasts lmFit contrasts.fit eBayes topTable
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000284")

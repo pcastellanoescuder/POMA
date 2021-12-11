@@ -21,7 +21,7 @@
 #' @importFrom dplyr mutate
 #' @importFrom magrittr %>%
 #' @importFrom tibble rownames_to_column
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")

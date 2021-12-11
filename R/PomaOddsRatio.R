@@ -18,7 +18,7 @@
 #' @importFrom dplyr mutate rename desc arrange bind_cols mutate_at vars
 #' @importFrom tidyr drop_na
 #' @importFrom magrittr %>%
-#' @importFrom MSnbase pData exprs featureNames
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")

@@ -20,7 +20,7 @@
 #'
 #' @importFrom RankProd RankProducts topGene
 #' @import ggplot2
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 PomaRankProd <- function(data,
                          logged = TRUE,
                          logbase = 2,

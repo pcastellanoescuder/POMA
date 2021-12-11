@@ -29,7 +29,7 @@
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 #' @importFrom mixOmics pca plsda perf vip tune.splsda splsda selectVar
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")

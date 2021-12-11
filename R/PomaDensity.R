@@ -18,7 +18,7 @@
 #' @importFrom dplyr select group_by filter rename
 #' @importFrom magrittr %>%
 #' @importFrom tidyr pivot_longer
-#' @importFrom MSnbase pData exprs featureNames
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000284")
