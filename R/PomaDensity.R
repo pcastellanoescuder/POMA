@@ -3,7 +3,7 @@
 #'
 #' @description PomaDensity() generates a density plot of not normalized and normalized MS data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param group Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.
 #' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a density plot of all variables will be created.
 #' @param legend_position Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".
@@ -46,20 +46,18 @@ PomaDensity <- function(data,
   if (!(group %in% c("samples", "features"))) {
     stop("Incorrect value for group argument!")
   }
-  if (missing(group)) {
-    message("group argument is empty! samples will be used")
-  }
   if (!is.null(feature_name)) {
-    if(!isTRUE(all(feature_name %in% MSnbase::featureNames(data)))){
+    if(!isTRUE(all(feature_name %in% rownames(SummarizedExperiment::assay(data))))){
       stop("At least one feature name not found...")
     }
   }
   if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
     stop("Incorrect value for legend_position argument!")
   }
-
-  e <- t(MSnbase::exprs(data))
-  target <- MSnbase::pData(data) %>%
+  
+  e <- t(SummarizedExperiment::assay(data))
+  target <- SummarizedExperiment::colData(data) %>%
+    as.data.frame() %>% 
     rownames_to_column("ID") %>%
     rename(Group = 2) %>%
     select(ID, Group)
