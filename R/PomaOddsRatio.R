@@ -18,8 +18,6 @@
 #' @importFrom dplyr mutate rename desc arrange bind_cols mutate_at vars
 #' @importFrom tidyr drop_na
 #' @importFrom magrittr %>%
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData exprs featureNames
 #' 
 #' @examples 
@@ -36,19 +34,18 @@ PomaOddsRatio <- function(data,
                           showCI = TRUE){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!is.null(feature_name)) {
     if(!isTRUE(all(feature_name %in% MSnbase::featureNames(data)))){
-      stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
+      stop("At least one feature name not found...")
     }
   }
   if(isTRUE(covariates) & ncol(pData(data)) == 1){
-    stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
+    stop("Seems that your data don't have covariates...")
   }
 
   e <- data.frame(t(MSnbase::exprs(data)))

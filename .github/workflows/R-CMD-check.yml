@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - master
+      - SummarizedExperiment
   pull_request:
     branches:
-      - master
+      - SummarizedExperiment
 
 name: R-CMD-check
 

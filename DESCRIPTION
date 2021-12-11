@@ -31,9 +31,7 @@ biocViews:
 Imports:
     broom,
     caret,
-    clisymbols,
     ComplexHeatmap,
-    crayon,
     dplyr,
     e1071,
     ggcorrplot,
@@ -47,17 +45,16 @@ Imports:
     limma,
     magrittr,
     mixOmics,
-    MSnbase (>= 2.12),
     patchwork,
     qpdf,
     randomForest,
     RankProd (>= 3.14),
     rmarkdown,
+    SummarizedExperiment,
     tibble,
     tidyr,
     vegan
 Suggests: 
-    Biobase,
     BiocStyle,
     covr,
     plotly,

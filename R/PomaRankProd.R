@@ -20,8 +20,6 @@
 #'
 #' @importFrom RankProd RankProducts topGene
 #' @import ggplot2
-#' @importFrom crayon red blue
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData exprs
 PomaRankProd <- function(data,
                          logged = TRUE,
@@ -31,17 +29,16 @@ PomaRankProd <- function(data,
                          method = "pfp"){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(method %in% c("pfp", "pval"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   if (sum(apply(t(MSnbase::exprs(data)), 2, function(x){sum(x < 0, na.rm = TRUE)})) != 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "Negative values detected in your data!"))
+    stop("Negative values detected in your data!")
   }
   if (missing(method)) {
     warning("method argument is empty! pfp method will be used")
@@ -50,7 +47,7 @@ PomaRankProd <- function(data,
   Group <- as.factor(MSnbase::pData(data)[,1])
 
   if (length(levels(Group)) != 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Data must have two groups..."))
+    stop("Data must have two groups...")
   }
 
   data_class <- as.numeric(ifelse(Group == levels(Group)[1], 0, 1))
@@ -71,7 +68,7 @@ PomaRankProd <- function(data,
   two <- as.data.frame(top_rank$Table2)
 
   if(nrow(one) == 0 & nrow(two) == 0){
-    stop(crayon::blue(clisymbols::symbol$info, "No significant features found..."))
+    stop("No significant features found...")
   }
   
   if(nrow(one) != 0){

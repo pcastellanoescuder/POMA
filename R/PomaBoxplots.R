@@ -20,8 +20,6 @@
 #' @importFrom dplyr select filter rename
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData exprs featureNames
 #' 
 #' @examples 
@@ -43,23 +41,22 @@ PomaBoxplots <- function(data,
                          label_size = 10,
                          legend_position = "bottom"){
   
-  if(missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+  if (missing(data)) {
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(group %in% c("samples", "features"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for group argument!"))
+    stop("Incorrect value for group argument!")
   }
   if (!is.null(feature_name)) {
     if(!isTRUE(all(feature_name %in% MSnbase::featureNames(data)))){
-      stop(crayon::red(clisymbols::symbol$cross, "At least one feature name not found..."))
+      stop("At least one feature name not found...")
     }
   }
   if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
+    stop("Incorrect value for legend_position argument!")
   }
   
   e <- t(MSnbase::exprs(data))

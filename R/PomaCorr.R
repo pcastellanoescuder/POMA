@@ -25,8 +25,6 @@
 #' @importFrom ggplot2 theme_bw
 #' @importFrom dplyr filter
 #' @importFrom magrittr %>%
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase exprs
 #' @importFrom ggcorrplot ggcorrplot
 #' @importFrom glasso glasso
@@ -54,26 +52,25 @@ PomaCorr <- function(data,
                      coeff = 0.7){
   
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(shape %in% c("square", "circle"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for shape argument!"))
+    stop("Incorrect value for shape argument!")
   }
   if (!(type %in% c("full", "lower", "upper"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for type argument!"))
+    stop("Incorrect value for type argument!")
   }
   if (!(corr_type %in% c("cor", "glasso"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for corr_type argument!"))
+    stop("Incorrect value for corr_type argument!")
   }
   if (coeff > 1 | coeff < 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "coeff must be a number between 0 and 1..."))
+    stop("coeff must be a number between 0 and 1...")
   }
   if (!(method %in% c("pearson", "kendall", "spearman"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   
   total <- t(MSnbase::exprs(data))
@@ -101,7 +98,7 @@ PomaCorr <- function(data,
       filter(abs(corr) >= coeff)
     
     if (nrow(graph_table) < 1) {
-      stop(crayon::red(clisymbols::symbol$cross, "There are no feature pairs with selected coeff. Try with a lower value..."))
+      stop("There are no feature pairs with selected coeff. Try with a lower value...")
     }
     
     graph <- ggraph(graph_table, layout = "fr") +
@@ -128,7 +125,7 @@ PomaCorr <- function(data,
       filter(EstimatedCorr != 0)
     
     if (nrow(graph_table) < 1) {
-      stop(crayon::red(clisymbols::symbol$cross, "There are no feature pairs with selected coeff. Try with a lower value..."))
+      stop("There are no feature pairs with selected coeff. Try with a lower value...")
     }
     
     graph <- ggraph(graph_table, layout = "fr") +

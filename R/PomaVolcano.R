@@ -23,8 +23,6 @@
 #' @import ggplot2
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom dplyr mutate
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData featureNames
 #' 
 #' @examples 
@@ -46,23 +44,22 @@ PomaVolcano <- function(data,
                         plot_title = TRUE){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (length(table(MSnbase::pData(data)[1])) > 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
+    stop("Your data have more than two groups!")
   }
   if (missing(pval)) {
     warning("pval argument is empty! Raw p-value will be used")
   }
   if (!(pval %in% c("raw", "adjusted"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for pval argument!"))
+    stop("Incorrect value for pval argument!")
   }
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for adjust argument!"))
+    stop("Incorrect value for adjust argument!")
   }
   if (missing(adjust)) {
     warning("adjust argument is empty! FDR will be used")

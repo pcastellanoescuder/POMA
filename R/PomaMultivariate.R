@@ -29,8 +29,6 @@
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 #' @importFrom mixOmics pca plsda perf vip tune.splsda splsda selectVar
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
@@ -72,17 +70,16 @@ PomaMultivariate <- function(data,
                              legend_position = "bottom"){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (missing(method)) {
-    stop(crayon::red(clisymbols::symbol$cross, "Select a method!"))
+    stop("Select a method!")
   }
   if (!(method %in% c("pca", "plsda", "splsda"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   if (missing(validation)) {
     if (method %in% c("plsda", "splsda")){
@@ -90,13 +87,13 @@ PomaMultivariate <- function(data,
     }
   }
   if (!(validation %in% c("Mfold", "loo"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect validation method! Please choose 'Mfold' or 'loo'"))
+    stop("Incorrect validation method! Please choose 'Mfold' or 'loo'")
   }
   if (load_length > 2 | load_length < 1) {
-    stop(crayon::red(clisymbols::symbol$cross, "load_length should be a number between 1 and 2..."))
+    stop("load_length should be a number between 1 and 2...")
   }
   if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
+    stop("Incorrect value for legend_position argument!")
   }
 
   df <- t(MSnbase::exprs(data))

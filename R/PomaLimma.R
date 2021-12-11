@@ -16,10 +16,8 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom limma makeContrasts lmFit contrasts.fit eBayes topTable
-#' @importFrom crayon red
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
@@ -35,23 +33,22 @@ PomaLimma <- function(data,
                       cutoff = NULL){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (is.null(contrast)) {
-    stop(crayon::red(clisymbols::symbol$cross, "Contrast argument is empty! You have to specify a contrast."))
+    stop("Contrast argument is empty! You have to specify a contrast.")
   }
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for adjust argument!"))
+    stop("Incorrect value for adjust argument!")
   }
   if (missing(adjust)) {
     warning("adjust argument is empty! FDR will be used")
   }
   if(isTRUE(covariates) & ncol(pData(data)) == 1){
-    stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
+    stop("Seems that your data don't have covariates...")
   }
 
   Group <- MSnbase::pData(data)[,1]

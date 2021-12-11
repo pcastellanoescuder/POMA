@@ -20,8 +20,6 @@
 #' @importFrom tibble rownames_to_column
 #' @importFrom magrittr %>%
 #' @importFrom ggrepel geom_label_repel
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData exprs sampleNames
 #' @importFrom vegan betadisper
 #' 
@@ -47,20 +45,19 @@ PomaOutliers <- function(data,
                          labels = FALSE){
   
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(method %in% c("euclidean", "maximum", "manhattan", "canberra", "minkowski"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   if (!(type %in% c("median", "centroid"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for type argument!"))
+    stop("Incorrect value for type argument!")
   }
   if (!(do %in% c("clean", "analyze"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for do argument!"))
+    stop("Incorrect value for do argument!")
   }
 
   groups <- MSnbase::pData(data)[,1]

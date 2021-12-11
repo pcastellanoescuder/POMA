@@ -13,8 +13,6 @@
 #' @return A heatmap.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData exprs
 #' @importFrom ComplexHeatmap HeatmapAnnotation Heatmap
 #' 
@@ -30,11 +28,10 @@ PomaHeatmap <- function(data,
                         show_legend = TRUE){
   
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   
   total <- MSnbase::exprs(data)

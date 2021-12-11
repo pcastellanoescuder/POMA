@@ -22,8 +22,6 @@
 #' @importFrom dplyr arrange desc group_by slice
 #' @importFrom magrittr %>%
 #' @importFrom glmnet cv.glmnet
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom caret confusionMatrix
 #' @importFrom MSnbase pData exprs
 #' 
@@ -58,25 +56,24 @@ PomaLasso <- function(data,
                       labels = FALSE){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (alpha > 1 | alpha < 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "alpha must be a number between 0 and 1..."))
+    stop("alpha must be a number between 0 and 1...")
   }
   if(!is.null(ntest)){
     if (ntest > 50 | ntest < 5) {
-      stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 5 and 50..."))
+      stop("ntest must be a number between 5 and 50...")
     }
   }
   if (length(levels(as.factor(MSnbase::pData(data)[,1]))) > 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
+    stop("Your data have more than two groups!")
   }
   if (length(levels(as.factor(MSnbase::pData(data)[,1]))) < 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Your data have less than two groups!"))
+    stop("Your data have less than two groups!")
   }
 
   features <- t(MSnbase::exprs(data))

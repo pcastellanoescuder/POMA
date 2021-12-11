@@ -21,8 +21,6 @@
 #' @importFrom dplyr mutate
 #' @importFrom magrittr %>%
 #' @importFrom tibble rownames_to_column
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase pData exprs
 #' 
 #' @examples 
@@ -39,14 +37,13 @@ PomaRandForest <- function(data,
                            nvar = 20){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (ntest > 50 | ntest < 5) {
-    stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 5 and 50..."))
+    stop("ntest must be a number between 5 and 50...")
   }
   
   rf_data <- data.frame(cbind(Group = MSnbase::pData(data)[,1], t(MSnbase::exprs(data))))

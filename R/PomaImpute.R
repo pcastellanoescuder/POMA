@@ -1,9 +1,9 @@
 
-#' Collettion of Imputation Methods for Mass Spectrometry Data
+#' Collection of Imputation Methods for Mass Spectrometry Data
 #'
 #' @description PomaImpute() offers different methods to impute missing values in MS data.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param ZerosAsNA Logical that indicates if the zeros in the data are missing values. Default is FALSE.
 #' @param RemoveNA Logical that indicates if those features with more than selected cutoff missing values in each group have to be removed. Default is TRUE.
 #' @param cutoff Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these feature will not be removed.
@@ -11,7 +11,7 @@
 #'
 #' @export
 #'
-#' @return A MSnSet object with cleaned data.
+#' @return A SummarizedExperiment object with cleaned data.
 #' @references Armitage, E. G., Godzien, J., Alonso‐Herranz, V., López‐Gonzálvez, Á., & Barbas, C. (2015). Missing value imputation strategies for metabolomics data. Electrophoresis, 36(24), 3050-3060.
 #' @author Pol Castellano-Escuder
 #'
@@ -20,9 +20,7 @@
 #' @importFrom tibble rownames_to_column
 #' @importFrom magrittr %>%
 #' @importFrom randomForest rfImpute
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase pData exprs featureNames
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -35,42 +33,41 @@ PomaImpute <- function(data,
                        method = "knn"){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn", "rf"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   if (missing(method)) {
     message("method argument is empty! KNN will be used")
   }
 
-  samples_groups <- MSnbase::pData(data)[,1]
-  to_imp_data <- t(MSnbase::exprs(data))
+  samples_groups <- SummarizedExperiment::colData(data)[,1]
+  to_imp_data <- t(SummarizedExperiment::assay(data))
   
   ##
   
-  if (isTRUE(ZerosAsNA)){
+  if (ZerosAsNA){
     to_imp_data[to_imp_data == 0] <- NA
     to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
-    colnames(to_imp_data)[2:ncol(to_imp_data)] <- MSnbase::featureNames(data)
+    colnames(to_imp_data)[2:ncol(to_imp_data)] <- data@NAMES
 
   } else {
     to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
-    colnames(to_imp_data)[2:ncol(to_imp_data)] <- MSnbase::featureNames(data)
+    colnames(to_imp_data)[2:ncol(to_imp_data)] <- data@NAMES
   }
 
   ##
   
   percent_na <- sum(is.na(to_imp_data))
-  if (percent_na == 0 & method == "rf") {
-    stop(crayon::red(clisymbols::symbol$cross, "No missing values detected in your data"))
-  }
-  if (percent_na == 0 & method != "rf") {
+  if (percent_na == 0){
     message("No missing values detected in your data")
+    if(method == "rf") {
+      method <- "none"
+    }
   }
   
   ##
@@ -79,7 +76,8 @@ PomaImpute <- function(data,
     count_NA <- aggregate(. ~ Group, data = to_imp_data,
                           function(x) {100*(sum(is.na(x))/(sum(is.na(x))+sum(!is.na(x))))},
                           na.action = NULL)
-    count_NA <- count_NA %>% dplyr::select(-Group)
+    count_NA <- count_NA %>% 
+      dplyr::select(-Group)
     correct_names <- names(count_NA)
     supress <- unlist(as.data.frame(lapply(count_NA, function(x) all(x > cutoff))))
     names(supress) <- correct_names
@@ -88,11 +86,9 @@ PomaImpute <- function(data,
     depurdata <- sapply(depurdata, function(x) as.numeric(as.character(x)))
 
   } else {
-
     depurdata <- to_imp_data[, 2:ncol(to_imp_data)]
     depurdata <- sapply(depurdata, function(x) as.numeric(as.character(x)))
-    correct_names <- MSnbase::featureNames(data)
-    
+    correct_names <- data@NAMES
   }
 
   ##
@@ -137,15 +133,13 @@ PomaImpute <- function(data,
   
   colnames(depurdata) <- correct_names
   
-  target <- pData(data) %>% rownames_to_column() %>% as.data.frame()
-  dataImputed <- PomaMSnSetClass(features = depurdata, target = target)
+  target <- SummarizedExperiment::colData(data) %>% 
+    as.data.frame() %>%
+    tibble::rownames_to_column()
+  dataImputed <- PomaSummarizedExperiment(features = depurdata, target = target)
   
-  dataImputed@processingData@processing <-
-    c(data@processingData@processing,
-      paste("Imputed (", method ,"): ", date(), sep = ""))
-  dataImputed@processingData@cleaned <- TRUE
-  dataImputed@experimentData <- data@experimentData
-  dataImputed@qual <- data@qual
+  # dataImputed@elementMetadata <- data@elementMetadata
+  # dataImputed@metadata <- data@metadata
     
   if (validObject(dataImputed))
     return(dataImputed)

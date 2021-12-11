@@ -17,8 +17,6 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom MSnbase exprs pData
 #' @importFrom magrittr %>%
 #' @importFrom dplyr mutate select
@@ -36,14 +34,13 @@ PomaClust <- function(data,
                       show_group = FALSE){
   
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(method %in% c("euclidean", "maximum", "manhattan", "canberra", "minkowski"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   
   e <- t(MSnbase::exprs(data))
