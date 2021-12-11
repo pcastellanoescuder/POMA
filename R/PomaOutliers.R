@@ -1,9 +1,9 @@
 
 #' Remove and Analyze Outliers
 #'
-#' @description This function allows users to analyze outliers by different plots and remove them from an MSnSet object.
+#' @description This function allows users to analyze outliers by different plots and remove them from an SummarizedExperiment object.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param do Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.
 #' @param method Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See `?dist()`.
 #' @param type Type of outliers analysis to perform. Options are "median" (default) and "centroid". See `vegan::betadisper`.
@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-#' @return A MSnSet object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
+#' @return A SummarizedExperiment object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
@@ -20,7 +20,7 @@
 #' @importFrom tibble rownames_to_column
 #' @importFrom magrittr %>%
 #' @importFrom ggrepel geom_label_repel
-#' @importFrom MSnbase pData exprs sampleNames
+#' @importFrom SummarizedExperiment assay colData
 #' @importFrom vegan betadisper
 #' 
 #' @examples 
@@ -59,10 +59,10 @@ PomaOutliers <- function(data,
   if (!(do %in% c("clean", "analyze"))) {
     stop("Incorrect value for do argument!")
   }
-
-  groups <- MSnbase::pData(data)[,1]
-  names <- MSnbase::sampleNames(data)
-  to_outliers <- t(MSnbase::exprs(data))
+  
+  groups <- SummarizedExperiment::colData(data)[,1]
+  names <- rownames(SummarizedExperiment::colData(data))
+  to_outliers <- t(SummarizedExperiment::assay(data))
   
   ##
   
@@ -121,9 +121,9 @@ PomaOutliers <- function(data,
     
   } else {
     
-    target <- pData(data) %>% 
-      rownames_to_column("sample") %>% 
+    target <- SummarizedExperiment::colData(data) %>% 
       as.data.frame() %>%
+      rownames_to_column("sample") %>% 
       filter(!(sample %in% final_outliers$sample))
 
     e <- to_outliers %>%
@@ -132,14 +132,7 @@ PomaOutliers <- function(data,
     
     ##
     
-    dataCleaned <- PomaMSnSetClass(features = e, target = target)
-    
-    dataCleaned@processingData@processing <-
-      c(data@processingData@processing,
-        paste("Outliers removed (", method , " and ", type, "): ", date(), sep = ""))
-    dataCleaned@processingData@cleaned <- TRUE
-    dataCleaned@experimentData <- data@experimentData
-    dataCleaned@qual <- data@qual
+    dataCleaned <- PomaSummarizedExperiment(features = e, target = target)
     
     if (validObject(dataCleaned))
       return(dataCleaned)
