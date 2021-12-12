@@ -16,7 +16,8 @@ Authors@R:
              family = "Sánchez-Pla",
              role = "aut",
              email = "asanchez@ub.edu",
-             comment = c(ORCID = "0000-0002-8673-7737")))
+             comment = c(ORCID = "0000-0002-8673-7737"))
+             )
 Description: 
     A structured, reproducible and easy-to-use workflow for the visualization, pre-processing, exploratory data analysis, 
     and statistical analysis of metabolomics and proteomics data. The main aim of POMA is to enable a flexible data cleaning and 
@@ -61,7 +62,7 @@ Suggests:
     tidyverse,
     testthat (>= 2.3.2)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Depends: R (>= 4.0)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA

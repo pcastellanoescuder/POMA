@@ -3,7 +3,7 @@
 #'
 #' @description This function returns different correlation plots (correlogram and network plots) and a table with all pairwise correlations in the data.
 #' 
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param method Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".
 #' @param shape Character ingicating shape of correlogram. Options are "square" (default) and "circle".
 #' @param type Character indicating type of correlogram. Options are "full" (default), "lower" or "upper".
@@ -73,7 +73,7 @@ PomaCorr <- function(data,
     stop("Incorrect value for method argument!")
   }
   
-  total <- t(MSnbase::exprs(data))
+  total <- t(SummarizedExperiment::assay(data))
   cor_matrix <- cor(total, method = method)
   
   ## Pairwise correlations

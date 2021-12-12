@@ -5,7 +5,7 @@
 \alias{st000336}
 \title{Targeted LC/MS of urine from boys with DMD and controls}
 \format{
-A \code{MSnSet} object: 57 samples, 31 metabolites, 1 covariable and 2 groups (Controls and DMD).
+A \code{SummarizedExperiment} object: 57 samples, 31 metabolites, 1 covariable and 2 groups (Controls and DMD).
 \describe{
 \item{metabolites}{31 urine metabolites.}
 \item{covariables}{Steroid status.}

@@ -3,7 +3,7 @@
 #'
 #' @description PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param method A multivariate method. Options are: "pca", "plsda" and "splsda".
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.
@@ -96,12 +96,12 @@ PomaMultivariate <- function(data,
     stop("Incorrect value for legend_position argument!")
   }
 
-  df <- t(MSnbase::exprs(data))
+  df <- t(SummarizedExperiment::assay(data))
 
   if(method == "pca"){
 
     X <- as.matrix(df)
-    Y <- as.factor(MSnbase::pData(data)[,1])
+    Y <- as.factor(SummarizedExperiment::colData(data)[,1])
     pca_res <- mixOmics::pca(X, ncomp = components, center = center, scale = scale)
 
     PCi <- data.frame(pca_res$variates$X, Groups = Y) %>% 
@@ -172,7 +172,7 @@ PomaMultivariate <- function(data,
   else if (method == "plsda"){
 
     X <- as.matrix(df)
-    Y <- as.factor(MSnbase::pData(data)[,1])
+    Y <- as.factor(SummarizedExperiment::colData(data)[,1])
 
     plsda_res <- mixOmics::plsda(X, Y, ncomp = components)
 
@@ -249,7 +249,7 @@ PomaMultivariate <- function(data,
   else if (method == "splsda"){
 
     X <- as.matrix(df)
-    Y <- as.factor(MSnbase::pData(data)[,1])
+    Y <- as.factor(SummarizedExperiment::colData(data)[,1])
 
     list_keepX <- c(1:num_features)
 

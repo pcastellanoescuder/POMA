@@ -3,8 +3,8 @@
 #'
 #' @description PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
-#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `colData` will be used as covariables. Default = FALSE.
 #' @param method Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".
 #' @param paired Logical that indicates if the data is paired or not.
 #' @param var_equal Logical that indicates if the data variance is equal or not.
@@ -60,12 +60,12 @@ PomaUnivariate <- function(data,
     stop("Incorrect value for adjust argument!")
   }
 
-  if(isTRUE(covariates) & ncol(pData(data)) == 1){
-    stop("Seems that your data don't have covariates...")
+  if(covariates & ncol(SummarizedExperiment::colData(data)) == 1){
+    stop("Seems there aren't covariates in your data...")
   }
 
-  Group <- as.factor(MSnbase::pData(data)[,1])
-  e <- t(MSnbase::exprs(data))
+  Group <- as.factor(SummarizedExperiment::colData(data)[,1])
+  e <- t(SummarizedExperiment::assay(data))
 
   ## group means
   
@@ -100,7 +100,7 @@ PomaUnivariate <- function(data,
       mutate(Fold_Change_Ratio = as.numeric(round(group_means[,2]/group_means[,1], 3)),
              Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
       column_to_rownames("ID") %>%
-      select(1,2,5,6,3,4)
+      dplyr::select(1,2,5,6,3,4)
 
     return(p)
   }
@@ -122,10 +122,10 @@ PomaUnivariate <- function(data,
     }
     else{
 
-      covariate_uni <- as.data.frame(pData(data)[, 2:ncol(pData(data))])
+      covariate_uni <- as.data.frame(colData(data)[, 2:ncol(colData(data))])
       
       if(ncol(covariate_uni) == 1){
-        colnames(covariate_uni) <- colnames(pData(data))[2]
+        colnames(covariate_uni) <- colnames(colData(data))[2]
       }
       
       covariate_uni <- sapply(covariate_uni, as.numeric)
@@ -172,7 +172,7 @@ PomaUnivariate <- function(data,
       mutate(Fold_Change_Ratio = as.numeric(round(group_means[,2]/group_means[,1], 3)),
              Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
       column_to_rownames("ID") %>%
-      select(1,2,5,6,3,4)
+      dplyr::select(1,2,5,6,3,4)
 
     return(non_param_mann)
   }

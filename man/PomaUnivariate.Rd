@@ -14,9 +14,9 @@ PomaUnivariate(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
-\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{pData} will be used as covariables. Default = FALSE.}
+\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{colData} will be used as covariables. Default = FALSE.}
 
 \item{method}{Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".}
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaImpute.R
 \name{PomaImpute}
 \alias{PomaImpute}
-\title{Collettion of Imputation Methods for Mass Spectrometry Data}
+\title{Collection of Imputation Methods for Mass Spectrometry Data}
 \usage{
 PomaImpute(
   data,
@@ -13,7 +13,7 @@ PomaImpute(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{ZerosAsNA}{Logical that indicates if the zeros in the data are missing values. Default is FALSE.}
 
@@ -24,7 +24,7 @@ PomaImpute(
 \item{method}{Imputation method. Options are: "none", "half_min", "median", "mean", "min", "knn" and "rf". If "none", all missing values will be replaced by zero.}
 }
 \value{
-A MSnSet object with cleaned data.
+A SummarizedExperiment object with cleaned data.
 }
 \description{
 PomaImpute() offers different methods to impute missing values in MS data.

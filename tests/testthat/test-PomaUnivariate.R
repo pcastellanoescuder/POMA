@@ -2,14 +2,16 @@ context("PomaUnivariate")
 
 test_that("PomaUnivariate works", {
 
+  library(SummarizedExperiment)
+  
   data("st000284")
   data("st000336")
 
   st000336 <- POMA::PomaImpute(st000336, method = "knn")
   
-  dims_for_ttest_and_mann <- c(ncol(t(MSnbase::exprs(st000336))), 6)
-  dims_for_aov <- c(ncol(t(MSnbase::exprs(st000284))), length(levels(as.factor(MSnbase::pData(st000284)[,1]))) + 2)
-  dims_for_krusk <- c(ncol(t(MSnbase::exprs(st000284))), length(levels(as.factor(MSnbase::pData(st000284)[,1]))) + 3)
+  dims_for_ttest_and_mann <- c(ncol(t(SummarizedExperiment::assay(st000336))), 6)
+  dims_for_aov <- c(ncol(t(SummarizedExperiment::assay(st000284))), length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 2)
+  dims_for_krusk <- c(ncol(t(SummarizedExperiment::assay(st000284))), length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 3)
   
   univ_ttest <- PomaUnivariate(st000336, method = "ttest", adjust = "fdr")
   univ_aov <- PomaUnivariate(st000284, covariates = FALSE, method = "anova", adjust = "fdr")
@@ -49,7 +51,7 @@ test_that("PomaUnivariate works", {
   
   expect_error(PomaUnivariate(st000336, method = "ttest", adjust = "fd"))
   
-  MSnbase::pData(st000284) <- MSnbase::pData(st000284)[1]
+  SummarizedExperiment::colData(st000284) <- SummarizedExperiment::colData(st000284)[1]
   expect_error(PomaUnivariate(st000284, method = "anova", covariates = TRUE, adjust = "fdr"))
   
   ##

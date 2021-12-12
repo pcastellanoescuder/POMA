@@ -14,7 +14,7 @@ PomaOutliers(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{do}{Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.}
 
@@ -27,10 +27,10 @@ PomaOutliers(
 \item{labels}{Logical indicating if sample IDs should to be plotted or not.}
 }
 \value{
-A MSnSet object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
+A SummarizedExperiment object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
 }
 \description{
-This function allows users to analyze outliers by different plots and remove them from an MSnSet object.
+This function allows users to analyze outliers by different plots and remove them from an SummarizedExperiment object.
 }
 \examples{
 data("st000336")

@@ -12,6 +12,7 @@ PomaVolcano(
   log2FC = 0.6,
   xlim = 2,
   labels = FALSE,
+  legend = TRUE,
   paired = FALSE,
   var_equal = FALSE,
   interactive = FALSE,
@@ -19,7 +20,7 @@ PomaVolcano(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type. Only for two group data!}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type. Only for two group data!}
 
 \item{pval}{Select a pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".}
 
@@ -32,6 +33,8 @@ PomaVolcano(
 \item{xlim}{Numeric. Define the limits for x axis.}
 
 \item{labels}{Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.}
+
+\item{legend}{Logical that indicates if legend will be plotted or not. Defaul is TRUE.}
 
 \item{paired}{Logical that indicates if the data is paired or not.}
 

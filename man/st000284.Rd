@@ -5,7 +5,7 @@
 \alias{st000284}
 \title{Colorectal Cancer Detection Using Targeted Serum Metabolic Profiling}
 \format{
-A \code{MSnSet} object: 224 samples, 113 metabolites, 4 covariables and 3 groups (CRC, Healthy and Polyp).
+A \code{SummarizedExperiment} object: 224 samples, 113 metabolites, 4 covariables and 3 groups (CRC, Healthy and Polyp).
 \describe{
 \item{metabolites}{113 serum metabolites.}
 \item{covariables}{Age at consent, Gender, Smoking Condition and Alcohol Consumption.}
