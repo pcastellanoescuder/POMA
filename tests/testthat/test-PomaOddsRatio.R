@@ -73,7 +73,7 @@ test_that("PomaOddsRatio works", {
 
   ##
 
-  MSnbase::pData(imputed) <- MSnbase::pData(imputed)[1]
+  SummarizedExperiment::colData(imputed) <- SummarizedExperiment::colData(imputed)[1]
   expect_error(PomaOddsRatio(imputed, covariates = TRUE))
   
   ##
