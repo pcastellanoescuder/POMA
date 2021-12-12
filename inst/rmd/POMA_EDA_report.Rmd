@@ -24,7 +24,6 @@ output:
 # You should have received a copy of the GNU General Public License
 # along with POMA. If not, see <https://www.gnu.org/licenses/>.
 
-library(patchwork)
 library(knitr)
 library(dplyr)
 library(tibble)

@@ -2,7 +2,7 @@
 title: "POMA Workflow"
 author: 
 - name: Pol Castellano-Escuder
-  affiliation: University of Barcelona, Spain.
+  affiliation: Duke University
   email: polcaes@gmail.com
 date: "`r BiocStyle::doc_date()`"
 output: 
@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2021-04-15
+**Last edited**: 2021-12-12
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -60,19 +60,19 @@ library(plotly)
 
 ## Data Preparation
 
-The **MSnbase** Bioconductor package provides a well defined computational data structures to represent mass spectrometry (MS) experiment data types [@MSnbase][@Biobase]. Since data structures can mean a marked improvement in data analysis, **POMA** functions use **MSnSet** objects from **MSnbase** package, allowing the reusability of existing methods for this class and contributing to the improvement of robust and reproducible workflows.    
+The **SummarizedExperiment** Bioconductor package provides a well defined computational data structures to represent omics experiment data types [@SummarizedExperiment]. Since data structures can mean a marked improvement in data analysis, **POMA** functions use **SummarizedExperiment** objects from **SummarizedExperiment** package, allowing the reusability of existing methods for this class and contributing to the improvement of robust and reproducible workflows.    
 
-The first step of workflow will be load or create an `MSnbase::MSnSet()` object. Often, you will have your data stored in separated matrix and/or data frames and you will have to create your own `MSnSet` object. `PomaMSnSetClass` function makes this step fast and easy building this `MSnSet` object from your independent files.     
+The first step of workflow will be load or create a `SummarizedExperiment` object. Often, you will have your data stored in separated matrix and/or data frames and you will want to create your `SummarizedExperiment` object. The `PomaSummarizedExperiment` function makes this step fast and easy building this `SummarizedExperiment` object for you.       
 
 ```{r, eval = FALSE}
 # create an MSnSet object from two separated data frames
 target <- readr::read_csv("your_target.csv")
 features <- readr::read_csv("your_features.csv")
 
-data <- PomaMSnSetClass(target = target, features = features)
+data <- PomaSummarizedExperiment(target = target, features = features)
 ```
 
-Alternatively, if your data is already stored in a `MSnSet` object, you can skip this step and go directly to the Pre-processing step. In this vignette we will use the example data provided in the package. 
+Alternatively, if your data is already stored in a `SummarizedExperiment` object, you can skip this step and go directly to the pre-processing step. In this vignette we will use the sample data provided in `POMA`.        
 
 ```{r}
 # load example data
@@ -101,8 +101,6 @@ imputed <- PomaImpute(st000336, ZerosAsNA = TRUE, RemoveNA = TRUE, cutoff = 20, 
 imputed
 ```
 
-_Note that the object has been updated with imputation information._     
-
 ### Normalization
 
 The next step of this block is the data normalization. Often, some factors can introduce variability in some types of MS data having a critical influence on the final statistical results, making normalization a key step in the workflow [@normalization]. Again, **POMA** offers several methods to normalize the data by running just the following line of code:    
@@ -112,15 +110,13 @@ normalized <- PomaNorm(imputed, method = "log_pareto")
 normalized
 ```
 
-_Note that the object has been updated with normalization information._    
-
 #### Normalization effect
 
 Sometimes, you will be interested in _how the normalization process affect your data_?    
 
 To answer this question, **POMA** offers two exploratory functions, `PomaBoxplots` and `PomaDensity`, that can help to understand the normalization process.    
 
-`PomaBoxplots` generates boxplots for all samples or features (depending on the group factor) of an `MSnSet` object. Here, we can compare objects before and after normalization step.    
+`PomaBoxplots` generates boxplots for all samples or features (depending on the group factor) of a `SummarizedExperiment` object. Here, we can compare objects before and after normalization step.    
 
 ```{r, message = FALSE, comment = FALSE}
 PomaBoxplots(imputed, group = "samples", jitter = FALSE) +
@@ -158,11 +154,9 @@ pre_processed <- PomaOutliers(normalized, do = "clean") # to remove outliers
 pre_processed
 ```
 
-_Note that the object has been updated with outlier information._    
-
 ## Statistical Analysis
 
-Once the data have been preprocessed, you can start with the statistical analysis block! **POMA** offers many different statistical methods and possible combinations to compute. However, in this vignette we will comment only some of the most used.    
+Once the data have been pre-processed, you can start with the statistical analysis step! **POMA** offers many different statistical methods and possible combinations to compute. However, in this vignette we will comment only some of the most used.    
 
 ### Univariate Analysis
 

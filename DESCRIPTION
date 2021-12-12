@@ -1,6 +1,6 @@
 Package: POMA
-Title: User-friendly Workflow for Metabolomics and Proteomics Data Analysis   
-Version: 1.5.0
+Title: User-friendly Workflow for Omics Data Analysis   
+Version: 1.99.0
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -9,15 +9,15 @@ Authors@R:
              comment = c(ORCID = "0000-0001-6466-877X"))
              )
 Description: 
-    A structured, reproducible and easy-to-use workflow for the visualization, pre-processing, exploratory data analysis, 
-    and statistical analysis of metabolomics and proteomics data. The main aim of POMA is to enable a flexible data cleaning and 
+    A structured, reproducible and easy-to-use workflow for the visualization, pre-processing, exploration, 
+    and statistical analysis of omics datasets. The main aim of POMA is to enable a flexible data cleaning and 
     statistical analysis processes in one comprehensible and user-friendly R package. This package also has a Shiny app 
     version that implements all POMA functions. See https://github.com/pcastellanoescuder/POMAShiny.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 biocViews:
-    MassSpectrometry, Metabolomics, Proteomics, Software, 
+    MassSpectrometry, Metabolomics, Proteomics, Software, StatisticalMethod,
     Visualization, Preprocessing, Normalization, ReportWriting
 Imports:
     broom,
@@ -47,6 +47,7 @@ Suggests:
     BiocStyle,
     covr,
     ggraph,
+    patchwork,
     plotly,
     tidyverse,
     testthat (>= 2.3.2)

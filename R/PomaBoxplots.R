@@ -36,7 +36,7 @@
 #'              feature_name = c("ornithine", "orotate"))
 PomaBoxplots <- function(data,
                          group = "samples",
-                         jitter = TRUE,
+                         jitter = FALSE,
                          feature_name = NULL,
                          label_size = 10,
                          legend_position = "bottom"){

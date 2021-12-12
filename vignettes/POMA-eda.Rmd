@@ -2,7 +2,7 @@
 title: "POMA EDA Example"
 author: 
 - name: Pol Castellano-Escuder
-  affiliation: University of Barcelona, Spain.
+  affiliation: Duke University
   email: polcaes@gmail.com
 date: "`r BiocStyle::doc_date()`"
 output: 
@@ -18,7 +18,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2021-04-16
+**Last edited**: 2021-12-12
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -47,32 +47,69 @@ library(POMA)
 
 # Automatic EDA Report 
 
-The following function will return an Exploratory Data Analysis (EDA) PDF report. The input object must be an **MSnSet** object.     
+The following function will return an Exploratory Data Analysis (EDA) PDF report. The input object must be a **SummarizedExperiment** object.     
 
 ```{r, eval = FALSE}
 data("st000336")
 PomaEDA(st000336)
 ```
 
+**Generated EDA PDF report starts here.**  
+
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-library(patchwork)
+# This file is part of POMA.
+
+# POMA is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# POMA is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with POMA. If not, see <https://www.gnu.org/licenses/>.
+
 library(knitr)
 library(dplyr)
 library(tibble)
 library(ggplot2)
-library(MSnbase)
+library(SummarizedExperiment)
+library(POMA)
 
-e <- t(MSnbase::exprs(st000336))
-target <- MSnbase::pData(st000336) %>% 
+data <- st000336
+imputation <- "knn"
+normalization <- "log_pareto"
+clean_outliers <- TRUE
+coeff_outliers <- 1.5
+
+##
+
+e <- t(SummarizedExperiment::assay(data))
+target <- SummarizedExperiment::colData(data) %>% 
+  as.data.frame() %>% 
   rownames_to_column("ID") %>% 
   dplyr::rename(Group = 2) %>% 
-  select(ID, Group)
+  dplyr::select(ID, Group)
 ```
 
+\pagebreak
+
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-imputed <- PomaImpute(st000336, method = "knn")
-pre_processed <- PomaNorm(imputed, method = "log_pareto") %>%
-  PomaOutliers(coef = 1.5)
+if(clean_outliers){
+
+  imputed <- PomaImpute(data, method = imputation)
+  pre_processed <- PomaNorm(imputed, method = normalization) %>%
+    PomaOutliers(coef = coeff_outliers)
+  
+} else {
+  
+    imputed <- PomaImpute(data, method = imputation)
+    pre_processed <- PomaNorm(imputed, method = normalization)
+  
+}
 ```
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
@@ -99,26 +136,26 @@ var_zero <- e %>%
   filter(V1 == 0)
 ```
 
-**Generated EDA PDF report starts here.**    
+\pagebreak
 
 # Know your data
 
-  - Your data have **57** samples, **31** features and **2** groups, that are **‘Controls’, ‘DMD’**. Furthermore, **1** covariates have been found in your data. These covariates are **‘steroids’**.      
+  + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**. `r ifelse(ncol(SummarizedExperiment::colData(data)) > 1, paste0("Furthermore, **", ncol(SummarizedExperiment::colData(data)) - 1,"** covariates have been found in your data. These covariates are **",noquote(paste(shQuote(paste0(colnames(SummarizedExperiment::colData(data))[2:ncol(SummarizedExperiment::colData(data))])), collapse=", ")),"**."), "")`          
 
-  - A **3.45%** of values in your data are NAs (missing values). Variables that have NA values are **‘aspartic_acid (5)’, ‘citrulline (28)’, ‘glutamic_acid (15)’, ‘methionine (3)’, ‘x3_hba (1)’, ‘a_kg (1)’, ‘citrate (2)’, ‘fumarate (1)’, ‘lactate (2)’, ‘malate (1)’, ‘pyruvate (1)’, ‘succinate (1)’**.      
+  + A **`r round((sum(is.na(e))/(nrow(e)*ncol(e)))*100, 2)`%** of values in your data are NAs (missing values). `r ifelse(nrow(nas) >= 1, paste0("Variables that have NA values are **",noquote(paste(shQuote(paste0(nas$names," (",nas$number,")")), collapse=", ")),"**."), "")`
 
-  - A **0%** of values in your data are zeros.     
-
-  - Removed from the exploratory data analysis **0** features that only have zeros.     
-
-  - Removed from the exploratory data analysis **0** features that have zero variance.      
+  + A **`r round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2)`%** of values in your data are zeros. `r ifelse(nrow(zeros) >= 1, paste0("Variables that have zeros are **",noquote(paste(shQuote(paste0(zeros$names," (",zeros$number,")")), collapse=", ")),"**."), "")`
+  
+  + Removed from the exploratory data analysis **`r nrow(all_zero)`** features that only have zeros. `r ifelse(nrow(all_zero) >= 1, paste0("These variables are **",noquote(paste(shQuote(all_zero$names), collapse=", ")),"**."), "")` 
+  
+  + Removed from the exploratory data analysis **`r nrow(var_zero)`** features that have zero variance. `r ifelse(nrow(var_zero) >= 1, paste0("These variables are **",noquote(paste(shQuote(var_zero$names), collapse=", ")),"**."), "")`
 
 ## Summary Table
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 summary_table1 <- data.frame(Samples = nrow(e),
                              Features = ncol(e),
-                             Covariates = ncol(MSnbase::pData(st000336)) - 1)
+                             Covariates = ncol(SummarizedExperiment::colData(data)) - 1)
 summary_table2 <- data.frame(Counts_Zero = sum(zeros$number),
                              Percent_Zero = paste(round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2), "%"))
 summary_table3 <- data.frame(Counts_NA = sum(is.na(e)),
@@ -150,7 +187,8 @@ if (nrow(zeros) >= 1){
     ggtitle("Zeros Plot") +
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "none")
+          legend.position = "none") +
+    scale_fill_viridis_d()
 }
 ```
 
@@ -166,30 +204,36 @@ ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
   xlab("") +
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+        legend.position = "none") +
+    scale_fill_viridis_d()
 ```
+
+\pagebreak
 
 # Normalization Plots
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-indNum <- nrow(MSnbase::pData(pre_processed))
+indNum <- nrow(SummarizedExperiment::colData(pre_processed))
 jttr <- ifelse(indNum <= 10, TRUE, FALSE)
 
-p1 <- PomaBoxplots(imputed, jitter = jttr) +
+p1 <- PomaBoxplots(imputed, jitter = jttr, label_size = 8) +
   xlab("Samples") +
   ylab("Value") +
   ggtitle("Not Normalized") +
   theme(legend.position = "bottom")
 
-p2 <- PomaBoxplots(pre_processed, jitter = jttr) +
+p2 <- PomaBoxplots(pre_processed, jitter = jttr, label_size = 8) +
   xlab("Samples") +
   ylab("Value") +
-  ggtitle("Normalized ('log_pareto')") +
+  ggtitle(paste0("Normalized (", normalization, ")")) +
   theme(legend.position = "bottom")
 
-p1 + p2
+p1
+p2
 ```
-  
+
+\pagebreak
+
 # Group Distribution Plots
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
@@ -197,22 +241,25 @@ p3 <- PomaDensity(imputed) +
   ggtitle("Not Normalized")
 
 p4 <- PomaDensity(pre_processed) +
-    ggtitle("Normalized ('log_pareto')")
+  ggtitle(paste0("Normalized (", normalization, ")"))
 
-p3/p4
+p3
+p4
 ```
+
+\pagebreak
 
 # Outlier Detection
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-outliers <- st000336 %>% 
-  PomaImpute(method = "knn") %>%
-  PomaNorm(method = "log_pareto") %>%
-  PomaOutliers(do = "analyze", coef = 1.5)
+outliers <- data %>% 
+  PomaImpute(method = imputation) %>%
+  PomaNorm(method = normalization) %>%
+  PomaOutliers(do = "analyze", coef = coeff_outliers)
 outliers$polygon_plot
 ```
 
-**7** possible outliers detected in your data. These outliers are **‘DMD119.2.U02’, ‘DMD084.11.U02’, ‘DMD087.12.U02’, ‘DMD023.10.U02’, ‘DMD046.11.U02’, ‘DMD133.9.U02’, ‘DMD135.10.U02’**.
+**`r nrow(outliers$outliers)`** possible outliers detected in your data. `r ifelse(nrow(outliers$outliers) >= 1, paste0("These outliers are **",noquote(paste(shQuote(paste0(outliers$outliers$sample)), collapse=", ")),"**."), "")`
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 if(nrow(outliers$outliers) >= 1){
@@ -220,14 +267,26 @@ if(nrow(outliers$outliers) >= 1){
   }
 ```
 
+\pagebreak
+
 # High Correlated Features (r > 0.97)
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-correlations <- PomaCorr(pre_processed)
-high_correlations <- correlations$correlations %>% filter(abs(corr) > 0.97)
+correlations <- PomaCorr(pre_processed, 
+                         label_size = 8,
+                         low = "red",
+                         outline = "white",
+                         high = "blue")
+high_correlations <- correlations$correlations %>% filter(abs(R) > 0.97)
 ```
 
-There are **0** high correlated feature pairs in your data.
+There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$feature1, " - " , high_correlations$feature2)), collapse=", ")),"**."), "")`
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, fig.align = 'center'}
+correlations$corrplot
+```
+
+\pagebreak
 
 # Heatmap and Clustering
 
@@ -235,9 +294,11 @@ There are **0** high correlated feature pairs in your data.
 PomaHeatmap(pre_processed)
 ```
 
+\pagebreak
+
 # Principal Component Analysis
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-PomaMultivariate(pre_processed, method = "pca")$scoresplot
+PomaMultivariate(pre_processed, method = "pca", ellipse = FALSE)$scoresplot
 ```
 
