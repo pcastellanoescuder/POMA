@@ -3,7 +3,7 @@
 #'
 #' @description PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type. Only for two group data!
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type. Only for two group data!
 #' @param pval Select a pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".
 #' @param pval_cutoff Numeric. Define the pvalue cutoff (horizontal line).
 #' @param adjust Multiple comparisons correction method for t test result. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
@@ -23,9 +23,7 @@
 #' @import ggplot2
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom dplyr mutate
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase pData featureNames
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -46,37 +44,30 @@ PomaVolcano <- function(data,
                         plot_title = TRUE){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
-  if (length(table(MSnbase::pData(data)[1])) > 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
-  }
-  if (missing(pval)) {
-    warning("pval argument is empty! Raw p-value will be used")
+  if (length(table(SummarizedExperiment::colData(data)[,1])) > 2) {
+    stop("Your data have more than two groups!")
   }
   if (!(pval %in% c("raw", "adjusted"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for pval argument!"))
+    stop("Incorrect value for pval argument!")
   }
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for adjust argument!"))
-  }
-  if (missing(adjust)) {
-    warning("adjust argument is empty! FDR will be used")
+    stop("Incorrect value for adjust argument!")
   }
 
   df <- POMA::PomaUnivariate(data, method = "ttest", adjust = adjust, paired = paired, var_equal = var_equal)
 
-  names <- featureNames(data)
+  names <- rownames(SummarizedExperiment::assay(data))
 
   if(pval == "raw"){
-    df <- data.frame(pvalue = df$pvalue, FC = log2(df$Fold_Change_Ratio), names = names)
+    df <- data.frame(pvalue = df$pvalue, FC = log2(df$FC), names = names)
   }
   else{
-    df <- data.frame(pvalue = df$pvalueAdj, FC = log2(df$Fold_Change_Ratio), names = names)
+    df <- data.frame(pvalue = df$pvalueAdj, FC = log2(df$FC), names = names)
   }
 
   df <- mutate(df, threshold = as.factor(ifelse(df$pvalue >= pval_cutoff,
@@ -93,25 +84,24 @@ PomaVolcano <- function(data,
     xlab("log2 Fold Change") +
     ylab("-log10 p-value") +
     scale_y_continuous(trans = "log1p")+
-    {if(plot_title)ggtitle(paste0("Comparisson: ", names(table(pData(data)[,1]))[2], "/", names(table(pData(data)[,1]))[1]))} +
+    {if(plot_title)ggtitle(paste0("Comparison: ", names(table(colData(data)[,1]))[2], "/", names(table(colData(data)[,1]))[1]))} +
     geom_vline(xintercept = -log2FC, colour = "black", linetype = "dashed") +
     geom_vline(xintercept = log2FC, colour = "black", linetype = "dashed") +
     geom_hline(yintercept = -log10(pval_cutoff), colour = "black", linetype = "dashed") +
     {if(labels)ggrepel::geom_label_repel(data = df[df$pvalue < pval_cutoff & (df$FC > log2FC | df$FC < -log2FC),],
                                          aes(x = FC, y = -log10(pvalue), label = names), show.legend = FALSE)} +
-    theme(legend.position = "none") +
     labs(color = "") +
     theme_bw() +
-    scale_color_manual(values = c("Down-regulated" = "#E64B35", "Up-regulated" = "#3182bd", "none" = "#636363"))
+    theme(legend.position = "right") +
+    scale_color_manual(values = c("Down-regulated" = "#E64B35", 
+                                  "Up-regulated" = "#3182bd", 
+                                  "none" = "#636363"))
 
   if(interactive){
-    if("plotly" %in% (.packages())){
-      volcanoP <- plotly::ggplotly(volcanoP)
-    }
-    else{
+    if(!(require("plotly", character.only = TRUE))){
       warning("Package 'plotly' is required for an interactive volcano plot\nUse 'install.packages('plotly')'")
     }
-  }
+    }
 
   return(volcanoP)
 

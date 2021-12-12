@@ -3,7 +3,7 @@
 #'
 #' @description PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from `glmnet` package for binary outcomes.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param alpha Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.
 #' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).
 #' @param nfolds Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.
@@ -19,13 +19,11 @@
 #' @import ggplot2
 #' @import e1071
 #' @importFrom broom tidy glance
-#' @importFrom dplyr arrange desc group_by slice
+#' @importFrom dplyr arrange desc group_by slice as_tibble
 #' @importFrom magrittr %>%
 #' @importFrom glmnet cv.glmnet
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 #' @importFrom caret confusionMatrix
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -58,29 +56,28 @@ PomaLasso <- function(data,
                       labels = FALSE){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (alpha > 1 | alpha < 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "alpha must be a number between 0 and 1..."))
+    stop("alpha must be a number between 0 and 1...")
   }
   if(!is.null(ntest)){
     if (ntest > 50 | ntest < 5) {
-      stop(crayon::red(clisymbols::symbol$cross, "ntest must be a number between 5 and 50..."))
+      stop("ntest must be a number between 5 and 50...")
     }
   }
-  if (length(levels(as.factor(MSnbase::pData(data)[,1]))) > 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Your data have more than two groups!"))
+  if (length(levels(as.factor(SummarizedExperiment::colData(data)[,1]))) > 2) {
+    stop("Your data have more than two groups!")
   }
-  if (length(levels(as.factor(MSnbase::pData(data)[,1]))) < 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Your data have less than two groups!"))
+  if (length(levels(as.factor(SummarizedExperiment::colData(data)[,1]))) < 2) {
+    stop("Your data have less than two groups!")
   }
 
-  features <- t(MSnbase::exprs(data))
-  response <- as.factor(MSnbase::pData(data)[,1])
+  features <- t(SummarizedExperiment::assay(data))
+  response <- as.factor(SummarizedExperiment::colData(data)[,1])
   lasso_data <- cbind(response, features)
 
   n <- nrow(lasso_data)
@@ -125,7 +122,8 @@ PomaLasso <- function(data,
     theme_bw()
 
   tmp_coeffs <- coef(cv_fit, s = "lambda.min")
-  final_coef <- data.frame(feature = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x)
+  final_coef <- data.frame(feature = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x) %>% 
+    dplyr::as_tibble()
 
   if(!is.null(ntest)){
     lasso_pred <- predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
@@ -133,7 +131,10 @@ PomaLasso <- function(data,
   }
   
   tidied_cv2 <- broom::tidy(cv_fit$glmnet.fit)
-  tidied_cv2_names <- tidied_cv2 %>% arrange(desc(abs(estimate))) %>% group_by(term) %>% dplyr::slice(1)
+  tidied_cv2_names <- tidied_cv2 %>% 
+    arrange(desc(abs(estimate))) %>% 
+    group_by(term) %>% 
+    dplyr::slice(1)
   
   coefficientplot <- ggplot(tidied_cv2, aes(lambda, estimate, color = term)) +
     scale_x_log10() +
@@ -144,13 +145,23 @@ PomaLasso <- function(data,
     # geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
     theme_bw() +
     {if(labels)geom_label(data = tidied_cv2_names, aes(label = term))} +
-    theme(legend.position = "none")
+    theme(legend.position = "none") +
+    scale_color_viridis_d()
 
   if(!is.null(ntest)){
-    return(list(coefficients = final_coef, coefficientPlot = coefficientplot, cvLassoPlot = cvlasso,
-                confusionMatrix = cm, model = cv_fit))
+    return(list(coefficients = final_coef, 
+                coefficientPlot = coefficientplot, 
+                cvLassoPlot = cvlasso,
+                confusionMatrix = cm,
+                train_x = train_x,
+                train_y = train_y,
+                test_x = test_x,
+                test_y = test_y,
+                model = cv_fit))
   } else {
-    return(list(coefficients = final_coef, coefficientPlot = coefficientplot, cvLassoPlot = cvlasso,
+    return(list(coefficients = final_coef, 
+                coefficientPlot = coefficientplot, 
+                cvLassoPlot = cvlasso,
                 model = cv_fit))
   }
 

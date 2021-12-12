@@ -2,7 +2,7 @@
 title: "POMA Normalization Methods"
 author: 
 - name: Pol Castellano-Escuder
-  affiliation: University of Barcelona, Spain.
+  affiliation: Duke University
   email: polcaes@gmail.com
 date: "`r BiocStyle::doc_date()`"
 output: 
@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2021-04-15
+**Last edited**: 2021-12-12
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -44,14 +44,14 @@ BiocManager::install("POMA")
 
 ```{r, warning = FALSE, message = FALSE, comment = FALSE}
 library(POMA)
-library(MSnbase)
+library(SummarizedExperiment)
 library(ggplot2)
 library(patchwork)
 ```
 
 # Load Data and Imputation
 
-Let's create a cleaned `MSnSet` object from example `st000336` data to explore the normalization effects.      
+Let's create a cleaned `SummarizedExperiment` object from the sample `st000336` data to explore the normalization effects.  
 
 ```{r, warning = FALSE}
 # load example data
@@ -64,7 +64,7 @@ example_data
 
 # Normalization
 
-Here we will evaluate ALL normalization methods that POMA offers on the same `MSnSet` object to compare them [@normalization].  
+Here we will evaluate ALL normalization methods that POMA offers on the same `SummarizedExperiment` object to compare them [@normalization].  
 
 ```{r, warning = FALSE}
 none <- PomaNorm(example_data, method = "none")
@@ -81,13 +81,13 @@ log_pareto <- PomaNorm(example_data, method = "log_pareto")
 When we check for the dimension of the data after normalization we can see that ALL methods have the same effect on data dimension. `PomaNorm` **only** change the data dimension when the data have **features that only have zeros** and when the data have **features with 0 variance**. Only in these two cases `PomaNorm` will remove features of the data, changing the data dimensions.   
 
 ```{r, warning = FALSE}
-dim(MSnbase::exprs(none))
-dim(MSnbase::exprs(auto_scaling))
-dim(MSnbase::exprs(level_scaling))
-dim(MSnbase::exprs(log_scaling))
-dim(MSnbase::exprs(log_transformation))
-dim(MSnbase::exprs(vast_scaling))
-dim(MSnbase::exprs(log_pareto))
+dim(SummarizedExperiment::assay(none))
+dim(SummarizedExperiment::assay(auto_scaling))
+dim(SummarizedExperiment::assay(level_scaling))
+dim(SummarizedExperiment::assay(log_scaling))
+dim(SummarizedExperiment::assay(log_transformation))
+dim(SummarizedExperiment::assay(vast_scaling))
+dim(SummarizedExperiment::assay(log_pareto))
 ```
 
 ## Normalization effect on samples

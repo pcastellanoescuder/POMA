@@ -14,10 +14,10 @@ test_that("PomaMultivariate works", {
 
   ##
 
-  expect_equal(nrow(multivariate_pca_1$score_data), nrow(multivariate_pca_2$score_data))
-  expect_false(ncol(multivariate_pca_1$score_data) == ncol(multivariate_pca_2$score_data))
-  expect_equal(ncol(multivariate_pca_1$score_data), 4)
-  expect_equal(ncol(multivariate_pca_2$score_data), 5)
+  expect_equal(nrow(multivariate_pca_1$scores), nrow(multivariate_pca_2$scores))
+  expect_false(ncol(multivariate_pca_1$scores) == ncol(multivariate_pca_2$scores))
+  expect_equal(ncol(multivariate_pca_1$scores), 4)
+  expect_equal(ncol(multivariate_pca_2$scores), 5)
   
   expect_equal(ncol(multivariate_pca_1$eigenvalues), ncol(multivariate_pca_2$eigenvalues))
   expect_false(nrow(multivariate_pca_1$eigenvalues) == nrow(multivariate_pca_2$eigenvalues))
@@ -48,10 +48,10 @@ test_that("PomaMultivariate works", {
   expect_equal(ncol(multivariate_plsda_1$errors_plsda), ncol(multivariate_plsda_2$errors_plsda))
   expect_false(nrow(multivariate_plsda_1$errors_plsda) == nrow(multivariate_plsda_2$errors_plsda))
 
-  expect_false(ncol(multivariate_plsda_1$plsda_vip_table) == ncol(multivariate_plsda_2$plsda_vip_table))
-  expect_equal(nrow(multivariate_plsda_1$plsda_vip_table), nrow(multivariate_plsda_2$plsda_vip_table))
+  expect_false(ncol(multivariate_plsda_1$vip_plsda) == ncol(multivariate_plsda_2$vip_plsda))
+  expect_equal(nrow(multivariate_plsda_1$vip_plsda), nrow(multivariate_plsda_2$vip_plsda))
   
-  expect_false(ncol(multivariate_plsda_1$score_data) == ncol(multivariate_plsda_2$score_data))
+  expect_false(ncol(multivariate_plsda_1$scores) == ncol(multivariate_plsda_2$scores))
 
   ##
   
@@ -89,8 +89,8 @@ test_that("PomaMultivariate works", {
   expect_true(is.numeric(multivariate_splsda_1$ncomp))
   expect_true(is.numeric(multivariate_splsda_2$ncomp))
 
-  df_a <- layer_data(multivariate_splsda_1$bal_error_rate)
-  df_b <- layer_data(multivariate_splsda_2$bal_error_rate)
+  df_a <- layer_data(multivariate_splsda_1$errors_splsda_plot)
+  df_b <- layer_data(multivariate_splsda_2$errors_splsda_plot)
   df_c <- layer_data(multivariate_splsda_1$scoresplot)
   df_d <- layer_data(multivariate_splsda_2$scoresplot)
 

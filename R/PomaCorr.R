@@ -3,7 +3,7 @@
 #'
 #' @description This function returns different correlation plots (correlogram and network plots) and a table with all pairwise correlations in the data.
 #' 
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param method Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".
 #' @param shape Character ingicating shape of correlogram. Options are "square" (default) and "circle".
 #' @param type Character indicating type of correlogram. Options are "full" (default), "lower" or "upper".
@@ -23,11 +23,9 @@
 #'
 #' @import ggraph
 #' @importFrom ggplot2 theme_bw
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter rename as_tibble
 #' @importFrom magrittr %>%
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase exprs
+#' @importFrom SummarizedExperiment assay colData
 #' @importFrom ggcorrplot ggcorrplot
 #' @importFrom glasso glasso
 #' 
@@ -54,29 +52,31 @@ PomaCorr <- function(data,
                      coeff = 0.7){
   
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(shape %in% c("square", "circle"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for shape argument!"))
+    stop("Incorrect value for shape argument!")
   }
   if (!(type %in% c("full", "lower", "upper"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for type argument!"))
+    stop("Incorrect value for type argument!")
   }
   if (!(corr_type %in% c("cor", "glasso"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for corr_type argument!"))
+    stop("Incorrect value for corr_type argument!")
   }
   if (coeff > 1 | coeff < 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "coeff must be a number between 0 and 1..."))
+    stop("coeff must be a number between 0 and 1...")
   }
   if (!(method %in% c("pearson", "kendall", "spearman"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
+  }
+  if(!(require("ggraph", character.only = TRUE))){
+    warning("Package 'ggraph' is required for this function\nUse 'install.packages('ggraph')'")
   }
   
-  total <- t(MSnbase::exprs(data))
+  total <- t(SummarizedExperiment::assay(data))
   cor_matrix <- cor(total, method = method)
   
   ## Pairwise correlations
@@ -85,7 +85,9 @@ PomaCorr <- function(data,
   correlations <- as.data.frame(as.table(correlations))
   correlations <- na.omit(correlations)
   correlations <- correlations[with(correlations, order(-Freq)), ]
-  colnames(correlations)[3] <- "corr"
+  correlations <- correlations %>% 
+    dplyr::rename(feature1 = 1, feature2 = 2, R = 3) %>% 
+    dplyr::as_tibble()
 
   ## Corrplot
   my_cols <- c(low, outline, high)
@@ -98,14 +100,14 @@ PomaCorr <- function(data,
   if(corr_type != "glasso"){
     
     graph_table <- correlations %>% 
-      filter(abs(corr) >= coeff)
+      filter(abs(R) >= coeff)
     
     if (nrow(graph_table) < 1) {
-      stop(crayon::red(clisymbols::symbol$cross, "There are no feature pairs with selected coeff. Try with a lower value..."))
+      stop("There are no feature pairs with selected coeff. Try with a lower value...")
     }
     
     graph <- ggraph(graph_table, layout = "fr") +
-      geom_edge_link(aes(edge_alpha = abs(corr), edge_width = abs(corr), color = corr)) +
+      geom_edge_link(aes(edge_alpha = abs(R), edge_width = abs(R), color = R)) +
       guides(edge_alpha = "none", edge_width = "none") +
       scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
       geom_node_point(color = "white", size = 5) +
@@ -122,13 +124,15 @@ PomaCorr <- function(data,
     data_glasso <- as.data.frame(as.table(data_glasso))
     data_glasso <- na.omit(data_glasso)
     data_glasso <- data_glasso[with(data_glasso, order(-Freq)), ]
-    colnames(data_glasso)[3] <- "EstimatedCorr"
-    
+    data_glasso <- data_glasso %>% 
+      dplyr::rename(feature1 = 1, feature2 = 2, EstimatedCorr = 3) %>% 
+      dplyr::as_tibble()
+
     graph_table <- data_glasso %>% 
       filter(EstimatedCorr != 0)
     
     if (nrow(graph_table) < 1) {
-      stop(crayon::red(clisymbols::symbol$cross, "There are no feature pairs with selected coeff. Try with a lower value..."))
+      stop("There aren't feature pairs with selected coeff. Try with a lower value...")
     }
     
     graph <- ggraph(graph_table, layout = "fr") +
@@ -142,9 +146,14 @@ PomaCorr <- function(data,
   }
   
   if(corr_type != "glasso"){
-    return(list(correlations = correlations, corrplot = corrplot, graph = graph))
+    return(list(correlations = correlations, 
+                corrplot = corrplot, 
+                graph = graph))
   } else{
-    return(list(correlations = correlations, corrplot = corrplot, graph = graph, data_glasso = data_glasso))
+    return(list(correlations = correlations, 
+                corrplot = corrplot, 
+                graph = graph, 
+                data_glasso = data_glasso))
   }
   
 }

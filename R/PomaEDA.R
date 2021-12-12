@@ -1,9 +1,9 @@
 
 #' Automatic Exploratory Data Analysis PDF Report
 #'
-#' @description This function automatically generates a PDF report with different exploratory plots and tables from an MSnSet object.
+#' @description This function automatically generates a PDF report with different exploratory plots and tables from an SummarizedExperiment object.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param imputation Imputation method. Options are "none", "half_min", "median", "mean", "min" and "knn" (default). If "none", all missing values will be replaced by zero.
 #' @param normalization Normalization method. Options are "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto" (default).
 #' @param clean_outliers Logical. If it's set to TRUE, outliers will be removed from EDA.
@@ -18,8 +18,6 @@
 #' @importFrom rmarkdown render
 #' @import knitr
 #' @import patchwork
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
 PomaEDA <- function(data, # nocov start
                     imputation = "knn",
                     normalization = "log_pareto",
@@ -28,18 +26,17 @@ PomaEDA <- function(data, # nocov start
                     username = "Username"){
   
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(imputation %in% c("none", "half_min", "median", "mean", "min", "knn"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for imputation argument!"))
+    stop("Incorrect value for imputation argument!")
   }
   if (!(normalization %in% c("none", "auto_scaling", "level_scaling", "log_scaling",
                       "log_transformation", "vast_scaling", "log_pareto"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for normalization argument!"))
+    stop("Incorrect value for normalization argument!")
   }
   
   rmarkdown::render(system.file("rmd", "POMA_EDA_report.Rmd", package = "POMA"), "pdf_document")

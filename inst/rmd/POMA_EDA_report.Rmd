@@ -24,16 +24,19 @@ output:
 # You should have received a copy of the GNU General Public License
 # along with POMA. If not, see <https://www.gnu.org/licenses/>.
 
-library(patchwork)
 library(knitr)
 library(dplyr)
 library(tibble)
 library(ggplot2)
-library(MSnbase)
+library(SummarizedExperiment)
 library(POMA)
 
-e <- t(MSnbase::exprs(data))
-target <- MSnbase::pData(data) %>% rownames_to_column("ID") %>% rename(Group = 2) %>% select(ID, Group)
+e <- t(SummarizedExperiment::assay(data))
+target <- SummarizedExperiment::colData(data) %>% 
+  as.data.frame() %>% 
+  rownames_to_column("ID") %>% 
+  dplyr::rename(Group = 2) %>% 
+  dplyr::select(ID, Group)
 ```
 
 \pagebreak
@@ -77,9 +80,11 @@ var_zero <- e %>%
   filter(V1 == 0)
 ```
 
+\pagebreak
+
 # Know your data
 
-  + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**. `r ifelse(ncol(MSnbase::pData(data)) > 1, paste0("Furthermore, **", ncol(MSnbase::pData(data)) - 1,"** covariates have been found in your data. These covariates are **",noquote(paste(shQuote(paste0(colnames(MSnbase::pData(data))[2:ncol(MSnbase::pData(data))])), collapse=", ")),"**."), "")`          
+  + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**. `r ifelse(ncol(SummarizedExperiment::colData(data)) > 1, paste0("Furthermore, **", ncol(SummarizedExperiment::colData(data)) - 1,"** covariates have been found in your data. These covariates are **",noquote(paste(shQuote(paste0(colnames(SummarizedExperiment::colData(data))[2:ncol(SummarizedExperiment::colData(data))])), collapse=", ")),"**."), "")`          
 
   + A **`r round((sum(is.na(e))/(nrow(e)*ncol(e)))*100, 2)`%** of values in your data are NAs (missing values). `r ifelse(nrow(nas) >= 1, paste0("Variables that have NA values are **",noquote(paste(shQuote(paste0(nas$names," (",nas$number,")")), collapse=", ")),"**."), "")`
 
@@ -94,7 +99,7 @@ var_zero <- e %>%
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 summary_table1 <- data.frame(Samples = nrow(e),
                              Features = ncol(e),
-                             Covariates = ncol(MSnbase::pData(data)) - 1)
+                             Covariates = ncol(SummarizedExperiment::colData(data)) - 1)
 summary_table2 <- data.frame(Counts_Zero = sum(zeros$number),
                              Percent_Zero = paste(round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2), "%"))
 summary_table3 <- data.frame(Counts_NA = sum(is.na(e)),
@@ -126,7 +131,8 @@ if (nrow(zeros) >= 1){
     ggtitle("Zeros Plot") +
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "none")
+          legend.position = "none") +
+    scale_fill_viridis_d()
 }
 ```
 
@@ -142,30 +148,36 @@ ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
   xlab("") +
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+        legend.position = "none") +
+    scale_fill_viridis_d()
 ```
+
+\pagebreak
 
 # Normalization Plots
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
-indNum <- nrow(MSnbase::pData(pre_processed))
+indNum <- nrow(SummarizedExperiment::colData(pre_processed))
 jttr <- ifelse(indNum <= 10, TRUE, FALSE)
 
-p1 <- PomaBoxplots(imputed, jitter = jttr) +
+p1 <- PomaBoxplots(imputed, jitter = jttr, label_size = 8) +
   xlab("Samples") +
   ylab("Value") +
   ggtitle("Not Normalized") +
   theme(legend.position = "bottom")
 
-p2 <- PomaBoxplots(pre_processed, jitter = jttr) +
+p2 <- PomaBoxplots(pre_processed, jitter = jttr, label_size = 8) +
   xlab("Samples") +
   ylab("Value") +
   ggtitle(paste0("Normalized (", normalization, ")")) +
   theme(legend.position = "bottom")
 
-p1 + p2
+p1
+p2
 ```
-  
+
+\pagebreak
+
 # Group Distribution Plots
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
@@ -175,8 +187,11 @@ p3 <- PomaDensity(imputed) +
 p4 <- PomaDensity(pre_processed) +
   ggtitle(paste0("Normalized (", normalization, ")"))
 
-p3/p4
+p3
+p4
 ```
+
+\pagebreak
 
 # Outlier Detection
 
@@ -196,14 +211,26 @@ if(nrow(outliers$outliers) >= 1){
   }
 ```
 
+\pagebreak
+
 # High Correlated Features (r > 0.97)
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-correlations <- PomaCorr(pre_processed)
-high_correlations <- correlations$correlations %>% filter(abs(corr) > 0.97)
+correlations <- PomaCorr(pre_processed, 
+                         label_size = 8,
+                         low = "red",
+                         outline = "white",
+                         high = "blue")
+high_correlations <- correlations$correlations %>% filter(abs(R) > 0.97)
 ```
 
-There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$Var1, " - " , high_correlations$Var2)), collapse=", ")),"**."), "")`
+There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$feature1, " - " , high_correlations$feature2)), collapse=", ")),"**."), "")`
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300, fig.align = 'center'}
+correlations$corrplot
+```
+
+\pagebreak
 
 # Heatmap and Clustering
 
@@ -211,9 +238,11 @@ There are **`r nrow(high_correlations)`** high correlated feature pairs in your 
 PomaHeatmap(pre_processed)
 ```
 
+\pagebreak
+
 # Principal Component Analysis
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
-PomaMultivariate(pre_processed, method = "pca")$scoresplot
+PomaMultivariate(pre_processed, method = "pca", ellipse = FALSE)$scoresplot
 ```
 

@@ -4,14 +4,22 @@
 \alias{PomaOddsRatio}
 \title{Logistic Regression Model Odds Ratios}
 \usage{
-PomaOddsRatio(data, feature_name = NULL, covariates = FALSE, showCI = TRUE)
+PomaOddsRatio(
+  data,
+  feature_name = NULL,
+  covariates = FALSE,
+  covs = NULL,
+  showCI = TRUE
+)
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{feature_name}{A vector with the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.}
 
 \item{covariates}{Logical that indicates if covariates will be included in logistic regression model. Default is \code{FALSE}.}
+
+\item{covs}{Character vector indicating the name of \code{colData} columns that will be included as covariates. Default is NULL (all variables).}
 
 \item{showCI}{Logical that indicates if the 95\% confidence intervals will be plotted. Default is \code{TRUE}.}
 }

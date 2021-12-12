@@ -22,11 +22,11 @@ test_that("PomaOutliers works", {
 
   ##
   
-  expect_equal(nrow(a$outliers), nrow(MSnbase::pData(st000284)) - nrow(MSnbase::pData(b)))
-  expect_equal(nrow(c$outliers), nrow(MSnbase::pData(st000284)) - nrow(MSnbase::pData(d)))
+  expect_equal(nrow(a$outliers), nrow(SummarizedExperiment::colData(st000284)) - nrow(SummarizedExperiment::colData(b)))
+  expect_equal(nrow(c$outliers), nrow(SummarizedExperiment::colData(st000284)) - nrow(SummarizedExperiment::colData(d)))
   
-  expect_equal(nrow(e$outliers), nrow(MSnbase::pData(st000336)) - nrow(MSnbase::pData(f)))
-  expect_equal(nrow(g$outliers), nrow(MSnbase::pData(st000336)) - nrow(MSnbase::pData(h)))
+  expect_equal(nrow(e$outliers), nrow(SummarizedExperiment::colData(st000336)) - nrow(SummarizedExperiment::colData(f)))
+  expect_equal(nrow(g$outliers), nrow(SummarizedExperiment::colData(st000336)) - nrow(SummarizedExperiment::colData(h)))
   
   expect_false(nrow(a$outliers) == nrow(c$outliers))
   expect_false(nrow(e$outliers) == nrow(g$outliers))

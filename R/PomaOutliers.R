@@ -1,9 +1,9 @@
 
 #' Remove and Analyze Outliers
 #'
-#' @description This function allows users to analyze outliers by different plots and remove them from an MSnSet object.
+#' @description This function allows users to analyze outliers by different plots and remove them from an SummarizedExperiment object.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param do Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.
 #' @param method Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See `?dist()`.
 #' @param type Type of outliers analysis to perform. Options are "median" (default) and "centroid". See `vegan::betadisper`.
@@ -12,17 +12,15 @@
 #'
 #' @export
 #'
-#' @return A MSnSet object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
+#' @return A SummarizedExperiment object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
-#' @importFrom dplyr select filter do group_by mutate rename
+#' @importFrom dplyr select filter do group_by mutate rename as_tibble
 #' @importFrom tibble rownames_to_column
 #' @importFrom magrittr %>%
 #' @importFrom ggrepel geom_label_repel
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase pData exprs sampleNames
+#' @importFrom SummarizedExperiment assay colData
 #' @importFrom vegan betadisper
 #' 
 #' @examples 
@@ -47,25 +45,24 @@ PomaOutliers <- function(data,
                          labels = FALSE){
   
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(method %in% c("euclidean", "maximum", "manhattan", "canberra", "minkowski"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   if (!(type %in% c("median", "centroid"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for type argument!"))
+    stop("Incorrect value for type argument!")
   }
   if (!(do %in% c("clean", "analyze"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for do argument!"))
+    stop("Incorrect value for do argument!")
   }
-
-  groups <- MSnbase::pData(data)[,1]
-  names <- MSnbase::sampleNames(data)
-  to_outliers <- t(MSnbase::exprs(data))
+  
+  groups <- SummarizedExperiment::colData(data)[,1]
+  names <- rownames(SummarizedExperiment::colData(data))
+  to_outliers <- t(SummarizedExperiment::assay(data))
   
   ##
   
@@ -81,11 +78,12 @@ PomaOutliers <- function(data,
     mutate(out = as.factor(ifelse(distances > x, 1, 0)))
   
   final_outliers <- detect_outliers %>%
-    filter(out == 1) %>%
-    select(sample, Groups, distances, x) %>%
-    rename(group = Groups,
-           distance_to_centroid = distances,
-           limit_distance = x)
+    dplyr::filter(out == 1) %>%
+    dplyr::select(sample, Groups, distances, x) %>%
+    dplyr::rename(group = Groups, 
+                  distance_to_centroid = distances,
+                  limit_distance = x) %>% 
+    dplyr::as_tibble()
   
   ##
   
@@ -110,7 +108,9 @@ PomaOutliers <- function(data,
       {if(!labels)geom_point(aes(shape = Group), size = 3, alpha = 0.7)} +
       geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
       {if(labels)geom_text(aes(label = sample))} +
-      theme_bw()
+      theme_bw() +
+      scale_fill_viridis_d() +
+      scale_color_viridis_d()
     
     distance_boxplot <- ggplot(detect_outliers, aes(Groups, distances, fill = Groups)) +
       geom_boxplot(coef = coef, alpha = 0.8) +
@@ -118,15 +118,18 @@ PomaOutliers <- function(data,
       xlab("") +
       {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
       theme_bw() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      scale_fill_viridis_d()
     
-    return(list(polygon_plot = polygon_plot, distance_boxplot = distance_boxplot, outliers = final_outliers))
+    return(list(polygon_plot = polygon_plot, 
+                distance_boxplot = distance_boxplot, 
+                outliers = final_outliers))
     
   } else {
     
-    target <- pData(data) %>% 
-      rownames_to_column("sample") %>% 
+    target <- SummarizedExperiment::colData(data) %>% 
       as.data.frame() %>%
+      rownames_to_column("sample") %>% 
       filter(!(sample %in% final_outliers$sample))
 
     e <- to_outliers %>%
@@ -135,14 +138,7 @@ PomaOutliers <- function(data,
     
     ##
     
-    dataCleaned <- PomaMSnSetClass(features = e, target = target)
-    
-    dataCleaned@processingData@processing <-
-      c(data@processingData@processing,
-        paste("Outliers removed (", method , " and ", type, "): ", date(), sep = ""))
-    dataCleaned@processingData@cleaned <- TRUE
-    dataCleaned@experimentData <- data@experimentData
-    dataCleaned@qual <- data@qual
+    dataCleaned <- PomaSummarizedExperiment(features = e, target = target)
     
     if (validObject(dataCleaned))
       return(dataCleaned)

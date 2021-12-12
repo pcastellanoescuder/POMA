@@ -3,7 +3,7 @@
 #'
 #' @description PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param logged If "TRUE" (default) data have been previously log transformed.
 #' @param logbase Numerical. Base for log transformation.
 #' @param paired Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.
@@ -20,9 +20,9 @@
 #'
 #' @importFrom RankProd RankProducts topGene
 #' @import ggplot2
-#' @importFrom crayon red blue
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase pData exprs
+#' @importFrom dplyr rename as_tibble
+#' @importFrom tibble rownames_to_column
+#' @importFrom SummarizedExperiment assay colData
 PomaRankProd <- function(data,
                          logged = TRUE,
                          logbase = 2,
@@ -31,26 +31,25 @@ PomaRankProd <- function(data,
                          method = "pfp"){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(method %in% c("pfp", "pval"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
-  if (sum(apply(t(MSnbase::exprs(data)), 2, function(x){sum(x < 0, na.rm = TRUE)})) != 0) {
-    stop(crayon::red(clisymbols::symbol$cross, "Negative values detected in your data!"))
+  if (sum(apply(t(SummarizedExperiment::assay(data)), 2, function(x){sum(x < 0, na.rm = TRUE)})) != 0) {
+    stop("Negative values detected in your data!")
   }
   if (missing(method)) {
-    warning("method argument is empty! pfp method will be used")
+    message("method argument is empty! pfp method will be used")
   }
 
-  Group <- as.factor(MSnbase::pData(data)[,1])
+  Group <- as.factor(SummarizedExperiment::colData(data)[,1])
 
   if (length(levels(Group)) != 2) {
-    stop(crayon::red(clisymbols::symbol$cross, "Data must have two groups..."))
+    stop("Data must have two groups...")
   }
 
   data_class <- as.numeric(ifelse(Group == levels(Group)[1], 0, 1))
@@ -58,30 +57,50 @@ PomaRankProd <- function(data,
   class1 <- levels(as.factor(Group))[1]
   class2 <- levels(as.factor(Group))[2]
 
-  RP <- RankProducts(MSnbase::exprs(data), data_class, logged = logged, na.rm = TRUE, plot = FALSE,
+  RP <- RankProducts(SummarizedExperiment::assay(data), 
+                     data_class, 
+                     logged = logged, 
+                     na.rm = TRUE, 
+                     plot = FALSE,
                      RandomPairs = paired,
                      rand = 123,
                      gene.names = rownames(data))
 
-  top_rank <- topGene(RP, cutoff = cutoff, method = method,
-                      logged = logged, logbase = logbase,
+  top_rank <- topGene(RP, cutoff = cutoff, 
+                      method = method,
+                      logged = logged, 
+                      logbase = logbase,
                       gene.names = rownames(data))
 
   one <- as.data.frame(top_rank$Table1)
   two <- as.data.frame(top_rank$Table2)
 
   if(nrow(one) == 0 & nrow(two) == 0){
-    stop(crayon::blue(clisymbols::symbol$info, "No significant features found..."))
+    stop("No significant features found...")
   }
   
   if(nrow(one) != 0){
-    colnames(one)[3] <- paste0("FC: ", class1, "/", class2)
-    one <- one %>% dplyr::rename(feature_index = gene.index)
+    
+    one <- one %>% 
+      rownames_to_column("feature") %>% 
+      dplyr::rename(rp_rsum = 3,
+                    pvalue = P.value,
+                    feature_index = gene.index) %>% 
+      dplyr::as_tibble()
+    
+    colnames(one)[4] <- paste0("FC_", class1, "_", class2)
   }
   
   if(nrow(two) != 0){
-    colnames(two)[3] <- paste0("FC: ", class1, "/", class2)
-    two <- two %>% dplyr::rename(feature_index = gene.index)
+    
+    two <- two %>% 
+      rownames_to_column("feature") %>% 
+      dplyr::rename(rp_rsum = 3,
+                    pvalue = P.value,
+                    feature_index = gene.index) %>% 
+      dplyr::as_tibble()
+    
+    colnames(two)[4] <- paste0("FC_", class1, "_", class2)
   }
 
   #### PLOT
@@ -114,14 +133,14 @@ PomaRankProd <- function(data,
   rp_plot <- data.frame(rank1 = rank1, rank2 = rank2, pfp1 = pfp1 ,  pfp2 = pfp2)
 
   plot1 <- ggplot(rp_plot, aes(x = rank1, y = pfp1)) +
-    geom_point(size = 1.5, alpha=0.8) +
+    geom_point(size = 1.5, alpha=0.9) +
     theme_bw() +
     xlab("Number of identified features") +
     ylab("Estimated PFP") +
     ggtitle(paste0("Identification of Up-regulated features under class ", class2))
 
   plot2 <- ggplot(rp_plot, aes(x = rank2, y = pfp2)) +
-    geom_point(size = 1.5, alpha=0.8) +
+    geom_point(size = 1.5, alpha=0.9) +
     theme_bw() +
     xlab("Number of identified features") +
     ylab("Estimated PFP") +

@@ -3,7 +3,7 @@
 #'
 #' @description PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param method A multivariate method. Options are: "pca", "plsda" and "splsda".
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.
@@ -25,13 +25,11 @@
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
-#' @importFrom dplyr select arrange desc filter
+#' @importFrom dplyr select arrange desc filter as_tibble
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 #' @importFrom mixOmics pca plsda perf vip tune.splsda splsda selectVar
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -72,17 +70,16 @@ PomaMultivariate <- function(data,
                              legend_position = "bottom"){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (missing(method)) {
-    stop(crayon::red(clisymbols::symbol$cross, "Select a method!"))
+    stop("Select a method!")
   }
   if (!(method %in% c("pca", "plsda", "splsda"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   if (missing(validation)) {
     if (method %in% c("plsda", "splsda")){
@@ -90,28 +87,28 @@ PomaMultivariate <- function(data,
     }
   }
   if (!(validation %in% c("Mfold", "loo"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect validation method! Please choose 'Mfold' or 'loo'"))
+    stop("Incorrect validation method! Please choose 'Mfold' or 'loo'")
   }
   if (load_length > 2 | load_length < 1) {
-    stop(crayon::red(clisymbols::symbol$cross, "load_length should be a number between 1 and 2..."))
+    stop("load_length should be a number between 1 and 2...")
   }
   if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for legend_position argument!"))
+    stop("Incorrect value for legend_position argument!")
   }
 
-  df <- t(MSnbase::exprs(data))
+  df <- t(SummarizedExperiment::assay(data))
 
   if(method == "pca"){
 
     X <- as.matrix(df)
-    Y <- as.factor(MSnbase::pData(data)[,1])
+    Y <- as.factor(SummarizedExperiment::colData(data)[,1])
     pca_res <- mixOmics::pca(X, ncomp = components, center = center, scale = scale)
 
     PCi <- data.frame(pca_res$variates$X, Groups = Y) %>% 
       rownames_to_column("ID")
 
     scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, color = Groups, shape = Groups, label = ID)) +
-      {if(!labels)geom_point(size = 3, alpha = 0.8)} +
+      {if(!labels)geom_point(size = 2, alpha = 0.9)} +
       xlab(paste0("PC1 (", round(100*(pca_res$prop_expl_var$X)[1], 2), "%)")) +
       ylab(paste0("PC2 (", round(100*(pca_res$prop_expl_var$X)[2], 2), "%)")) +
       {if(ellipse)stat_ellipse(type = "norm")} +
@@ -123,21 +120,23 @@ PomaMultivariate <- function(data,
 
     ##
 
-    eigenvalues <- data.frame(Percent_Variance_Explained = round(pca_res$prop_expl_var$X*100, 3)) %>% 
-      rownames_to_column("Principal_Component")
+    eigenvalues <- data.frame(pc_var_exp = round(pca_res$prop_expl_var$X*100, 3)) %>% 
+      rownames_to_column("component") %>% 
+      as_tibble()
 
-    screeplot <- ggplot(eigenvalues, aes(x = reorder(Principal_Component, -Percent_Variance_Explained), y = Percent_Variance_Explained, fill = Percent_Variance_Explained)) +
+    screeplot <- ggplot(eigenvalues, aes(x = reorder(component, -pc_var_exp), y = pc_var_exp, fill = pc_var_exp)) +
       geom_bar(stat = "identity") +
       xlab("Principal Component") +
       ylab("% Variance Explained") +
       theme_bw() +
       theme(legend.title = element_blank(),
-            legend.position = legend_position) +
-      scale_fill_continuous(type = "viridis")
+            legend.position = legend_position)
 
     ####
 
-    score_data <- PCi %>% dplyr::select(-Groups, -ID) %>% round(4)
+    score_data <- PCi %>% 
+      dplyr::select(-Groups, -ID) %>% 
+      as_tibble()
 
     ####
 
@@ -150,7 +149,7 @@ PomaMultivariate <- function(data,
     PCAloadings <- data.frame(pca_res2$loadings$X, to_x = len[,1], to_y = len[,2])
 
     biplot <- ggplot(PCi2, aes(x = PC1, y = PC2, color = Groups))+
-      geom_point(size = 3, alpha = 0.8) +
+      geom_point(size = 2, alpha = 0.9) +
       xlab(paste0("PC1 (", round(100*(pca_res2$prop_expl_var$X)[1], 2), "%)")) +
       ylab(paste0("PC2 (", round(100*(pca_res2$prop_expl_var$X)[2], 2), "%)")) +
       theme_bw() +
@@ -167,15 +166,18 @@ PomaMultivariate <- function(data,
             legend.position = legend_position) +
       scale_colour_viridis_d()
 
-    return(list(screeplot = screeplot, scoresplot = scoresplot,
-                score_data = score_data, eigenvalues = eigenvalues, biplot = biplot))
+    return(list(screeplot = screeplot, 
+                scoresplot = scoresplot,
+                scores = score_data, 
+                eigenvalues = eigenvalues, 
+                biplot = biplot))
 
   }
 
   else if (method == "plsda"){
 
     X <- as.matrix(df)
-    Y <- as.factor(MSnbase::pData(data)[,1])
+    Y <- as.factor(SummarizedExperiment::colData(data)[,1])
 
     plsda_res <- mixOmics::plsda(X, Y, ncomp = components)
 
@@ -183,7 +185,7 @@ PomaMultivariate <- function(data,
       rownames_to_column("ID")
 
     scoresplot <- ggplot(PLSDAi, aes(x = comp1, y = comp2, color = Groups, shape = Groups, label = ID))+
-      {if(!labels)geom_point(size = 3, alpha = 0.8)} +
+      {if(!labels)geom_point(size = 2, alpha = 0.9)} +
       xlab("Component 1") +
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
@@ -200,20 +202,23 @@ PomaMultivariate <- function(data,
 
     overall <- data.frame(perf_plsda$error.rate[1]) %>%
       round(4) %>%
-      rownames_to_column("Component") %>%
-      pivot_longer(cols = -Component)
+      rownames_to_column("component") %>%
+      pivot_longer(cols = -component) %>% 
+      as_tibble()
 
     ber <- data.frame(perf_plsda$error.rate[2]) %>%
       round(4) %>%
-      rownames_to_column("Component") %>%
-      pivot_longer(cols = -Component)
+      rownames_to_column("component") %>%
+      pivot_longer(cols = -component) %>% 
+      as_tibble()
 
     errors_plsda <- rbind(ber, overall)
 
-    errors_plsda_plot <- ggplot(data = errors_plsda, aes(x = Component, y = value, group = name)) +
+    errors_plsda_plot <- ggplot(data = errors_plsda, aes(x = component, y = value, group = name)) +
       geom_line(aes(color = name)) +
       geom_point(aes(color = name)) +
       ylab("Error") +
+      xlab("Component") +
       theme_bw() +
       theme(legend.title = element_blank(),
             legend.position = legend_position) +
@@ -223,7 +228,8 @@ PomaMultivariate <- function(data,
 
     plsda_vip <- data.frame(mixOmics::vip(plsda_res)) %>%
       rownames_to_column("feature") %>%
-      arrange(desc(comp1))
+      arrange(desc(comp1)) %>% 
+      as_tibble()
 
     plsda_vip_top <- plsda_vip %>%
       filter(comp1 >= vip) %>%
@@ -237,22 +243,26 @@ PomaMultivariate <- function(data,
       # {if(nrow(plsda_vip_top) <= 10)geom_label(data = plsda_vip_top, aes(label = round(comp1, 2)))} +
       theme_bw() +
       theme(legend.title = element_blank(),
-            legend.position = legend_position) +
-      scale_fill_continuous(type = "viridis")
+            legend.position = legend_position)
 
     ####
 
-    scores_plsda <- PLSDAi %>% dplyr::select(-Groups, -ID) %>% round(4)
+    scores_plsda <- PLSDAi %>% 
+      dplyr::select(-Groups, -ID) %>%
+      as_tibble()
 
-    return(list(scoresplot = scoresplot, errors_plsda = errors_plsda,
-                errors_plsda_plot = errors_plsda_plot, plsda_vip_table = plsda_vip,
-                vip_plsda_plot = vip_plsda_plot, score_data = scores_plsda))
+    return(list(scoresplot = scoresplot, 
+                errors_plsda = errors_plsda,
+                errors_plsda_plot = errors_plsda_plot,
+                vip_plsda = plsda_vip,
+                vip_plsda_plot = vip_plsda_plot, 
+                scores = scores_plsda))
   }
 
   else if (method == "splsda"){
 
     X <- as.matrix(df)
-    Y <- as.factor(MSnbase::pData(data)[,1])
+    Y <- as.factor(SummarizedExperiment::colData(data)[,1])
 
     list_keepX <- c(1:num_features)
 
@@ -265,17 +275,18 @@ PomaMultivariate <- function(data,
     select_keepX <- tune_splsda$choice.keepX[1:ncomp]  # optimal number of variables to select
 
     errors_splsda <- data.frame(tune_splsda$error.rate) %>% 
-      round(4) %>%
-      rownames_to_column("features") %>%
-      pivot_longer(cols = -features)
+      rownames_to_column("feature") %>%
+      pivot_longer(cols = -feature)
 
     errors_sd <- data.frame(tune_splsda$error.rate.sd) %>% 
-      rownames_to_column("features_sd") %>%
-      pivot_longer(cols = -features_sd)
+      rownames_to_column("feature_sd") %>%
+      pivot_longer(cols = -feature_sd)
 
-    errors_splsda <- cbind(errors_splsda, sd = errors_sd$value)
+    errors_splsda <- cbind(errors_splsda, sd = errors_sd$value) %>% 
+      as.data.frame() %>% 
+      as_tibble()
 
-    bal_error_rate <- ggplot(data = errors_splsda, aes(x = features, y = value, group = name)) +
+    bal_error_rate <- ggplot(data = errors_splsda, aes(x = feature, y = value, group = name)) +
       geom_line(aes(color = name)) +
       geom_point(aes(color = name)) +
       geom_errorbar(aes(ymin = value-sd, ymax = value+sd, color = name), width=.1) +
@@ -297,10 +308,11 @@ PomaMultivariate <- function(data,
 
     res_splsda <- mixOmics::splsda(X, Y, ncomp = ncompX, keepX = select_keepX)
 
-    SPLSDAi <- data.frame(res_splsda$variates$X, Groups = Y) %>% rownames_to_column("ID")
+    SPLSDAi <- data.frame(res_splsda$variates$X, Groups = Y) %>% 
+      rownames_to_column("ID")
 
     splsda_scores_plot <- ggplot(SPLSDAi, aes(x = comp1, y = comp2, color = Groups, shape = Groups, label = ID)) +
-      {if(!labels)geom_point(size = 3, alpha = 0.8)} +
+      {if(!labels)geom_point(size = 2, alpha = 0.9)} +
       xlab("Component 1") +
       ylab("Component 2") +
       {if(ellipse)stat_ellipse(type = "norm")} +
@@ -310,17 +322,25 @@ PomaMultivariate <- function(data,
             legend.position = legend_position) +
       scale_colour_viridis_d()
 
-    scores_splsda <- SPLSDAi %>% dplyr::select(-Groups, -ID) %>% round(4)
+    scores_splsda <- SPLSDAi %>% 
+      dplyr::select(-Groups, -ID) %>%
+      as_tibble()
 
     selected_variables <- mixOmics::selectVar(res_splsda, comp = 1)
     selected_variables <- round(selected_variables$value, 4)
-    selected_variables <- data.frame(Feature = rownames(selected_variables), Value = selected_variables$value.var)
+    selected_variables <- data.frame(feature = rownames(selected_variables), 
+                                     value = selected_variables$value.var) %>% 
+      as_tibble()
 
     ####
 
-    return(list(ncomp = ncomp, select_keepX = select_keepX, errors_splsda = errors_splsda,
-                scoresplot = splsda_scores_plot, bal_error_rate = bal_error_rate,
-                score_data = scores_splsda, selected_variables = selected_variables))
+    return(list(ncomp = ncomp, 
+                select_keepX = select_keepX, 
+                scoresplot = splsda_scores_plot, 
+                errors_splsda = errors_splsda,
+                errors_splsda_plot = bal_error_rate,
+                scores = scores_splsda, 
+                selected_variables = selected_variables))
 
   }
 

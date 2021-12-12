@@ -7,14 +7,14 @@
 PomaNorm(data, method = "log_pareto", round = 3)
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{method}{Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".}
 
 \item{round}{Numeric. Number of decimal places (Default is 3).}
 }
 \value{
-A MSnSet object with normalized data.
+A SummarizedExperiment object with normalized data.
 }
 \description{
 PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.

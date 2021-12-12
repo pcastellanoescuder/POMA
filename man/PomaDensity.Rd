@@ -12,7 +12,7 @@ PomaDensity(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{group}{Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.}
 

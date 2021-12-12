@@ -3,9 +3,10 @@
 #'
 #' @description PomaLimma() uses the classical limma package for MS data.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param contrast A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".
-#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
+#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `colData` will be used as covariables. Default = FALSE.
+#' @param covs Character vector indicating the name of `colData` columns that will be included as covariates. Default is NULL (all variables).
 #' @param adjust Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
 #' @param cutoff Default is NULL. If this value is replaced for a numeric value, the resultant table will contains only those features with an adjusted p-value below selected value. 
 #'
@@ -16,11 +17,10 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom limma makeContrasts lmFit contrasts.fit eBayes topTable
-#' @importFrom crayon red
 #' @importFrom magrittr %>%
-#' @importFrom dplyr filter
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase pData exprs
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr filter select select_at vars matches as_tibble
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000284")
@@ -31,31 +31,28 @@
 PomaLimma <- function(data,
                       contrast = NULL,
                       covariates = FALSE,
+                      covs = NULL,
                       adjust = "fdr",
                       cutoff = NULL){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (is.null(contrast)) {
-    stop(crayon::red(clisymbols::symbol$cross, "Contrast argument is empty! You have to specify a contrast."))
+    stop("Contrast argument is empty! Specify a contrast.")
   }
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for adjust argument!"))
+    stop("Incorrect value for adjust argument!")
   }
-  if (missing(adjust)) {
-    warning("adjust argument is empty! FDR will be used")
-  }
-  if(isTRUE(covariates) & ncol(pData(data)) == 1){
-    stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
+  if(covariates & ncol(SummarizedExperiment::colData(data)) == 1){
+    stop("Seems there aren't covariates in your data...")
   }
 
-  Group <- MSnbase::pData(data)[,1]
-  e <- MSnbase::exprs(data)
+  Group <- SummarizedExperiment::colData(data)[,1]
+  e <- SummarizedExperiment::assay(data)
 
   contrasts <- levels(as.factor(Group))
   fac1 <- as.factor(Group)
@@ -80,6 +77,10 @@ PomaLimma <- function(data,
         dplyr::filter(adj.P.Val <= cutoff)
     }
     
+    res <- res %>% 
+      rownames_to_column("feature") %>% 
+      as_tibble()
+      
     return(res)
 
   }
@@ -88,12 +89,18 @@ PomaLimma <- function(data,
 
   else {
 
-    covariates <- as.data.frame(pData(data)[, 2:ncol(pData(data))])
-    
-    if(ncol(covariates) == 1){
-      colnames(covariates) <- colnames(pData(data))[2]
+    if(is.null(covs)){
+      covariates <- colData(data) %>%
+        as.data.frame() %>%
+        dplyr::select(-1)
+    } 
+    else{
+      covariates <- colData(data) %>%
+        as.data.frame() %>%
+        dplyr::select(-1) %>% 
+        dplyr::select_at(vars(matches(covs)))
     }
-
+    
     form <- as.formula(noquote(paste("~ 0 + fac1 + ", paste0(colnames(covariates), collapse = " + ", sep=""), sep = "")))
 
     initialmodel2 <- model.matrix(form, covariates)
@@ -113,6 +120,10 @@ PomaLimma <- function(data,
       res2 <- res2 %>%
         dplyr::filter(adj.P.Val <= cutoff)
     }
+    
+    res2 <- res2 %>% 
+      rownames_to_column("feature") %>% 
+      as_tibble()
     
     return(res2)
     

@@ -8,13 +8,13 @@ PomaRandForest(
   data,
   ntest = 20,
   ntree = 500,
-  mtry = floor(sqrt(ncol(t(MSnbase::exprs(data))))),
+  mtry = floor(sqrt(ncol(t(SummarizedExperiment::assay(data))))),
   nodesize = 1,
   nvar = 20
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is 20\% of observations.}
 

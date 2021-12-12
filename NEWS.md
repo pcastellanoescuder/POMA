@@ -1,3 +1,15 @@
+# POMA 2.0.0
+
+* `MSnbase::MSnSet` class has been replaced by the `SummarizedExperiment` class
+* Color scale for all plots set to `viridis` 
+* All output tables provided as `tibble` istead of `matrix` or `data.frame`
+* Allow users to select specific covariates and their position (importance) in the model for `PomaLimma`, `PomaUnivariate(method = "anova")`, and `PomaOddsRatio`
+* Reduce dependencies
+* Update vignettes
+* Update documentation
+* Some other major and minor improvements
+* Some minor bugs and typos fixed
+
 ## POMA 1.1.15
 
 * Remove `reshape2` and `Biobase` packages from Imports

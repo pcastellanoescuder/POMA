@@ -3,8 +3,9 @@
 #'
 #' @description PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
-#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `pData` will be used as covariables. Default = FALSE.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `colData` will be used as covariables. Default = FALSE.
+#' @param covs Character vector indicating the name of `colData` columns that will be included as covariates. Default is NULL (all variables).
 #' @param method Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".
 #' @param paired Logical that indicates if the data is paired or not.
 #' @param var_equal Logical that indicates if the data variance is equal or not.
@@ -16,11 +17,9 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom tibble column_to_rownames rownames_to_column remove_rownames
-#' @importFrom dplyr select mutate filter bind_cols bind_rows summarise_all group_by
+#' @importFrom dplyr select mutate mutate_all filter bind_cols bind_rows summarise_all group_by as_tibble everything
 #' @importFrom magrittr %>%
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase pData exprs
+#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -41,34 +40,34 @@
 #'   PomaUnivariate(method = "anova")
 PomaUnivariate <- function(data,
                            covariates = FALSE,
+                           covs = NULL,
                            method = "ttest",
                            paired = FALSE,
                            var_equal = FALSE,
                            adjust = "fdr"){
 
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (missing(method)) {
-    stop(crayon::red(clisymbols::symbol$cross, "Select a method!"))
+    stop("Select a method!")
   }
   if (!(method %in% c("ttest", "anova", "mann", "kruskal"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for method argument!"))
+    stop("Incorrect value for method argument!")
   }
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
-    stop(crayon::red(clisymbols::symbol$cross, "Incorrect value for adjust argument!"))
+    stop("Incorrect value for adjust argument!")
   }
 
-  if(isTRUE(covariates) & ncol(pData(data)) == 1){
-    stop(crayon::red(clisymbols::symbol$cross, "Seems that your data don't have covariates..."))
+  if(covariates & ncol(SummarizedExperiment::colData(data)) == 1){
+    stop("Seems there aren't covariates in your data...")
   }
 
-  Group <- as.factor(MSnbase::pData(data)[,1])
-  e <- t(MSnbase::exprs(data))
+  Group <- as.factor(SummarizedExperiment::colData(data)[,1])
+  e <- t(SummarizedExperiment::assay(data))
 
   ## group means
   
@@ -88,108 +87,101 @@ PomaUnivariate <- function(data,
   
   if(method == "ttest"){
 
-    stat <- function(x){t.test(x ~ Group, na.rm = TRUE, alternative = "two.sided",
-                               var.equal = var_equal, paired = paired)$p.value}
+    stat_ttest <- function(x){t.test(x ~ Group, na.rm = TRUE, alternative = "two.sided",
+                                     var.equal = var_equal, paired = paired)$p.value}
 
-    p <- data.frame(pvalue = apply(FUN = stat, MARGIN = 2, X = e))
-
-    p <- p %>%
-      rownames_to_column("ID") %>%
+    res_ttest <- data.frame(pvalue = apply(FUN = stat_ttest, MARGIN = 2, X = e)) %>% 
+      rownames_to_column("feature") %>%
       mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>%
-      column_to_rownames("ID")
-    
-    p <- bind_cols(group_means, p) %>%
-      rownames_to_column("ID") %>%
-      mutate(Fold_Change_Ratio = as.numeric(round(group_means[,2]/group_means[,1], 3)),
-             Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
-      column_to_rownames("ID") %>%
-      select(1,2,5,6,3,4)
+      bind_cols(group_means) %>%
+      mutate(FC = as.numeric(round(group_means[,2]/group_means[,1], 3)),
+             diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
+      dplyr::select(feature, FC, diff_means, pvalue, pvalueAdj, everything()) %>% 
+      dplyr::as_tibble()
 
-    return(p)
+    return(res_ttest)
   }
 
   else if(method == "anova"){
 
     if(!covariates){
 
-      stat2 <- function(x){anova(aov(x ~ Group))$"Pr(>F)"[1]}
-      p2 <- data.frame(pvalue = apply(FUN = stat2, MARGIN = 2, X = e))
-
-      p2 <- p2 %>%
-        mutate(pvalueAdj = p.adjust(pvalue, method = adjust))
+      stat_aov <- function(x){anova(aov(x ~ Group))$"Pr(>F)"[1]}
       
-      p2 <- bind_cols(group_means, p2)
+      res_aov <- data.frame(pvalue = apply(FUN = stat_aov, MARGIN = 2, X = e)) %>%
+        mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>% 
+        bind_cols(group_means) %>% 
+        rownames_to_column("feature") %>% 
+        dplyr::select(feature, pvalue, pvalueAdj, everything()) %>% 
+        dplyr::as_tibble()
 
-      return(p2)
+      return(res_aov)
 
     }
-    else{
-
-      covariate_uni <- as.data.frame(pData(data)[, 2:ncol(pData(data))])
+    else {
       
-      if(ncol(covariate_uni) == 1){
-        colnames(covariate_uni) <- colnames(pData(data))[2]
-      }
-      
-      covariate_uni <- sapply(covariate_uni, as.numeric)
-
-      model_names <- paste0(paste0(colnames(covariate_uni), collapse = " + "), " + Group")
-
-      LenCov <- ncol(covariate_uni)
-
-      covariate_uni <- as.data.frame(cbind(e, covariate_uni))
-
-      n <- ncol(covariate_uni) - LenCov
-      result <- vector(mode = "list", length = n)
-      for(i in 1:n) {
-        result[[i]] <- data.frame(pvalue = anova(aov(as.formula(paste(colnames(covariate_uni)[i], "~", model_names)),
-                                            data = covariate_uni))$"Pr(>F)"[LenCov+1])
+      if(is.null(covs)){
+        covariates <- colData(data) %>%
+          as.data.frame() %>%
+          dplyr::select(-1) %>% 
+          dplyr::mutate_all(as.numeric)
+      } 
+      else {
+        covariates <- colData(data) %>%
+          as.data.frame() %>%
+          dplyr::select(-1) %>% 
+          dplyr::select_at(vars(matches(covs))) %>% 
+          dplyr::mutate_all(as.numeric)
       }
 
-      p3 <- bind_rows(result)
-      rownames(p3) <- colnames(e)
+      model_names <- paste0(paste0(colnames(covariates), collapse = " + "), " + Group")
+      covariates_feat <- as.data.frame(cbind(e, covariates))
+      
+      result_cov <- vector(mode = "list", length = ncol(e))
+      for(i in 1:ncol(e)) {
+        result_cov[[i]] <- data.frame(pvalue = anova(aov(as.formula(paste(colnames(covariates_feat)[i], "~", 
+                                                                          model_names)),
+                                            data = covariates_feat))$"Pr(>F)"[ncol(covariates)+1])
+      }
 
-      p3 <- p3 %>%
-        mutate(pvalueAdj = p.adjust(pvalue, method = adjust))
+      res_aov_cov <- bind_rows(result_cov) %>%
+        mutate(feature = colnames(e),
+               pvalueAdj = p.adjust(pvalue, method = adjust)) %>% 
+        bind_cols(group_means) %>% 
+        dplyr::select(feature, pvalue, pvalueAdj, everything()) %>% 
+        dplyr::as_tibble()
 
-      p3 <- bind_cols(group_means, p3)
-
-      return(p3)
+      return(res_aov_cov)
 
     }
   }
 
   else if(method == "mann"){
 
-    non_param_mann <- data.frame(pvalue = apply(e, 2,
-                                                 function(x){wilcox.test(x ~ as.factor(Group),
-                                                                         paired = paired)$p.value}))
-
-    non_param_mann <- non_param_mann %>%
-      rownames_to_column("ID") %>%
+    res_mann <- data.frame(pvalue = apply(e, 2, function(x){wilcox.test(x ~ as.factor(Group),
+                                                                        paired = paired)$p.value})) %>% 
+      rownames_to_column("feature") %>%
       mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>%
-      column_to_rownames("ID")
+      bind_cols(group_means) %>%
+      mutate(FC = as.numeric(round(group_means[,2]/group_means[,1], 3)),
+             diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
+      dplyr::select(feature, FC, diff_means, pvalue, pvalueAdj, everything()) %>% 
+      dplyr::as_tibble()
     
-    non_param_mann <- bind_cols(group_means, non_param_mann) %>%
-      rownames_to_column("ID") %>%
-      mutate(Fold_Change_Ratio = as.numeric(round(group_means[,2]/group_means[,1], 3)),
-             Difference_Of_Means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
-      column_to_rownames("ID") %>%
-      select(1,2,5,6,3,4)
-
-    return(non_param_mann)
+    return(res_mann)
   }
 
   else if (method == "kruskal"){
 
-    non_param_kru <- data.frame(pvalue = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$p.value}))
-    non_param_kru <- non_param_kru %>%
+    res_kruskal <- data.frame(pvalue = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$p.value})) %>%
       mutate(pvalueAdj = p.adjust(pvalue, method = adjust),
-             Kruskal_Wallis_Rank_Sum = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$statistic}))
-
-    non_param_kru <- bind_cols(group_means, non_param_kru)
+             kw_rank_sum = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$statistic})) %>% 
+      bind_cols(group_means) %>% 
+      rownames_to_column("feature") %>%
+      dplyr::select(feature, kw_rank_sum, pvalue, pvalueAdj, everything()) %>% 
+      dplyr::as_tibble()
     
-    return(non_param_kru)
+    return(res_kruskal)
   }
 
 }

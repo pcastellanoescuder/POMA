@@ -3,7 +3,8 @@
 #'
 #' @description This function returns a basic heatmap plot made with base R.
 #' 
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param cols Numerical vector indicating the column index of variables in `colData` to be displayed. Default is 1 (main group).
 #' @param sample_names Logical indicating if sample names should be plotted or not. Default is TRUE.
 #' @param feature_names Logical indicating if feature names should be plotted or not. Default is FALSE.
 #' @param show_legend Logical indicating if legend should be plotted or not. Default is TRUE.
@@ -13,9 +14,8 @@
 #' @return A heatmap.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom crayon red
-#' @importFrom clisymbols symbol
-#' @importFrom MSnbase pData exprs
+#' @importFrom dplyr select all_of
+#' @importFrom SummarizedExperiment assay colData
 #' @importFrom ComplexHeatmap HeatmapAnnotation Heatmap
 #' 
 #' @examples 
@@ -25,29 +25,37 @@
 #'   PomaNorm() %>% 
 #'   PomaHeatmap()
 PomaHeatmap <- function(data, 
+                        cols = 1,
                         sample_names = TRUE,
                         feature_names = FALSE,
                         show_legend = TRUE){
   
   if (missing(data)) {
-    stop(crayon::red(clisymbols::symbol$cross, "data argument is empty!"))
+    stop("data argument is empty!")
   }
-  if(!is(data[1], "MSnSet")){
-    stop(paste0(crayon::red(clisymbols::symbol$cross, "data is not a MSnSet object."), 
-                " \nSee POMA::PomaMSnSetClass or MSnbase::MSnSet"))
+  if(!is(data[1], "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   
-  total <- MSnbase::exprs(data)
-  target <- MSnbase::pData(data)
-
-  ha <- ComplexHeatmap::HeatmapAnnotation(df = data.frame(Group = target[,1]),
+  total <- SummarizedExperiment::assay(data)
+  target <- SummarizedExperiment::colData(data)
+  
+  df <- target %>%
+    as.data.frame() %>%
+    dplyr::select(all_of(cols))
+  
+  
+  ha <- ComplexHeatmap::HeatmapAnnotation(df = df,
                                           show_legend = show_legend)
 
-  ComplexHeatmap::Heatmap(total, name = "Value", 
-                          top_annotation = ha,
-                          show_row_names = feature_names, 
-                          show_column_names = sample_names,
-                          show_heatmap_legend = show_legend)
+  suppressMessages(
+    ComplexHeatmap::Heatmap(total, 
+                            name = "Value", 
+                            top_annotation = ha,
+                            show_row_names = feature_names, 
+                            show_column_names = sample_names,
+                            show_heatmap_legend = show_legend)
+  )
   
 }
 

@@ -12,7 +12,7 @@
 #' or polyp patients); good specificities (0.80 and 0.88), and excellent areas under the curve (0.93 and 0.95) were also obtained. Monte Carlo 
 #' cross validation (MCCV) was also applied, demonstrating the robust diagnostic power of this metabolic profiling approach.
 #'
-#' @format A `MSnSet` object: 224 samples, 113 metabolites, 4 covariables and 3 groups (CRC, Healthy and Polyp).
+#' @format A `SummarizedExperiment` object: 224 samples, 113 metabolites, 4 covariables and 3 groups (CRC, Healthy and Polyp).
 #' \describe{
 #'   \item{metabolites}{113 serum metabolites.}
 #'   \item{covariables}{Age at consent, Gender, Smoking Condition and Alcohol Consumption.}
@@ -30,7 +30,7 @@
 #' the urine levels of amino acids and organic acids in patients with DMD both with and without steroid treatment. Track the progression 
 #' of DMD in patients who have provided multiple urine samples.
 #'
-#' @format A `MSnSet` object: 57 samples, 31 metabolites, 1 covariable and 2 groups (Controls and DMD).
+#' @format A `SummarizedExperiment` object: 57 samples, 31 metabolites, 1 covariable and 2 groups (Controls and DMD).
 #' \describe{
 #'   \item{metabolites}{31 urine metabolites.}
 #'   \item{covariables}{Steroid status.}

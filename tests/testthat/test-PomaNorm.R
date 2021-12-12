@@ -2,9 +2,11 @@ context("PomaNorm")
 
 test_that("PomaNorm works", {
 
+  library(SummarizedExperiment)
+  
   data("st000284")
 
-  data <- t(MSnbase::exprs(st000284))
+  data <- t(SummarizedExperiment::assay(st000284))
 
   data <- data*round(runif(n=1, min = 0.01, max = 0.99), 3) # just to create decimals
   data[1:4, 5] <- 0 # create some zeros in one group
@@ -16,8 +18,11 @@ test_that("PomaNorm works", {
   data[,1] <- 0 # create column of only zeros
   data[,2] <- 100 # create feature with var = 0
 
-  target <- pData(st000284) %>% rownames_to_column() %>% as.data.frame()
-  testnorm <- PomaMSnSetClass(features = data, target = target)
+  target <- SummarizedExperiment::colData(st000284) %>% 
+    as.data.frame() %>% 
+    rownames_to_column()
+  
+  testnorm <- PomaSummarizedExperiment(features = data, target = target)
 
   newdata <- POMA::PomaImpute(testnorm, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 2)
   newdata2 <- POMA::PomaNorm(newdata, method = "log_pareto")
@@ -40,9 +45,6 @@ test_that("PomaNorm works", {
 
   expect_error(PomaNorm(newdata, method = "log", round = 2))
   expect_message(PomaNorm(newdata))
-
-  expect_true(newdata2@processingData@cleaned)
-  expect_true(newdata2@processingData@normalised)
 
   ##
   

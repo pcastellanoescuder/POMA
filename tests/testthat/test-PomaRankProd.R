@@ -4,13 +4,15 @@ test_that("PomaRankProd works", {
 
   data("st000284")
   
-  target <- MSnbase::pData(st000284)[1:100,] %>% tibble::rownames_to_column("ID")
-  e <- MSnbase::exprs(st000284)[,1:100]
+  target <- SummarizedExperiment::colData(st000284)[1:100,] %>% 
+    as.data.frame() %>% 
+    tibble::rownames_to_column("ID")
+  e <- SummarizedExperiment::assay(st000284)[,1:100]
   
-  data <- PomaMSnSetClass(target = target, features = t(e))
+  data <- PomaSummarizedExperiment(target = target, features = t(e))
   
   toy_data <- POMA::PomaNorm(data, method = "log_scaling")
-  MSnbase::pData(toy_data)$groups <- c(rep("C", 25), rep("G", 25))
+  SummarizedExperiment::colData(toy_data)$groups <- c(rep("C", 25), rep("G", 25))
 
   ##
 
@@ -25,7 +27,7 @@ test_that("PomaRankProd works", {
   expect_error(PomaRankProd())
   expect_error(PomaRankProd(data, method = "pfd"))
   expect_error(PomaRankProd(toy_data))
-  expect_warning(PomaRankProd(data))
+  expect_message(PomaRankProd(data))
   expect_error(PomaRankProd(iris))
 
   ##

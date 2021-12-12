@@ -38,9 +38,6 @@ test_that("PomaDensity works", {
 
   expect_equal(df_a, df_e)
 
-  expect_message(PomaDensity(norm_none))
-  expect_message(PomaDensity(norm_ls))
-
   expect_error(PomaDensity(norm_ls, group = "samp"))
   expect_error(PomaDensity(norm_ls, group = "features", feature_name = "hello"))
 

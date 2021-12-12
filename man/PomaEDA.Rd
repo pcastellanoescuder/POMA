@@ -14,7 +14,7 @@ PomaEDA(
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{imputation}{Imputation method. Options are "none", "half_min", "median", "mean", "min" and "knn" (default). If "none", all missing values will be replaced by zero.}
 
@@ -30,7 +30,7 @@ PomaEDA(
 An exploratory data analysis PDF report.
 }
 \description{
-This function automatically generates a PDF report with different exploratory plots and tables from an MSnSet object.
+This function automatically generates a PDF report with different exploratory plots and tables from an SummarizedExperiment object.
 }
 \author{
 Pol Castellano-Escuder
