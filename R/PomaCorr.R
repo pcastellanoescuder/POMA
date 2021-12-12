@@ -107,7 +107,7 @@ PomaCorr <- function(data,
     }
     
     graph <- ggraph(graph_table, layout = "fr") +
-      geom_edge_link(aes(edge_alpha = abs(corr), edge_width = abs(corr), color = corr)) +
+      geom_edge_link(aes(edge_alpha = abs(R), edge_width = abs(R), color = R)) +
       guides(edge_alpha = "none", edge_width = "none") +
       scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
       geom_node_point(color = "white", size = 5) +
