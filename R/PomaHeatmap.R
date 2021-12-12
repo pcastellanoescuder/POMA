@@ -14,6 +14,7 @@
 #' @return A heatmap.
 #' @author Pol Castellano-Escuder
 #'
+#' @importFrom dplyr select all_of
 #' @importFrom SummarizedExperiment assay colData
 #' @importFrom ComplexHeatmap HeatmapAnnotation Heatmap
 #' 
@@ -38,9 +39,12 @@ PomaHeatmap <- function(data,
   
   total <- SummarizedExperiment::assay(data)
   target <- SummarizedExperiment::colData(data)
-
-  df <- data.frame(target[, cols])
-  colnames(df) <- names(target[cols])
+  
+  df <- target %>%
+    as.data.frame() %>%
+    dplyr::select(all_of(cols))
+  
+  
   ha <- ComplexHeatmap::HeatmapAnnotation(df = df,
                                           show_legend = show_legend)
 

@@ -17,9 +17,6 @@ test_that("PomaLimma works", {
 
   expect_error(PomaLimma(st000284, covariates = FALSE, adjust = "fdr"))
   expect_error(PomaLimma(st000284, contrast = NULL))
-  expect_warning(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = FALSE))
-  expect_warning(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE))
-
 
   ####
 
@@ -36,7 +33,7 @@ test_that("PomaLimma works", {
   
   ####
 
-  MSnbase::pData(st000284) <- MSnbase::pData(st000284)[1]
+  SummarizedExperiment::colData(st000284) <- SummarizedExperiment::colData(st000284)[1]
   expect_error(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fdr"))
   expect_error(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fd"))
   

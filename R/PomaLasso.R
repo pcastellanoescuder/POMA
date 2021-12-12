@@ -3,7 +3,7 @@
 #'
 #' @description PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from `glmnet` package for binary outcomes.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param alpha Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.
 #' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).
 #' @param nfolds Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.
@@ -69,15 +69,15 @@ PomaLasso <- function(data,
       stop("ntest must be a number between 5 and 50...")
     }
   }
-  if (length(levels(as.factor(MSnbase::pData(data)[,1]))) > 2) {
+  if (length(levels(as.factor(SummarizedExperiment::colData(data)[,1]))) > 2) {
     stop("Your data have more than two groups!")
   }
-  if (length(levels(as.factor(MSnbase::pData(data)[,1]))) < 2) {
+  if (length(levels(as.factor(SummarizedExperiment::colData(data)[,1]))) < 2) {
     stop("Your data have less than two groups!")
   }
 
-  features <- t(MSnbase::exprs(data))
-  response <- as.factor(MSnbase::pData(data)[,1])
+  features <- t(SummarizedExperiment::assay(data))
+  response <- as.factor(SummarizedExperiment::colData(data)[,1])
   lasso_data <- cbind(response, features)
 
   n <- nrow(lasso_data)
@@ -130,7 +130,10 @@ PomaLasso <- function(data,
   }
   
   tidied_cv2 <- broom::tidy(cv_fit$glmnet.fit)
-  tidied_cv2_names <- tidied_cv2 %>% arrange(desc(abs(estimate))) %>% group_by(term) %>% dplyr::slice(1)
+  tidied_cv2_names <- tidied_cv2 %>% 
+    arrange(desc(abs(estimate))) %>% 
+    group_by(term) %>% 
+    dplyr::slice(1)
   
   coefficientplot <- ggplot(tidied_cv2, aes(lambda, estimate, color = term)) +
     scale_x_log10() +

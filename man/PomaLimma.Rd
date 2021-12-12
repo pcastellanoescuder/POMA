@@ -8,16 +8,19 @@ PomaLimma(
   data,
   contrast = NULL,
   covariates = FALSE,
+  covs = NULL,
   adjust = "fdr",
   cutoff = NULL
 )
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{contrast}{A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".}
 
-\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{pData} will be used as covariables. Default = FALSE.}
+\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{colData} will be used as covariables. Default = FALSE.}
+
+\item{covs}{Character vector indicating the name of \code{colData} columns that will be included as covariates. Default is NULL (all variables).}
 
 \item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 
