@@ -81,6 +81,8 @@ var_zero <- e %>%
   filter(V1 == 0)
 ```
 
+\pagebreak
+
 # Know your data
 
   + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**. `r ifelse(ncol(SummarizedExperiment::colData(data)) > 1, paste0("Furthermore, **", ncol(SummarizedExperiment::colData(data)) - 1,"** covariates have been found in your data. These covariates are **",noquote(paste(shQuote(paste0(colnames(SummarizedExperiment::colData(data))[2:ncol(SummarizedExperiment::colData(data))])), collapse=", ")),"**."), "")`          
@@ -117,7 +119,8 @@ if (nrow(nas) >= 1){
     ggtitle("Missing Value Plot") +
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "none")
+          legend.position = "none") +
+    scale_fill_viridis_d()
 }
 ```
 
@@ -130,7 +133,8 @@ if (nrow(zeros) >= 1){
     ggtitle("Zeros Plot") +
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "none")
+          legend.position = "none") +
+    scale_fill_viridis_d()
 }
 ```
 
@@ -146,8 +150,11 @@ ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
   xlab("") +
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none")
+        legend.position = "none") +
+    scale_fill_viridis_d()
 ```
+
+\pagebreak
 
 # Normalization Plots
 
@@ -167,9 +174,12 @@ p2 <- PomaBoxplots(pre_processed, jitter = jttr) +
   ggtitle(paste0("Normalized (", normalization, ")")) +
   theme(legend.position = "bottom")
 
-p1 + p2
+p1
+p2
 ```
-  
+
+\pagebreak
+
 # Group Distribution Plots
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
@@ -179,8 +189,11 @@ p3 <- PomaDensity(imputed) +
 p4 <- PomaDensity(pre_processed) +
   ggtitle(paste0("Normalized (", normalization, ")"))
 
-p3/p4
+p3
+p4
 ```
+
+\pagebreak
 
 # Outlier Detection
 
@@ -200,6 +213,8 @@ if(nrow(outliers$outliers) >= 1){
   }
 ```
 
+\pagebreak
+
 # High Correlated Features (r > 0.97)
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
@@ -209,11 +224,15 @@ high_correlations <- correlations$correlations %>% filter(abs(corr) > 0.97)
 
 There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$Var1, " - " , high_correlations$Var2)), collapse=", ")),"**."), "")`
 
+\pagebreak
+
 # Heatmap and Clustering
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
 PomaHeatmap(pre_processed)
 ```
+
+\pagebreak
 
 # Principal Component Analysis
 

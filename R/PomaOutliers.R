@@ -107,7 +107,8 @@ PomaOutliers <- function(data,
       {if(!labels)geom_point(aes(shape = Group), size = 3, alpha = 0.7)} +
       geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
       {if(labels)geom_text(aes(label = sample))} +
-      theme_bw()
+      theme_bw() +
+      scale_fill_viridis_d()
     
     distance_boxplot <- ggplot(detect_outliers, aes(Groups, distances, fill = Groups)) +
       geom_boxplot(coef = coef, alpha = 0.8) +
@@ -115,7 +116,8 @@ PomaOutliers <- function(data,
       xlab("") +
       {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
       theme_bw() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      scale_fill_viridis_d()
     
     return(list(polygon_plot = polygon_plot, distance_boxplot = distance_boxplot, outliers = final_outliers))
     

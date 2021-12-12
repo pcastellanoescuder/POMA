@@ -3,7 +3,7 @@
 #'
 #' @description PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param logged If "TRUE" (default) data have been previously log transformed.
 #' @param logbase Numerical. Base for log transformation.
 #' @param paired Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.
@@ -37,14 +37,14 @@ PomaRankProd <- function(data,
   if (!(method %in% c("pfp", "pval"))) {
     stop("Incorrect value for method argument!")
   }
-  if (sum(apply(t(MSnbase::exprs(data)), 2, function(x){sum(x < 0, na.rm = TRUE)})) != 0) {
+  if (sum(apply(t(SummarizedExperiment::assay(data)), 2, function(x){sum(x < 0, na.rm = TRUE)})) != 0) {
     stop("Negative values detected in your data!")
   }
   if (missing(method)) {
-    warning("method argument is empty! pfp method will be used")
+    message("method argument is empty! pfp method will be used")
   }
 
-  Group <- as.factor(MSnbase::pData(data)[,1])
+  Group <- as.factor(SummarizedExperiment::colData(data)[,1])
 
   if (length(levels(Group)) != 2) {
     stop("Data must have two groups...")
@@ -55,7 +55,7 @@ PomaRankProd <- function(data,
   class1 <- levels(as.factor(Group))[1]
   class2 <- levels(as.factor(Group))[2]
 
-  RP <- RankProducts(MSnbase::exprs(data), data_class, logged = logged, na.rm = TRUE, plot = FALSE,
+  RP <- RankProducts(SummarizedExperiment::assay(data), data_class, logged = logged, na.rm = TRUE, plot = FALSE,
                      RandomPairs = paired,
                      rand = 123,
                      gene.names = rownames(data))
@@ -111,14 +111,14 @@ PomaRankProd <- function(data,
   rp_plot <- data.frame(rank1 = rank1, rank2 = rank2, pfp1 = pfp1 ,  pfp2 = pfp2)
 
   plot1 <- ggplot(rp_plot, aes(x = rank1, y = pfp1)) +
-    geom_point(size = 1.5, alpha=0.8) +
+    geom_point(size = 1.5, alpha=0.9) +
     theme_bw() +
     xlab("Number of identified features") +
     ylab("Estimated PFP") +
     ggtitle(paste0("Identification of Up-regulated features under class ", class2))
 
   plot2 <- ggplot(rp_plot, aes(x = rank2, y = pfp2)) +
-    geom_point(size = 1.5, alpha=0.8) +
+    geom_point(size = 1.5, alpha=0.9) +
     theme_bw() +
     xlab("Number of identified features") +
     ylab("Estimated PFP") +

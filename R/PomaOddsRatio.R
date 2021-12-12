@@ -3,7 +3,7 @@
 #'
 #' @description PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param feature_name A vector with the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.
 #' @param covariates Logical that indicates if covariates will be included in logistic regression model. Default is `FALSE`.
 #' @param showCI Logical that indicates if the 95% confidence intervals will be plotted. Default is `TRUE`.
@@ -44,8 +44,8 @@ PomaOddsRatio <- function(data,
       stop("At least one feature name not found...")
     }
   }
-  if(isTRUE(covariates) & ncol(pData(data)) == 1){
-    stop("Seems that your data don't have covariates...")
+  if(covariates & ncol(colData(data)) == 1){
+    stop("Seems there aren't covariates in your data...")
   }
 
   e <- data.frame(t(MSnbase::exprs(data)))

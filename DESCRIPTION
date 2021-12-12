@@ -46,7 +46,6 @@ Imports:
     limma,
     magrittr,
     mixOmics,
-    patchwork,
     qpdf,
     randomForest,
     RankProd (>= 3.14),

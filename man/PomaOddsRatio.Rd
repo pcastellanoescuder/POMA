@@ -7,7 +7,7 @@
 PomaOddsRatio(data, feature_name = NULL, covariates = FALSE, showCI = TRUE)
 }
 \arguments{
-\item{data}{A MSnSet object. First \code{pData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
 \item{feature_name}{A vector with the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.}
 
