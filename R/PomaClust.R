@@ -3,7 +3,7 @@
 #'
 #' @description This function performs a classical multidimensional scaling (MDS) using all features in the data and computes a cluster analysis for `k` clusters. Then, the calculated clusters will be represented on a MDS plot.
 #' 
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param method Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See `?dist()`.
 #' @param k Number of clusters (default is `NA`). The optimum number of clusters will be used by default.
 #' @param k_max Number of clusters among which the optimal one will be selected.
@@ -43,8 +43,8 @@ PomaClust <- function(data,
     stop("Incorrect value for method argument!")
   }
   
-  e <- t(MSnbase::exprs(data))
-  target <- MSnbase::pData(data)
+  e <- t(SummarizedExperiment::assay(data))
+  target <- SummarizedExperiment::colData(data)
   
   ## Optimum number of clusters
   
@@ -109,12 +109,13 @@ PomaClust <- function(data,
   } else{
     
     mds_plot <- ggplot(mds, aes(x = Dim1, y = Dim2, color = clust)) +
-      {if(!labels)geom_point(size = 3, alpha = 0.5)} +
+      {if(!labels)geom_point(size = 3, alpha = 0.9)} +
       xlab("Dimension 1") +
       ylab("Dimension 2") +
       theme_bw() +
       {if(labels & show_group)geom_text(aes(label = group), show.legend = FALSE)} +
-      {if(labels & !show_group)geom_text(aes(label = sample), show.legend = FALSE)}
+      {if(labels & !show_group)geom_text(aes(label = sample), show.legend = FALSE)} +
+      scale_color_viridis_d()
   }
   
   return(list(mds_values = mds, optimum_cluster_num = elbowi, 

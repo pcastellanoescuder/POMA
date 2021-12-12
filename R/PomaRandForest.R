@@ -3,7 +3,7 @@
 #'
 #' @description PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical `randomForest` R package.
 #'
-#' @param data A MSnSet object. First `pData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
 #' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is 20% of observations.
 #' @param ntree Number of trees to grow.
 #' @param mtry Number of variables randomly sampled as candidates at each split. This value is set sqrt(p) (where p is number of variables in data) by default.
@@ -32,7 +32,7 @@
 PomaRandForest <- function(data,
                            ntest = 20,
                            ntree = 500,
-                           mtry = floor(sqrt(ncol(t(MSnbase::exprs(data))))),
+                           mtry = floor(sqrt(ncol(t(SummarizedExperiment::assay(data))))),
                            nodesize = 1,
                            nvar = 20){
 
@@ -46,7 +46,8 @@ PomaRandForest <- function(data,
     stop("ntest must be a number between 5 and 50...")
   }
   
-  rf_data <- data.frame(cbind(Group = MSnbase::pData(data)[,1], t(MSnbase::exprs(data))))
+  rf_data <- data.frame(cbind(Group = SummarizedExperiment::colData(data)[,1], 
+                              t(SummarizedExperiment::assay(data))))
 
   names <- data.frame(real_names = colnames(rf_data), new_names = NA) %>%
     mutate(new_names = paste0("X", rownames(.)))
@@ -69,8 +70,8 @@ PomaRandForest <- function(data,
     train_x <- as.matrix(train[,-1])
     train_y <- as.factor(train[,1])
     
-    if(length(levels(as.factor(train_y))) == length(levels(as.factor(MSnbase::pData(data)[,1]))) & 
-       length(levels(as.factor(test_y))) == length(levels(as.factor(MSnbase::pData(data)[,1])))){
+    if(length(levels(as.factor(train_y))) == length(levels(as.factor(SummarizedExperiment::colData(data)[,1]))) & 
+       length(levels(as.factor(test_y))) == length(levels(as.factor(SummarizedExperiment::colData(data)[,1])))){
       break
     }
   }
@@ -122,6 +123,10 @@ PomaRandForest <- function(data,
               gini_plot = Gini_plot,
               forest_data = forest_data,
               confusion_matrix = conf_mat,
-              model = RF_model))
+              model = RF_model,
+              train_x = train_x,
+              train_y = train_y,
+              test_x = test_x,
+              test_y = test_y))
 }
 
