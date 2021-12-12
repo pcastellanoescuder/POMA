@@ -6,17 +6,7 @@ Authors@R:
              family = "Castellano-Escuder",
              role = c("aut", "cre"),
              email = "polcaes@gmail.com",
-             comment = c(ORCID = "0000-0001-6466-877X")),
-      person(given = "Cristina",
-             family = "Andrés-Lacueva",
-             role = "aut",
-             email = "candres@ub.edu",
-             comment = c(ORCID = "0000-0002-8494-4978")),
-      person(given = "Alex",
-             family = "Sánchez-Pla",
-             role = "aut",
-             email = "asanchez@ub.edu",
-             comment = c(ORCID = "0000-0002-8673-7737"))
+             comment = c(ORCID = "0000-0001-6466-877X"))
              )
 Description: 
     A structured, reproducible and easy-to-use workflow for the visualization, pre-processing, exploratory data analysis, 
@@ -37,7 +27,6 @@ Imports:
     e1071,
     ggcorrplot,
     ggplot2,
-    ggraph,
     ggrepel,
     glasso (>= 1.11),
     glmnet,
@@ -57,6 +46,7 @@ Imports:
 Suggests: 
     BiocStyle,
     covr,
+    ggraph,
     plotly,
     tidyverse,
     testthat (>= 2.3.2)

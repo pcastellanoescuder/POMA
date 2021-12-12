@@ -18,7 +18,8 @@
 #'
 #' @importFrom limma makeContrasts lmFit contrasts.fit eBayes topTable
 #' @importFrom magrittr %>%
-#' @importFrom dplyr filter select select_at vars matches
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr filter select select_at vars matches as_tibble
 #' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
@@ -41,7 +42,7 @@ PomaLimma <- function(data,
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (is.null(contrast)) {
-    stop("Contrast argument is empty! You have to specify a contrast.")
+    stop("Contrast argument is empty! Specify a contrast.")
   }
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
     stop("Incorrect value for adjust argument!")
@@ -76,6 +77,10 @@ PomaLimma <- function(data,
         dplyr::filter(adj.P.Val <= cutoff)
     }
     
+    res <- res %>% 
+      rownames_to_column("feature") %>% 
+      as_tibble()
+      
     return(res)
 
   }
@@ -115,6 +120,10 @@ PomaLimma <- function(data,
       res2 <- res2 %>%
         dplyr::filter(adj.P.Val <= cutoff)
     }
+    
+    res2 <- res2 %>% 
+      rownames_to_column("feature") %>% 
+      as_tibble()
     
     return(res2)
     

@@ -119,8 +119,7 @@ if (nrow(nas) >= 1){
     ggtitle("Missing Value Plot") +
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "none") +
-    scale_fill_viridis_d()
+          legend.position = "none")
 }
 ```
 
@@ -162,13 +161,13 @@ ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
 indNum <- nrow(SummarizedExperiment::colData(pre_processed))
 jttr <- ifelse(indNum <= 10, TRUE, FALSE)
 
-p1 <- PomaBoxplots(imputed, jitter = jttr) +
+p1 <- PomaBoxplots(imputed, jitter = jttr, label_size = 8) +
   xlab("Samples") +
   ylab("Value") +
   ggtitle("Not Normalized") +
   theme(legend.position = "bottom")
 
-p2 <- PomaBoxplots(pre_processed, jitter = jttr) +
+p2 <- PomaBoxplots(pre_processed, jitter = jttr, label_size = 8) +
   xlab("Samples") +
   ylab("Value") +
   ggtitle(paste0("Normalized (", normalization, ")")) +
@@ -218,11 +217,19 @@ if(nrow(outliers$outliers) >= 1){
 # High Correlated Features (r > 0.97)
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-correlations <- PomaCorr(pre_processed)
-high_correlations <- correlations$correlations %>% filter(abs(corr) > 0.97)
+correlations <- PomaCorr(pre_processed, 
+                         label_size = 8,
+                         low = "red",
+                         outline = "white",
+                         high = "blue")
+high_correlations <- correlations$correlations %>% filter(abs(R) > 0.97)
 ```
 
-There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$Var1, " - " , high_correlations$Var2)), collapse=", ")),"**."), "")`
+There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$feature1, " - " , high_correlations$feature2)), collapse=", ")),"**."), "")`
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300, fig.align = 'center'}
+correlations$corrplot
+```
 
 \pagebreak
 
@@ -237,6 +244,6 @@ PomaHeatmap(pre_processed)
 # Principal Component Analysis
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, dpi = 300}
-PomaMultivariate(pre_processed, method = "pca")$scoresplot
+PomaMultivariate(pre_processed, method = "pca", ellipse = FALSE)$scoresplot
 ```
 

@@ -9,9 +9,9 @@ test_that("PomaUnivariate works", {
 
   st000336 <- POMA::PomaImpute(st000336, method = "knn")
   
-  dims_for_ttest_and_mann <- c(ncol(t(SummarizedExperiment::assay(st000336))), 6)
-  dims_for_aov <- c(ncol(t(SummarizedExperiment::assay(st000284))), length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 2)
-  dims_for_krusk <- c(ncol(t(SummarizedExperiment::assay(st000284))), length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 3)
+  dims_for_ttest_and_mann <- c(ncol(t(SummarizedExperiment::assay(st000336))), 7)
+  dims_for_aov <- c(ncol(t(SummarizedExperiment::assay(st000284))), length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 3)
+  dims_for_krusk <- c(ncol(t(SummarizedExperiment::assay(st000284))), length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 4)
   
   univ_ttest <- PomaUnivariate(st000336, method = "ttest", adjust = "fdr")
   univ_aov <- PomaUnivariate(st000284, covariates = FALSE, method = "anova", adjust = "fdr")

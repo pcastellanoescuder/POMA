@@ -16,7 +16,7 @@
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
-#' @importFrom dplyr mutate rename desc arrange mutate_at vars select_at matches
+#' @importFrom dplyr mutate rename desc arrange mutate_at vars select_at matches as_tibble
 #' @importFrom tidyr drop_na
 #' @importFrom magrittr %>%
 #' @importFrom SummarizedExperiment assay colData
@@ -82,7 +82,9 @@ PomaOddsRatio <- function(data,
     }
   }
   else{
-    data_or <- cbind(Group = target$Group, e)
+    data_or <- cbind(Group = target$Group, e) %>% 
+      mutate(Group = as.factor(ifelse(Group == names(table(target$Group))[1], 0, 1))) %>% 
+      mutate_at(vars(-Group), as.numeric)
   }
   
   suppressWarnings({
@@ -94,7 +96,8 @@ PomaOddsRatio <- function(data,
     rownames_to_column("feature") %>%
     rename(CILow = `X2.5..`,
            CIHigh = `X97.5..`) %>%
-    arrange(desc(OddsRatio))
+    arrange(desc(OddsRatio)) %>% 
+    dplyr::as_tibble()
 
   #### Plot
 
@@ -106,7 +109,8 @@ PomaOddsRatio <- function(data,
     xlab("Odds ratio") +
     theme_bw()
 
-  return(list(OddsRatioTable = odds, OddsRatioPlot = ORPlot))
+  return(list(OddsRatioTable = odds, 
+              OddsRatioPlot = ORPlot))
 
 }
 

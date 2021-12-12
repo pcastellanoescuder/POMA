@@ -20,6 +20,8 @@
 #'
 #' @importFrom RankProd RankProducts topGene
 #' @import ggplot2
+#' @importFrom dplyr rename as_tibble
+#' @importFrom tibble rownames_to_column
 #' @importFrom SummarizedExperiment assay colData
 PomaRankProd <- function(data,
                          logged = TRUE,
@@ -55,13 +57,19 @@ PomaRankProd <- function(data,
   class1 <- levels(as.factor(Group))[1]
   class2 <- levels(as.factor(Group))[2]
 
-  RP <- RankProducts(SummarizedExperiment::assay(data), data_class, logged = logged, na.rm = TRUE, plot = FALSE,
+  RP <- RankProducts(SummarizedExperiment::assay(data), 
+                     data_class, 
+                     logged = logged, 
+                     na.rm = TRUE, 
+                     plot = FALSE,
                      RandomPairs = paired,
                      rand = 123,
                      gene.names = rownames(data))
 
-  top_rank <- topGene(RP, cutoff = cutoff, method = method,
-                      logged = logged, logbase = logbase,
+  top_rank <- topGene(RP, cutoff = cutoff, 
+                      method = method,
+                      logged = logged, 
+                      logbase = logbase,
                       gene.names = rownames(data))
 
   one <- as.data.frame(top_rank$Table1)
@@ -72,13 +80,27 @@ PomaRankProd <- function(data,
   }
   
   if(nrow(one) != 0){
-    colnames(one)[3] <- paste0("FC: ", class1, "/", class2)
-    one <- one %>% dplyr::rename(feature_index = gene.index)
+    
+    one <- one %>% 
+      rownames_to_column("feature") %>% 
+      dplyr::rename(rp_rsum = 3,
+                    pvalue = P.value,
+                    feature_index = gene.index) %>% 
+      dplyr::as_tibble()
+    
+    colnames(one)[4] <- paste0("FC_", class1, "_", class2)
   }
   
   if(nrow(two) != 0){
-    colnames(two)[3] <- paste0("FC: ", class1, "/", class2)
-    two <- two %>% dplyr::rename(feature_index = gene.index)
+    
+    two <- two %>% 
+      rownames_to_column("feature") %>% 
+      dplyr::rename(rp_rsum = 3,
+                    pvalue = P.value,
+                    feature_index = gene.index) %>% 
+      dplyr::as_tibble()
+    
+    colnames(two)[4] <- paste0("FC_", class1, "_", class2)
   }
 
   #### PLOT

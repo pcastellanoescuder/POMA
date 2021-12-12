@@ -10,7 +10,6 @@
 #' @param log2FC Numeric. Define the log2 fold change cutoff (vertical lines).
 #' @param xlim Numeric. Define the limits for x axis.
 #' @param labels Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.
-#' @param legend Logical that indicates if legend will be plotted or not. Defaul is TRUE.
 #' @param paired Logical that indicates if the data is paired or not.
 #' @param var_equal Logical that indicates if the data variance is equal or not.
 #' @param interactive Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.
@@ -39,7 +38,6 @@ PomaVolcano <- function(data,
                         log2FC = 0.6,
                         xlim = 2,
                         labels = FALSE,
-                        legend = TRUE,
                         paired = FALSE,
                         var_equal = FALSE,
                         interactive = FALSE,
@@ -94,19 +92,16 @@ PomaVolcano <- function(data,
                                          aes(x = FC, y = -log10(pvalue), label = names), show.legend = FALSE)} +
     labs(color = "") +
     theme_bw() +
-    {if(legend)theme(legend.position = "right")} +
+    theme(legend.position = "right") +
     scale_color_manual(values = c("Down-regulated" = "#E64B35", 
                                   "Up-regulated" = "#3182bd", 
                                   "none" = "#636363"))
 
   if(interactive){
-    if("plotly" %in% (.packages())){
-      volcanoP <- plotly::ggplotly(volcanoP)
-    }
-    else {
+    if(!(require("plotly", character.only = TRUE))){
       warning("Package 'plotly' is required for an interactive volcano plot\nUse 'install.packages('plotly')'")
     }
-  }
+    }
 
   return(volcanoP)
 

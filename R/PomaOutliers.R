@@ -16,7 +16,7 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
-#' @importFrom dplyr select filter do group_by mutate rename
+#' @importFrom dplyr select filter do group_by mutate rename as_tibble
 #' @importFrom tibble rownames_to_column
 #' @importFrom magrittr %>%
 #' @importFrom ggrepel geom_label_repel
@@ -78,11 +78,12 @@ PomaOutliers <- function(data,
     mutate(out = as.factor(ifelse(distances > x, 1, 0)))
   
   final_outliers <- detect_outliers %>%
-    filter(out == 1) %>%
-    select(sample, Groups, distances, x) %>%
-    rename(group = Groups,
-           distance_to_centroid = distances,
-           limit_distance = x)
+    dplyr::filter(out == 1) %>%
+    dplyr::select(sample, Groups, distances, x) %>%
+    dplyr::rename(group = Groups, 
+                  distance_to_centroid = distances,
+                  limit_distance = x) %>% 
+    dplyr::as_tibble()
   
   ##
   
@@ -108,7 +109,8 @@ PomaOutliers <- function(data,
       geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
       {if(labels)geom_text(aes(label = sample))} +
       theme_bw() +
-      scale_fill_viridis_d()
+      scale_fill_viridis_d() +
+      scale_color_viridis_d()
     
     distance_boxplot <- ggplot(detect_outliers, aes(Groups, distances, fill = Groups)) +
       geom_boxplot(coef = coef, alpha = 0.8) +
@@ -119,7 +121,9 @@ PomaOutliers <- function(data,
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
       scale_fill_viridis_d()
     
-    return(list(polygon_plot = polygon_plot, distance_boxplot = distance_boxplot, outliers = final_outliers))
+    return(list(polygon_plot = polygon_plot, 
+                distance_boxplot = distance_boxplot, 
+                outliers = final_outliers))
     
   } else {
     

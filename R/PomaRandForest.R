@@ -18,7 +18,7 @@
 #'
 #' @importFrom randomForest randomForest importance
 #' @import ggplot2
-#' @importFrom dplyr mutate
+#' @importFrom dplyr mutate as_tibble inner_join arrange desc slice select rename
 #' @importFrom magrittr %>%
 #' @importFrom tibble rownames_to_column
 #' @importFrom SummarizedExperiment assay colData
@@ -87,7 +87,8 @@ PomaRandForest <- function(data,
   ntrees <- c(1:RF_model$ntree)
   error <- RF_model$err.rate
 
-  forest_data <- round(data.frame(ntrees, error), 4)
+  forest_data <- round(data.frame(ntrees, error), 4) %>% 
+    as_tibble()
 
   error_tree <- ggplot(forest_data, aes(ntrees, OOB)) +
     geom_line() +
@@ -96,14 +97,20 @@ PomaRandForest <- function(data,
 
   ####
 
-  importancia_pred <- as.data.frame(randomForest::importance(RF_model, scale = TRUE))
-  importancia_pred <- rownames_to_column(importancia_pred, var = "new_names")
-  importancia_pred <- merge(importancia_pred, names , by = "new_names")
-  importancia_pred1 <- importancia_pred[order(importancia_pred$MeanDecreaseGini,
-                                              decreasing = TRUE),]
-  importancia_pred <- importancia_pred1[1:nvar ,]
+  importancia_pred <- randomForest::importance(RF_model, scale = TRUE) %>% 
+    as.data.frame() %>% 
+    rownames_to_column("new_names") %>% 
+    inner_join(names, by = "new_names") %>% 
+    arrange(desc(MeanDecreaseGini)) %>% 
+    dplyr::slice(1:nvar) %>% 
+    dplyr::select(real_names, MeanDecreaseGini) %>% 
+    dplyr::mutate(MeanDecreaseGini = round(MeanDecreaseGini, 3)) %>% 
+    dplyr::rename(feature = real_names) %>% 
+    dplyr::as_tibble()
 
-  Gini_plot <- ggplot(importancia_pred, aes(x = reorder(real_names, MeanDecreaseGini),
+  ##
+  
+  gini_plot <- ggplot(importancia_pred, aes(x = reorder(feature, MeanDecreaseGini),
                                             y = MeanDecreaseGini,
                                             fill = MeanDecreaseGini)) +
     xlab("") +
@@ -111,18 +118,25 @@ PomaRandForest <- function(data,
     coord_flip() +
     theme_bw() +
     theme(legend.position = "none")
+  
+  ##
 
-  importancia_pred1 <- importancia_pred1[, c(3,2)]
-  importancia_pred1$MeanDecreaseGini <- round(importancia_pred1$MeanDecreaseGini, 4)
-  colnames(importancia_pred1)[1] <- "Variable"
-
+  feature_names <- names %>% 
+    dplyr::slice(-1) %>% 
+    dplyr::rename(feature = real_names,
+                  idx = new_names) %>% 
+    dplyr::as_tibble()
+    
+  ##
+  
   conf_mat <- round(as.data.frame(RF_model$test$confusion), 4)
 
-  return(list(importance_pred = importancia_pred1,
+  return(list(MeanDecreaseGini = importancia_pred,
+              MeanDecreaseGini_plot = gini_plot,
+              oob_error = forest_data,
               error_tree = error_tree,
-              gini_plot = Gini_plot,
-              forest_data = forest_data,
               confusion_matrix = conf_mat,
+              feature_names = feature_names,
               model = RF_model,
               train_x = train_x,
               train_y = train_y,

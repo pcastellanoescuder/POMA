@@ -29,7 +29,7 @@ test_that("PomaCorr works", {
   expect_equal(3, ncol(c$correlations))
   expect_equal(3, ncol(d$correlations))
   
-  expect_equal(class(e$data_glasso), "data.frame")
+  expect_equal(class(e$data_glasso)[1], "tbl_df")
   expect_equal(ncol(e$data_glasso), 3)
   expect_equal(ncol(e$data_glasso), ncol(a$correlations))
   expect_equal(class(f$data_glasso), "NULL")

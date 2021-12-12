@@ -19,7 +19,7 @@
 #' @import ggplot2
 #' @importFrom SummarizedExperiment assay colData
 #' @importFrom magrittr %>%
-#' @importFrom dplyr mutate select
+#' @importFrom dplyr mutate select rename as_tibble
 #' 
 #' @examples 
 #' data("st000284")
@@ -46,7 +46,7 @@ PomaClust <- function(data,
   e <- t(SummarizedExperiment::assay(data))
   target <- SummarizedExperiment::colData(data)
   
-  ## Optimum number of clusters
+  ## Optimal number of clusters
   
   wss <- data.frame(wss = sapply(1:k_max, function(k){kmeans(e, k)$tot.withinss})) %>%
     mutate(k = 1:k_max)
@@ -91,8 +91,9 @@ PomaClust <- function(data,
     mutate(sample = rownames(target),
            group = target[,1],
            clust = as.factor(clusters$cluster)) %>%
-    dplyr::select(sample, group, clust, V1, V2)
-  colnames(mds) <- c("sample", "group", "clust", "Dim1", "Dim2")
+    dplyr::select(sample, group, clust, V1, V2) %>% 
+    dplyr::rename(Dim1 = V1, Dim2 = V2) %>% 
+    dplyr::as_tibble()
     
   ## plot
   
@@ -118,8 +119,10 @@ PomaClust <- function(data,
       scale_color_viridis_d()
   }
   
-  return(list(mds_values = mds, optimum_cluster_num = elbowi, 
-              optimum_cluster_plot = optimum_clusters, mds_plot = mds_plot))
+  return(list(mds_values = mds, 
+              optimum_cluster_num = elbowi, 
+              optimum_cluster_plot = optimum_clusters, 
+              mds_plot = mds_plot))
   
 }
 

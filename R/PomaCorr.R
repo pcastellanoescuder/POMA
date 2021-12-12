@@ -23,7 +23,7 @@
 #'
 #' @import ggraph
 #' @importFrom ggplot2 theme_bw
-#' @importFrom dplyr filter
+#' @importFrom dplyr filter rename as_tibble
 #' @importFrom magrittr %>%
 #' @importFrom SummarizedExperiment assay colData
 #' @importFrom ggcorrplot ggcorrplot
@@ -72,6 +72,9 @@ PomaCorr <- function(data,
   if (!(method %in% c("pearson", "kendall", "spearman"))) {
     stop("Incorrect value for method argument!")
   }
+  if(!(require("ggraph", character.only = TRUE))){
+    warning("Package 'ggraph' is required for this function\nUse 'install.packages('ggraph')'")
+  }
   
   total <- t(SummarizedExperiment::assay(data))
   cor_matrix <- cor(total, method = method)
@@ -82,7 +85,9 @@ PomaCorr <- function(data,
   correlations <- as.data.frame(as.table(correlations))
   correlations <- na.omit(correlations)
   correlations <- correlations[with(correlations, order(-Freq)), ]
-  colnames(correlations)[3] <- "corr"
+  correlations <- correlations %>% 
+    dplyr::rename(feature1 = 1, feature2 = 2, R = 3) %>% 
+    dplyr::as_tibble()
 
   ## Corrplot
   my_cols <- c(low, outline, high)
@@ -95,7 +100,7 @@ PomaCorr <- function(data,
   if(corr_type != "glasso"){
     
     graph_table <- correlations %>% 
-      filter(abs(corr) >= coeff)
+      filter(abs(R) >= coeff)
     
     if (nrow(graph_table) < 1) {
       stop("There are no feature pairs with selected coeff. Try with a lower value...")
@@ -119,13 +124,15 @@ PomaCorr <- function(data,
     data_glasso <- as.data.frame(as.table(data_glasso))
     data_glasso <- na.omit(data_glasso)
     data_glasso <- data_glasso[with(data_glasso, order(-Freq)), ]
-    colnames(data_glasso)[3] <- "EstimatedCorr"
-    
+    data_glasso <- data_glasso %>% 
+      dplyr::rename(feature1 = 1, feature2 = 2, EstimatedCorr = 3) %>% 
+      dplyr::as_tibble()
+
     graph_table <- data_glasso %>% 
       filter(EstimatedCorr != 0)
     
     if (nrow(graph_table) < 1) {
-      stop("There are no feature pairs with selected coeff. Try with a lower value...")
+      stop("There aren't feature pairs with selected coeff. Try with a lower value...")
     }
     
     graph <- ggraph(graph_table, layout = "fr") +
@@ -139,9 +146,14 @@ PomaCorr <- function(data,
   }
   
   if(corr_type != "glasso"){
-    return(list(correlations = correlations, corrplot = corrplot, graph = graph))
+    return(list(correlations = correlations, 
+                corrplot = corrplot, 
+                graph = graph))
   } else{
-    return(list(correlations = correlations, corrplot = corrplot, graph = graph, data_glasso = data_glasso))
+    return(list(correlations = correlations, 
+                corrplot = corrplot, 
+                graph = graph, 
+                data_glasso = data_glasso))
   }
   
 }

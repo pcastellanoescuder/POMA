@@ -19,7 +19,7 @@
 #' @import ggplot2
 #' @import e1071
 #' @importFrom broom tidy glance
-#' @importFrom dplyr arrange desc group_by slice
+#' @importFrom dplyr arrange desc group_by slice as_tibble
 #' @importFrom magrittr %>%
 #' @importFrom glmnet cv.glmnet
 #' @importFrom caret confusionMatrix
@@ -122,7 +122,8 @@ PomaLasso <- function(data,
     theme_bw()
 
   tmp_coeffs <- coef(cv_fit, s = "lambda.min")
-  final_coef <- data.frame(feature = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x)
+  final_coef <- data.frame(feature = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x) %>% 
+    dplyr::as_tibble()
 
   if(!is.null(ntest)){
     lasso_pred <- predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
@@ -144,13 +145,23 @@ PomaLasso <- function(data,
     # geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
     theme_bw() +
     {if(labels)geom_label(data = tidied_cv2_names, aes(label = term))} +
-    theme(legend.position = "none")
+    theme(legend.position = "none") +
+    scale_color_viridis_d()
 
   if(!is.null(ntest)){
-    return(list(coefficients = final_coef, coefficientPlot = coefficientplot, cvLassoPlot = cvlasso,
-                confusionMatrix = cm, model = cv_fit))
+    return(list(coefficients = final_coef, 
+                coefficientPlot = coefficientplot, 
+                cvLassoPlot = cvlasso,
+                confusionMatrix = cm,
+                train_x = train_x,
+                train_y = train_y,
+                test_x = test_x,
+                test_y = test_y,
+                model = cv_fit))
   } else {
-    return(list(coefficients = final_coef, coefficientPlot = coefficientplot, cvLassoPlot = cvlasso,
+    return(list(coefficients = final_coef, 
+                coefficientPlot = coefficientplot, 
+                cvLassoPlot = cvlasso,
                 model = cv_fit))
   }
 
