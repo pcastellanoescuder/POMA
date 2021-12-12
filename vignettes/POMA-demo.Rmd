@@ -65,7 +65,7 @@ The **SummarizedExperiment** Bioconductor package provides a well defined comput
 The first step of workflow will be load or create a `SummarizedExperiment` object. Often, you will have your data stored in separated matrix and/or data frames and you will want to create your `SummarizedExperiment` object. The `PomaSummarizedExperiment` function makes this step fast and easy building this `SummarizedExperiment` object for you.       
 
 ```{r, eval = FALSE}
-# create an MSnSet object from two separated data frames
+# create an SummarizedExperiment object from two separated data frames
 target <- readr::read_csv("your_target.csv")
 features <- readr::read_csv("your_features.csv")
 

@@ -17,7 +17,6 @@
 #'
 #' @importFrom rmarkdown render
 #' @import knitr
-#' @import patchwork
 PomaEDA <- function(data, # nocov start
                     imputation = "knn",
                     normalization = "log_pareto",

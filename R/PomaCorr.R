@@ -21,7 +21,6 @@
 #' @references Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso
 #' @author Pol Castellano-Escuder
 #'
-#' @import ggraph
 #' @importFrom ggplot2 theme_bw
 #' @importFrom dplyr filter rename as_tibble
 #' @importFrom magrittr %>%
