@@ -11,7 +11,7 @@
 #'
 #' @export
 #'
-#' @return A heatmap.
+#' @return A heatmap plot.
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom dplyr select all_of

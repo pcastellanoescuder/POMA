@@ -24,7 +24,7 @@ PomaOddsRatio(
 \item{showCI}{Logical that indicates if the 95\% confidence intervals will be plotted. Default is \code{TRUE}.}
 }
 \value{
-A data frame with the Odds Ratios for all features with their 95\% confidence intervals and a ggplot2 object.
+A tibble with the Odds Ratios for all features with their 95\% confidence intervals and a ggplot2 object.
 }
 \description{
 PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.

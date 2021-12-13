@@ -77,7 +77,7 @@ PomaDensity <- function(data,
         theme_bw() +
         theme(legend.title = element_blank(),
               legend.position = legend_position) +
-        scale_fill_viridis_d()
+        scale_fill_viridis_d(begin = 0, end = 0.8)
       
     } else {
       
@@ -91,7 +91,7 @@ PomaDensity <- function(data,
         theme_bw() +
         theme(legend.title = element_blank(),
               legend.position = legend_position) +
-        scale_fill_viridis_d()
+        scale_fill_viridis_d(begin = 0, end = 0.8)
       
     }
 
@@ -108,7 +108,7 @@ PomaDensity <- function(data,
         xlab("Value") +
         ylab("Density") +
         theme(legend.position = "none") +
-        scale_fill_viridis_d()
+        scale_fill_viridis_d(begin = 0, end = 0.8)
 
     } else {
       
@@ -123,7 +123,7 @@ PomaDensity <- function(data,
         ylab("Density") +
         theme(legend.title = element_blank(),
               legend.position = legend_position) +
-        scale_fill_viridis_d()
+        scale_fill_viridis_d(begin = 0, end = 0.8)
 
     }
   }

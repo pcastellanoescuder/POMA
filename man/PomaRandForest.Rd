@@ -27,7 +27,7 @@ PomaRandForest(
 \item{nvar}{Number of variables to show in the Gini plot.}
 }
 \value{
-A list with all results for Random Forest including plots and data frames.
+A list with all results for Random Forest including plots and tables.
 }
 \description{
 PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical \code{randomForest} R package.

@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-#' @return A data frame with limma results.
+#' @return A tibble with limma results.
 #' @references Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007
 #' @author Pol Castellano-Escuder
 #'

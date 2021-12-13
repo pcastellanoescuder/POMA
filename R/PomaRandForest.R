@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-#' @return A list with all results for Random Forest including plots and data frames.
+#' @return A list with all results for Random Forest including plots and tables.
 #' @references A. Liaw and M. Wiener (2002). Classification and Regression by randomForest. R News 2(3), 18--22.
 #' @author Pol Castellano-Escuder
 #'

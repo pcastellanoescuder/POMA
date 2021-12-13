@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-#' @return A SummarizedExperiment object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
+#' @return A SummarizedExperiment object without outliers OR an exploratory outlier analysis including both plots and tables (depending on "do" parameter).
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
@@ -109,8 +109,8 @@ PomaOutliers <- function(data,
       geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
       {if(labels)geom_text(aes(label = sample))} +
       theme_bw() +
-      scale_fill_viridis_d() +
-      scale_color_viridis_d()
+      scale_fill_viridis_d(begin = 0, end = 0.8) +
+      scale_color_viridis_d(begin = 0, end = 0.8)
     
     distance_boxplot <- ggplot(detect_outliers, aes(Groups, distances, fill = Groups)) +
       geom_boxplot(coef = coef, alpha = 0.8) +
@@ -119,7 +119,7 @@ PomaOutliers <- function(data,
       {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
       theme_bw() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      scale_fill_viridis_d()
+      scale_fill_viridis_d(begin = 0, end = 0.8)
     
     return(list(polygon_plot = polygon_plot, 
                 distance_boxplot = distance_boxplot, 

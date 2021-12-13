@@ -6,12 +6,15 @@ test_that("PomaUnivariate works", {
   
   data("st000284")
   data("st000336")
-
+  
+  # st000284_sub <- st000284[,st000284@colData$factors %in% c("CRC", "Healthy")]
   st000336 <- POMA::PomaImpute(st000336, method = "knn")
   
-  dims_for_ttest_and_mann <- c(ncol(t(SummarizedExperiment::assay(st000336))), 7)
-  dims_for_aov <- c(ncol(t(SummarizedExperiment::assay(st000284))), length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 3)
-  dims_for_krusk <- c(ncol(t(SummarizedExperiment::assay(st000284))), length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 4)
+  dims_for_ttest_and_mann <- c(ncol(t(SummarizedExperiment::assay(st000336))), 9)
+  dims_for_aov <- c(ncol(t(SummarizedExperiment::assay(st000284))), 
+                    length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 6)
+  dims_for_krusk <- c(ncol(t(SummarizedExperiment::assay(st000284))), 
+                      length(levels(as.factor(SummarizedExperiment::colData(st000284)[,1]))) + 7)
   
   univ_ttest <- PomaUnivariate(st000336, method = "ttest", adjust = "fdr")
   univ_aov <- PomaUnivariate(st000284, covariates = FALSE, method = "anova", adjust = "fdr")
@@ -28,8 +31,10 @@ test_that("PomaUnivariate works", {
   ##
 
   expect_equal(dims_for_ttest_and_mann, dim(univ_ttest))
-  expect_equal(dims_for_aov, dim(univ_aov_cov))
-  expect_equal(dims_for_aov, dim(univ_aov_cov2))
+  expect_false(dims_for_aov[2] == dim(univ_aov_cov)[2])
+  expect_false(dims_for_aov[2] == dim(univ_aov_cov2)[2])
+  expect_equal(dims_for_aov[1], dim(univ_aov_cov)[1])
+  expect_equal(dims_for_aov[1], dim(univ_aov_cov2)[1])
   expect_equal(dims_for_aov, dim(univ_aov))
   expect_false(all(univ_aov_cov == univ_aov_cov2))
 
@@ -41,8 +46,8 @@ test_that("PomaUnivariate works", {
   expect_equal(dims_for_krusk, dim(univ_kruskal))
   expect_equal(dims_for_krusk, dim(univ_kruskal2))
   
-  expect_equal(dim(one_cov1), dim(one_cov2))
-  expect_false(all(one_cov1$pvalue == one_cov2$pvalue))
+  expect_false(dim(one_cov1)[2] == dim(one_cov2)[2])
+  expect_equal(dim(one_cov1)[1], dim(one_cov2)[1])
   
   ##
   

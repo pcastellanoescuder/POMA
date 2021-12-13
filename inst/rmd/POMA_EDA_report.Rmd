@@ -132,7 +132,7 @@ if (nrow(zeros) >= 1){
     theme_bw() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           legend.position = "none") +
-    scale_fill_viridis_d()
+    scale_fill_viridis_d(begin = 0, end = 0.8)
 }
 ```
 
@@ -149,7 +149,7 @@ ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "none") +
-    scale_fill_viridis_d()
+    scale_fill_viridis_d(begin = 0, end = 0.8)
 ```
 
 \pagebreak

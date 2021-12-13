@@ -1,9 +1,10 @@
 # POMA 2.0.0
 
 * `MSnbase::MSnSet` class has been replaced by the `SummarizedExperiment` class
-* Color scale for all plots set to `viridis` 
+* Color scale for all plots set to `viridis` (without yellow)
 * All output tables provided as `tibble` istead of `matrix` or `data.frame`
 * Allow users to select specific covariates and their position (importance) in the model for `PomaLimma`, `PomaUnivariate(method = "anova")`, and `PomaOddsRatio`
+* Add SD to `PomaUnivariate` output tables
 * Reduce dependencies
 * Update vignettes
 * Update documentation

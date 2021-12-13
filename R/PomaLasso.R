@@ -12,7 +12,7 @@
 #' 
 #' @export
 #'
-#' @return A list with all results including plots, data frames and the resulting prediction model.
+#' @return A list with all results including plots, tables and the resulting prediction model.
 #' @references Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.
 #' @author Pol Castellano-Escuder
 #'
@@ -146,7 +146,7 @@ PomaLasso <- function(data,
     theme_bw() +
     {if(labels)geom_label(data = tidied_cv2_names, aes(label = term))} +
     theme(legend.position = "none") +
-    scale_color_viridis_d()
+    scale_color_viridis_d(begin = 0, end = 0.8)
 
   if(!is.null(ntest)){
     return(list(coefficients = final_coef, 

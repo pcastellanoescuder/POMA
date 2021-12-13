@@ -27,7 +27,7 @@ PomaOutliers(
 \item{labels}{Logical indicating if sample IDs should to be plotted or not.}
 }
 \value{
-A SummarizedExperiment object with cleaned data or different exploratory plots for the detailed analysis of outliers (depending on "do" parameter).
+A SummarizedExperiment object without outliers OR an exploratory outlier analysis including both plots and tables (depending on "do" parameter).
 }
 \description{
 This function allows users to analyze outliers by different plots and remove them from an SummarizedExperiment object.

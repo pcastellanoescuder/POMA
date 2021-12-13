@@ -116,7 +116,7 @@ PomaClust <- function(data,
       theme_bw() +
       {if(labels & show_group)geom_text(aes(label = group), show.legend = FALSE)} +
       {if(labels & !show_group)geom_text(aes(label = sample), show.legend = FALSE)} +
-      scale_color_viridis_d()
+      scale_color_viridis_d(begin = 0, end = 0.8)
   }
   
   return(list(mds_values = mds, 

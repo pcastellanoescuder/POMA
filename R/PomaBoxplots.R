@@ -81,7 +81,7 @@ PomaBoxplots <- function(data,
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
             legend.title = element_blank(),
             legend.position = legend_position) +
-      scale_colour_viridis_d()
+      scale_colour_viridis_d(begin = 0, end = 0.8)
   }
   
   else {
@@ -100,7 +100,7 @@ PomaBoxplots <- function(data,
         theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
               legend.title = element_blank(),
               legend.position = legend_position) +
-        scale_colour_viridis_d()
+        scale_colour_viridis_d(begin = 0, end = 0.8)
       
     } else {
       
@@ -117,7 +117,7 @@ PomaBoxplots <- function(data,
         theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
               legend.title = element_blank(),
               legend.position = legend_position) +
-        scale_colour_viridis_d()
+        scale_colour_viridis_d(begin = 0, end = 0.8)
 
     }
   }

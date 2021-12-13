@@ -27,7 +27,7 @@ PomaLimma(
 \item{cutoff}{Default is NULL. If this value is replaced for a numeric value, the resultant table will contains only those features with an adjusted p-value below selected value.}
 }
 \value{
-A data frame with limma results.
+A tibble with limma results.
 }
 \description{
 PomaLimma() uses the classical limma package for MS data.

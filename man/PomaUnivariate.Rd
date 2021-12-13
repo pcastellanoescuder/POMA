@@ -30,7 +30,7 @@ PomaUnivariate(
 \item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 }
 \value{
-A data frame with results.
+A tibble with results.
 }
 \description{
 PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.

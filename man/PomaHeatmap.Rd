@@ -24,7 +24,7 @@ PomaHeatmap(
 \item{show_legend}{Logical indicating if legend should be plotted or not. Default is TRUE.}
 }
 \value{
-A heatmap.
+A heatmap plot.
 }
 \description{
 This function returns a basic heatmap plot made with base R.

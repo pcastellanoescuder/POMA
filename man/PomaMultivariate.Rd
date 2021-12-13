@@ -51,7 +51,7 @@ PomaMultivariate(
 \item{legend_position}{Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".}
 }
 \value{
-A list with all results for multivariate statistical analysis including plots and data frames.
+A list with all results for multivariate statistical analysis including plots and tables.
 }
 \description{
 PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.

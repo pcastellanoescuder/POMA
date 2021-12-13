@@ -11,7 +11,7 @@
 #'
 #' @export
 #'
-#' @return A data frame with the Odds Ratios for all features with their 95% confidence intervals and a ggplot2 object.
+#' @return A tibble with the Odds Ratios for all features with their 95% confidence intervals and a ggplot2 object.
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2

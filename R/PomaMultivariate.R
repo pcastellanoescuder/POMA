@@ -20,7 +20,7 @@
 #'
 #' @export
 #'
-#' @return A list with all results for multivariate statistical analysis including plots and data frames.
+#' @return A list with all results for multivariate statistical analysis including plots and tables.
 #' @author Pol Castellano-Escuder
 #'
 #' @import ggplot2
@@ -116,7 +116,7 @@ PomaMultivariate <- function(data,
       theme_bw() +
       theme(legend.title = element_blank(),
             legend.position = legend_position) +
-      scale_colour_viridis_d()
+      scale_colour_viridis_d(begin = 0, end = 0.8)
 
     ##
 
@@ -164,7 +164,7 @@ PomaMultivariate <- function(data,
                label = rownames(PCAloadings), size = 4) +
       theme(legend.title = element_blank(),
             legend.position = legend_position) +
-      scale_colour_viridis_d()
+      scale_colour_viridis_d(begin = 0, end = 0.8)
 
     return(list(screeplot = screeplot, 
                 scoresplot = scoresplot,
@@ -193,7 +193,7 @@ PomaMultivariate <- function(data,
       theme_bw() +
       theme(legend.title = element_blank(),
             legend.position = legend_position) +
-      scale_colour_viridis_d()
+      scale_colour_viridis_d(begin = 0, end = 0.8)
 
     #####
 
@@ -222,7 +222,7 @@ PomaMultivariate <- function(data,
       theme_bw() +
       theme(legend.title = element_blank(),
             legend.position = legend_position) +
-      scale_colour_viridis_d()
+      scale_colour_viridis_d(begin = 0, end = 0.8)
 
     ####
 
@@ -295,7 +295,7 @@ PomaMultivariate <- function(data,
       ylab("Error") +
       theme(legend.title = element_blank(),
             legend.position = legend_position) +
-      scale_colour_viridis_d()
+      scale_colour_viridis_d(begin = 0, end = 0.8)
 
     ####
 
@@ -320,7 +320,7 @@ PomaMultivariate <- function(data,
       theme_bw() +
       theme(legend.title = element_blank(),
             legend.position = legend_position) +
-      scale_colour_viridis_d()
+      scale_colour_viridis_d(begin = 0, end = 0.8)
 
     scores_splsda <- SPLSDAi %>% 
       dplyr::select(-Groups, -ID) %>%

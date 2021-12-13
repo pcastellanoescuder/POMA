@@ -27,7 +27,7 @@ PomaLasso(
 \item{labels}{Logical indicating if feature names should be plotted in coefficient plot or not. Default is FALSE.}
 }
 \value{
-A list with all results including plots, data frames and the resulting prediction model.
+A list with all results including plots, tables and the resulting prediction model.
 }
 \description{
 PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from \code{glmnet} package for binary outcomes.
