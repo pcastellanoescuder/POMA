@@ -1,4 +1,4 @@
-# POMA 2.0.0
+## POMA 1.5.5
 
 * `MSnbase::MSnSet` class has been replaced by the `SummarizedExperiment` class
 * Color scale for all plots set to `viridis` (without yellow)
