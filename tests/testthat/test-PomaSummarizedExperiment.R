@@ -32,8 +32,8 @@ test_that("PomaSummarizedExperiment works", {
   ##
   
   expect_equal(colnames(features), rownames(SummarizedExperiment::assay(a)))
-  expect_false(all(colnames(target)[2:3] == SummarizedExperiment::colData(a)))
-  expect_false(all(colnames(target2)[2:3] == SummarizedExperiment::colData(b)))
+  expect_false(all(colnames(target)[2:3] == names(SummarizedExperiment::colData(a))))
+  expect_false(all(colnames(target2)[2:3] == names(SummarizedExperiment::colData(b))))
 
   ##
   
