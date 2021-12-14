@@ -1,4 +1,4 @@
-## POMA 1.5.5
+## POMA 1.5.6
 
 * `MSnbase::MSnSet` class has been replaced by the `SummarizedExperiment` class
 * Color scale for all plots set to `viridis` (without yellow)
@@ -10,6 +10,7 @@
 * Update documentation
 * Some other major and minor improvements
 * Some minor bugs and typos fixed
+* New "loading plot" in PCA
 
 ## POMA 1.1.15
 
