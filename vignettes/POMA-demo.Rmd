@@ -165,8 +165,7 @@ Once the data have been pre-processed, you can start with the statistical analys
 #### T-test
 
 ```{r}
-PomaUnivariate(pre_processed, method = "ttest") %>% 
-  head()
+PomaUnivariate(pre_processed, method = "ttest")
 ```
 
 You can also compute a volcano plot using the T-test results. _Note that we're using the non-normalized object to avoid negative values in our data._
@@ -178,8 +177,7 @@ PomaVolcano(imputed, pval = "adjusted")
 #### Wilcoxon Test
 
 ```{r, warning = FALSE}
-PomaUnivariate(pre_processed, method = "mann") %>% 
-  head()
+PomaUnivariate(pre_processed, method = "mann")
 ```
 
 ### Limma
@@ -187,8 +185,7 @@ PomaUnivariate(pre_processed, method = "mann") %>%
 Other of the wide used statistical methods in many different omics, such as epigenomics or transcriptomics, is **limma** [@limma]. **POMA** provides an easy use implementation of _limma_ you only have to specify the desired contrast to compute.     
 
 ```{r}
-PomaLimma(pre_processed, contrast = "Controls-DMD", adjust = "fdr") %>% 
-  head()
+PomaLimma(pre_processed, contrast = "Controls-DMD", adjust = "fdr")
 ```
 
 ### Multivariate Analysis
@@ -228,7 +225,7 @@ Often, correlation analysis is used to explore and discover relationships and pa
 
 ```{r}
 poma_cor <- PomaCorr(pre_processed, label_size = 8, coeff = 0.6)
-poma_cor$correlations %>% head()
+poma_cor$correlations
 poma_cor$corrplot
 poma_cor$graph
 ```

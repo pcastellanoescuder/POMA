@@ -1,4 +1,4 @@
-## POMA 1.5.6
+## POMA 1.5.7
 
 * `MSnbase::MSnSet` class has been replaced by the `SummarizedExperiment` class
 * Color scale for all plots set to `viridis` (without yellow)
@@ -11,6 +11,7 @@
 * Some other major and minor improvements
 * Some minor bugs and typos fixed
 * New "loading plot" in PCA
+* Compute p-values and FDR in `PomaCorr`
 
 ## POMA 1.1.15
 
@@ -53,7 +54,7 @@
 
 ## POMA 0.99.16
 
-* BiocCeck requirements fixed
+* BiocCeck  %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% ments fixed
 * Examples added in functions
 * pkgdown files removed from master branch
 
