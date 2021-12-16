@@ -6,7 +6,7 @@
 \usage{
 PomaRandForest(
   data,
-  ntest = 20,
+  ntest = NULL,
   ntree = 500,
   mtry = floor(sqrt(ncol(t(SummarizedExperiment::assay(data))))),
   nodesize = 1,
@@ -16,7 +16,7 @@ PomaRandForest(
 \arguments{
 \item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
 
-\item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is 20\% of observations.}
+\item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).}
 
 \item{ntree}{Number of trees to grow.}
 
