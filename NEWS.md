@@ -1,4 +1,4 @@
-## POMA 1.5.8
+## POMA 1.5.9
 
 * `MSnbase::MSnSet` class has been replaced by the `SummarizedExperiment` class
 * Color scale for all plots set to `viridis` (without yellow)
@@ -54,7 +54,7 @@
 
 ## POMA 0.99.16
 
-* BiocCeck  %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% ments fixed
+* BiocCeck requirements fixed
 * Examples added in functions
 * pkgdown files removed from master branch
 

@@ -1,6 +1,6 @@
 Package: POMA
 Title: User-friendly Workflow for Omics Data Analysis   
-Version: 1.5.8
+Version: 1.5.9
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -34,7 +34,6 @@ Imports:
     limma,
     magrittr,
     mixOmics,
-    qpdf,
     randomForest,
     RankProd (>= 3.14),
     rmarkdown,
