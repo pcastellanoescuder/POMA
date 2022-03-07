@@ -12,7 +12,7 @@ test_that("PomaCorr works", {
   b <- PomaCorr(imp_st000336)
   
   c <- PomaCorr(st000284, corr_type = "glasso", coeff = 0.3, method = "spearman")
-  d <- PomaCorr(imp_st000336 , corr_type = "glasso", coeff = 0.5, type = "upper")
+  d <- PomaCorr(imp_st000336 , corr_type = "glasso", coeff = 0.5)
   
   e <- PomaCorr(st000284, corr_type = "glasso", coeff = 0.5)
   f <- PomaCorr(st000284, coeff = 0.5)
@@ -24,14 +24,14 @@ test_that("PomaCorr works", {
   expect_equal(((113*113)-113)/2, nrow(c$correlations))
   expect_equal(((30*30)-30)/2, nrow(d$correlations))
   
-  expect_equal(3, ncol(a$correlations))
-  expect_equal(3, ncol(b$correlations))
-  expect_equal(3, ncol(c$correlations))
-  expect_equal(3, ncol(d$correlations))
+  expect_equal(5, ncol(a$correlations))
+  expect_equal(5, ncol(b$correlations))
+  expect_equal(5, ncol(c$correlations))
+  expect_equal(5, ncol(d$correlations))
   
   expect_equal(class(e$data_glasso)[1], "tbl_df")
   expect_equal(ncol(e$data_glasso), 3)
-  expect_equal(ncol(e$data_glasso), ncol(a$correlations))
+  expect_equal(ncol(e$data_glasso) + 2, ncol(a$correlations))
   expect_equal(class(f$data_glasso), "NULL")
   
   ## corrplot
@@ -61,8 +61,6 @@ test_that("PomaCorr works", {
   
   expect_error(PomaCorr())
   expect_error(PomaCorr(iris))
-  expect_error(PomaCorr(st000284, shape = "cir"))
-  expect_error(PomaCorr(st000284, type = "lo"))
   expect_error(PomaCorr(st000284, corr_type = "co"))
   expect_error(PomaCorr(st000284, coeff = 2))
   expect_error(PomaCorr(st000284, coeff = -0.2))

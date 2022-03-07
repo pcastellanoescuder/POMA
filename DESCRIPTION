@@ -1,6 +1,6 @@
 Package: POMA
 Title: User-friendly Workflow for Omics Data Analysis   
-Version: 1.5.5
+Version: 1.5.9
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -25,7 +25,6 @@ Imports:
     ComplexHeatmap,
     dplyr,
     e1071,
-    ggcorrplot,
     ggplot2,
     ggrepel,
     glasso (>= 1.11),
@@ -35,7 +34,6 @@ Imports:
     limma,
     magrittr,
     mixOmics,
-    qpdf,
     randomForest,
     RankProd (>= 3.14),
     rmarkdown,

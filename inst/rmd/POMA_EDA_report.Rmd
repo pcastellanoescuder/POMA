@@ -217,10 +217,7 @@ if(nrow(outliers$outliers) >= 1){
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 correlations <- PomaCorr(pre_processed, 
-                         label_size = 8,
-                         low = "red",
-                         outline = "white",
-                         high = "blue")
+                         label_size = 8)
 high_correlations <- correlations$correlations %>% filter(abs(R) > 0.97)
 ```
 

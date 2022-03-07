@@ -21,7 +21,7 @@
 #' @importFrom broom tidy glance
 #' @importFrom dplyr arrange desc group_by slice as_tibble
 #' @importFrom magrittr %>%
-#' @importFrom glmnet cv.glmnet
+#' @importFrom glmnet cv.glmnet predict.glmnet
 #' @importFrom caret confusionMatrix
 #' @importFrom SummarizedExperiment assay colData
 #' 

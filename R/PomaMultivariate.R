@@ -25,7 +25,7 @@
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
-#' @importFrom dplyr select arrange desc filter as_tibble
+#' @importFrom dplyr select arrange desc filter as_tibble slice
 #' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
 #' @importFrom mixOmics pca plsda perf vip tune.splsda splsda selectVar
@@ -107,6 +107,8 @@ PomaMultivariate <- function(data,
     PCi <- data.frame(pca_res$variates$X, Groups = Y) %>% 
       rownames_to_column("ID")
 
+    # scores plot
+    
     scoresplot <- ggplot(PCi, aes(x = PC1, y = PC2, color = Groups, shape = Groups, label = ID)) +
       {if(!labels)geom_point(size = 2, alpha = 0.9)} +
       xlab(paste0("PC1 (", round(100*(pca_res$prop_expl_var$X)[1], 2), "%)")) +
@@ -118,7 +120,7 @@ PomaMultivariate <- function(data,
             legend.position = legend_position) +
       scale_colour_viridis_d(begin = 0, end = 0.8)
 
-    ##
+    # scree plot
 
     eigenvalues <- data.frame(pc_var_exp = round(pca_res$prop_expl_var$X*100, 3)) %>% 
       rownames_to_column("component") %>% 
@@ -132,13 +134,36 @@ PomaMultivariate <- function(data,
       theme(legend.title = element_blank(),
             legend.position = legend_position)
 
-    ####
+    # loading plot
+    
+    loadings_tb <- pca_res$loadings$X %>% 
+      as_tibble()
+    
+    loadings_plot <- loadings_tb %>%
+      dplyr::mutate(feature = rownames(SummarizedExperiment::assay(data))) %>% 
+      dplyr::arrange(desc(abs(PC1))) %>%
+      dplyr::select(feature, PC1, PC2) %>% 
+      dplyr::slice(1L:10L) %>% 
+      pivot_longer(cols = -feature) %>% 
+      ggplot(aes(x = reorder(feature, value), 
+                 y = value,
+                 fill = name)) +
+      geom_col(position = "dodge2") +
+      labs(y = "PCA loadings",
+           x = element_blank()) +
+      theme_bw() +
+      scale_fill_viridis_d(begin = 0, end = 0.8) +
+      theme(legend.position = legend_position,
+            legend.title = element_blank(),
+            axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    # scores
 
     score_data <- PCi %>% 
       dplyr::select(-Groups, -ID) %>% 
       as_tibble()
 
-    ####
+    # biplot
 
     pca_res2 <- mixOmics::pca(X, ncomp = components, center = TRUE, scale = TRUE)
 
@@ -170,6 +195,8 @@ PomaMultivariate <- function(data,
                 scoresplot = scoresplot,
                 scores = score_data, 
                 eigenvalues = eigenvalues, 
+                loadings = loadings_tb,
+                loadings_plot = loadings_plot,
                 biplot = biplot))
 
   }

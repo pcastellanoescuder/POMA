@@ -7,12 +7,9 @@
 PomaCorr(
   data,
   method = "pearson",
-  shape = "square",
-  type = "full",
-  show_corr = FALSE,
-  low = "#336B87",
+  low = "red",
   outline = "white",
-  high = "#EA8620",
+  high = "blue",
   label_size = 12,
   corr_type = "cor",
   coeff = 0.7
@@ -23,38 +20,31 @@ PomaCorr(
 
 \item{method}{Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".}
 
-\item{shape}{Character ingicating shape of correlogram. Options are "square" (default) and "circle".}
+\item{low}{Color for low end of the gradient in corrplot.}
 
-\item{type}{Character indicating type of correlogram. Options are "full" (default), "lower" or "upper".}
+\item{outline}{Color for the outline of the gradient in corrplot.}
 
-\item{show_corr}{Logical indicating if correlation coefficient for each pair of features should be plotted in correlogram or not (default = FALSE). Only recomended for a low number of features.}
+\item{high}{Color for high end of the gradient in corrplot.}
 
-\item{low}{Colour for low end of the gradient in correlogram.}
+\item{label_size}{Numeric indicating label size in corrplot.}
 
-\item{outline}{Colour for the outline of the gradient in correlogram.}
+\item{corr_type}{Type of correlation network. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See \code{glasso} R package for the second option.}
 
-\item{high}{Colour for high end of the gradient in correlogram.}
-
-\item{label_size}{Numeric indicating label size in correlogram.}
-
-\item{corr_type}{Type of network to be made with correlation matrix. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See \code{glasso} R package for the second option.}
-
-\item{coeff}{Numeric indicatin correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See \code{glasso::glasso()}.}
+\item{coeff}{Numeric indicating correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See \code{glasso::glasso()}.}
 }
 \value{
 A list with the results.
 }
 \description{
-This function returns different correlation plots (correlogram and network plots) and a table with all pairwise correlations in the data.
+This function returns different correlation plots and a table with all pairwise correlations in the data.
 }
 \examples{
 data("st000284")
 
-# pearson correlation
-PomaCorr(st000284)$correlations
-PomaCorr(st000284)$corrplot
+# Pearson correlation
+PomaCorr(st000284)
 
-# gaussian graphical model
+## Gaussian graphical model
 # library(ggraph)
 # PomaCorr(st000284, corr_type = "glasso")
 }
