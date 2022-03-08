@@ -1,6 +1,6 @@
 Package: POMA
 Title: User-friendly Workflow for Omics Data Analysis   
-Version: 1.5.11
+Version: 1.5.12
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",

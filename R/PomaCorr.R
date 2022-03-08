@@ -31,7 +31,6 @@
 #' 
 #' # Pearson correlation
 #' PomaCorr(st000284)$correlations
-#' PomaCorr(st000284, label_size = 5)$corrplot
 #' 
 #' ## Gaussian graphical model
 #' # library(ggraph)
