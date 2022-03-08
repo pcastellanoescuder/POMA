@@ -26,14 +26,14 @@
 #' @importFrom SummarizedExperiment assay colData
 #' @importFrom glasso glasso
 #' 
-#' @examples 
+#' @examples
+#' library(ggraph)
 #' data("st000284")
 #' 
 #' # Pearson correlation
 #' PomaCorr(st000284)
 #' 
 #' ## Gaussian graphical model
-#' # library(ggraph)
 #' # PomaCorr(st000284, corr_type = "glasso")
 PomaCorr <- function(data,
                      method = "pearson",
