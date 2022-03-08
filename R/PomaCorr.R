@@ -27,13 +27,14 @@
 #' @importFrom glasso glasso
 #' 
 #' @examples
-#' library(ggraph)
 #' data("st000284")
 #' 
 #' # Pearson correlation
-#' PomaCorr(st000284)
+#' PomaCorr(st000284)$correlations
+#' PomaCorr(st000284, label_size = 5)$corrplot
 #' 
 #' ## Gaussian graphical model
+#' # library(ggraph)
 #' # PomaCorr(st000284, corr_type = "glasso")
 PomaCorr <- function(data,
                      method = "pearson",
