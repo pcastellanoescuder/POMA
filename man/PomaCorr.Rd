@@ -42,7 +42,7 @@ This function returns different correlation plots and a table with all pairwise 
 data("st000284")
 
 # Pearson correlation
-PomaCorr(st000284)
+PomaCorr(st000284)$correlations
 
 ## Gaussian graphical model
 # library(ggraph)

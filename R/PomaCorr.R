@@ -101,7 +101,6 @@ PomaCorr <- function(data,
     dplyr::as_tibble()
 
   # corrplot
-
   cor_matrix_plot <- cor_matrix %>% 
     as.data.frame() %>% 
     tibble::rownames_to_column("feature1") %>% 
@@ -135,7 +134,6 @@ PomaCorr <- function(data,
     coord_fixed()
   
   # graph
-  
   if(!(require("ggraph", character.only = TRUE))) {
     
     return(list(correlations = correlations, 
@@ -159,7 +157,7 @@ PomaCorr <- function(data,
         scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
         geom_node_point(color = "white", size = 5) +
         geom_node_label(aes(label = name), repel = FALSE) +
-        theme_graph()
+        theme_graph(base_family = "sans")
       
       return(list(correlations = correlations, 
                   corrplot = corrplot, 
@@ -192,7 +190,7 @@ PomaCorr <- function(data,
         scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
         geom_node_point(color = "white", size = 5) +
         geom_node_label(aes(label = name), repel = FALSE) +
-        theme_graph()
+        theme_graph(base_family = "sans")
       
       return(list(correlations = correlations, 
                   corrplot = corrplot, 
