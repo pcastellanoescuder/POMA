@@ -257,13 +257,13 @@ poma_rf$error_tree
 Resultant random forest model confusion matrix for **test** set:  
 
 ```{r}
-poma_rf$confusion_matrix
+poma_rf$confusionMatrix$table
 ```
 
 Gini index plot for the top 10 predictors:  
 
 ```{r}
-poma_rf$gini_plot
+poma_rf$MeanDecreaseGini_plot
 ```
 
 # Session Information
