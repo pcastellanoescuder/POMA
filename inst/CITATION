@@ -1,0 +1,19 @@
+citHeader("To cite POMA in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "POMAShiny: A user-friendly web-based workflow for metabolomics and proteomics data analysis",
+  author   = "Pol Castellano-Escuder, Raúl González-Domínguez, Francesc Carmona-Pontaque, Cristina Andrés-Lacueva, Alex Sánchez-Pla",
+  journal  = "PLOS Computational Biology",
+  year     = "2021",
+  volume   = "17",
+  number   = "7",
+  pages    = "1-15",
+  url      = "https://doi.org/10.1371/journal.pcbi.1009148",
+  textVersion = paste(
+  "POMAShiny: A user-friendly web-based workflow for metabolomics and proteomics data analysis 
+Castellano-Escuder P, González-Domínguez R, Carmona-Pontaque F, Andrés-Lacueva C, Sánchez-Pla A (2021) POMAShiny: A user-friendly web-based workflow for metabolomics and proteomics data analysis. PLOS Computational Biology 17(7): e1009148. https://doi.org/10.1371/journal.pcbi.1009148"
+  )
+)
+
+
