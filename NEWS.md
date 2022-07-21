@@ -1,3 +1,7 @@
+# POMA 1.7.2
+
+* New `biocViews` and `Description`
+
 # POMA 1.5.16
 
 * `MSnbase::MSnSet` class has been replaced by the `SummarizedExperiment` class

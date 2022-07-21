@@ -1,6 +1,6 @@
 Package: POMA
-Title: User-friendly Workflow for Omics Data Analysis   
-Version: 1.7.1
+Title: Tools for Omics Data Analysis   
+Version: 1.7.2
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -9,16 +9,29 @@ Authors@R:
              comment = c(ORCID = "0000-0001-6466-877X"))
              )
 Description: 
-    A structured, reproducible and easy-to-use workflow for the visualization, pre-processing, exploration, 
+    A reproducible and easy-to-use toolkit for visualization, pre-processing, exploration, 
     and statistical analysis of omics datasets. The main aim of POMA is to enable a flexible data cleaning and 
-    statistical analysis processes in one comprehensible and user-friendly R package. This package also has a Shiny app 
-    version that implements all POMA functions. See https://github.com/pcastellanoescuder/POMAShiny.
+    statistical analysis processes in one comprehensible and user-friendly R package. This package has a Shiny app 
+    version called POMAShiny that implements all POMA functions. See https://github.com/pcastellanoescuder/POMAShiny. 
+    See Castellano-Escuder P, González-Domínguez R, Carmona-Pontaque F, et al. (2021) <doi:10.1371/journal.pcbi.1009148> 
+    for more details.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 biocViews:
-    MassSpectrometry, Metabolomics, Proteomics, Software, StatisticalMethod,
-    Visualization, Preprocessing, Normalization, ReportWriting
+    BatchEffect,
+    Classification, 
+    Clustering, 
+    DecisionTree, 
+    DimensionReduction,
+    MultidimensionalScaling,
+    Normalization,
+    Preprocessing,
+    PrincipalComponent,
+    Regression,
+    Software, 
+    StatisticalMethod, 
+    Visualization
 Imports:
     broom,
     caret,
