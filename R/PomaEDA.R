@@ -14,9 +14,6 @@
 #'
 #' @return An exploratory data analysis PDF report.
 #' @author Pol Castellano-Escuder
-#'
-#' @importFrom rmarkdown render
-#' @import knitr
 PomaEDA <- function(data, # nocov start
                     imputation = "knn",
                     normalization = "log_pareto",

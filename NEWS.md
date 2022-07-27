@@ -1,6 +1,7 @@
-# POMA 1.7.2
+# POMA 1.7.3
 
 * New `biocViews` and `Description`
+* Call external packages within each POMA function for consistency
 
 # POMA 1.5.16
 

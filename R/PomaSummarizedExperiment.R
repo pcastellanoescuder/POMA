@@ -12,9 +12,6 @@
 #' @references Morgan M, Obenchain V, Hester J, Pagès H (2021). SummarizedExperiment: SummarizedExperiment container. R package version 1.24.0, https://bioconductor.org/packages/SummarizedExperiment.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom SummarizedExperiment SummarizedExperiment
-#' @importFrom tibble column_to_rownames remove_rownames
-#' @importFrom dplyr rename mutate as_tibble
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
@@ -49,13 +46,13 @@ PomaSummarizedExperiment <- function(target,
   
   target <- target %>%
     dplyr::as_tibble() %>% 
-    remove_rownames() %>%
-    dplyr::rename(ID = 1,
-                  group = 2) %>% 
-    mutate(group = as.factor(group)) %>%
-    column_to_rownames("ID")
+    tibble::remove_rownames() %>%
+    dplyr::rename(ID = 1, group = 2) %>% 
+    dplyr::mutate(group = as.factor(group)) %>%
+    tibble::column_to_rownames("ID")
 
-  features <- features %>% as.data.frame()
+  features <- features %>% 
+    as.data.frame()
   features <- as.matrix(sapply(features, function(x)as.numeric(as.character(x))))
   rownames(features) <- rownames(target)
 

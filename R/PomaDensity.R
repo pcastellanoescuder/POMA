@@ -13,12 +13,7 @@
 #' @return A ggplot2 object.
 #' @author Pol Castellano-Escuder
 #'
-#' @import ggplot2
-#' @importFrom tibble rownames_to_column
-#' @importFrom dplyr select group_by filter rename
 #' @importFrom magrittr %>%
-#' @importFrom tidyr pivot_longer
-#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000284")
@@ -58,74 +53,53 @@ PomaDensity <- function(data,
   e <- t(SummarizedExperiment::assay(data))
   target <- SummarizedExperiment::colData(data) %>%
     as.data.frame() %>% 
-    rownames_to_column("ID") %>%
-    rename(Group = 2) %>%
-    select(ID, Group)
+    tibble::rownames_to_column("ID") %>%
+    dplyr::rename(Group = 2) %>%
+    dplyr::select(ID, Group)
   
   data <- cbind(target, e)
   
   if(group == "samples"){
-
     if (is.null(feature_name)){
-      
-      data %>%
-        pivot_longer(cols = -c(ID, Group)) %>%
-        ggplot(aes(value, fill = Group)) +
-        geom_density(alpha = 0.4) +
-        xlab("Value") +
-        ylab("Density") +
-        theme_bw() +
-        theme(legend.title = element_blank(),
-              legend.position = legend_position) +
-        scale_fill_viridis_d(begin = 0, end = 0.8)
+      plot_data <- data %>%
+        tidyr::pivot_longer(cols = -c(ID, Group)) %>%
+        ggplot2::ggplot(ggplot2::aes(value, fill = Group))
       
     } else {
-      
-      data %>%
-        pivot_longer(cols = -c(ID, Group)) %>%
-        filter(name %in% feature_name) %>%
-        ggplot(aes(value, fill = Group)) +
-        geom_density(alpha = 0.4) +
-        xlab("Value") +
-        ylab("Density") +
-        theme_bw() +
-        theme(legend.title = element_blank(),
-              legend.position = legend_position) +
-        scale_fill_viridis_d(begin = 0, end = 0.8)
+      plot_data <- data %>%
+        tidyr::pivot_longer(cols = -c(ID, Group)) %>%
+        dplyr::filter(name %in% feature_name) %>%
+        ggplot2::ggplot(ggplot2::aes(value, fill = Group))
       
     }
 
   } else {
-
     if (is.null(feature_name)){
-
-      data %>%
+      plot_data <- data %>%
         dplyr::select(-ID) %>%
-        pivot_longer(cols = -Group) %>%
-        ggplot(aes(value, fill = name)) +
-        geom_density(alpha = 0.4) +
-        theme_bw() +
-        xlab("Value") +
-        ylab("Density") +
-        theme(legend.position = "none") +
-        scale_fill_viridis_d(begin = 0, end = 0.8)
+        tidyr::pivot_longer(cols = -Group) %>%
+        ggplot2::ggplot(ggplot2::aes(value, fill = name))
 
     } else {
-      
-      data %>%
+      plot_data <- data %>%
         dplyr::select(-ID) %>%
-        pivot_longer(cols = -Group) %>%
-        filter(name %in% feature_name) %>%
-        ggplot(aes(value, fill = name)) + 
-        geom_density(alpha = 0.4) +
-        theme_bw() +
-        xlab("Value") +
-        ylab("Density") +
-        theme(legend.title = element_blank(),
-              legend.position = legend_position) +
-        scale_fill_viridis_d(begin = 0, end = 0.8)
+        tidyr::pivot_longer(cols = -Group) %>%
+        dplyr::filter(name %in% feature_name) %>%
+        ggplot2::ggplot(ggplot2::aes(value, fill = name))
 
     }
   }
+  
+  plot_complete <- plot_data +
+    ggplot2::geom_density(alpha = 0.4) +
+    ggplot2::theme_bw() +
+    ggplot2::labs(x = "Value",
+                  y = "Density") +
+    ggplot2::theme(legend.title = ggplot2::element_blank(),
+                   legend.position = legend_position) +
+    ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8)
+  
+  return(plot_complete)
+  
 }
 

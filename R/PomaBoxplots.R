@@ -15,12 +15,7 @@
 #' @return A ggplot2 object.
 #' @author Pol Castellano-Escuder
 #'
-#' @import ggplot2
-#' @importFrom tibble rownames_to_column
-#' @importFrom dplyr select filter rename
-#' @importFrom tidyr pivot_longer
 #' @importFrom magrittr %>%
-#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000284")
@@ -62,64 +57,46 @@ PomaBoxplots <- function(data,
   e <- t(SummarizedExperiment::assay(data))
   target <- SummarizedExperiment::colData(data) %>%
     as.data.frame() %>% 
-    rownames_to_column("ID") %>%
-    rename(Group = 2) %>%
-    select(ID, Group)
+    tibble::rownames_to_column("ID") %>%
+    dplyr::rename(Group = 2) %>%
+    dplyr::select(ID, Group)
   
   data <- cbind(target, e)
 
   if(group == "samples"){
-    
-    data %>%
-      pivot_longer(cols = -c(ID, Group)) %>%
-      ggplot(aes(ID, value, color = Group)) +
-      geom_boxplot() +
-      {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
-      theme_bw() +
-      xlab("") +
-      ylab("Value") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
-            legend.title = element_blank(),
-            legend.position = legend_position) +
-      scale_colour_viridis_d(begin = 0, end = 0.8)
+    plot_data <- data %>%
+      tidyr::pivot_longer(cols = -c(ID, Group)) %>%
+      ggplot2::ggplot(ggplot2::aes(ID, value, color = Group))
   }
   
   else {
-    
     if(is.null(feature_name)){
-      
-      data %>%
+      plot_data <- data %>%
         dplyr::select(-ID) %>%
-        pivot_longer(cols = -Group) %>%
-        ggplot(aes(name, value, color = Group)) +
-        geom_boxplot() +
-        {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
-        theme_bw() +
-        xlab("") +
-        ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
-              legend.title = element_blank(),
-              legend.position = legend_position) +
-        scale_colour_viridis_d(begin = 0, end = 0.8)
+        tidyr::pivot_longer(cols = -Group) %>%
+        ggplot2::ggplot(ggplot2::aes(name, value, color = Group))
       
     } else {
-      
-      data %>%
+      plot_data <- data %>%
         dplyr::select(-ID) %>%
         pivot_longer(cols = -Group) %>%
         filter(name %in% feature_name) %>%
-        ggplot(aes(name, value, color = Group)) +
-        geom_boxplot() +
-        {if(jitter)geom_jitter(alpha = 0.5, position = position_jitterdodge())} +
-        theme_bw() +
-        xlab("") +
-        ylab("Value") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = label_size),
-              legend.title = element_blank(),
-              legend.position = legend_position) +
-        scale_colour_viridis_d(begin = 0, end = 0.8)
-
+        ggplot(aes(name, value, color = Group))
     }
   }
+  
+  plot_complete <- plot_data +
+    ggplot2::geom_boxplot() +
+    {if(jitter)ggplot2::geom_jitter(alpha = 0.5, position = ggplot2::position_jitterdodge())} +
+    ggplot2::theme_bw() +
+    ggplot2::labs(x = "", 
+                  y = "Value") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = label_size),
+                   legend.title = ggplot2::element_blank(),
+                   legend.position = legend_position) +
+    ggplot2::scale_colour_viridis_d(begin = 0, end = 0.8)
+  
+  return(plot_complete)
+  
 }
 
