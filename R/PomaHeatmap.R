@@ -33,19 +33,18 @@ PomaHeatmap <- function(data,
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   
-  data <- SummarizedExperiment::assay(data)
+  data_hm <- SummarizedExperiment::assay(data)
   target <- SummarizedExperiment::colData(data)
   
   df <- target %>%
     as.data.frame() %>%
     dplyr::select(dplyr::all_of(cols))
   
-  
   ha <- ComplexHeatmap::HeatmapAnnotation(df = df,
                                           show_legend = show_legend)
 
   suppressMessages(
-    ComplexHeatmap::Heatmap(data, 
+    ComplexHeatmap::Heatmap(data_hm, 
                             name = "Value", 
                             top_annotation = ha,
                             show_row_names = feature_names, 

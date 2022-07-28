@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2021-12-12
+**Last edited**: 2022-07-28
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -74,9 +74,12 @@ data <- PomaSummarizedExperiment(target = target, features = features)
 
 Alternatively, if your data is already stored in a `SummarizedExperiment` object, you can skip this step and go directly to the pre-processing step. In this vignette we will use the sample data provided in `POMA`.        
 
-```{r}
+```{r, warning = FALSE, message = FALSE, comment = FALSE}
 # load example data
 data("st000336")
+```
+
+```{r, warning = FALSE, message = FALSE, comment = FALSE}
 st000336
 ```
 
