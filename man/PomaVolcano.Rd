@@ -19,7 +19,7 @@ PomaVolcano(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type. Only for two group data!}
+\item{data}{A SummarizedExperiment object.}
 
 \item{pval}{Select a pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".}
 

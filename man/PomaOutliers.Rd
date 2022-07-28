@@ -14,7 +14,7 @@ PomaOutliers(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object.}
 
 \item{do}{Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.}
 

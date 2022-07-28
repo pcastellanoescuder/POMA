@@ -3,7 +3,7 @@
 #'
 #' @description This function automatically generates a PDF report with different exploratory plots and tables from an SummarizedExperiment object.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param imputation Imputation method. Options are "none", "half_min", "median", "mean", "min" and "knn" (default). If "none", all missing values will be replaced by zero.
 #' @param normalization Normalization method. Options are "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto" (default).
 #' @param clean_outliers Logical. If it's set to TRUE, outliers will be removed from EDA.

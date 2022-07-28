@@ -3,7 +3,7 @@
 #'
 #' @description PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `colData` will be used as covariables. Default = FALSE.
 #' @param covs Character vector indicating the name of `colData` columns that will be included as covariates. Default is NULL (all variables).
 #' @param method Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".

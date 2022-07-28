@@ -18,7 +18,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 | *BioC* branch                                                           | Status                                                                                                                                                  | Version                                                                                                                                           | Dependencies                                                                                                                                         | Rank                                                                                                                         |
 |-------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | [Release](http://bioconductor.org/packages/release/bioc/html/POMA.html) | [![Bioc release status](https://bioconductor.org/shields/build/release/bioc/POMA.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/POMA/) | [![BioC released version](https://img.shields.io/badge/release%20version-1.6.0-blue.svg)](https://www.bioconductor.org/packages/POMA)             | [![Dependencies](http://bioconductor.org/shields/dependencies/release/POMA.svg)](http://bioconductor.org/packages/release/bioc/html/POMA.html#since) | [![Rank](http://www.bioconductor.org/shields/downloads/release/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA) |
-| [Devel](http://bioconductor.org/packages/devel/bioc/html/POMA.html)     | [![Bioc devel status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)       | [![BioC devel version](https://img.shields.io/badge/devel%20version-1.7.3-blue.svg)](https://bioconductor.org/packages/devel/bioc/html/POMA.html) | [![Dependencies](http://bioconductor.org/shields/dependencies/devel/POMA.svg)](http://bioconductor.org/packages/devel/bioc/html/POMA.html#since)     | [![Rank](http://www.bioconductor.org/shields/downloads/devel/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA)   |
+| [Devel](http://bioconductor.org/packages/devel/bioc/html/POMA.html)     | [![Bioc devel status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)       | [![BioC devel version](https://img.shields.io/badge/devel%20version-1.7.4-blue.svg)](https://bioconductor.org/packages/devel/bioc/html/POMA.html) | [![Dependencies](http://bioconductor.org/shields/dependencies/devel/POMA.svg)](http://bioconductor.org/packages/devel/bioc/html/POMA.html#since)     | [![Rank](http://www.bioconductor.org/shields/downloads/devel/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA)   |
 
 <!-- badges: end -->
 
@@ -32,8 +32,8 @@ package uses the standardized
 class to achieve the maximum flexibility and reproducibility with other
 [Bioconductor](https://bioconductor.org) packages.
 
-`POMA` provides two different Shiny apps both for exploratory data
-analysis and statistical analysis that implement all `POMA` functions in
+POMA provides two different Shiny apps both for exploratory data
+analysis and statistical analysis that implement all POMA functions in
 two user-friendly web interfaces.
 
 -   **POMAShiny**: Shiny version of this package.
@@ -95,6 +95,12 @@ gut microbiota and serum metabolome after a polyphenol-rich diet in
 older subjects with “leaky gut”: The MaPLE trial. Clin Nutr. 2021
 Oct;40(10):5288-5297. doi: 10.1016/j.clnu.2021.08.027. Epub 2021 Sep 9.
 PMID: 34534897.
+
+## News
+
+Click
+[here](https://github.com/pcastellanoescuder/POMA/blob/master/NEWS.md)
+for the latest package updates.
 
 ## Code of Conduct
 

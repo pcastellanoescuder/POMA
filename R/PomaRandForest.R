@@ -1,9 +1,9 @@
 
-#' Classification Random Forest for Mass Spectrometry Data
+#' Classification Random Forest
 #'
-#' @description PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical `randomForest` R package.
+#' @description PomaRandForest() allows users to perform a classification Random Forest using the classical `randomForest` R package.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).
 #' @param ntree Number of trees to grow.
 #' @param mtry Number of variables randomly sampled as candidates at each split. This value is set sqrt(p) (where p is number of variables in data) by default.
@@ -16,13 +16,7 @@
 #' @references A. Liaw and M. Wiener (2002). Classification and Regression by randomForest. R News 2(3), 18--22.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom randomForest randomForest importance
-#' @import ggplot2
-#' @importFrom caret confusionMatrix
-#' @importFrom dplyr mutate as_tibble inner_join arrange desc slice select rename
 #' @importFrom magrittr %>%
-#' @importFrom tibble rownames_to_column
-#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -53,7 +47,7 @@ PomaRandForest <- function(data,
                               t(SummarizedExperiment::assay(data))))
 
   names <- data.frame(real_names = colnames(rf_data), new_names = NA) %>%
-    mutate(new_names = paste0("X", rownames(.)))
+    dplyr::mutate(new_names = paste0("X", rownames(.)))
 
   colnames(rf_data) <- names$new_names
   colnames(rf_data)[1] <- "Group"
@@ -63,7 +57,7 @@ PomaRandForest <- function(data,
     # TRAIN AND TEST
     n <- nrow(rf_data)
     
-    repeat{
+    repeat {
       
       idx_test <- sample(1:n, (ntest/100)*n, replace = FALSE)
       
@@ -81,73 +75,64 @@ PomaRandForest <- function(data,
       }
     }
     
-    RF_model <- randomForest(x = train_x,
-                             y = train_y,
-                             xtest = test_x,
-                             ytest = test_y,
-                             ntree = ntree,
-                             mtry = mtry,
-                             nodesize = nodesize)
+    RF_model <- randomForest::randomForest(x = train_x,
+                                           y = train_y,
+                                           xtest = test_x,
+                                           ytest = test_y,
+                                           ntree = ntree,
+                                           mtry = mtry,
+                                           nodesize = nodesize)
     
   } else {
     
     rf_data <- rf_data %>% 
-      mutate(Group = as.factor(Group))
+      dplyr::mutate(Group = as.factor(Group))
     
-    RF_model <- randomForest(Group ~ ., 
-                             data = rf_data,
-                             ntree = ntree,
-                             mtry = mtry,
-                             nodesize = nodesize)
+    RF_model <- randomForest::randomForest(Group ~ ., 
+                                           data = rf_data,
+                                           ntree = ntree,
+                                           mtry = mtry,
+                                           nodesize = nodesize)
     
   }
-  
-  ##
 
   ntrees <- c(1:RF_model$ntree)
   error <- RF_model$err.rate
 
   forest_data <- round(data.frame(ntrees, error), 4) %>% 
-    as_tibble()
+    dplyr::as_tibble()
 
-  error_tree <- ggplot(forest_data, aes(ntrees, OOB)) +
-    geom_line() +
-    labs(y = "Out-Of-Bag Error Rate") +
-    theme_bw()
-
-  ##
+  error_tree <- ggplot2::ggplot(forest_data, ggplot2::aes(ntrees, OOB)) +
+    ggplot2::geom_line() +
+    ggplot2::labs(y = "Out-Of-Bag Error Rate") +
+    ggplot2::theme_bw()
 
   importancia_pred <- randomForest::importance(RF_model, scale = TRUE) %>% 
     as.data.frame() %>% 
-    rownames_to_column("new_names") %>% 
-    inner_join(names, by = "new_names") %>% 
-    arrange(desc(MeanDecreaseGini)) %>% 
+    tibble::rownames_to_column("new_names") %>% 
+    dplyr::inner_join(names, by = "new_names") %>% 
+    dplyr::arrange(dplyr::desc(MeanDecreaseGini)) %>% 
     dplyr::slice(1:nvar) %>% 
     dplyr::select(real_names, MeanDecreaseGini) %>% 
     dplyr::mutate(MeanDecreaseGini = round(MeanDecreaseGini, 3)) %>% 
     dplyr::rename(feature = real_names) %>% 
     dplyr::as_tibble()
-
-  ##
   
-  gini_plot <- ggplot(importancia_pred, aes(x = reorder(feature, MeanDecreaseGini),
-                                            y = MeanDecreaseGini,
-                                            fill = MeanDecreaseGini)) +
-    xlab("") +
-    geom_col() +
-    coord_flip() +
-    theme_bw() +
-    theme(legend.position = "none")
-  
-  ##
+  gini_plot <- ggplot2::ggplot(importancia_pred, ggplot2::aes(x = reorder(feature, MeanDecreaseGini),
+                                                              y = MeanDecreaseGini,
+                                                              fill = MeanDecreaseGini)) +
+    labs(x = NULL) +
+    ggplot2::geom_col() +
+    ggplot2::coord_flip() +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::scale_fill_viridis_c(begin = 0, end = 0.8)
 
   feature_names <- names %>% 
     dplyr::slice(-1) %>% 
     dplyr::rename(feature = real_names,
                   idx = new_names) %>% 
     dplyr::as_tibble()
-    
-  ##
 
   if(!is.null(ntest)){
     cm <- caret::confusionMatrix(as.factor(RF_model$test$predicted), as.factor(test_y))

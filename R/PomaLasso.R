@@ -3,7 +3,7 @@
 #'
 #' @description PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from `glmnet` package for binary outcomes.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param alpha Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.
 #' @param ntest Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).
 #' @param nfolds Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.
@@ -16,14 +16,7 @@
 #' @references Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.
 #' @author Pol Castellano-Escuder
 #'
-#' @import ggplot2
-#' @import e1071
-#' @importFrom broom tidy glance
-#' @importFrom dplyr arrange desc group_by slice as_tibble
 #' @importFrom magrittr %>%
-#' @importFrom glmnet cv.glmnet predict.glmnet
-#' @importFrom caret confusionMatrix
-#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -84,7 +77,7 @@ PomaLasso <- function(data,
 
   if(!is.null(ntest)){
     
-    repeat{
+    repeat {
 
       idx_test <- sample(1:n, (ntest/100)*n, replace = FALSE)
       
@@ -101,52 +94,60 @@ PomaLasso <- function(data,
       }
     }
     
-    cv_fit <- cv.glmnet(data.matrix(train_x), as.matrix(train_y), family = "binomial", nfolds = nfolds, lambda = lambda, alpha = alpha)
+    cv_fit <- glmnet::cv.glmnet(data.matrix(train_x), 
+                                as.matrix(train_y), 
+                                family = "binomial", 
+                                nfolds = nfolds, 
+                                lambda = lambda, 
+                                alpha = alpha)
     
   } 
   else {
-    cv_fit <- cv.glmnet(features, response, family = "binomial", nfolds = nfolds, lambda = lambda, alpha = alpha)
+    cv_fit <- glmnet::cv.glmnet(features,
+                                response, 
+                                family = "binomial", 
+                                nfolds = nfolds, 
+                                lambda = lambda, 
+                                alpha = alpha)
   }
 
   tidied_cv <- broom::tidy(cv_fit)
   glance_cv <- broom::glance(cv_fit)
 
-  cvlasso <- ggplot(tidied_cv, aes(lambda, estimate)) +
-    geom_line(color = "blue") +
-    geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2) +
-    scale_x_log10() +
-    xlab("log10(Lambda)") +
-    ylab("Estimate") +
-    geom_vline(xintercept = glance_cv$lambda.min, lty = 2) +
-    # geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
-    theme_bw()
+  cvlasso <- ggplot2::ggplot(tidied_cv, ggplot2::aes(lambda, estimate)) +
+    ggplot2::geom_line(color = "blue") +
+    ggplot2::geom_ribbon(ggplot2::aes(ymin = conf.low, ymax = conf.high), alpha = 0.2) +
+    ggplot2::scale_x_log10() +
+    ggplot2::labs(x = "log10(Lambda)",
+                  y = "Estimate") +
+    ggplot2::geom_vline(xintercept = glance_cv$lambda.min, lty = 2) +
+    ggplot2::theme_bw()
 
-  tmp_coeffs <- coef(cv_fit, s = "lambda.min")
+  tmp_coeffs <- glmnet::coef.glmnet(cv_fit, s = "lambda.min")
   final_coef <- data.frame(feature = tmp_coeffs@Dimnames[[1]][tmp_coeffs@i + 1], coefficient = tmp_coeffs@x) %>% 
     dplyr::as_tibble()
 
   if(!is.null(ntest)){
-    lasso_pred <- predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
+    lasso_pred <- glmnet::predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
     cm <- caret::confusionMatrix(as.factor(lasso_pred), as.factor(test_y))
   }
   
   tidied_cv2 <- broom::tidy(cv_fit$glmnet.fit)
   tidied_cv2_names <- tidied_cv2 %>% 
-    arrange(desc(abs(estimate))) %>% 
-    group_by(term) %>% 
+    dplyr::arrange(dplyr::desc(abs(estimate))) %>% 
+    dplyr::group_by(term) %>% 
     dplyr::slice(1)
   
-  coefficientplot <- ggplot(tidied_cv2, aes(lambda, estimate, color = term)) +
-    scale_x_log10() +
-    xlab("log10(Lambda)") +
-    ylab("Coefficients") +
-    geom_line() +
-    geom_vline(xintercept = glance_cv$lambda.min, lty = 2) +
-    # geom_vline(xintercept = glance_cv$lambda.1se, lty = 2) +
-    theme_bw() +
-    {if(labels)geom_label(data = tidied_cv2_names, aes(label = term))} +
-    theme(legend.position = "none") +
-    scale_color_viridis_d(begin = 0, end = 0.8)
+  coefficientplot <- ggplot2::ggplot(tidied_cv2, ggplot2::aes(lambda, estimate, color = term)) +
+    ggplot2::scale_x_log10() +
+    labs(x = "log10(Lambda)",
+         y = "Coefficients") +
+    ggplot2::geom_line() +
+    ggplot2::geom_vline(xintercept = glance_cv$lambda.min, lty = 2) +
+    ggplot2::theme_bw() +
+    {if(labels)ggplot2::geom_label(data = tidied_cv2_names, ggplot2::aes(label = term))} +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::scale_color_viridis_d(begin = 0, end = 0.8)
 
   if(!is.null(ntest)){
     return(list(coefficients = final_coef, 

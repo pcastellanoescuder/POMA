@@ -3,7 +3,7 @@
 #'
 #' @description PomaImpute() offers different methods to impute missing values in MS data.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param ZerosAsNA Logical that indicates if the zeros in the data are missing values. Default is FALSE.
 #' @param RemoveNA Logical that indicates if those features with more than selected cutoff missing values in each group have to be removed. Default is TRUE.
 #' @param cutoff Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these feature will not be removed.
@@ -15,12 +15,7 @@
 #' @references Armitage, E. G., Godzien, J., Alonso‐Herranz, V., López‐Gonzálvez, Á., & Barbas, C. (2015). Missing value imputation strategies for metabolomics data. Electrophoresis, 36(24), 3050-3060.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom impute impute.knn
-#' @importFrom dplyr select
-#' @importFrom tibble rownames_to_column
 #' @importFrom magrittr %>%
-#' @importFrom randomForest rfImpute
-#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -104,17 +99,17 @@ PomaImpute <- function(data,
 
   else if (method == "median"){
     depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), median(x, na.rm = TRUE),x) else x})
+      if(is.numeric(x)) ifelse(is.na(x), median(x, na.rm = TRUE), x) else x})
   }
 
   else if (method == "mean"){
     depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), mean(x, na.rm = TRUE),x) else x})
+      if(is.numeric(x)) ifelse(is.na(x), mean(x, na.rm = TRUE), x) else x})
   }
 
   else if (method == "min"){
     depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), min(x, na.rm = TRUE),x) else x})
+      if(is.numeric(x)) ifelse(is.na(x), min(x, na.rm = TRUE), x) else x})
   }
 
   else if (method == "knn"){
@@ -126,10 +121,9 @@ PomaImpute <- function(data,
   else if (method == "rf"){
     depurdata <- data.frame(group = samples_groups, depurdata)
     depurdata <- randomForest::rfImpute(group ~ ., depurdata)
-    depurdata <- depurdata %>% dplyr::select(-group)
+    depurdata <- depurdata %>% 
+      dplyr::select(-group)
   }
-
-  ##
   
   colnames(depurdata) <- correct_names
   
@@ -137,12 +131,9 @@ PomaImpute <- function(data,
     as.data.frame() %>%
     tibble::rownames_to_column()
   dataImputed <- PomaSummarizedExperiment(features = depurdata, target = target)
-  
-  # dataImputed@elementMetadata <- data@elementMetadata
-  # dataImputed@metadata <- data@metadata
     
   if (validObject(dataImputed))
     return(dataImputed)
 
-  }
+}
 

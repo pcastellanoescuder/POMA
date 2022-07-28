@@ -14,7 +14,7 @@ PomaLasso(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object.}
 
 \item{alpha}{Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.}
 

@@ -15,7 +15,7 @@ PomaUnivariate(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object.}
 
 \item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{colData} will be used as covariables. Default = FALSE.}
 

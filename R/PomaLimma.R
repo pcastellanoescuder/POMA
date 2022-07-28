@@ -1,9 +1,9 @@
 
-#' Implementation of limma R Package on Mass Spectrometry Data
+#' Easy Implementation of `limma` Bioconductor Package
 #'
-#' @description PomaLimma() uses the classical limma package for MS data.
+#' @description PomaLimma() uses the classical `limma` package.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param contrast A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `colData` will be used as covariables. Default = FALSE.
 #' @param covs Character vector indicating the name of `colData` columns that will be included as covariates. Default is NULL (all variables).
@@ -16,11 +16,7 @@
 #' @references Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom limma makeContrasts lmFit contrasts.fit eBayes topTable
 #' @importFrom magrittr %>%
-#' @importFrom tibble rownames_to_column
-#' @importFrom dplyr filter select select_at vars matches as_tibble
-#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000284")
@@ -59,7 +55,7 @@ PomaLimma <- function(data,
 
   if (!covariates){
 
-    initialmodel <- model.matrix( ~ 0 + fac1)
+    initialmodel <- stats::model.matrix( ~ 0 + fac1)
     colnames(initialmodel) <- contrasts
 
     cont.matrix <- limma::makeContrasts(contrasts = contrast,
@@ -78,8 +74,8 @@ PomaLimma <- function(data,
     }
     
     res <- res %>% 
-      rownames_to_column("feature") %>% 
-      as_tibble()
+      tibble::rownames_to_column("feature") %>% 
+      dplyr::as_tibble()
       
     return(res)
 
@@ -98,12 +94,12 @@ PomaLimma <- function(data,
       covariates <- colData(data) %>%
         as.data.frame() %>%
         dplyr::select(-1) %>% 
-        dplyr::select_at(vars(matches(covs)))
+        dplyr::select_at(dplyr::vars(dplyr::matches(covs)))
     }
     
     form <- as.formula(noquote(paste("~ 0 + fac1 + ", paste0(colnames(covariates), collapse = " + ", sep=""), sep = "")))
 
-    initialmodel2 <- model.matrix(form, covariates)
+    initialmodel2 <- stats::model.matrix(form, covariates)
     colnames(initialmodel2)[1:length(levels(fac1))] <- contrasts
 
     cont.matrix2 <- limma::makeContrasts(contrasts = contrast,
@@ -122,8 +118,8 @@ PomaLimma <- function(data,
     }
     
     res2 <- res2 %>% 
-      rownames_to_column("feature") %>% 
-      as_tibble()
+      tibble::rownames_to_column("feature") %>% 
+      dplyr::as_tibble()
     
     return(res2)
     

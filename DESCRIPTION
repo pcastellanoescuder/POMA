@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.7.3
+Version: 1.7.4
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -37,7 +37,6 @@ Imports:
     caret,
     ComplexHeatmap,
     dplyr,
-    e1071,
     ggplot2,
     ggrepel,
     glasso (>= 1.11),

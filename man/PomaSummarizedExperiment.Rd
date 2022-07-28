@@ -7,9 +7,9 @@
 PomaSummarizedExperiment(target, features)
 }
 \arguments{
-\item{target}{Metadata variables structured in columns. Sample ID must be the first column and group/type/treatment of the study must be the second column.}
+\item{target}{Metadata variables structured in columns. Sample ID must be the first column.}
 
-\item{features}{Table of features. Each feature in one column.}
+\item{features}{Matrix of features. Each feature in one column.}
 }
 \value{
 A SummarizedExperiment object.

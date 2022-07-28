@@ -3,7 +3,7 @@
 #'
 #' @description PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param method Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".
 #' @param round Numeric. Number of decimal places (Default is 3).
 #'
@@ -12,9 +12,6 @@
 #' @return A SummarizedExperiment object with normalized data.
 #' @references van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.
 #' @author Pol Castellano-Escuder
-#'
-#' @importFrom tibble rownames_to_column
-#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000284")
@@ -73,16 +70,11 @@ PomaNorm <- function(data,
   else if (method == "log_pareto"){
     normalized <- round(apply(to_norm_data, 2, function(x) (log10(x+1)-mean(log10(x+1),na.rm=TRUE))/sqrt(sd(log10(x+1),na.rm=TRUE))), round)
   }
-
-  ##
   
   target <- SummarizedExperiment::colData(data) %>% 
     as.data.frame() %>%
     tibble::rownames_to_column()
   dataNormalized <- PomaSummarizedExperiment(features = normalized, target = target)
-  
-  # dataNormalized@elementMetadata <- data@elementMetadata
-  # dataNormalized@metadata <- data@metadata
   
   if (validObject(dataNormalized))
     return(dataNormalized)

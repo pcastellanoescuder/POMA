@@ -3,7 +3,7 @@
 #'
 #' @description PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type. Only for two group data!
+#' @param data A SummarizedExperiment object.
 #' @param pval Select a pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".
 #' @param pval_cutoff Numeric. Define the pvalue cutoff (horizontal line).
 #' @param adjust Multiple comparisons correction method for t test result. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
@@ -20,10 +20,7 @@
 #' @return A ggplot2 object.
 #' @author Pol Castellano-Escuder
 #'
-#' @import ggplot2
-#' @importFrom ggrepel geom_label_repel
-#' @importFrom dplyr mutate
-#' @importFrom SummarizedExperiment assay colData
+#' @importFrom magrittr %>% %<>%
 #' 
 #' @examples 
 #' data("st000336")
@@ -66,47 +63,45 @@ PomaVolcano <- function(data,
   if(pval == "raw"){
     df <- data.frame(pvalue = df$pvalue, FC = log2(df$FC), names = names)
   }
-  else{
+  else {
     df <- data.frame(pvalue = df$pvalueAdj, FC = log2(df$FC), names = names)
   }
 
-  df <- mutate(df, threshold = as.factor(ifelse(df$pvalue >= pval_cutoff,
-                                                yes = "none",
-                                                no = ifelse(df$FC < log2FC,
-                                                            yes = ifelse(df$FC < -log2FC,
-                                                                         yes = "Down-regulated",
-                                                                         no = "none"),
-                                                            no = "Up-regulated"))))
-
-  volcanoP <- ggplot(data = df, aes(x = FC, y = -log10(pvalue), colour = threshold, label = names)) +
-    geom_point(size=1.75) +
-    xlim(c(-(xlim), xlim)) +
-    xlab("log2 Fold Change") +
-    ylab("-log10 p-value") +
-    scale_y_continuous(trans = "log1p")+
-    {if(plot_title)ggtitle(paste0("Comparison: ", names(table(colData(data)[,1]))[2], "/", names(table(colData(data)[,1]))[1]))} +
-    geom_vline(xintercept = -log2FC, colour = "black", linetype = "dashed") +
-    geom_vline(xintercept = log2FC, colour = "black", linetype = "dashed") +
-    geom_hline(yintercept = -log10(pval_cutoff), colour = "black", linetype = "dashed") +
+  df %<>%
+    dplyr::mutate(threshold = dplyr::case_when(df$pvalue >= pval_cutoff ~ "None",
+                                               df$FC < -log2FC ~ "Down-regulated",
+                                               df$FC > log2FC ~ "Up-regulated"
+                                               )
+    )
+  
+  volcanoP <- ggplot2::ggplot(data = df, ggplot2::aes(x = FC, y = -log10(pvalue), colour = threshold, label = names)) +
+    ggplot2::geom_point(size = 1.75) +
+    ggplot2::xlim(c(-(xlim), xlim)) +
+    ggplot2::labs(x = "log2 Fold Change",
+                  y = "-log10 p-value",
+                  color = NULL) +
+    ggplot2::scale_y_continuous(trans = "log1p")+
+    {if(plot_title)ggplot2::ggtitle(paste0(names(table(colData(data)[,1]))[2], "/", names(table(colData(data)[,1]))[1]))} +
+    ggplot2::geom_vline(xintercept = -log2FC, colour = "black", linetype = "dashed") +
+    ggplot2::geom_vline(xintercept = log2FC, colour = "black", linetype = "dashed") +
+    ggplot2::geom_hline(yintercept = -log10(pval_cutoff), colour = "black", linetype = "dashed") +
     {if(labels)ggrepel::geom_label_repel(data = df[df$pvalue < pval_cutoff & (df$FC > log2FC | df$FC < -log2FC),],
-                                         aes(x = FC, y = -log10(pvalue), label = names), show.legend = FALSE)} +
-    labs(color = "") +
-    theme_bw() +
-    theme(legend.position = "right") +
-    scale_color_manual(values = c("Down-regulated" = "#E64B35", 
-                                  "Up-regulated" = "#3182bd", 
-                                  "none" = "#636363"))
+                                         ggplot2::aes(x = FC, y = -log10(pvalue), label = names), show.legend = FALSE)} +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position = "right") +
+    ggplot2::scale_color_manual(values = c("Down-regulated" = "#E64B35", 
+                                           "Up-regulated" = "#3182bd", 
+                                           "None" = "#636363"))
 
-  if(interactive){
+  if(interactive) {
     if(!(require("plotly", character.only = TRUE))){
       warning("Package 'plotly' is required for an interactive volcano plot\nUse 'install.packages('plotly')'")
-    }
-    else {
+    } else {
       volcanoP <- plotly::ggplotly(volcanoP)
-    }
+      }
     }
 
   return(volcanoP)
-
-  }
+  
+}
 

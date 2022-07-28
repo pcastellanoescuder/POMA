@@ -16,7 +16,7 @@ PomaCorr(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object.}
 
 \item{method}{Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".}
 

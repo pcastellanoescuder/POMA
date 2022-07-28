@@ -1,9 +1,51 @@
 
+#' Correlation P-Values
+#'
+#' Compute correlation p-values.
+#' 
+#' @param x A data matrix.
+#' @param method Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".
+cor_pmat <- function(x, 
+                     method,
+                     ...) {
+  
+  mat <- as.matrix(x)
+  n <- ncol(mat)
+  p_mat <- matrix(NA, n, n)
+  diag(p_mat) <- 0
+  
+  for (i in 1:(n - 1)) {
+    for (j in (i + 1):n) {
+      tmp <- stats::cor.test(mat[, i], mat[, j], method = method, ...)
+      p_mat[i, j] <- p_mat[j, i] <- tmp$p.value
+    }
+  }
+  
+  colnames(p_mat) <- rownames(p_mat) <- colnames(mat)
+  p_mat
+}
+
+#' Flatten Correlation Matrix
+#' 
+#' @param cormat Output from `cor`.
+#' @param pmat Output from `cor_pmat`.
+flattenCorrMatrix <- function(cormat, 
+                              pmat,
+                              ...) {
+  ut <- upper.tri(cormat)
+  data.frame(
+    row = rownames(cormat)[row(cormat)[ut]],
+    column = rownames(cormat)[col(cormat)[ut]],
+    cor  =(cormat)[ut],
+    p = pmat[ut]
+  )
+}
+
 #' Correlation Analysis
 #'
 #' @description This function returns different correlation plots and a table with all pairwise correlations in the data.
 #' 
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param method Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".
 #' @param low Color for low end of the gradient in corrplot.
 #' @param outline Color for the outline of the gradient in corrplot.
@@ -17,14 +59,8 @@
 #' @return A list with the results.
 #' @references Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso
 #' @author Pol Castellano-Escuder
-#'
-#' @importFrom ggplot2 theme_bw
-#' @importFrom dplyr filter rename as_tibble arrange desc mutate
-#' @importFrom tidyr drop_na pivot_longer replace_na
-#' @importFrom tibble rownames_to_column
+#' 
 #' @importFrom magrittr %>%
-#' @importFrom SummarizedExperiment assay colData
-#' @importFrom glasso glasso
 #' 
 #' @examples
 #' data("st000284")
@@ -62,42 +98,14 @@ PomaCorr <- function(data,
   
   e <- t(SummarizedExperiment::assay(data))
   
-  cor_pmat <- function(x, ...) {
-
-    mat <- as.matrix(x)
-    n <- ncol(mat)
-    p_mat <- matrix(NA, n, n)
-    diag(p_mat) <- 0
-
-    for (i in 1:(n - 1)) {
-      for (j in (i + 1):n) {
-        tmp <- stats::cor.test(mat[, i], mat[, j], method = method, ...)
-        p_mat[i, j] <- p_mat[j, i] <- tmp$p.value
-      }
-    }
-    
-    colnames(p_mat) <- rownames(p_mat) <- colnames(mat)
-    p_mat
-  }
-  
-  flattenCorrMatrix <- function(cormat, pmat) {
-    ut <- upper.tri(cormat)
-    data.frame(
-      row = rownames(cormat)[row(cormat)[ut]],
-      column = rownames(cormat)[col(cormat)[ut]],
-      cor  =(cormat)[ut],
-      p = pmat[ut]
-    )
-  }
-  
   cor_matrix <- cor(e, method = method)
-  cor_pval <- cor_pmat(e)
+  cor_pval <- cor_pmat(e, method = method)
   
   correlations <- flattenCorrMatrix(cor_matrix, cor_pval) %>% 
-    dplyr::rename(feature1 = row, feature2 = column, R = cor, pvalue = p) %>% 
+    dplyr::rename(feature1 = row, feature2 = column, corr = cor, pvalue = p) %>% 
     tidyr::drop_na() %>% 	
     dplyr::mutate(FDR = p.adjust(pvalue, method = "fdr")) %>% 
-    dplyr::arrange(desc(R)) %>% 
+    dplyr::arrange(dplyr::desc(corr)) %>% 
     dplyr::as_tibble()
 
   # corrplot
@@ -105,33 +113,33 @@ PomaCorr <- function(data,
     as.data.frame() %>% 
     tibble::rownames_to_column("feature1") %>% 
     tidyr::pivot_longer(cols = -feature1) %>% 
-    dplyr::rename(feature2 = name, R = value) %>% 
-    dplyr::mutate(R = tidyr::replace_na(R, 0)) %>% 
-    dplyr::arrange(desc(R))
+    dplyr::rename(feature2 = name, corr = value) %>% 
+    dplyr::mutate(corr = tidyr::replace_na(corr, 0)) %>% 
+    dplyr::arrange(dplyr::desc(corr))
  
   my_cols <- c(low, outline, high)
   
-  corrplot <- ggplot(cor_matrix_plot, aes_string(x = "feature1", y = "feature2", fill = "R")) +
-    geom_tile(color = outline) +
-    scale_fill_gradient2(
+  corrplot <- ggplot2::ggplot(cor_matrix_plot, ggplot2::aes_string(x = "feature1", y = "feature2", fill = "corr")) +
+    ggplot2::geom_tile(color = outline) +
+    ggplot2::scale_fill_gradient2(
       low = my_cols[1],
       high = my_cols[3],
       mid = my_cols[2],
       midpoint = 0,
       limit = c(-1, 1),
       space = "Lab") +
-    theme_bw() +
-    theme(
-      axis.text.x = element_text(
+    ggplot2::theme_bw() +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(
         angle = 45,
         vjust = 1,
         size = label_size,
         hjust = 1),
-      axis.text.y = element_text(size = label_size),
-      axis.title.x = element_blank(),
-      axis.title.y = element_blank()
+      axis.text.y = ggplot2::element_text(size = label_size),
+      axis.title.x = ggplot2::element_blank(),
+      axis.title.y = ggplot2::element_blank()
     ) +
-    coord_fixed()
+    ggplot2::coord_fixed()
   
   # graph
   if(!(require("ggraph", character.only = TRUE))) {
@@ -145,19 +153,19 @@ PomaCorr <- function(data,
     if(corr_type != "glasso"){
       
       graph_table <- correlations %>% 
-        filter(abs(R) >= coeff)
+        dplyr::filter(abs(corr) >= coeff)
       
       if (nrow(graph_table) < 1) {
         stop("There are no feature pairs with selected coeff. Try with a lower value...")
       }
       
-      graph <- ggraph(graph_table, layout = "fr") +
-        geom_edge_link(aes(edge_alpha = abs(R), edge_width = abs(R), color = R)) +
-        guides(edge_alpha = "none", edge_width = "none") +
-        scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
-        geom_node_point(color = "white", size = 5) +
-        geom_node_label(aes(label = name), repel = FALSE) +
-        theme_graph(base_family = "sans")
+      graph <- ggraph::ggraph(graph_table, layout = "fr") +
+        ggraph::geom_edge_link(ggplot2::aes(edge_alpha = abs(corr), edge_width = abs(corr), color = corr)) +
+        ggplot2::guides(edge_alpha = "none", edge_width = "none") +
+        ggraph::scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
+        ggraph::geom_node_point(color = "white", size = 2) +
+        ggraph::geom_node_text(ggplot2::aes(label = name), repel = FALSE) +
+        ggraph::theme_graph()
       
       return(list(correlations = correlations, 
                   corrplot = corrplot, 
@@ -174,23 +182,23 @@ PomaCorr <- function(data,
       data_glasso <- na.omit(data_glasso)
       data_glasso <- data_glasso[with(data_glasso, order(-Freq)), ]
       data_glasso <- data_glasso %>% 
-        dplyr::rename(feature1 = 1, feature2 = 2, EstimatedCorr = 3) %>% 
+        dplyr::rename(feature1 = 1, feature2 = 2, est_corr = 3) %>% 
         dplyr::as_tibble()
       
       graph_table <- data_glasso %>% 
-        filter(EstimatedCorr != 0)
+        dplyr::filter(est_corr != 0)
       
       if (nrow(graph_table) < 1) {
         stop("There aren't feature pairs with selected coeff. Try with a lower value...")
       }
       
-      graph <- ggraph(graph_table, layout = "fr") +
-        geom_edge_link(aes(edge_alpha = abs(EstimatedCorr), edge_width = abs(EstimatedCorr), color = EstimatedCorr)) +
-        guides(edge_alpha = "none", edge_width = "none") +
-        scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
-        geom_node_point(color = "white", size = 5) +
-        geom_node_label(aes(label = name), repel = FALSE) +
-        theme_graph(base_family = "sans")
+      graph <- ggraph::ggraph(graph_table, layout = "fr") +
+        ggraph::geom_edge_link(ggplot2::aes(edge_alpha = abs(est_corr), edge_width = abs(est_corr), color = est_corr)) +
+        ggplot2::guides(edge_alpha = "none", edge_width = "none") +
+        ggraph::scale_edge_colour_gradientn(limits = c(-1, 1), colors = c("firebrick2", "dodgerblue2")) +
+        ggraph::geom_node_point(color = "white", size = 2) +
+        ggraph::geom_node_text(ggplot2::aes(label = name), repel = FALSE) +
+        ggraph::theme_graph()
       
       return(list(correlations = correlations, 
                   corrplot = corrplot, 

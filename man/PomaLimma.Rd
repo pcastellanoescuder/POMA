@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaLimma.R
 \name{PomaLimma}
 \alias{PomaLimma}
-\title{Implementation of limma R Package on Mass Spectrometry Data}
+\title{Easy Implementation of \code{limma} Bioconductor Package}
 \usage{
 PomaLimma(
   data,
@@ -14,7 +14,7 @@ PomaLimma(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object.}
 
 \item{contrast}{A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".}
 
@@ -30,7 +30,7 @@ PomaLimma(
 A tibble with limma results.
 }
 \description{
-PomaLimma() uses the classical limma package for MS data.
+PomaLimma() uses the classical \code{limma} package.
 }
 \examples{
 data("st000284")

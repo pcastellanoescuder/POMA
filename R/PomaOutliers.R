@@ -3,7 +3,7 @@
 #'
 #' @description This function allows users to analyze outliers by different plots and remove them from an SummarizedExperiment object.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param do Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.
 #' @param method Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See `?dist()`.
 #' @param type Type of outliers analysis to perform. Options are "median" (default) and "centroid". See `vegan::betadisper`.
@@ -15,13 +15,7 @@
 #' @return A SummarizedExperiment object without outliers OR an exploratory outlier analysis including both plots and tables (depending on "do" parameter).
 #' @author Pol Castellano-Escuder
 #'
-#' @import ggplot2
-#' @importFrom dplyr select filter do group_by mutate rename as_tibble
-#' @importFrom tibble rownames_to_column
 #' @importFrom magrittr %>%
-#' @importFrom ggrepel geom_label_repel
-#' @importFrom SummarizedExperiment assay colData
-#' @importFrom vegan betadisper
 #' 
 #' @examples 
 #' data("st000336")
@@ -64,18 +58,18 @@ PomaOutliers <- function(data,
   names <- rownames(SummarizedExperiment::colData(data))
   to_outliers <- t(SummarizedExperiment::assay(data))
   
-  ##
-  
-  dd <- dist(to_outliers, method = method)
+  dd <- stats::dist(to_outliers, method = method)
   distances <- vegan::betadisper(dd, groups, type = type, bias.adjust = FALSE, sqrt.dist = FALSE, add = FALSE)
   detect_outliers <- data.frame(distances = distances$distances, Groups = distances$group, sample = names) 
   
-  limit <- data.frame(aggregate(detect_outliers$distances, list(detect_outliers$Groups), function(x) {quantile(x, 0.75) + coef * IQR(x)}))
+  limit <- data.frame(aggregate(detect_outliers$distances, 
+                                list(detect_outliers$Groups), 
+                                function(x) {quantile(x, 0.75) + coef * IQR(x)}))
   colnames(limit)[1] <- "Groups"
   
-  detect_outliers <- merge(detect_outliers, limit, by = "Groups")
   detect_outliers <- detect_outliers %>% 
-    mutate(out = as.factor(ifelse(distances > x, 1, 0)))
+    dplyr::left_join(limit, by = "Groups") %>% 
+    dplyr::mutate(out = as.factor(ifelse(distances > x, 1, 0)))
   
   final_outliers <- detect_outliers %>%
     dplyr::filter(out == 1) %>%
@@ -85,41 +79,38 @@ PomaOutliers <- function(data,
                   limit_distance = x) %>% 
     dplyr::as_tibble()
   
-  ##
-  
   if(do == "analyze"){
-    
     vectors <- data.frame(distances$vectors)
     centroids <- data.frame(distances$centroids)
     
     total_outliers <- vectors %>%
-      rownames_to_column("sample") %>%
-      mutate(Group = groups)
+      tibble::rownames_to_column("sample") %>%
+      dplyr::mutate(Group = groups)
     
     find_hull <- function(x){x[chull(x$PCoA1, x$PCoA2) ,]}
     
     hulls <- total_outliers %>% 
-      select(-sample) %>%
-      group_by(Group) %>% 
+      dplyr::select(-sample) %>%
+      dplyr::group_by(Group) %>% 
       dplyr::do(find_hull(.))
     
-    polygon_plot <- ggplot(total_outliers, aes(x = PCoA1, y = PCoA2)) +
-      geom_polygon(data = hulls, alpha = 0.5, aes(fill = Group)) +
-      {if(!labels)geom_point(aes(shape = Group), size = 3, alpha = 0.7)} +
-      geom_label(data = centroids, aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
-      {if(labels)geom_text(aes(label = sample))} +
-      theme_bw() +
-      scale_fill_viridis_d(begin = 0, end = 0.8) +
-      scale_color_viridis_d(begin = 0, end = 0.8)
+    polygon_plot <- ggplot2::ggplot(total_outliers, ggplot2::aes(x = PCoA1, y = PCoA2)) +
+      ggplot2::geom_polygon(data = hulls, alpha = 0.5, ggplot2::aes(fill = Group)) +
+      {if(!labels)ggplot2::geom_point(ggplot2::aes(shape = Group), size = 3, alpha = 0.7)} +
+      ggplot2::geom_label(data = centroids, ggplot2::aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
+      {if(labels)ggplot2::geom_text(ggplot2::aes(label = sample))} +
+      ggplot2::theme_bw() +
+      ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8) +
+      ggplot2::scale_color_viridis_d(begin = 0, end = 0.8)
     
-    distance_boxplot <- ggplot(detect_outliers, aes(Groups, distances, fill = Groups)) +
-      geom_boxplot(coef = coef, alpha = 0.8) +
-      ylab("Distance to group centroid") + 
-      xlab("") +
-      {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
-      theme_bw() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      scale_fill_viridis_d(begin = 0, end = 0.8)
+    distance_boxplot <- ggplot2::ggplot(detect_outliers, ggplot2::aes(Groups, distances, fill = Groups)) +
+      ggplot2::geom_boxplot(coef = coef, alpha = 0.8) +
+      ggplot2::labs(x = NULL,
+                    y = "Distance to group centroid") + 
+      {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], ggplot2::aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
+      ggplot2::theme_bw() +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)) +
+      ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8)
     
     return(list(polygon_plot = polygon_plot, 
                 distance_boxplot = distance_boxplot, 
@@ -129,14 +120,12 @@ PomaOutliers <- function(data,
     
     target <- SummarizedExperiment::colData(data) %>% 
       as.data.frame() %>%
-      rownames_to_column("sample") %>% 
-      filter(!(sample %in% final_outliers$sample))
+      tibble::rownames_to_column("sample") %>% 
+      dplyr::filter(!(sample %in% final_outliers$sample))
 
     e <- to_outliers %>%
       as.data.frame() %>%
-      filter(!(rownames(.) %in% final_outliers$sample))
-    
-    ##
+      dplyr::filter(!(rownames(.) %in% final_outliers$sample))
     
     dataCleaned <- PomaSummarizedExperiment(features = e, target = target)
     

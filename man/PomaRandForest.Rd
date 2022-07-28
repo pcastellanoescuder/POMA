@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaRandForest.R
 \name{PomaRandForest}
 \alias{PomaRandForest}
-\title{Classification Random Forest for Mass Spectrometry Data}
+\title{Classification Random Forest}
 \usage{
 PomaRandForest(
   data,
@@ -14,7 +14,7 @@ PomaRandForest(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object.}
 
 \item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).}
 
@@ -30,7 +30,7 @@ PomaRandForest(
 A list with all results for Random Forest including plots and tables.
 }
 \description{
-PomaRandForest() allows users to perform a classification Random Forest with a MS data matrix using the classical \code{randomForest} R package.
+PomaRandForest() allows users to perform a classification Random Forest using the classical \code{randomForest} R package.
 }
 \examples{
 data("st000336")

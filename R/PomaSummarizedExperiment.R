@@ -3,8 +3,8 @@
 #'
 #' @description This function converts data frame objects to a SummarizedExperiment object.
 #' 
-#' @param target Metadata variables structured in columns. Sample ID must be the first column and group/type/treatment of the study must be the second column.
-#' @param features Table of features. Each feature in one column.
+#' @param target Metadata variables structured in columns. Sample ID must be the first column.
+#' @param features Matrix of features. Each feature in one column.
 #'
 #' @export
 #'
@@ -47,9 +47,8 @@ PomaSummarizedExperiment <- function(target,
   target <- target %>%
     dplyr::as_tibble() %>% 
     tibble::remove_rownames() %>%
-    dplyr::rename(ID = 1, group = 2) %>% 
-    dplyr::mutate(group = as.factor(group)) %>%
-    tibble::column_to_rownames("ID")
+    dplyr::rename(sample = 1) %>%
+    tibble::column_to_rownames("sample")
 
   features <- features %>% 
     as.data.frame()

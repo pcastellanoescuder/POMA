@@ -3,7 +3,7 @@
 #'
 #' @description This function returns a basic heatmap plot made with base R.
 #' 
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param cols Numerical vector indicating the column index of variables in `colData` to be displayed. Default is 1 (main group).
 #' @param sample_names Logical indicating if sample names should be plotted or not. Default is TRUE.
 #' @param feature_names Logical indicating if feature names should be plotted or not. Default is FALSE.
@@ -13,10 +13,6 @@
 #'
 #' @return A heatmap plot.
 #' @author Pol Castellano-Escuder
-#'
-#' @importFrom dplyr select all_of
-#' @importFrom SummarizedExperiment assay colData
-#' @importFrom ComplexHeatmap HeatmapAnnotation Heatmap
 #' 
 #' @examples 
 #' data("st000284")
@@ -37,19 +33,19 @@ PomaHeatmap <- function(data,
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   
-  total <- SummarizedExperiment::assay(data)
+  data <- SummarizedExperiment::assay(data)
   target <- SummarizedExperiment::colData(data)
   
   df <- target %>%
     as.data.frame() %>%
-    dplyr::select(all_of(cols))
+    dplyr::select(dplyr::all_of(cols))
   
   
   ha <- ComplexHeatmap::HeatmapAnnotation(df = df,
                                           show_legend = show_legend)
 
   suppressMessages(
-    ComplexHeatmap::Heatmap(total, 
+    ComplexHeatmap::Heatmap(data, 
                             name = "Value", 
                             top_annotation = ha,
                             show_row_names = feature_names, 

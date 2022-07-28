@@ -13,7 +13,7 @@ PomaOddsRatio(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object.}
 
 \item{feature_name}{A vector with the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.}
 

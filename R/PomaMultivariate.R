@@ -3,7 +3,7 @@
 #'
 #' @description PomaMultivariate() allows users to perform different multivariate statistical analysis on MS data.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param method A multivariate method. Options are: "pca", "plsda" and "splsda".
 #' @param components Numeric. Number of components to include in the model. Default is 5.
 #' @param center Logical that indicates whether the variables should be shifted to be zero centered. Default is FALSE.

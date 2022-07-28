@@ -13,7 +13,7 @@ PomaHeatmap(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object. First \code{colData} column must be the subject group/type.}
+\item{data}{A SummarizedExperiment object.}
 
 \item{cols}{Numerical vector indicating the column index of variables in \code{colData} to be displayed. Default is 1 (main group).}
 

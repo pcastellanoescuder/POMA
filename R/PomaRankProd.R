@@ -3,7 +3,7 @@
 #'
 #' @description PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.
 #'
-#' @param data A SummarizedExperiment object. First `colData` column must be the subject group/type.
+#' @param data A SummarizedExperiment object.
 #' @param logged If "TRUE" (default) data have been previously log transformed.
 #' @param logbase Numerical. Base for log transformation.
 #' @param paired Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.
@@ -18,11 +18,14 @@
 #' @references Del Carratore, F., Jankevics, A., Eisinga, R., Heskes, T., Hong, F. & Breitling, R. (2017). RankProd 2.0: a refactored Bioconductor package for detecting differentially expressed features in molecular profiling datasets. Bioinformatics. 33(17):2774-2775
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom RankProd RankProducts topGene
-#' @import ggplot2
-#' @importFrom dplyr rename as_tibble
-#' @importFrom tibble rownames_to_column
-#' @importFrom SummarizedExperiment assay colData
+#' @importFrom magrittr %>%
+#' 
+#' @examples 
+#' data("st000336")
+#' 
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaRankProd()
 PomaRankProd <- function(data,
                          logged = TRUE,
                          logbase = 2,
@@ -57,21 +60,22 @@ PomaRankProd <- function(data,
   class1 <- levels(as.factor(Group))[1]
   class2 <- levels(as.factor(Group))[2]
 
-  RP <- RankProducts(SummarizedExperiment::assay(data), 
-                     data_class, 
-                     logged = logged, 
-                     na.rm = TRUE, 
-                     plot = FALSE,
-                     RandomPairs = paired,
-                     rand = 123,
-                     gene.names = rownames(data))
+  RP <- RankProd::RankProducts(SummarizedExperiment::assay(data), 
+                               data_class, 
+                               logged = logged, 
+                               na.rm = TRUE, 
+                               plot = FALSE,
+                               RandomPairs = paired,
+                               rand = 123,
+                               gene.names = rownames(data))
 
-  top_rank <- topGene(RP, cutoff = cutoff, 
-                      method = method,
-                      logged = logged, 
-                      logbase = logbase,
-                      gene.names = rownames(data))
-
+  top_rank <- RankProd::topGene(RP, 
+                                cutoff = cutoff, 
+                                method = method,
+                                logged = logged, 
+                                logbase = logbase,
+                                gene.names = rownames(data))
+          
   one <- as.data.frame(top_rank$Table1)
   two <- as.data.frame(top_rank$Table2)
 
@@ -82,7 +86,7 @@ PomaRankProd <- function(data,
   if(nrow(one) != 0){
     
     one <- one %>% 
-      rownames_to_column("feature") %>% 
+      tibble::rownames_to_column("feature") %>% 
       dplyr::rename(rp_rsum = 3,
                     pvalue = P.value,
                     feature_index = gene.index) %>% 
@@ -94,7 +98,7 @@ PomaRankProd <- function(data,
   if(nrow(two) != 0){
     
     two <- two %>% 
-      rownames_to_column("feature") %>% 
+      tibble::rownames_to_column("feature") %>% 
       dplyr::rename(rp_rsum = 3,
                     pvalue = P.value,
                     feature_index = gene.index) %>% 
@@ -132,19 +136,19 @@ PomaRankProd <- function(data,
 
   rp_plot <- data.frame(rank1 = rank1, rank2 = rank2, pfp1 = pfp1 ,  pfp2 = pfp2)
 
-  plot1 <- ggplot(rp_plot, aes(x = rank1, y = pfp1)) +
-    geom_point(size = 1.5, alpha=0.9) +
-    theme_bw() +
-    xlab("Number of identified features") +
-    ylab("Estimated PFP") +
-    ggtitle(paste0("Identification of Up-regulated features under class ", class2))
+  plot1 <- ggplot2::ggplot(rp_plot, ggplot2::aes(x = rank1, y = pfp1)) +
+    ggplot2::geom_point(size = 1.5, alpha=0.9) +
+    ggplot2::theme_bw() +
+    ggplot2::labs(x = "Number of identified features",
+                  y = "Estimated PFP",
+                  title = paste0("Identification of Up-regulated features under class ", class2))
 
-  plot2 <- ggplot(rp_plot, aes(x = rank2, y = pfp2)) +
-    geom_point(size = 1.5, alpha=0.9) +
-    theme_bw() +
-    xlab("Number of identified features") +
-    ylab("Estimated PFP") +
-    ggtitle(paste0("Identification of Down-regulated features under class ", class2))
+  plot2 <- ggplot2::ggplot(rp_plot, ggplot2::aes(x = rank2, y = pfp2)) +
+    ggplot2::geom_point(size = 1.5, alpha=0.9) +
+    ggplot2::theme_bw() +
+    ggplot2::labs(x = "Number of identified features",
+                  y = "Estimated PFP",
+                  title = paste0("Identification of Down-regulated features under class ", class2))
 
   return(list(upregulated = one,
               downregulated = two,
