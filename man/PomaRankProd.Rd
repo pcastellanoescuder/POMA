@@ -32,6 +32,13 @@ A list with all results for Rank Product analysis including tables and plots.
 \description{
 PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.
 }
+\examples{
+data("st000336")
+
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaRankProd()
+}
 \references{
 Breitling, R., Armengaud, P., Amtmann, A., and Herzyk, P.(2004) Rank Products: A simple, yet powerful, new method to detect differentially regulated genes in replicated microarray experiments, FEBS Letter, 57383-92
 

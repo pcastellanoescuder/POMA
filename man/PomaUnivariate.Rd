@@ -17,7 +17,7 @@ PomaUnivariate(
 \arguments{
 \item{data}{A SummarizedExperiment object.}
 
-\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{colData} will be used as covariables. Default = FALSE.}
+\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{colData} will be used as covariates. Default = FALSE.}
 
 \item{covs}{Character vector indicating the name of \code{colData} columns that will be included as covariates. Default is NULL (all variables).}
 

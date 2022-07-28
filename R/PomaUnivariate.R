@@ -4,7 +4,7 @@
 #' @description PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
 #'
 #' @param data A SummarizedExperiment object.
-#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `colData` will be used as covariables. Default = FALSE.
+#' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `colData` will be used as covariates. Default = FALSE.
 #' @param covs Character vector indicating the name of `colData` columns that will be included as covariates. Default is NULL (all variables).
 #' @param method Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".
 #' @param paired Logical that indicates if the data is paired or not.
@@ -16,10 +16,7 @@
 #' @return A tibble with results.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom tibble column_to_rownames rownames_to_column remove_rownames
-#' @importFrom dplyr select mutate mutate_all rename_at filter bind_cols bind_rows summarise_all group_by as_tibble everything rename_all across starts_with vars
 #' @importFrom magrittr %>%
-#' @importFrom SummarizedExperiment assay colData
 #' 
 #' @examples 
 #' data("st000336")
@@ -70,30 +67,27 @@ PomaUnivariate <- function(data,
   e <- t(SummarizedExperiment::assay(data))
 
   ## group means and sd
-  
   group_means <- e %>%
     as.data.frame() %>% 
-    mutate(group = Group) %>%
-    group_by(group) %>%
-    summarise_all(list(~ mean(., na.rm = TRUE))) %>%
-    remove_rownames() %>%
-    column_to_rownames("group") %>%
+    dplyr::mutate(group = Group) %>%
+    dplyr::group_by(group) %>%
+    dplyr::summarise_all(list(~ mean(., na.rm = TRUE))) %>%
+    tibble::remove_rownames() %>%
+    tibble::column_to_rownames("group") %>%
     t() %>%
     as.data.frame() %>% 
-    rename_all(~ paste0("mean_", .))
+    dplyr::rename_all(~ paste0("mean_", .))
   
   group_sd <- e %>%
     as.data.frame() %>% 
-    mutate(group = Group) %>%
-    group_by(group) %>%
-    summarise_all(list(~ sd(., na.rm = TRUE))) %>%
-    remove_rownames() %>%
-    column_to_rownames("group") %>%
+    dplyr::mutate(group = Group) %>%
+    dplyr::group_by(group) %>%
+    dplyr::summarise_all(list(~ sd(., na.rm = TRUE))) %>%
+    tibble::remove_rownames() %>%
+    tibble::column_to_rownames("group") %>%
     t() %>%
     as.data.frame() %>% 
-    rename_all(~ paste0("sd_", .))
-  
-  ##
+    dplyr::rename_all(~ paste0("sd_", .))
   
   if(method == "ttest"){
 
@@ -101,12 +95,12 @@ PomaUnivariate <- function(data,
                                      var.equal = var_equal, paired = paired)$p.value}
 
     res_ttest <- data.frame(pvalue = apply(FUN = stat_ttest, MARGIN = 2, X = e)) %>% 
-      rownames_to_column("feature") %>%
-      mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>%
-      bind_cols(group_means, group_sd) %>%
-      mutate(FC = as.numeric(round(group_means[,2]/group_means[,1], 3)),
-             diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
-      dplyr::select(feature, FC, diff_means, pvalue, pvalueAdj, everything()) %>% 
+      tibble::rownames_to_column("feature") %>%
+      dplyr::mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>%
+      dplyr::bind_cols(group_means, group_sd) %>%
+      dplyr::mutate(FC = as.numeric(round(group_means[,2]/group_means[,1], 3)),
+                    diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
+      dplyr::select(feature, FC, diff_means, pvalue, pvalueAdj, dplyr::everything()) %>% 
       dplyr::as_tibble()
 
     return(res_ttest)
@@ -119,10 +113,10 @@ PomaUnivariate <- function(data,
       stat_aov <- function(x){anova(aov(x ~ Group))$"Pr(>F)"[1]}
       
       res_aov <- data.frame(pvalue = apply(FUN = stat_aov, MARGIN = 2, X = e)) %>%
-        mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>% 
-        bind_cols(group_means, group_sd) %>% 
-        rownames_to_column("feature") %>% 
-        dplyr::select(feature, pvalue, pvalueAdj, everything()) %>% 
+        dplyr::mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>% 
+        dplyr::bind_cols(group_means, group_sd) %>% 
+        tibble::rownames_to_column("feature") %>% 
+        dplyr::select(feature, pvalue, pvalueAdj, dplyr::everything()) %>% 
         dplyr::as_tibble()
 
       return(res_aov)
@@ -140,7 +134,7 @@ PomaUnivariate <- function(data,
         covariates <- colData(data) %>%
           as.data.frame() %>%
           dplyr::select(-1) %>% 
-          dplyr::select_at(vars(matches(covs))) %>% 
+          dplyr::select_at(dplyr::vars(dplyr::matches(covs))) %>% 
           dplyr::mutate_all(as.numeric)
       }
 
@@ -156,13 +150,14 @@ PomaUnivariate <- function(data,
         names(result_cov[[i]]) <- c(colnames(covariates), colnames(SummarizedExperiment::colData(data))[1])
       }
 
-      res_aov_cov <- bind_rows(result_cov) %>%
+      res_aov_cov <- result_cov %>% 
+        dplyr::bind_rows() %>%
         dplyr::rename_all(~ paste0("pvalue_", .)) %>% 
-        dplyr::mutate(across(starts_with("pvalue"), ~ p.adjust(., method = adjust), .names = "pvalueAdj_{.col}"),
+        dplyr::mutate(dplyr::across(dplyr::starts_with("pvalue"), ~ p.adjust(., method = adjust), .names = "pvalueAdj_{.col}"),
                       feature = colnames(e)) %>% 
-        dplyr::rename_at(vars(starts_with("pvalueAdj_pvalue_")), ~ gsub("pvalueAdj_pvalue", "pvalueAdj", .)) %>% 
-        bind_cols(group_means, group_sd) %>% 
-        dplyr::select(feature, everything()) %>% 
+        dplyr::rename_at(dplyr::vars(dplyr::starts_with("pvalueAdj_pvalue_")), ~ gsub("pvalueAdj_pvalue", "pvalueAdj", .)) %>% 
+        dplyr::bind_cols(group_means, group_sd) %>% 
+        dplyr::select(feature, dplyr::everything()) %>% 
         dplyr::as_tibble()
 
       return(res_aov_cov)
@@ -174,12 +169,12 @@ PomaUnivariate <- function(data,
 
     res_mann <- data.frame(pvalue = apply(e, 2, function(x){wilcox.test(x ~ as.factor(Group),
                                                                         paired = paired)$p.value})) %>% 
-      rownames_to_column("feature") %>%
-      mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>%
-      bind_cols(group_means, group_sd) %>%
-      mutate(FC = as.numeric(round(group_means[,2]/group_means[,1], 3)),
-             diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
-      dplyr::select(feature, FC, diff_means, pvalue, pvalueAdj, everything()) %>% 
+      tibble::rownames_to_column("feature") %>%
+      dplyr::mutate(pvalueAdj = p.adjust(pvalue, method = adjust)) %>%
+      dplyr::bind_cols(group_means, group_sd) %>%
+      dplyr::mutate(FC = as.numeric(round(group_means[,2]/group_means[,1], 3)),
+                    diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
+      dplyr::select(feature, FC, diff_means, pvalue, pvalueAdj, dplyr::everything()) %>% 
       dplyr::as_tibble()
     
     return(res_mann)
@@ -188,11 +183,11 @@ PomaUnivariate <- function(data,
   else if (method == "kruskal"){
 
     res_kruskal <- data.frame(pvalue = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$p.value})) %>%
-      mutate(pvalueAdj = p.adjust(pvalue, method = adjust),
-             kw_rank_sum = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$statistic})) %>% 
-      bind_cols(group_means, group_sd) %>% 
-      rownames_to_column("feature") %>%
-      dplyr::select(feature, kw_rank_sum, pvalue, pvalueAdj, everything()) %>% 
+      dplyr::mutate(pvalueAdj = p.adjust(pvalue, method = adjust),
+                    kw_rank_sum = apply(e, 2, function(x){kruskal.test(x ~ as.factor(Group))$statistic})) %>% 
+      dplyr::bind_cols(group_means, group_sd) %>% 
+      tibble::rownames_to_column("feature") %>%
+      dplyr::select(feature, kw_rank_sum, pvalue, pvalueAdj, dplyr::everything()) %>% 
       dplyr::as_tibble()
     
     return(res_kruskal)

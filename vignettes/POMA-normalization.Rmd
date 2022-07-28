@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2021-12-12
+**Last edited**: 2022-07-28
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -58,7 +58,9 @@ Let's create a cleaned `SummarizedExperiment` object from the sample `st000336` 
 data("st000336")
 
 # imputation using the default method KNN
-example_data <- st000336 %>% PomaImpute()
+example_data <- st000336 %>% 
+  PomaImpute()
+
 example_data
 ```
 
