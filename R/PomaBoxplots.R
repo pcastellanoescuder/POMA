@@ -39,7 +39,7 @@ PomaBoxplots <- function(data,
   if (missing(data)) {
     stop("data argument is empty!")
   }
-  if(!is(data[1], "SummarizedExperiment")){
+  if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(group %in% c("samples", "features"))) {

@@ -1,7 +1,8 @@
-# POMA 1.7.7
+# POMA 1.7.8
 
 * New `biocViews` and `Description`
 * Call external packages within each POMA function for consistency
+* UMAP implementation
 
 # POMA 1.5.16
 
