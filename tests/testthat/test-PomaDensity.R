@@ -17,13 +17,13 @@ test_that("PomaDensity works", {
   f <- PomaDensity(norm_ls, group = "features", feature_name = "methyl_succinate")
   g <- PomaDensity(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
 
-  df_a <- layer_data(a)
-  df_b <- layer_data(b)
-  df_c <- layer_data(c)
-  df_d <- layer_data(d)
-  df_e <- layer_data(e)
-  df_f <- layer_data(f)
-  df_g <- layer_data(g)
+  df_a <- ggplot2::layer_data(a)
+  df_b <- ggplot2::layer_data(b)
+  df_c <- ggplot2::layer_data(c)
+  df_d <- ggplot2::layer_data(d)
+  df_e <- ggplot2::layer_data(e)
+  df_f <- ggplot2::layer_data(f)
+  df_g <- ggplot2::layer_data(g)
 
   ####
 

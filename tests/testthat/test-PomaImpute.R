@@ -19,7 +19,7 @@ test_that("PomaImpute works", {
     
   target <- SummarizedExperiment::colData(st000284) %>% 
     as.data.frame() %>% 
-    rownames_to_column() 
+    tibble::rownames_to_column() 
   testimput <- PomaSummarizedExperiment(features = data, target = target)
 
   a <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 8))))
@@ -82,8 +82,6 @@ test_that("PomaImpute works", {
   expect_equal(d, e)
   expect_equal(c, e)
   expect_equal(e, f)
-  # expect_equal(e, e_rf)
-  # expect_equal(f, f_rf)
   
   expect_false(all(assay(g) == assay(h)))
   expect_equal(dim(g), dim(h))

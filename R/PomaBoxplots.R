@@ -79,9 +79,9 @@ PomaBoxplots <- function(data,
     } else {
       plot_data <- data %>%
         dplyr::select(-ID) %>%
-        pivot_longer(cols = -Group) %>%
-        filter(name %in% feature_name) %>%
-        ggplot(aes(name, value, color = Group))
+        tidyr::pivot_longer(cols = -Group) %>%
+        dplyr::filter(name %in% feature_name) %>%
+        ggplot2::ggplot(ggplot2::aes(name, value, color = Group))
     }
   }
   

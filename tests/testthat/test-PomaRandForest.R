@@ -10,11 +10,11 @@ test_that("PomaRandForest works", {
   res1 <- PomaRandForest(st000284, ntest = 30, mtry = 5)
   res2 <- PomaRandForest(st000284, mtry = 5)
   
-  df_a <- layer_data(res$error_tree)
-  df_b <- layer_data(res$MeanDecreaseGini_plot)
+  df_a <- ggplot2::layer_data(res$error_tree)
+  df_b <- ggplot2::layer_data(res$MeanDecreaseGini_plot)
 
-  df_c <- layer_data(res1$error_tree)
-  df_d <- layer_data(res1$MeanDecreaseGini_plot)
+  df_c <- ggplot2::layer_data(res1$error_tree)
+  df_d <- ggplot2::layer_data(res1$MeanDecreaseGini_plot)
 
   ####
 

@@ -24,11 +24,11 @@ test_that("PomaMultivariate works", {
 
   ##
   
-  df_a <- layer_data(multivariate_pca_1$screeplot)
-  df_b <- layer_data(multivariate_pca_1$scoresplot)
+  df_a <- ggplot2::layer_data(multivariate_pca_1$screeplot)
+  df_b <- ggplot2::layer_data(multivariate_pca_1$scoresplot)
   
-  df_c <- layer_data(multivariate_pca_2$screeplot)
-  df_d <- layer_data(multivariate_pca_2$scoresplot)
+  df_c <- ggplot2::layer_data(multivariate_pca_2$screeplot)
+  df_d <- ggplot2::layer_data(multivariate_pca_2$scoresplot)
 
   expect_false(length(df_a$y) == length(df_c$y))
   expect_false(length(df_b$y) == length(df_d$y))
@@ -55,13 +55,13 @@ test_that("PomaMultivariate works", {
 
   ##
   
-  df_a <- layer_data(multivariate_plsda_1$scoresplot)
-  df_b <- layer_data(multivariate_plsda_1$errors_plsda_plot)
-  df_c <- layer_data(multivariate_plsda_1$vip_plsda_plot)
+  df_a <- ggplot2::layer_data(multivariate_plsda_1$scoresplot)
+  df_b <- ggplot2::layer_data(multivariate_plsda_1$errors_plsda_plot)
+  df_c <- ggplot2::layer_data(multivariate_plsda_1$vip_plsda_plot)
 
-  df_d <- layer_data(multivariate_plsda_2$scoresplot)
-  df_e <- layer_data(multivariate_plsda_2$errors_plsda_plot)
-  df_f <- layer_data(multivariate_plsda_2$vip_plsda_plot)
+  df_d <- ggplot2::layer_data(multivariate_plsda_2$scoresplot)
+  df_e <- ggplot2::layer_data(multivariate_plsda_2$errors_plsda_plot)
+  df_f <- ggplot2::layer_data(multivariate_plsda_2$vip_plsda_plot)
 
   expect_false(ncol(df_a) == ncol(df_d))
   expect_equal(ncol(df_b$y), ncol(df_e$y))
@@ -89,10 +89,10 @@ test_that("PomaMultivariate works", {
   expect_true(is.numeric(multivariate_splsda_1$ncomp))
   expect_true(is.numeric(multivariate_splsda_2$ncomp))
 
-  df_a <- layer_data(multivariate_splsda_1$errors_splsda_plot)
-  df_b <- layer_data(multivariate_splsda_2$errors_splsda_plot)
-  df_c <- layer_data(multivariate_splsda_1$scoresplot)
-  df_d <- layer_data(multivariate_splsda_2$scoresplot)
+  df_a <- ggplot2::layer_data(multivariate_splsda_1$errors_splsda_plot)
+  df_b <- ggplot2::layer_data(multivariate_splsda_2$errors_splsda_plot)
+  df_c <- ggplot2::layer_data(multivariate_splsda_1$scoresplot)
+  df_d <- ggplot2::layer_data(multivariate_splsda_2$scoresplot)
 
   expect_false(nrow(df_a) == nrow(df_b))
   expect_false(length(df_c$y) == length(df_d$y))

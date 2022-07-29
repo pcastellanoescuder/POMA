@@ -81,7 +81,8 @@ PomaVolcano <- function(data,
                   y = "-log10 p-value",
                   color = NULL) +
     ggplot2::scale_y_continuous(trans = "log1p")+
-    {if(plot_title)ggplot2::ggtitle(paste0(names(table(colData(data)[,1]))[2], "/", names(table(colData(data)[,1]))[1]))} +
+    {if(plot_title)ggplot2::ggtitle(paste0(names(table(SummarizedExperiment::colData(data)[,1]))[2], "/", 
+                                           names(table(SummarizedExperiment::colData(data)[,1]))[1]))} +
     ggplot2::geom_vline(xintercept = -log2FC, colour = "black", linetype = "dashed") +
     ggplot2::geom_vline(xintercept = log2FC, colour = "black", linetype = "dashed") +
     ggplot2::geom_hline(yintercept = -log10(pval_cutoff), colour = "black", linetype = "dashed") +

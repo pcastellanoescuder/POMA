@@ -11,10 +11,10 @@ test_that("PomaVolcano works", {
   c <- PomaVolcano(st000336, pval = "raw", pval_cutoff = 0.05, log2FC = 0.6, xlim = 2, adjust = "fdr")
   d <- PomaVolcano(st000336, pval = "raw", pval_cutoff = 0.05, log2FC = 0.6, xlim = 2, adjust = "bonferroni")
   
-  df_a <- layer_data(a)
-  df_b <- layer_data(b)
-  df_c <- layer_data(c)
-  df_d <- layer_data(d)
+  df_a <- ggplot2::layer_data(a)
+  df_b <- ggplot2::layer_data(b)
+  df_c <- ggplot2::layer_data(c)
+  df_d <- ggplot2::layer_data(d)
   
   ##
   

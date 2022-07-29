@@ -29,12 +29,12 @@ test_that("PomaLasso works", {
 
   ## PLOTS
 
-  df_a <- layer_data(lasso_res$coefficientPlot)
-  df_b <- layer_data(ridge_res$coefficientPlot)
-  df_e <- layer_data(enet_res$coefficientPlot)
+  df_a <- ggplot2::layer_data(lasso_res$coefficientPlot)
+  df_b <- ggplot2::layer_data(ridge_res$coefficientPlot)
+  df_e <- ggplot2::layer_data(enet_res$coefficientPlot)
 
-  df_c <- layer_data(lasso_res$cvLassoPlot)
-  df_d <- layer_data(ridge_res$cvLassoPlot)
+  df_c <- ggplot2::layer_data(lasso_res$cvLassoPlot)
+  df_d <- ggplot2::layer_data(ridge_res$cvLassoPlot)
 
   expect_false(length(df_a$y) == length(df_b$y))
   expect_false(length(df_c$y) == length(df_d$y))

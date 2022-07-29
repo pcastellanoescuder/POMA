@@ -140,8 +140,8 @@ PomaLasso <- function(data,
   
   coefficientplot <- ggplot2::ggplot(tidied_cv2, ggplot2::aes(lambda, estimate, color = term)) +
     ggplot2::scale_x_log10() +
-    labs(x = "log10(Lambda)",
-         y = "Coefficients") +
+    ggplot2::labs(x = "log10(Lambda)",
+                  y = "Coefficients") +
     ggplot2::geom_line() +
     ggplot2::geom_vline(xintercept = glance_cv$lambda.min, lty = 2) +
     ggplot2::theme_bw() +

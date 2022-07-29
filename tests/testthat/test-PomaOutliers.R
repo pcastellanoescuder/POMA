@@ -37,11 +37,11 @@ test_that("PomaOutliers works", {
   
   ## PLOTS
   
-  df_i <- layer_data(i$polygon_plot)
-  df_j <- layer_data(j$polygon_plot)
+  df_i <- ggplot2::layer_data(i$polygon_plot)
+  df_j <- ggplot2::layer_data(j$polygon_plot)
   
-  df_k <- layer_data(k$distance_boxplot)
-  df_l <- layer_data(l$distance_boxplot)
+  df_k <- ggplot2::layer_data(k$distance_boxplot)
+  df_l <- ggplot2::layer_data(l$distance_boxplot)
   
   expect_false(length(df_i$y) == length(df_j$y))
   expect_equal(ncol(df_i), ncol(df_j))

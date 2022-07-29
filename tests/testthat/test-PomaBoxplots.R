@@ -23,19 +23,19 @@ test_that("PomaBoxplots works", {
   k <- PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
   
   
-  df_a <- layer_data(a)
-  df_b <- layer_data(b)
-  df_c <- layer_data(c)
-  df_d <- layer_data(d)
-  df_e <- layer_data(e)
+  df_a <- ggplot2::layer_data(a)
+  df_b <- ggplot2::layer_data(b)
+  df_c <- ggplot2::layer_data(c)
+  df_d <- ggplot2::layer_data(d)
+  df_e <- ggplot2::layer_data(e)
   
-  df_f <- layer_data(f)
-  df_g <- layer_data(g)
-  df_h <- layer_data(h)
-  df_i <- layer_data(i)
+  df_f <- ggplot2::layer_data(f)
+  df_g <- ggplot2::layer_data(g)
+  df_h <- ggplot2::layer_data(h)
+  df_i <- ggplot2::layer_data(i)
   
-  df_j <- layer_data(j)
-  df_k <- layer_data(k)
+  df_j <- ggplot2::layer_data(j)
+  df_k <- ggplot2::layer_data(k)
   
   ####
   

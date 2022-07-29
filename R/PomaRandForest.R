@@ -121,7 +121,7 @@ PomaRandForest <- function(data,
   gini_plot <- ggplot2::ggplot(importancia_pred, ggplot2::aes(x = reorder(feature, MeanDecreaseGini),
                                                               y = MeanDecreaseGini,
                                                               fill = MeanDecreaseGini)) +
-    labs(x = NULL) +
+    ggplot2::labs(x = NULL) +
     ggplot2::geom_col() +
     ggplot2::coord_flip() +
     ggplot2::theme_bw() +

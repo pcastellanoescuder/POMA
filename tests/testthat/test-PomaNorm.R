@@ -20,7 +20,7 @@ test_that("PomaNorm works", {
 
   target <- SummarizedExperiment::colData(st000284) %>% 
     as.data.frame() %>% 
-    rownames_to_column()
+    tibble::rownames_to_column()
   
   testnorm <- PomaSummarizedExperiment(features = data, target = target)
 

@@ -86,12 +86,12 @@ PomaLimma <- function(data,
   else {
 
     if(is.null(covs)){
-      covariates <- colData(data) %>%
+      covariates <- SummarizedExperiment::colData(data) %>%
         as.data.frame() %>%
         dplyr::select(-1)
     } 
     else{
-      covariates <- colData(data) %>%
+      covariates <- SummarizedExperiment::colData(data) %>%
         as.data.frame() %>%
         dplyr::select(-1) %>% 
         dplyr::select_at(dplyr::vars(dplyr::matches(covs)))

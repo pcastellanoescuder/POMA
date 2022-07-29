@@ -44,7 +44,7 @@ PomaOddsRatio <- function(data,
   if (length(levels(as.factor(SummarizedExperiment::colData(data)[,1]))) > 2) {
     stop("Your data have more than two groups!")
   }
-  if(covariates & ncol(colData(data)) == 1){
+  if(covariates & ncol(SummarizedExperiment::colData(data)) == 1){
     stop("Seems there aren't covariates in your data...")
   }
 

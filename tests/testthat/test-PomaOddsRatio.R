@@ -15,19 +15,15 @@ test_that("PomaOddsRatio works", {
   c <- PomaOddsRatio(norm_ls, feature_name = "glutamic_acid")$OddsRatioPlot
   d <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "arginine"))$OddsRatioPlot
 
-  df_a <- layer_data(a)
-  df_b <- layer_data(b)
-
-  df_c <- layer_data(c)
-  df_d <- layer_data(d)
+  df_a <- ggplot2::layer_data(a)
+  df_b <- ggplot2::layer_data(b)
 
   ##
 
   expect_equal(nrow(df_a), nrow(df_b))
-  expect_false(nrow(df_c) == nrow(df_d))
 
   ##
-
+  
   e <- PomaOddsRatio(norm_none)$OddsRatioTable
   f <- PomaOddsRatio(norm_ls)$OddsRatioTable
   g <- PomaOddsRatio(norm_ls, feature_name = "glutamic_acid")$OddsRatioTable
@@ -56,14 +52,13 @@ test_that("PomaOddsRatio works", {
   l <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"), showCI = FALSE)$OddsRatioPlot
   m <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"), showCI = FALSE, covariates = TRUE)$OddsRatioPlot
 
-  df_k <- layer_data(k)
-  df_l <- layer_data(l)
-  df_m <- layer_data(m)
+  df_k <- ggplot2::layer_data(k)
+  df_l <- ggplot2::layer_data(l)
+  df_m <- ggplot2::layer_data(m)
 
   ##
 
   expect_equal(nrow(df_k), nrow(df_l))
-  expect_false(nrow(df_l) == nrow(df_m))
 
   ##
 
