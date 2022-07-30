@@ -4,16 +4,39 @@
 \alias{PomaUMAP}
 \title{Dimensionality Reduction with UMAP}
 \usage{
-PomaUMAP(data)
+PomaUMAP(
+  data,
+  n_neighbors = NULL,
+  n_components = 2,
+  metric = "euclidean",
+  pca = NULL,
+  min_dist = 0.01,
+  spread = 1,
+  hdbscan_minpts = NULL
+)
 }
 \arguments{
 \item{data}{A SummarizedExperiment object.}
+
+\item{n_neighbors}{xxx}
+
+\item{n_components}{xxx}
+
+\item{metric}{xxx}
+
+\item{pca}{xxx}
+
+\item{min_dist}{xxx}
+
+\item{spread}{xxx}
+
+\item{hdbscan_minpts}{xxx}
 }
 \value{
-A list with results.
+A list with results including plots and tables.
 }
 \description{
-Carry out dimensionality reduction of a dataset using the Uniform Manifold Approximation and Projection (UMAP) method.
+Dimension reduction of the data using the Uniform Manifold Approximation and Projection (UMAP) method.
 }
 \examples{
 data("st000284")
@@ -24,6 +47,8 @@ st000284 \%>\%
 }
 \references{
 McInnes, L., Healy, J., & Melville, J. (2018). Umap: Uniform manifold approximation and projection for dimension reduction. arXiv preprint arXiv:1802.03426.
+
+Campello, R. J., Moulavi, D., & Sander, J. (2013, April). Density-based clustering based on hierarchical density estimates. In Pacific-Asia conference on knowledge discovery and data mining (pp. 160-172). Springer, Berlin, Heidelberg.
 }
 \author{
 Pol Castellano-Escuder

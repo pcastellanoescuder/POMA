@@ -5,9 +5,7 @@
 #' 
 #' @param x A data matrix.
 #' @param method Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".
-cor_pmat <- function(x, 
-                     method,
-                     ...) {
+cor_pmat <- function(x, method) {
   
   mat <- as.matrix(x)
   n <- ncol(mat)
@@ -29,9 +27,7 @@ cor_pmat <- function(x,
 #' 
 #' @param cormat Output from `cor`.
 #' @param pmat Output from `cor_pmat`.
-flattenCorrMatrix <- function(cormat, 
-                              pmat,
-                              ...) {
+flattenCorrMatrix <- function(cormat, pmat) {
   ut <- upper.tri(cormat)
   data.frame(
     row = rownames(cormat)[row(cormat)[ut]],
@@ -142,7 +138,7 @@ PomaCorr <- function(data,
     ggplot2::coord_fixed()
   
   # graph
-  if(!(require("ggraph", character.only = TRUE))) {
+  if(!(requireNamespace("ggraph", character.only = TRUE))) {
     
     return(list(correlations = correlations, 
                 corrplot = corrplot))
@@ -156,7 +152,7 @@ PomaCorr <- function(data,
         dplyr::filter(abs(corr) >= coeff)
       
       if (nrow(graph_table) < 1) {
-        stop("There are no feature pairs with selected coeff. Try with a lower value...")
+        stop("There are no feature pairs with selected coeff. Use a lower value...")
       }
       
       graph <- ggraph::ggraph(graph_table, layout = "fr") +

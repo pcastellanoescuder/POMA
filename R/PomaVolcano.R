@@ -95,7 +95,7 @@ PomaVolcano <- function(data,
                                            "None" = "#636363"))
 
   if(interactive) {
-    if(!(require("plotly", character.only = TRUE))){
+    if(!(requireNamespace("plotly", character.only = TRUE))){
       warning("Package 'plotly' is required for an interactive volcano plot\nUse 'install.packages('plotly')'")
     } else {
       volcanoP <- plotly::ggplotly(volcanoP)

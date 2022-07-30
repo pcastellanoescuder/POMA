@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.7.8
+Version: 1.7.9
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -36,6 +36,7 @@ Imports:
     broom,
     caret,
     ComplexHeatmap,
+    dbscan,
     dplyr,
     ggplot2,
     ggrepel,
@@ -52,6 +53,7 @@ Imports:
     SummarizedExperiment,
     tibble,
     tidyr,
+    uwot,
     vegan
 Suggests: 
     BiocStyle,

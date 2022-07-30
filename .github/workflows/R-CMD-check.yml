@@ -20,7 +20,7 @@ jobs:
         config:
           - {os: windows-latest, r: 'release'}
           - {os: macOS-latest, r: 'release'}
-          # - {os: ubuntu-18.04, r: 'release'}
+          - {os: ubuntu-18.04, r: 'release'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -57,10 +57,6 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          sudo apt-get update && apt-get install -y libglpk-dev libmagick++-dev libavfilter-dev libpoppler-cpp-dev
-          sudo su - -c "R -e \"install.packages('Rmpfr', repos = 'http://cran.rstudio.com/')\""
-          Rscript -e "install.packages('BiocManager')"
-          Rscript -e "BiocManager::install(c('mixOmics'))"
 
       - name: Install dependencies
         run: |

@@ -4,7 +4,7 @@
 \alias{cor_pmat}
 \title{Correlation P-Values}
 \usage{
-cor_pmat(x, method, ...)
+cor_pmat(x, method)
 }
 \arguments{
 \item{x}{A data matrix.}
