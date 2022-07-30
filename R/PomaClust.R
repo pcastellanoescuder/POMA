@@ -9,7 +9,7 @@
 #' @param k_max Number of clusters among which the optimal one will be selected.
 #' @param show_clusters Logical indicating if clusters should be plotted or not. If this parameter is set to `FALSE` the resultant plot will be a classical 2-dimension MDS plot.
 #' @param labels Logical indicating if sample names should be plotted or not.
-#' @param show_group Logical indicating if the original sample group from pData should be plotted instead of sample ID or not. Only works if labels is set to `TRUE`.
+#' @param show_group Logical indicating if the original sample group from target should be plotted instead of sample ID or not. Only works if labels is set to `TRUE`.
 #' 
 #' @export
 #'

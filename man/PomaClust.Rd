@@ -27,7 +27,7 @@ PomaClust(
 
 \item{labels}{Logical indicating if sample names should be plotted or not.}
 
-\item{show_group}{Logical indicating if the original sample group from pData should be plotted instead of sample ID or not. Only works if labels is set to \code{TRUE}.}
+\item{show_group}{Logical indicating if the original sample group from target should be plotted instead of sample ID or not. Only works if labels is set to \code{TRUE}.}
 }
 \value{
 A list with the results.
