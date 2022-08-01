@@ -18,7 +18,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2022-07-28
+**Last edited**: 2022-08-01
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -72,11 +72,6 @@ PomaEDA(st000336)
 # You should have received a copy of the GNU General Public License
 # along with POMA. If not, see <https://www.gnu.org/licenses/>.
 
-library(knitr)
-library(dplyr)
-library(tibble)
-library(ggplot2)
-library(SummarizedExperiment)
 library(POMA)
 
 data <- st000336
@@ -99,16 +94,12 @@ target <- SummarizedExperiment::colData(data) %>%
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 if(clean_outliers){
-
   imputed <- PomaImpute(data, method = imputation)
   pre_processed <- PomaNorm(imputed, method = normalization) %>%
     PomaOutliers(coef = coeff_outliers)
-  
 } else {
-  
     imputed <- PomaImpute(data, method = imputation)
     pre_processed <- PomaNorm(imputed, method = normalization)
-  
 }
 ```
 
@@ -129,11 +120,11 @@ nas <- data.frame(number = colSums(is.na(e))) %>%
 # zero variance
 var_zero <- e %>%
   as.data.frame() %>%
-  summarise_all(~ var(., na.rm = TRUE)) %>%
+  dplyr::summarise_all(~ var(., na.rm = TRUE)) %>%
   t() %>%
   as.data.frame() %>%
-  rownames_to_column("names") %>%
-  filter(V1 == 0)
+  tibble::rownames_to_column("names") %>%
+  dplyr::filter(V1 == 0)
 ```
 
 \pagebreak
@@ -167,28 +158,28 @@ knitr::kable(summary_table3)
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 if (nrow(nas) >= 1){
-  ggplot(nas, aes(reorder(names, number), number, fill = number)) +
-    geom_col() +
-    ylab("Missing values") +
-    xlab("") +
-    ggtitle("Missing Value Plot") +
-    theme_bw() + 
-    theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "none")
+  ggplot2::ggplot(nas, ggplot2::aes(reorder(names, number), number, fill = number)) +
+    ggplot2::geom_col() +
+    ggplot2::ylab("Missing values") +
+    ggplot2::xlab("") +
+    ggplot2::ggtitle("Missing Value Plot") +
+    ggplot2::theme_bw() + 
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+                   legend.position = "none")
 }
 ```
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 if (nrow(zeros) >= 1){
-  ggplot(zeros, aes(reorder(names, number), number, fill = number)) +
-    geom_col() +
-    ylab("Zeros") +
-    xlab("") +
-    ggtitle("Zeros Plot") +
-    theme_bw() + 
-    theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "none") +
-    scale_fill_viridis_d(begin = 0, end = 0.8)
+  ggplot2::ggplot(zeros, ggplot2::aes(reorder(names, number), number, fill = number)) +
+    ggplot2::geom_col() +
+    ggplot2::ylab("Zeros") +
+    ggplot2::xlab("") +
+    ggplot2::ggtitle("Zeros Plot") +
+    ggplot2::theme_bw() + 
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+                   legend.position = "none") +
+    ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8)
 }
 ```
 
@@ -198,14 +189,14 @@ if (nrow(zeros) >= 1){
 counts <- data.frame(table(target$Group))
 colnames(counts) <- c("Group", "Counts")
 
-ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
-  geom_col() +
-  ylab("Counts") +
-  xlab("") +
-  theme_bw() + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "none") +
-  scale_fill_viridis_d(begin = 0, end = 0.8)
+ggplot2::ggplot(counts, ggplot2::aes(reorder(Group, Counts), Counts, fill = Group)) +
+  ggplot2::geom_col() +
+  ggplot2::ylab("Counts") +
+  ggplot2::xlab("") +
+  ggplot2::theme_bw() + 
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+                 legend.position = "none") +
+  ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8)
 ```
 
 \pagebreak
@@ -216,16 +207,15 @@ ggplot(counts, aes(reorder(Group, Counts), Counts, fill = Group)) +
 indNum <- nrow(SummarizedExperiment::colData(pre_processed))
 jttr <- ifelse(indNum <= 10, TRUE, FALSE)
 
-p1 <- PomaBoxplots(imputed, jitter = jttr, label_size = 8) +
-  ggtitle("Not Normalized") +
-  theme(legend.position = "bottom")
+PomaBoxplots(imputed, jitter = jttr,
+                   label_size = 8,
+                   legend_position = "bottom") +
+  ggplot2::ggtitle("Not Normalized")
 
-p2 <- PomaBoxplots(pre_processed, jitter = jttr, label_size = 8) +
-  ggtitle(paste0("Normalized (", normalization, ")")) +
-  theme(legend.position = "bottom")
-
-p1
-p2
+PomaBoxplots(pre_processed, jitter = jttr, 
+                   label_size = 8,
+                   legend_position = "bottom") +
+  ggplot2::ggtitle(paste0("Normalized (", normalization, ")"))
 ```
 
 \pagebreak
@@ -233,14 +223,11 @@ p2
 # Group Distribution Plots
 
 ```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
-p3 <- PomaDensity(imputed) +
-  ggtitle("Not Normalized")
+PomaDensity(imputed) +
+  ggplot2::ggtitle("Not Normalized")
 
-p4 <- PomaDensity(pre_processed) +
-  ggtitle(paste0("Normalized (", normalization, ")"))
-
-p3
-p4
+PomaDensity(pre_processed) +
+  ggplot2::ggtitle(paste0("Normalized (", normalization, ")"))
 ```
 
 \pagebreak
@@ -273,7 +260,7 @@ correlations <- PomaCorr(pre_processed,
                          label_size = 8)
 
 high_correlations <- correlations$correlations %>% 
-  filter(abs(corr) > 0.97)
+  dplyr::filter(abs(corr) > 0.97)
 ```
 
 There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$feature1, " - " , high_correlations$feature2)), collapse=", ")),"**."), "")`

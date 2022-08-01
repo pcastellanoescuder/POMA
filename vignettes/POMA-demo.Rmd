@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2022-07-28
+**Last edited**: 2022-08-01
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -122,27 +122,33 @@ To answer this question, **POMA** offers two exploratory functions, `PomaBoxplot
 `PomaBoxplots` generates boxplots for all samples or features (depending on the group factor) of a `SummarizedExperiment` object. Here, we can compare objects before and after normalization step.    
 
 ```{r, message = FALSE, comment = FALSE}
-PomaBoxplots(imputed, group = "samples", jitter = FALSE) +
-  ggtitle("Not Normalized") +
-  theme(legend.position = "none") # data before normalization
+PomaBoxplots(imputed, group = "samples", 
+             jitter = FALSE,
+             legend_position = "none") +
+  ggplot2::ggtitle("Not Normalized") # data before normalization
 ```
 
 ```{r, message = FALSE, comment = FALSE}
-PomaBoxplots(normalized, group = "samples", jitter = FALSE) +
-  ggtitle("Normalized") # data after normalization
+PomaBoxplots(normalized, 
+             group = "samples", 
+             jitter = FALSE,
+             legend_position = "nonme") +
+  ggplot2::ggtitle("Normalized") # data after normalization
 ```
 
 On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process.    
 
 ```{r, message = FALSE, comment = FALSE}
-PomaDensity(imputed, group = "features") +
-  ggtitle("Not Normalized") +
-  theme(legend.position = "none") # data before normalization
+PomaDensity(imputed, 
+            group = "features",
+            legend_position = "nonme") +
+  ggplot2::ggtitle("Not Normalized") # data before normalization
 ```
 
 ```{r, message = FALSE, comment = FALSE}
-PomaDensity(normalized, group = "features") +
-  ggtitle("Normalized") # data after normalization
+PomaDensity(normalized, 
+            group = "features") +
+  ggplot2::ggtitle("Normalized") # data after normalization
 ```
 
 ### Outlier Detection
@@ -203,7 +209,7 @@ poma_pca <- PomaMultivariate(pre_processed, method = "pca")
 
 ```{r}
 poma_pca$scoresplot +
-  ggtitle("Scores Plot")
+  ggplot2::ggtitle("Scores Plot")
 ```
 
 #### PLS-DA
@@ -214,12 +220,12 @@ poma_plsda <- PomaMultivariate(pre_processed, method = "plsda")
 
 ```{r}
 poma_plsda$scoresplot +
-  ggtitle("Scores Plot")
+  ggplot2::ggtitle("Scores Plot")
 ```
 
 ```{r}
 poma_plsda$errors_plsda_plot +
-  ggtitle("Error Plot")
+  ggplot2::ggtitle("Error Plot")
 ```
 
 ### Correlation Analysis

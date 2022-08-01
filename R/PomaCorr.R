@@ -14,7 +14,7 @@ cor_pmat <- function(x, method) {
   
   for (i in 1:(n - 1)) {
     for (j in (i + 1):n) {
-      tmp <- stats::cor.test(mat[, i], mat[, j], method = method, ...)
+      tmp <- stats::cor.test(mat[, i], mat[, j], method = method)
       p_mat[i, j] <- p_mat[j, i] <- tmp$p.value
     }
   }

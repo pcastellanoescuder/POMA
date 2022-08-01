@@ -1,8 +1,10 @@
-# POMA 1.7.11
+# POMA 1.7.12
 
 * New `biocViews` and `Description`
 * Call external packages within each POMA function for consistency
-* UMAP implementation
+* New methods: UMAP, PCR
+* Update tests
+* Update vignettes
 * Several bug fixes
 
 # POMA 1.5.16
