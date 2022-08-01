@@ -53,7 +53,15 @@ PomaPCR <- function(data,
   assay <- t(SummarizedExperiment::assay(data))
   target <- SummarizedExperiment::colData(data)
   
-  pca_res <- prcomp(assay, scale. = scale, center = center)$x[, 1:n_components]
+  pca_res <- prcomp(assay, scale. = scale, center = center)
+  
+  pca_loadings <- pca_res$rotation[, 1:n_components] %>% 
+    dplyr::as_tibble() %>% 
+    dplyr::mutate(feature = rownames(data)) %>% 
+    dplyr::relocate(feature, dplyr::everything()) %>% 
+    dplyr::arrange(dplyr::desc(abs(PC1)))
+  
+  pca_res <- pca_res$x[, 1:n_components]
 
   outcome_df <- target %>%
     as.data.frame() %>%
@@ -79,7 +87,8 @@ PomaPCR <- function(data,
   }
 
   return(list(summary = broom::glance(res_pcr),
-              coefficients = broom::tidy(res_pcr))
+              coefficients = broom::tidy(res_pcr),
+              loadings = pca_loadings)
          )
   
 }

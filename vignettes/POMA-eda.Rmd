@@ -41,7 +41,7 @@ BiocManager::install("POMA")
 
 # Load POMA 
 
-```{r, warning = FALSE, message = FALSE, comment = FALSE}
+```{r, warning = FALSE, message = FALSE}
 library(POMA)
 ```
 
@@ -56,7 +56,7 @@ PomaEDA(st000336)
 
 **Generated EDA PDF report starts here.**  
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 # This file is part of POMA.
 
 # POMA is free software: you can redistribute it and/or modify
@@ -92,7 +92,7 @@ target <- SummarizedExperiment::colData(data) %>%
 
 \pagebreak
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 if(clean_outliers){
   imputed <- PomaImpute(data, method = imputation)
   pre_processed <- PomaNorm(imputed, method = normalization) %>%
@@ -103,7 +103,7 @@ if(clean_outliers){
 }
 ```
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 # zeros
 zeros <- data.frame(number = colSums(e == 0, na.rm = TRUE)) %>%
   tibble::rownames_to_column("names") %>%
@@ -143,7 +143,7 @@ var_zero <- e %>%
 
 ## Summary Table
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 summary_table1 <- data.frame(Samples = nrow(e),
                              Features = ncol(e),
                              Covariates = ncol(SummarizedExperiment::colData(data)) - 1)
@@ -156,7 +156,7 @@ knitr::kable(summary_table2)
 knitr::kable(summary_table3)
 ```
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 if (nrow(nas) >= 1){
   ggplot2::ggplot(nas, ggplot2::aes(reorder(names, number), number, fill = number)) +
     ggplot2::geom_col() +
@@ -169,7 +169,7 @@ if (nrow(nas) >= 1){
 }
 ```
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 if (nrow(zeros) >= 1){
   ggplot2::ggplot(zeros, ggplot2::aes(reorder(names, number), number, fill = number)) +
     ggplot2::geom_col() +
@@ -185,7 +185,7 @@ if (nrow(zeros) >= 1){
 
 ## Samples by Group
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 counts <- data.frame(table(target$Group))
 colnames(counts) <- c("Group", "Counts")
 
@@ -203,7 +203,7 @@ ggplot2::ggplot(counts, ggplot2::aes(reorder(Group, Counts), Counts, fill = Grou
 
 # Normalization Plots
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 indNum <- nrow(SummarizedExperiment::colData(pre_processed))
 jttr <- ifelse(indNum <= 10, TRUE, FALSE)
 
@@ -222,7 +222,7 @@ PomaBoxplots(pre_processed, jitter = jttr,
 
 # Group Distribution Plots
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 PomaDensity(imputed) +
   ggplot2::ggtitle("Not Normalized")
 
@@ -234,7 +234,7 @@ PomaDensity(pre_processed) +
 
 # Outlier Detection
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 outliers <- data %>% 
   PomaImpute(method = imputation) %>%
   PomaNorm(method = normalization) %>%
@@ -245,7 +245,7 @@ outliers$polygon_plot
 
 **`r nrow(outliers$outliers)`** possible outliers detected in your data. `r ifelse(nrow(outliers$outliers) >= 1, paste0("These outliers are **",noquote(paste(shQuote(paste0(outliers$outliers$sample)), collapse=", ")),"**."), "")`
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 if(nrow(outliers$outliers) >= 1){
   knitr::kable(outliers$outliers)
   }
@@ -255,7 +255,7 @@ if(nrow(outliers$outliers) >= 1){
 
 # High Correlated Features (r > 0.97)
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 correlations <- PomaCorr(pre_processed, 
                          label_size = 8)
 
@@ -265,7 +265,7 @@ high_correlations <- correlations$correlations %>%
 
 There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$feature1, " - " , high_correlations$feature2)), collapse=", ")),"**."), "")`
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, fig.align = 'center'}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center'}
 correlations$corrplot
 ```
 
@@ -273,7 +273,7 @@ correlations$corrplot
 
 # Heatmap and Clustering
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 PomaHeatmap(pre_processed)
 ```
 
@@ -281,7 +281,7 @@ PomaHeatmap(pre_processed)
 
 # Principal Component Analysis
 
-```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 PomaMultivariate(pre_processed, method = "pca", ellipse = FALSE)$scoresplot
 ```
 

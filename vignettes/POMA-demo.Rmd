@@ -42,13 +42,13 @@ BiocManager::install("POMA")
 
 # Load POMA 
 
-```{r, warning = FALSE, message = FALSE, comment = FALSE}
+```{r, warning = FALSE, message = FALSE}
 library(POMA)
 ```
 
 You can also load some additional packages that will be very useful in this vignette.   
 
-```{r, warning = FALSE, message = FALSE, comment = FALSE}
+```{r, warning = FALSE, message = FALSE}
 library(ggplot2)
 library(ggraph)
 library(plotly)
@@ -74,12 +74,12 @@ data <- PomaSummarizedExperiment(target = target, features = features)
 
 Alternatively, if your data is already stored in a `SummarizedExperiment` object, you can skip this step and go directly to the pre-processing step. In this vignette we will use the sample data provided in `POMA`.        
 
-```{r, warning = FALSE, message = FALSE, comment = FALSE}
+```{r, warning = FALSE, message = FALSE}
 # load example data
 data("st000336")
 ```
 
-```{r, warning = FALSE, message = FALSE, comment = FALSE}
+```{r, warning = FALSE, message = FALSE}
 st000336
 ```
 
@@ -121,31 +121,31 @@ To answer this question, **POMA** offers two exploratory functions, `PomaBoxplot
 
 `PomaBoxplots` generates boxplots for all samples or features (depending on the group factor) of a `SummarizedExperiment` object. Here, we can compare objects before and after normalization step.    
 
-```{r, message = FALSE, comment = FALSE}
+```{r, message = FALSE}
 PomaBoxplots(imputed, group = "samples", 
              jitter = FALSE,
              legend_position = "none") +
   ggplot2::ggtitle("Not Normalized") # data before normalization
 ```
 
-```{r, message = FALSE, comment = FALSE}
+```{r, message = FALSE}
 PomaBoxplots(normalized, 
              group = "samples", 
              jitter = FALSE,
-             legend_position = "nonme") +
+             legend_position = "none") +
   ggplot2::ggtitle("Normalized") # data after normalization
 ```
 
 On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process.    
 
-```{r, message = FALSE, comment = FALSE}
+```{r, message = FALSE}
 PomaDensity(imputed, 
             group = "features",
-            legend_position = "nonme") +
+            legend_position = "none") +
   ggplot2::ggtitle("Not Normalized") # data before normalization
 ```
 
-```{r, message = FALSE, comment = FALSE}
+```{r, message = FALSE}
 PomaDensity(normalized, 
             group = "features") +
   ggplot2::ggtitle("Normalized") # data after normalization
@@ -214,7 +214,7 @@ poma_pca$scoresplot +
 
 #### PLS-DA
 
-```{r, comment = FALSE, warning = FALSE, message = FALSE, results = 'hide'}
+```{r, warning = FALSE, message = FALSE, results = 'hide'}
 poma_plsda <- PomaMultivariate(pre_processed, method = "plsda")
 ```
 
