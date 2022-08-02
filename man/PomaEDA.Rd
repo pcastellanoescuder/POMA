@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaEDA.R
 \name{PomaEDA}
 \alias{PomaEDA}
-\title{Automatic Exploratory Data Analysis PDF Report}
+\title{Automatic Exploratory Data Analysis HTML Report}
 \usage{
 PomaEDA(
   data,
@@ -10,27 +10,30 @@ PomaEDA(
   normalization = "log_pareto",
   clean_outliers = TRUE,
   coeff_outliers = 1.5,
-  username = "Username"
+  username = NULL,
+  institution = NULL
 )
 }
 \arguments{
 \item{data}{A SummarizedExperiment object.}
 
-\item{imputation}{Imputation method. Options are "none", "half_min", "median", "mean", "min" and "knn" (default). If "none", all missing values will be replaced by zero.}
+\item{imputation}{Imputation method. See \code{?POMA::PomaImpute()}.}
 
-\item{normalization}{Normalization method. Options are "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto" (default).}
+\item{normalization}{Normalization method. See \code{?POMA::PomaNorm()}.}
 
 \item{clean_outliers}{Logical. If it's set to TRUE, outliers will be removed from EDA.}
 
-\item{coeff_outliers}{This value corresponds to the classical 1.5 in \eqn{Q3 + 1.5*IQR} formula to detect outliers. By changing this value, the permissiveness in outlier detection will change.}
+\item{coeff_outliers}{This value corresponds to the classical 1.5 in \eqn{Q3 + 1.5*IQR} formula to detect outliers. See \code{?POMA::PomaOutliers()}.}
 
-\item{username}{This name will be included as a report subtitle.}
+\item{username}{Author name in the report.}
+
+\item{institution}{Institution name in the report.}
 }
 \value{
-An exploratory data analysis PDF report.
+An exploratory data analysis HTML report.
 }
 \description{
-This function automatically generates a PDF report with different exploratory plots and tables from an SummarizedExperiment object.
+This function automatically generates a HTML report with different exploratory plots and tables from an \code{SummarizedExperiment} object.
 }
 \author{
 Pol Castellano-Escuder

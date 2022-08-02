@@ -18,7 +18,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2022-08-01
+**Last edited**: 2022-08-02
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -47,16 +47,24 @@ library(POMA)
 
 # Automatic EDA Report 
 
-The following function will return an Exploratory Data Analysis (EDA) PDF report. The input object must be a **SummarizedExperiment** object.     
+The following function will return an Exploratory Data Analysis (EDA) HTML report. The input object must be a **SummarizedExperiment** object.     
 
 ```{r, eval = FALSE}
 data("st000336")
 PomaEDA(st000336)
 ```
 
-**Generated EDA PDF report starts here.**  
+**Generated EDA HTML report starts here.**  
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+data <- st000336
+imputation <- "knn"
+normalization <- "log_pareto"
+clean_outliers <- TRUE
+coeff_outliers <- 1.5
+```
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 # This file is part of POMA.
 
 # POMA is free software: you can redistribute it and/or modify
@@ -74,14 +82,6 @@ PomaEDA(st000336)
 
 library(POMA)
 
-data <- st000336
-imputation <- "knn"
-normalization <- "log_pareto"
-clean_outliers <- TRUE
-coeff_outliers <- 1.5
-
-##
-
 e <- t(SummarizedExperiment::assay(data))
 target <- SummarizedExperiment::colData(data) %>% 
   as.data.frame() %>% 
@@ -90,20 +90,18 @@ target <- SummarizedExperiment::colData(data) %>%
   dplyr::select(ID, Group)
 ```
 
-\pagebreak
-
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 if(clean_outliers){
   imputed <- PomaImpute(data, method = imputation)
   pre_processed <- PomaNorm(imputed, method = normalization) %>%
     PomaOutliers(coef = coeff_outliers)
 } else {
-    imputed <- PomaImpute(data, method = imputation)
-    pre_processed <- PomaNorm(imputed, method = normalization)
+  imputed <- PomaImpute(data, method = imputation)
+  pre_processed <- PomaNorm(imputed, method = normalization)
 }
 ```
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 # zeros
 zeros <- data.frame(number = colSums(e == 0, na.rm = TRUE)) %>%
   tibble::rownames_to_column("names") %>%
@@ -127,8 +125,6 @@ var_zero <- e %>%
   dplyr::filter(V1 == 0)
 ```
 
-\pagebreak
-
 # Know your data
 
   + Your data have **`r nrow(e)`** samples, **`r ncol(e)`** features and **`r length(table(target$Group))`** groups, that are **`r noquote(paste(shQuote(levels(as.factor(target$Group))), collapse=", "))`**. `r ifelse(ncol(SummarizedExperiment::colData(data)) > 1, paste0("Furthermore, **", ncol(SummarizedExperiment::colData(data)) - 1,"** covariates have been found in your data. These covariates are **",noquote(paste(shQuote(paste0(colnames(SummarizedExperiment::colData(data))[2:ncol(SummarizedExperiment::colData(data))])), collapse=", ")),"**."), "")`          
@@ -141,121 +137,128 @@ var_zero <- e %>%
   
   + Removed from the exploratory data analysis **`r nrow(var_zero)`** features that have zero variance. `r ifelse(nrow(var_zero) >= 1, paste0("These variables are **",noquote(paste(shQuote(var_zero$names), collapse=", ")),"**."), "")`
 
-## Summary Table
+## Summary Tables
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 summary_table1 <- data.frame(Samples = nrow(e),
                              Features = ncol(e),
                              Covariates = ncol(SummarizedExperiment::colData(data)) - 1)
-summary_table2 <- data.frame(Counts_Zero = sum(zeros$number),
-                             Percent_Zero = paste(round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2), "%"))
-summary_table3 <- data.frame(Counts_NA = sum(is.na(e)),
-                             Percent_NA = paste(round((sum(is.na(e))/(nrow(e)*ncol(e)))*100, 2), "%")) 
-knitr::kable(summary_table1)
-knitr::kable(summary_table2)
-knitr::kable(summary_table3)
+
+summary_table2 <- data.frame(Number_Zeros = sum(zeros$number),
+                             Percentage_Zeros = paste(round((sum(zeros$number)/(nrow(e)*ncol(e)))*100, 2), "%"))
+
+summary_table3 <- data.frame(Number_Missings = sum(is.na(e)),
+                             Percentage_Missings = paste(round((sum(is.na(e))/(nrow(e)*ncol(e)))*100, 2), "%"))
+
+summary_table1 
+summary_table2
+summary_table3
 ```
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 if (nrow(nas) >= 1){
   ggplot2::ggplot(nas, ggplot2::aes(reorder(names, number), number, fill = number)) +
     ggplot2::geom_col() +
-    ggplot2::ylab("Missing values") +
-    ggplot2::xlab("") +
-    ggplot2::ggtitle("Missing Value Plot") +
-    ggplot2::theme_bw() + 
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
-                   legend.position = "none")
-}
-```
-
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
-if (nrow(zeros) >= 1){
-  ggplot2::ggplot(zeros, ggplot2::aes(reorder(names, number), number, fill = number)) +
-    ggplot2::geom_col() +
-    ggplot2::ylab("Zeros") +
-    ggplot2::xlab("") +
-    ggplot2::ggtitle("Zeros Plot") +
+    ggplot2::labs(x = NULL,
+                  y = "Missing values",
+                  title = "Missing Value Plot") +
     ggplot2::theme_bw() + 
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
                    legend.position = "none") +
-    ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8)
+    ggplot2::scale_fill_viridis_c(begin = 0, end = 0.8)
+}
+```
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+if (nrow(zeros) >= 1){
+  ggplot2::ggplot(zeros, ggplot2::aes(reorder(names, number), number, fill = number)) +
+    ggplot2::geom_col() +
+    ggplot2::labs(x = NULL,
+              y = "Zeros",
+              title = "Zeros Plot") +
+    ggplot2::theme_bw() + 
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
+                   legend.position = "none") +
+    ggplot2::scale_fill_viridis_c(begin = 0, end = 0.8)
 }
 ```
 
 ## Samples by Group
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 counts <- data.frame(table(target$Group))
 colnames(counts) <- c("Group", "Counts")
 
 ggplot2::ggplot(counts, ggplot2::aes(reorder(Group, Counts), Counts, fill = Group)) +
   ggplot2::geom_col() +
-  ggplot2::ylab("Counts") +
-  ggplot2::xlab("") +
+  ggplot2::labs(x = NULL,
+                y = "Counts") +
   ggplot2::theme_bw() + 
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1),
                  legend.position = "none") +
   ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8)
 ```
 
-\pagebreak
-
 # Normalization Plots
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 indNum <- nrow(SummarizedExperiment::colData(pre_processed))
 jttr <- ifelse(indNum <= 10, TRUE, FALSE)
 
-PomaBoxplots(imputed, jitter = jttr,
+p1 <- PomaBoxplots(imputed, 
+                   jitter = jttr, 
                    label_size = 8,
                    legend_position = "bottom") +
-  ggplot2::ggtitle("Not Normalized")
+  ggplot2::labs(x = "Samples",
+                y = "Value",
+                title = "Not Normalized") 
 
-PomaBoxplots(pre_processed, jitter = jttr, 
+p2 <- PomaBoxplots(pre_processed, 
+                   jitter = jttr, 
                    label_size = 8,
                    legend_position = "bottom") +
-  ggplot2::ggtitle(paste0("Normalized (", normalization, ")"))
+  ggplot2::labs(x = "Samples",
+                y = "Value",
+                title = paste0("Normalized (", normalization, ")"))
+
+p1
+p2
 ```
-
-\pagebreak
 
 # Group Distribution Plots
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
-PomaDensity(imputed) +
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+p3 <- PomaDensity(imputed) +
   ggplot2::ggtitle("Not Normalized")
 
-PomaDensity(pre_processed) +
+p4 <- PomaDensity(pre_processed) +
   ggplot2::ggtitle(paste0("Normalized (", normalization, ")"))
-```
 
-\pagebreak
+p3
+p4
+```
 
 # Outlier Detection
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 outliers <- data %>% 
   PomaImpute(method = imputation) %>%
   PomaNorm(method = normalization) %>%
   PomaOutliers(do = "analyze", coef = coeff_outliers)
-
 outliers$polygon_plot
 ```
 
 **`r nrow(outliers$outliers)`** possible outliers detected in your data. `r ifelse(nrow(outliers$outliers) >= 1, paste0("These outliers are **",noquote(paste(shQuote(paste0(outliers$outliers$sample)), collapse=", ")),"**."), "")`
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 if(nrow(outliers$outliers) >= 1){
-  knitr::kable(outliers$outliers)
+  outliers$outliers
   }
 ```
 
-\pagebreak
-
 # High Correlated Features (r > 0.97)
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 correlations <- PomaCorr(pre_processed, 
                          label_size = 8)
 
@@ -265,23 +268,27 @@ high_correlations <- correlations$correlations %>%
 
 There are **`r nrow(high_correlations)`** high correlated feature pairs in your data. `r ifelse(nrow(high_correlations) >= 1, paste0("These features are **",noquote(paste(shQuote(paste0(high_correlations$feature1, " - " , high_correlations$feature2)), collapse=", ")),"**."), "")`
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.align = 'center'}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE, fig.align = 'center'}
 correlations$corrplot
 ```
 
-\pagebreak
-
 # Heatmap and Clustering
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
-PomaHeatmap(pre_processed)
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+PomaHeatmap(pre_processed, sample_names = FALSE)
 ```
-
-\pagebreak
 
 # Principal Component Analysis
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
 PomaMultivariate(pre_processed, method = "pca", ellipse = FALSE)$scoresplot
+```
+
+# Uniform Manifold Approximation and Projection Clustering
+
+```{r, echo = FALSE, warning = FALSE, comment = NA, message = FALSE}
+PomaUMAP(pre_processed, 
+         hdbscan_minpts = 5,
+         show_clusters = TRUE)$umap_plot
 ```
 

@@ -101,8 +101,7 @@ PomaLasso <- function(data,
                                 lambda = lambda, 
                                 alpha = alpha)
     
-  } 
-  else {
+  } else {
     cv_fit <- glmnet::cv.glmnet(features,
                                 response, 
                                 family = "binomial", 
@@ -128,7 +127,7 @@ PomaLasso <- function(data,
     dplyr::as_tibble()
 
   if(!is.null(ntest)){
-    lasso_pred <- glmnet::predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
+    lasso_pred <- predict(cv_fit, s = cv_fit$lambda.min, newx = data.matrix(test_x), type = "class")
     cm <- caret::confusionMatrix(as.factor(lasso_pred), as.factor(test_y))
   }
   
