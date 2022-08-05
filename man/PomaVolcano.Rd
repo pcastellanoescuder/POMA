@@ -6,6 +6,7 @@
 \usage{
 PomaVolcano(
   data,
+  method = "ttest",
   pval = "raw",
   pval_cutoff = 0.05,
   adjust = "fdr",
@@ -21,6 +22,8 @@ PomaVolcano(
 \arguments{
 \item{data}{A SummarizedExperiment object.}
 
+\item{method}{Statistical method to compute p-values and log2FC. Options are "ttest", "limma", and "DESeq".}
+
 \item{pval}{Select a pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".}
 
 \item{pval_cutoff}{Numeric. Define the pvalue cutoff (horizontal line).}
@@ -33,9 +36,9 @@ PomaVolcano(
 
 \item{labels}{Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.}
 
-\item{paired}{Logical that indicates if the data is paired or not.}
+\item{paired}{Only if method == "ttest". Logical that indicates if the data is paired or not.}
 
-\item{var_equal}{Logical that indicates if the data variance is equal or not.}
+\item{var_equal}{Only if method == "ttest". Logical that indicates if the data variance is equal or not.}
 
 \item{interactive}{Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.}
 
@@ -45,14 +48,25 @@ PomaVolcano(
 A ggplot2 object.
 }
 \description{
-PomaVolcano() generates a volcano plot from the PomaUnivariate(method = "ttest") result. The data can't have negative values.
+PomaVolcano() generates a volcano plot. Data should not contain negative values.
 }
 \examples{
 data("st000336")
+data("st000284")
 
 st000336 \%>\% 
   PomaImpute() \%>\%
   PomaVolcano()
+  
+st000284_sub <- st000284[, st000284@colData$factors \%in\% c("CRC", "Healthy")] # select two groups
+
+st000284_sub \%>\% 
+  PomaVolcano(method = "ttest")
+  
+SummarizedExperiment::assay(st000284_sub) <- floor(SummarizedExperiment::assay(st000284_sub)) # convert all values to integers
+
+st000284_sub \%>\% 
+  PomaVolcano(method = "DESeq")
 }
 \author{
 Pol Castellano-Escuder

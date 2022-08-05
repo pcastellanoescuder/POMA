@@ -4,12 +4,12 @@
 \alias{PomaDESeq}
 \title{Differential expression analysis based on the Negative Binomial distribution}
 \usage{
-PomaDESeq(data, padjust = "BH")
+PomaDESeq(data, adjust = "BH")
 }
 \arguments{
 \item{data}{A SummarizedExperiment object.}
 
-\item{padjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", and "BY".}
+\item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", and "BY".}
 }
 \value{
 A tibble with the results.
@@ -22,7 +22,7 @@ data("st000284")
 st000284_sub <- st000284[, st000284@colData$factors \%in\% c("CRC", "Healthy")] # select two groups
 SummarizedExperiment::assay(st000284_sub) <- floor(SummarizedExperiment::assay(st000284_sub)) # convert all values to integers
 st000284_sub \%>\% 
-  PomaDESeq(padjust = "fdr")
+  PomaDESeq(adjust = "fdr")
 }
 \references{
 Love, M.I., Huber, W., Anders, S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2 Genome Biology 15(12):550 (2014)
