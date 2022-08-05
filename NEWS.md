@@ -1,8 +1,8 @@
-# POMA 1.7.15
+# POMA 1.7.16
 
 * New `biocViews` and `Description`
 * Call external packages within each POMA function for consistency
-* New methods: UMAP, PCR
+* New methods: UMAP, PCR, RNA-seq analysis
 * Update tests
 * Update vignettes
 * Several bug fixes
