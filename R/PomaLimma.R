@@ -7,6 +7,7 @@
 #' @param contrast A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".
 #' @param covariates Logical. If it's set to `TRUE` all metadata variables stored in `colData` will be used as covariables. Default = FALSE.
 #' @param covs Character vector indicating the name of `colData` columns that will be included as covariates. Default is NULL (all variables).
+#' @param weights Logical indicating whether the limma model should estimate the relative quality weights for each group. See `?limma::arrayWeights()`.
 #' @param adjust Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
 #' @param cutoff Default is NULL. If this value is replaced for a numeric value, the resultant table will contains only those features with an adjusted p-value below selected value. 
 #'
@@ -29,6 +30,7 @@ PomaLimma <- function(data,
                       covariates = FALSE,
                       covs = NULL,
                       adjust = "fdr",
+                      weights = FALSE,
                       cutoff = NULL){
 
   if (missing(data)) {
@@ -57,11 +59,17 @@ PomaLimma <- function(data,
 
     initialmodel <- stats::model.matrix( ~ 0 + fac1)
     colnames(initialmodel) <- contrasts
-
+    
     cont.matrix <- limma::makeContrasts(contrasts = contrast,
                                         levels = initialmodel)
 
-    model <- limma::lmFit(e, initialmodel)
+    if(weights) {
+      array_weights <- limma::arrayWeights(e, design = initialmodel)
+      model <- limma::lmFit(e, initialmodel, weights = array_weights)
+    } else {
+      model <- limma::lmFit(e, initialmodel)
+    }
+    
     model <- limma::contrasts.fit(model, cont.matrix)
 
     modelstats <- limma::eBayes(model)
@@ -101,11 +109,17 @@ PomaLimma <- function(data,
 
     initialmodel2 <- stats::model.matrix(form, covariates)
     colnames(initialmodel2)[1:length(levels(fac1))] <- contrasts
-
+    
     cont.matrix2 <- limma::makeContrasts(contrasts = contrast,
                                          levels = initialmodel2)
 
-    model2 <- limma::lmFit(e, initialmodel2)
+    if(weights) {
+      array_weights <- limma::arrayWeights(e, design = initialmodel2)
+      model2 <- limma::lmFit(e, initialmodel2, weights = array_weights)
+    } else {
+      model2 <- limma::lmFit(e, initialmodel2)
+    }
+
     model2 <- limma::contrasts.fit(model2, cont.matrix2)
 
     modelstats2 <- limma::eBayes(model2)

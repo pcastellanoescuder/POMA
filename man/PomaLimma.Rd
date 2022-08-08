@@ -10,6 +10,7 @@ PomaLimma(
   covariates = FALSE,
   covs = NULL,
   adjust = "fdr",
+  weights = FALSE,
   cutoff = NULL
 )
 }
@@ -23,6 +24,8 @@ PomaLimma(
 \item{covs}{Character vector indicating the name of \code{colData} columns that will be included as covariates. Default is NULL (all variables).}
 
 \item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
+
+\item{weights}{Logical indicating whether the limma model should estimate the relative quality weights for each group. See \code{?limma::arrayWeights()}.}
 
 \item{cutoff}{Default is NULL. If this value is replaced for a numeric value, the resultant table will contains only those features with an adjusted p-value below selected value.}
 }

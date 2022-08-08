@@ -1,9 +1,10 @@
-# POMA 1.7.17
+# POMA 1.7.18
 
 * New `biocViews` and `Description`
 * Call external packages within each POMA function for consistency
 * New methods: UMAP, PCR, RNA-seq analysis
 * Add different statistical methods in `PomaVolcano()`
+* Estimate relative quality weights in `PomaLimma()`
 * Update tests
 * Update vignettes
 * Several bug fixes
