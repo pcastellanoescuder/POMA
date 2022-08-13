@@ -63,8 +63,10 @@ test_that("PomaBoxplots works", {
   
   expect_error(PomaBoxplots(norm_ls, group = "features", feature_name = "hello"))
   expect_error(PomaBoxplots(norm_ls, group = "features", feature_name = "methyl_succina"))
-  expect_error(PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succina", "linoleic_acid")))
   expect_error(PomaBoxplots(norm_none, group = "features", jitter = FALSE, label_size = 15, legend_position = "no"))
+  
+  expect_warning(PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succina", "linoleic_acid")))
+  expect_warning(PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_aci")))
   
 })
 

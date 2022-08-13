@@ -14,7 +14,7 @@
 #' @return A tibble with the Odds Ratios for all features with their 95% confidence intervals and a ggplot2 object.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom magrittr %>% %<>%
+#' @importFrom magrittr %>%
 #' 
 #' @examples 
 #' data("st000336")
@@ -37,15 +37,20 @@ PomaOddsRatio <- function(data,
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }
   if (!is.null(feature_name)) {
-    if(!isTRUE(all(feature_name %in% rownames(SummarizedExperiment::assay(data))))){
-      stop("At least one feature name not found...")
+    if(!any(feature_name %in% rownames(SummarizedExperiment::assay(data)))) {
+      stop("None of the specified features found")
+    }
+    if(!all(feature_name %in% rownames(SummarizedExperiment::assay(data)))){
+      warning(paste0("Feature/s ",
+                     paste0(feature_name[!feature_name %in% rownames(SummarizedExperiment::assay(data))], collapse = ", "),
+                     " not found"))
     }
   }
   if (length(levels(as.factor(SummarizedExperiment::colData(data)[,1]))) > 2) {
     stop("Your data have more than two groups!")
   }
   if(covariates & ncol(SummarizedExperiment::colData(data)) == 1){
-    stop("Seems there aren't covariates in your data...")
+    stop("No covariates found in colData")
   }
 
   e <- data.frame(t(SummarizedExperiment::assay(data)))
@@ -54,9 +59,13 @@ PomaOddsRatio <- function(data,
     dplyr::rename(group = 1)
 
   if(!is.null(feature_name)){
-    e %<>% 
-      dplyr::select_at(dplyr::vars(dplyr::matches(feature_name)))
+    e <- e[, colnames(e) %in% feature_name]
+    
+    if(is(e, "numeric")) {
+      e <- data.frame(e)
+      colnames(e) <- feature_name[feature_name %in% rownames(SummarizedExperiment::assay(data))]
     }
+  }
 
   if(covariates) {
     if(is.null(covs)){

@@ -42,8 +42,13 @@ PomaDensity <- function(data,
     stop("Incorrect value for group argument!")
   }
   if (!is.null(feature_name)) {
-    if(!isTRUE(all(feature_name %in% rownames(SummarizedExperiment::assay(data))))){
-      stop("At least one feature name not found...")
+    if(!any(feature_name %in% rownames(SummarizedExperiment::assay(data)))) {
+      stop("None of the specified features found")
+    }
+    if(!all(feature_name %in% rownames(SummarizedExperiment::assay(data)))){
+      warning(paste0("Feature/s ",
+                     paste0(feature_name[!feature_name %in% rownames(SummarizedExperiment::assay(data))], collapse = ", "),
+                     " not found"))
     }
   }
   if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {

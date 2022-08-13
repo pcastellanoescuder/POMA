@@ -64,7 +64,9 @@ test_that("PomaOddsRatio works", {
 
   expect_error(PomaOddsRatio(norm_ls, feature_name = "hello"))
   expect_error(PomaOddsRatio(norm_ls, feature_name = "glutamic_aci"))
-  expect_error(PomaOddsRatio(norm_ls, feature_name = c("glutamic_aci", "arginine")))
+  
+  expect_warning(PomaOddsRatio(norm_ls, feature_name = c("glutamic_aci", "arginine")))
+  expect_warning(PomaOddsRatio(norm_ls, feature_name = c("glutamic_aci", "arginine", "glutamine")))
 
   ##
 

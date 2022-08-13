@@ -1,8 +1,8 @@
-# POMA 1.7.18
+# POMA 1.7.19
 
 * New `biocViews` and `Description`
 * Call external packages within each POMA function for consistency
-* New methods: UMAP, PCR, RNA-seq analysis
+* New methods: UMAP, PCR (Principal Components Regression), RNA-seq analysis (via `DESeq2` package)
 * Add different statistical methods in `PomaVolcano()`
 * Estimate relative quality weights in `PomaLimma()`
 * Update tests
