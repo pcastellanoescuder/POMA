@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.7.19
+Version: 1.7.20
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -13,7 +13,7 @@ Description:
     and statistical analysis of omics datasets. The main aim of POMA is to enable a flexible data cleaning and 
     statistical analysis processes in one comprehensible and user-friendly R package. This package has a Shiny app 
     version called POMAShiny that implements all POMA functions. See https://github.com/pcastellanoescuder/POMAShiny. 
-    See Castellano-Escuder P, González-Domínguez R, Carmona-Pontaque F, et al. (2021) <doi:10.1371/journal.pcbi.1009148> 
+    See Castellano-Escuder et al. (2021) <doi:10.1371/journal.pcbi.1009148> 
     for more details.
 License: GPL-3
 Encoding: UTF-8
