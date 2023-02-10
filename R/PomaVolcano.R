@@ -14,7 +14,7 @@
 #' @param paired Only if method == "ttest". Logical that indicates if the data is paired or not.
 #' @param var_equal Only if method == "ttest". Logical that indicates if the data variance is equal or not.
 #' @param interactive Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.
-#' @param plot_title Logical that indicates if title will be plotted or not. Defaul is TRUE.
+#' @param theme_params List indicating `theme_poma` parameters.
 #' 
 #' @export
 #'
@@ -45,13 +45,14 @@ PomaVolcano <- function(data,
                         pval = "raw",
                         pval_cutoff = 0.05,
                         adjust = "fdr",
-                        log2FC = 0.6,
+                        log2FC = 1,
                         xlim = 2,
                         labels = FALSE,
                         paired = FALSE,
                         var_equal = FALSE,
                         interactive = FALSE,
-                        plot_title = TRUE){
+                        theme_params = list(legend_title = FALSE),
+                        ...) {
 
   if (missing(data)) {
     stop("data argument is empty!")
@@ -106,20 +107,16 @@ PomaVolcano <- function(data,
     ggplot2::xlim(c(-(xlim), xlim)) +
     ggplot2::labs(x = "log2 Fold Change",
                   y = "-log10 p-value",
-                  color = NULL) +
-    ggplot2::scale_y_continuous(trans = "log1p")+
-    {if(plot_title)ggplot2::ggtitle(paste0(names(table(SummarizedExperiment::colData(data)[,1]))[2], "/", 
-                                           names(table(SummarizedExperiment::colData(data)[,1]))[1]))} +
-    ggplot2::geom_vline(xintercept = -log2FC, colour = "black", linetype = "dashed") +
-    ggplot2::geom_vline(xintercept = log2FC, colour = "black", linetype = "dashed") +
-    ggplot2::geom_hline(yintercept = -log10(pval_cutoff), colour = "black", linetype = "dashed") +
+                  title = paste0(names(table(SummarizedExperiment::colData(data)[,1]))[2], "/", 
+                                 names(table(SummarizedExperiment::colData(data)[,1]))[1])) +
+    ggplot2::geom_vline(xintercept = c(-log2FC, log2FC), colour = "orange", linetype = "dashed") +
+    ggplot2::geom_hline(yintercept = -log10(pval_cutoff), colour = "orange", linetype = "dashed") +
     {if(labels)ggrepel::geom_label_repel(data = df[df$pvalue < pval_cutoff & (df$logFC > log2FC | df$logFC < -log2FC),],
                                          ggplot2::aes(x = logFC, y = -log10(pvalue), label = names), show.legend = FALSE)} +
-    ggplot2::theme_bw() +
-    ggplot2::theme(legend.position = "right") +
-    ggplot2::scale_color_manual(values = c("Down-regulated" = "#E64B35", 
-                                           "Up-regulated" = "#3182bd", 
-                                           "None" = "#636363"))
+    ggplot2::scale_color_manual(values = c("Down-regulated" = "#E64B35FF",
+                                           "Up-regulated" = "#4DBBD5FF",
+                                           "None" = "#636363")) +
+    do.call(theme_poma, theme_params)
 
   if(interactive) {
     if(!(requireNamespace("plotly", character.only = TRUE))){

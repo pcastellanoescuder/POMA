@@ -32,7 +32,7 @@ flattenCorrMatrix <- function(cormat, pmat) {
   data.frame(
     row = rownames(cormat)[row(cormat)[ut]],
     column = rownames(cormat)[col(cormat)[ut]],
-    cor  =(cormat)[ut],
+    cor = (cormat)[ut],
     p = pmat[ut]
   )
 }
@@ -43,12 +43,9 @@ flattenCorrMatrix <- function(cormat, pmat) {
 #' 
 #' @param data A SummarizedExperiment object.
 #' @param method Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".
-#' @param low Color for low end of the gradient in corrplot.
-#' @param outline Color for the outline of the gradient in corrplot.
-#' @param high Color for high end of the gradient in corrplot.
-#' @param label_size Numeric indicating label size in corrplot.
 #' @param corr_type Type of correlation network. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See `glasso` R package for the second option.
 #' @param coeff Numeric indicating correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See `glasso::glasso()`.
+#' @param theme_params List indicating `theme_poma` parameters.
 #' 
 #' @export
 #'
@@ -69,12 +66,10 @@ flattenCorrMatrix <- function(cormat, pmat) {
 #' # PomaCorr(st000284, corr_type = "glasso")
 PomaCorr <- function(data,
                      method = "pearson",
-                     low = "red",
-                     outline = "white",
-                     high = "blue",
-                     label_size = 12,
                      corr_type = "cor",
-                     coeff = 0.7){
+                     coeff = 0.7,
+                     theme_params = list(),
+                     ...){
   
   if (missing(data)) {
     stop("data argument is empty!")
@@ -112,30 +107,17 @@ PomaCorr <- function(data,
     dplyr::rename(feature2 = name, corr = value) %>% 
     dplyr::mutate(corr = tidyr::replace_na(corr, 0)) %>% 
     dplyr::arrange(dplyr::desc(corr))
- 
-  my_cols <- c(low, outline, high)
   
   corrplot <- ggplot2::ggplot(cor_matrix_plot, ggplot2::aes_string(x = "feature1", y = "feature2", fill = "corr")) +
-    ggplot2::geom_tile(color = outline) +
+    ggplot2::geom_tile() +
+    theme_poma(axis_x_rotate = TRUE, axistitle = "none") +
     ggplot2::scale_fill_gradient2(
-      low = my_cols[1],
-      high = my_cols[3],
-      mid = my_cols[2],
+      low = "red",
+      high = "blue",
+      mid = "white",
       midpoint = 0,
       limit = c(-1, 1),
-      space = "Lab") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(
-      axis.text.x = ggplot2::element_text(
-        angle = 45,
-        vjust = 1,
-        size = label_size,
-        hjust = 1),
-      axis.text.y = ggplot2::element_text(size = label_size),
-      axis.title.x = ggplot2::element_blank(),
-      axis.title.y = ggplot2::element_blank()
-    ) +
-    ggplot2::coord_fixed()
+      space = "Lab")
   
   # graph
   if(!(requireNamespace("ggraph", character.only = TRUE))) {
