@@ -1,4 +1,4 @@
-# POMA 1.8.0
+# POMA 1.8.1
 
 * New POMA palette and theme
 

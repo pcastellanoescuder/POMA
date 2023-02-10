@@ -7,8 +7,8 @@
 #' @param group Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.
 #' @param jitter Logical. If it's TRUE (default), the boxplot will show all points.
 #' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.
-#' @param label_size Numeric indicating the size of x-axis labels.
-#' @param legend_position Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".
+#' @param theme_params List indicating `theme_poma` parameters.
+#' @param palette POMA palette. One of "nature", "simpsons", or "futurama".
 #'
 #' @export
 #'
@@ -21,10 +21,10 @@
 #' data("st000284")
 #' 
 #' # samples
-#' PomaBoxplots(st000284)
+#' st000284 %>% PomaNorm() %>% PomaBoxplots(theme_params = list(axistext = "y"))
 #' 
 #' # features
-#' PomaBoxplots(st000284, group = "features")
+#' st000284 %>% PomaNorm() %>% PomaBoxplots(group = "features", theme_params = list(axis_x_rotate = TRUE))
 #'              
 #' # concrete features
 #' PomaBoxplots(st000284, group = "features", 
@@ -33,8 +33,9 @@ PomaBoxplots <- function(data,
                          group = "samples",
                          jitter = FALSE,
                          feature_name = NULL,
-                         label_size = 10,
-                         legend_position = "bottom"){
+                         theme_params = list(),
+                         palette = "nature",
+                         ...) {
   
   if (missing(data)) {
     stop("data argument is empty!")
@@ -55,9 +56,6 @@ PomaBoxplots <- function(data,
                      " not found"))
     }
   }
-  if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
-    stop("Incorrect value for legend_position argument!")
-  }
   
   e <- t(SummarizedExperiment::assay(data))
   target <- SummarizedExperiment::colData(data) %>%
@@ -71,35 +69,31 @@ PomaBoxplots <- function(data,
   if(group == "samples"){
     plot_data <- data %>%
       tidyr::pivot_longer(cols = -c(ID, Group)) %>%
-      ggplot2::ggplot(ggplot2::aes(ID, value, color = Group))
+      ggplot2::ggplot(ggplot2::aes(ID, value, color = Group, fill = Group))
   }
   
   else {
-    if(is.null(feature_name)){
-      plot_data <- data %>%
-        dplyr::select(-ID) %>%
-        tidyr::pivot_longer(cols = -Group) %>%
-        ggplot2::ggplot(ggplot2::aes(name, value, color = Group))
-      
-    } else {
-      plot_data <- data %>%
-        dplyr::select(-ID) %>%
-        tidyr::pivot_longer(cols = -Group) %>%
-        dplyr::filter(name %in% feature_name) %>%
-        ggplot2::ggplot(ggplot2::aes(name, value, color = Group))
+    plot_data <- data %>%
+      dplyr::select(-ID) %>%
+      tidyr::pivot_longer(cols = -Group)
+    
+    if(!is.null(feature_name)){
+      plot_data <- plot_data %>% 
+        dplyr::filter(name %in% feature_name)
     }
+    
+    plot_data <- plot_data %>% 
+      ggplot2::ggplot(ggplot2::aes(name, value, color = Group, fill = Group))
+    
   }
   
   plot_complete <- plot_data +
-    ggplot2::geom_boxplot() +
+    ggplot2::geom_boxplot(alpha = 0.5) +
     {if(jitter)ggplot2::geom_jitter(alpha = 0.5, position = ggplot2::position_jitterdodge())} +
-    ggplot2::theme_bw() +
-    ggplot2::labs(x = "", 
-                  y = "Value") +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = label_size),
-                   legend.title = ggplot2::element_blank(),
-                   legend.position = legend_position) +
-    ggplot2::scale_colour_viridis_d(begin = 0, end = 0.8)
+    ggplot2::labs(x = NULL, y = "Value") +
+    do.call(theme_poma, theme_params) +
+    scale_color_poma_d(palette = palette) +
+    scale_fill_poma_d(palette = palette)
   
   return(plot_complete)
   

@@ -23,6 +23,7 @@ theme_poma <- function(base_size = 15,
                        axistext = "xy",
                        legend_position = "bottom",
                        legend_title = TRUE,
+                       axis_x_rotate = FALSE,
                        margin = 2, ...) {
   
   if(!is.character(axistitle)) stop('axistitle must be a character: "none" or any combination of "X", "Y", "x" and "y"')
@@ -131,6 +132,12 @@ theme_poma <- function(base_size = 15,
         margin = ggplot2::margin(b = 10)
         )
       )
+  }
+  
+  ## rotate x axis
+  if(axis_x_rotate) {
+    out <- out +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(hjust = 1, angle = 45))
   }
   
   ## remove axis titles if selected

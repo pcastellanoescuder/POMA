@@ -6,7 +6,8 @@
 #' @param data A SummarizedExperiment object.
 #' @param group Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.
 #' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a density plot of all variables will be created.
-#' @param legend_position Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".
+#' @param theme_params List indicating `theme_poma` parameters.
+#' @param palette POMA palette. One of "nature", "simpsons", or "futurama".
 #' 
 #' @export
 #'
@@ -30,7 +31,9 @@
 PomaDensity <- function(data,
                         group = "samples",
                         feature_name = NULL,
-                        legend_position = "bottom"){
+                        theme_params = list(),
+                        palette = "nature",
+                        ...) {
 
   if (missing(data)) {
     stop("data argument is empty!")
@@ -50,9 +53,9 @@ PomaDensity <- function(data,
                      paste0(feature_name[!feature_name %in% rownames(SummarizedExperiment::assay(data))], collapse = ", "),
                      " not found"))
     }
-  }
-  if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
-    stop("Incorrect value for legend_position argument!")
+    if(length(feature_name) > 10) {
+      stop("Maximum 10 features")
+    }
   }
   
   e <- t(SummarizedExperiment::assay(data))
@@ -65,44 +68,40 @@ PomaDensity <- function(data,
   data <- cbind(target, e)
   
   if(group == "samples"){
-    if (is.null(feature_name)){
-      plot_data <- data %>%
-        tidyr::pivot_longer(cols = -c(ID, Group)) %>%
-        ggplot2::ggplot(ggplot2::aes(value, fill = Group))
-      
-    } else {
-      plot_data <- data %>%
-        tidyr::pivot_longer(cols = -c(ID, Group)) %>%
-        dplyr::filter(name %in% feature_name) %>%
-        ggplot2::ggplot(ggplot2::aes(value, fill = Group))
-      
+    
+    plot_data <- data %>%
+      tidyr::pivot_longer(cols = -c(ID, Group))
+    
+    if (!is.null(feature_name)){
+      plot_data <- plot_data %>% 
+        dplyr::filter(name %in% feature_name)
     }
+    
+    plot_complete <- plot_data %>% 
+      ggplot2::ggplot(ggplot2::aes(value, fill = Group)) +
+      ggplot2::geom_density(alpha = 0.5) +
+      ggplot2::labs(x = "Value", y = "Density") +
+      do.call(theme_poma, theme_params) +
+      scale_fill_poma_d(palette = palette)
 
   } else {
-    if (is.null(feature_name)){
-      plot_data <- data %>%
-        dplyr::select(-ID) %>%
-        tidyr::pivot_longer(cols = -Group) %>%
-        ggplot2::ggplot(ggplot2::aes(value, fill = name))
+    plot_data <- data %>%
+      dplyr::select(-ID) %>%
+      tidyr::pivot_longer(cols = -Group)
+    
+    if (!is.null(feature_name)) {
+      plot_data <- plot_data %>% 
+        dplyr::filter(name %in% feature_name)
+      }
 
-    } else {
-      plot_data <- data %>%
-        dplyr::select(-ID) %>%
-        tidyr::pivot_longer(cols = -Group) %>%
-        dplyr::filter(name %in% feature_name) %>%
-        ggplot2::ggplot(ggplot2::aes(value, fill = name))
-
-    }
+    plot_data <- plot_data %>% ggplot2::ggplot(ggplot2::aes(value, fill = name))
+    
+    plot_complete <- plot_data +
+      ggplot2::geom_density(alpha = 0.5) +
+      ggplot2::labs(x = "Value",
+                    y = "Density") +
+      do.call(theme_poma, theme_params)
   }
-  
-  plot_complete <- plot_data +
-    ggplot2::geom_density(alpha = 0.4) +
-    ggplot2::theme_bw() +
-    ggplot2::labs(x = "Value",
-                  y = "Density") +
-    ggplot2::theme(legend.title = ggplot2::element_blank(),
-                   legend.position = legend_position) +
-    ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8)
   
   return(plot_complete)
   

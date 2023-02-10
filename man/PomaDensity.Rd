@@ -8,7 +8,9 @@ PomaDensity(
   data,
   group = "samples",
   feature_name = NULL,
-  legend_position = "bottom"
+  theme_params = list(),
+  palette = "nature",
+  ...
 )
 }
 \arguments{
@@ -18,7 +20,9 @@ PomaDensity(
 
 \item{feature_name}{A vector with the name/s of feature/s to plot. If it's NULL (default) a density plot of all variables will be created.}
 
-\item{legend_position}{Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".}
+\item{theme_params}{List indicating \code{theme_poma} parameters.}
+
+\item{palette}{POMA palette. One of "nature", "simpsons", or "futurama".}
 }
 \value{
 A ggplot2 object.

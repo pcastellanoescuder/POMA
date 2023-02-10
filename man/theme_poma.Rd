@@ -11,6 +11,7 @@ theme_poma(
   axistext = "xy",
   legend_position = "bottom",
   legend_title = TRUE,
+  axis_x_rotate = FALSE,
   margin = 2,
   ...
 )

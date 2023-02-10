@@ -9,8 +9,9 @@ PomaBoxplots(
   group = "samples",
   jitter = FALSE,
   feature_name = NULL,
-  label_size = 10,
-  legend_position = "bottom"
+  theme_params = list(),
+  palette = "nature",
+  ...
 )
 }
 \arguments{
@@ -22,9 +23,9 @@ PomaBoxplots(
 
 \item{feature_name}{A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.}
 
-\item{label_size}{Numeric indicating the size of x-axis labels.}
+\item{theme_params}{List indicating \code{theme_poma} parameters.}
 
-\item{legend_position}{Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".}
+\item{palette}{POMA palette. One of "nature", "simpsons", or "futurama".}
 }
 \value{
 A ggplot2 object.
@@ -36,10 +37,10 @@ PomaBoxplots() generates a boxplot for subjects or features. This boxplot can he
 data("st000284")
 
 # samples
-PomaBoxplots(st000284)
+st000284 \%>\% PomaNorm() \%>\% PomaBoxplots(theme_params = list(axistext = "y"))
 
 # features
-PomaBoxplots(st000284, group = "features")
+st000284 \%>\% PomaNorm() \%>\% PomaBoxplots(group = "features", theme_params = list(axis_x_rotate = TRUE))
              
 # concrete features
 PomaBoxplots(st000284, group = "features", 

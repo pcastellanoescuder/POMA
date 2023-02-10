@@ -9,15 +9,15 @@ test_that("PomaBoxplots works", {
   
   a <- PomaBoxplots(norm_none, label_size = 12)
   b <- PomaBoxplots(norm_ls, label_size = 10)
-  c <- PomaBoxplots(norm_none, group = "features", label_size = 8)
-  d <- PomaBoxplots(norm_ls, group = "features", label_size = 6)
+  c <- PomaBoxplots(norm_none, group = "features")
+  d <- PomaBoxplots(norm_ls, group = "features")
   
-  e <- PomaBoxplots(norm_none, group = "samples", label_size = 2)
+  e <- PomaBoxplots(norm_none, group = "samples")
   
-  f <- PomaBoxplots(norm_none, group = "samples", jitter = TRUE, label_size = 20)
-  g <- PomaBoxplots(norm_none, group = "samples", jitter = FALSE, label_size = 15)
-  h <- PomaBoxplots(norm_none, group = "features", jitter = TRUE, label_size = 20)
-  i <- PomaBoxplots(norm_none, group = "features", jitter = FALSE, label_size = 15)
+  f <- PomaBoxplots(norm_none, group = "samples", jitter = TRUE)
+  g <- PomaBoxplots(norm_none, group = "samples", jitter = FALSE)
+  h <- PomaBoxplots(norm_none, group = "features", jitter = TRUE)
+  i <- PomaBoxplots(norm_none, group = "features", jitter = FALSE)
   
   j <- PomaBoxplots(norm_ls, group = "features", feature_name = "methyl_succinate")
   k <- PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
@@ -63,7 +63,6 @@ test_that("PomaBoxplots works", {
   
   expect_error(PomaBoxplots(norm_ls, group = "features", feature_name = "hello"))
   expect_error(PomaBoxplots(norm_ls, group = "features", feature_name = "methyl_succina"))
-  expect_error(PomaBoxplots(norm_none, group = "features", jitter = FALSE, label_size = 15, legend_position = "no"))
   
   expect_warning(PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succina", "linoleic_acid")))
   expect_warning(PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_aci")))

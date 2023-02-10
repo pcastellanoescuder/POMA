@@ -40,8 +40,7 @@ PomaHeatmap <- function(data,
     as.data.frame() %>%
     dplyr::select(dplyr::all_of(cols))
   
-  ha <- ComplexHeatmap::HeatmapAnnotation(df = df,
-                                          show_legend = show_legend)
+  ha <- ComplexHeatmap::HeatmapAnnotation(df = df, show_legend = show_legend)
 
   suppressMessages(
     ComplexHeatmap::Heatmap(data_hm, 
