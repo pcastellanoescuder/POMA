@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.7.20
+Version: 1.8.0
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -66,7 +66,7 @@ Suggests:
     tidyverse,
     testthat (>= 2.3.2)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Depends: R (>= 4.0)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA

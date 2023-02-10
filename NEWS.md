@@ -1,3 +1,7 @@
+# POMA 1.8.0
+
+* New POMA palette and theme
+
 # POMA 1.7.19
 
 * New `biocViews` and `Description`
