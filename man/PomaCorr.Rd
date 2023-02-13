@@ -7,12 +7,10 @@
 PomaCorr(
   data,
   method = "pearson",
-  low = "red",
-  outline = "white",
-  high = "blue",
-  label_size = 12,
   corr_type = "cor",
-  coeff = 0.7
+  coeff = 0.7,
+  theme_params = list(),
+  ...
 )
 }
 \arguments{
@@ -20,17 +18,11 @@ PomaCorr(
 
 \item{method}{Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".}
 
-\item{low}{Color for low end of the gradient in corrplot.}
-
-\item{outline}{Color for the outline of the gradient in corrplot.}
-
-\item{high}{Color for high end of the gradient in corrplot.}
-
-\item{label_size}{Numeric indicating label size in corrplot.}
-
 \item{corr_type}{Type of correlation network. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See \code{glasso} R package for the second option.}
 
 \item{coeff}{Numeric indicating correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See \code{glasso::glasso()}.}
+
+\item{theme_params}{List indicating \code{theme_poma} parameters.}
 }
 \value{
 A list with the results.

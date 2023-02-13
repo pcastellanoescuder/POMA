@@ -10,13 +10,14 @@ PomaVolcano(
   pval = "raw",
   pval_cutoff = 0.05,
   adjust = "fdr",
-  log2FC = 0.6,
+  log2FC = 1,
   xlim = 2,
   labels = FALSE,
   paired = FALSE,
   var_equal = FALSE,
   interactive = FALSE,
-  plot_title = TRUE
+  theme_params = list(legend_title = FALSE),
+  ...
 )
 }
 \arguments{
@@ -42,7 +43,7 @@ PomaVolcano(
 
 \item{interactive}{Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.}
 
-\item{plot_title}{Logical that indicates if title will be plotted or not. Defaul is TRUE.}
+\item{theme_params}{List indicating \code{theme_poma} parameters.}
 }
 \value{
 A ggplot2 object.
