@@ -1,10 +1,30 @@
 
+#' Sample Quantile Normalization
+#'
+#' Compute quantile normalization.
+#' 
+#' @param data A data matrix.
+quantile_norm <- function(data) {
+  df_rank <- apply(data, 1, rank, ties.method = "min")
+  df_sorted <- data.frame(apply(data, 1, sort))
+  df_mean <- apply(df_sorted, 2, mean)
+  
+  index_to_mean <- function(my_index, my_mean){
+    return(my_mean[my_index])
+  }
+  
+  df_final <- apply(df_rank, 1, index_to_mean, my_mean = df_mean)
+  rownames(df_final) <- rownames(data)
+  return(df_final)
+}
+
 #' Collection of Normalization Methods for Mass Spectrometry Data
 #'
 #' @description PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 #'
 #' @param data A SummarizedExperiment object.
 #' @param method Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".
+#' @param sample_norm Logical. Sample quantile normalization.
 #' @param round Numeric. Number of decimal places (Default is 3).
 #'
 #' @export
@@ -19,6 +39,7 @@
 #' PomaNorm(st000284, method = "log_pareto")
 PomaNorm <- function(data,
                      method = "log_pareto",
+                     sample_norm = TRUE,
                      round = 3){
 
   if (missing(data)) {
@@ -43,6 +64,11 @@ PomaNorm <- function(data,
   # remove columns with var = 0
   to_norm_data <- to_norm_data[, !apply(to_norm_data, 2, var) == 0]
 
+  # Sample quantile normalization
+  if (sample_norm) {
+    to_norm_data <- quantile_norm(to_norm_data)
+  }
+  
   if (method == "none"){
     normalized <- round(to_norm_data, round)
   }

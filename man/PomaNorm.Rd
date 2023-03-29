@@ -4,12 +4,14 @@
 \alias{PomaNorm}
 \title{Collection of Normalization Methods for Mass Spectrometry Data}
 \usage{
-PomaNorm(data, method = "log_pareto", round = 3)
+PomaNorm(data, method = "log_pareto", sample_norm = TRUE, round = 3)
 }
 \arguments{
 \item{data}{A SummarizedExperiment object.}
 
 \item{method}{Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".}
+
+\item{sample_norm}{Logical. Sample quantile normalization.}
 
 \item{round}{Numeric. Number of decimal places (Default is 3).}
 }

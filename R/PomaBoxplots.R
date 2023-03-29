@@ -92,8 +92,10 @@ PomaBoxplots <- function(data,
     {if(jitter)ggplot2::geom_jitter(alpha = 0.5, position = ggplot2::position_jitterdodge())} +
     ggplot2::labs(x = NULL, y = "Value") +
     do.call(theme_poma, theme_params) +
-    scale_color_poma_d(palette = palette) +
-    scale_fill_poma_d(palette = palette)
+    # scale_color_poma_d(palette = palette) +
+    # scale_fill_poma_d(palette = palette)
+    ggplot2::scale_fill_viridis_d(option = "plasma", end = 0.8) +
+    ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
   
   return(plot_complete)
   

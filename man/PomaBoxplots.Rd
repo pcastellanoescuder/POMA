@@ -9,7 +9,7 @@ PomaBoxplots(
   group = "samples",
   jitter = FALSE,
   feature_name = NULL,
-  theme_params = list(),
+  theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE),
   palette = "nature",
   ...
 )
