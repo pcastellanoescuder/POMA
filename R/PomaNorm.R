@@ -5,7 +5,7 @@
 #' 
 #' @param data A data matrix.
 quantile_norm <- function(data) {
-  df_rank <- apply(data, 1, rank, ties.method = "min")
+  df_rank <- apply(data, 1, dplyr::dense_rank)
   df_sorted <- data.frame(apply(data, 1, sort))
   df_mean <- apply(df_sorted, 2, mean)
   
@@ -18,19 +18,31 @@ quantile_norm <- function(data) {
   return(df_final)
 }
 
+#' Sample Sum Normalization
+#'
+#' Compute sum normalization.
+#' 
+#' @param data A data matrix.
+sum_norm <- function(data) {
+  row_sums <- apply(data, 1, sum, na.rm = TRUE)
+  normalized_data <- t(t(data) / row_sums)
+  
+  return(normalized_data)
+}
+
 #' Collection of Normalization Methods for Mass Spectrometry Data
 #'
 #' @description PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 #'
 #' @param data A SummarizedExperiment object.
 #' @param method Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".
-#' @param sample_norm Logical. Sample quantile normalization.
+#' @param sample_norm Logical. Sample sum normalization.
 #' @param round Numeric. Number of decimal places (Default is 3).
 #'
 #' @export
 #'
 #' @return A SummarizedExperiment object with normalized data.
-#' @references van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.
+#' @references Van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.
 #' @author Pol Castellano-Escuder
 #' 
 #' @examples 
@@ -64,9 +76,9 @@ PomaNorm <- function(data,
   # remove columns with var = 0
   to_norm_data <- to_norm_data[, !apply(to_norm_data, 2, var) == 0]
 
-  # Sample quantile normalization
+  # Sample normalization
   if (sample_norm) {
-    to_norm_data <- quantile_norm(to_norm_data)
+    to_norm_data <- sum_norm(to_norm_data)
   }
   
   if (method == "none"){
