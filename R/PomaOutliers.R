@@ -96,7 +96,7 @@ PomaOutliers <- function(data,
     
     polygon_plot <- ggplot2::ggplot(total_outliers, ggplot2::aes(x = PCoA1, y = PCoA2)) +
       ggplot2::geom_polygon(data = hulls, alpha = 0.5, ggplot2::aes(fill = Group)) +
-      {if(!labels)ggplot2::geom_point(ggplot2::aes(shape = Group), size = 3, alpha = 0.7)} +
+      {if(!labels)ggplot2::geom_point(ggplot2::aes(color = Group), size = 3, alpha = 0.9)} +
       ggplot2::geom_label(data = centroids, ggplot2::aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
       {if(labels)ggplot2::geom_text(ggplot2::aes(label = sample))} +
       theme_poma() +

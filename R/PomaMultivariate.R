@@ -102,7 +102,7 @@ PomaMultivariate <- function(data,
       tibble::rownames_to_column("ID")
 
     # scores plot
-    scoresplot <- ggplot2::ggplot(PCi, ggplot2::aes(x = PC1, y = PC2, color = Groups, shape = Groups, label = ID)) +
+    scoresplot <- ggplot2::ggplot(PCi, ggplot2::aes(x = PC1, y = PC2, color = Groups, label = ID)) +
       {if(!labels)ggplot2::geom_point(size = 2, alpha = 0.9)} +
       ggplot2::labs(x = paste0("PC1 (", round(100*(pca_res$prop_expl_var$X)[1], 2), "%)"),
                     y = paste0("PC2 (", round(100*(pca_res$prop_expl_var$X)[2], 2), "%)")) +
@@ -112,6 +112,7 @@ PomaMultivariate <- function(data,
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
       ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
+    
     # scree plot
     eigenvalues <- data.frame(pc_var_exp = round(pca_res$prop_expl_var$X*100, 3)) %>% 
       tibble::rownames_to_column("component") %>% 
