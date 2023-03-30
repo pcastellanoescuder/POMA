@@ -126,7 +126,7 @@ PomaRandForest <- function(data,
     ggplot2::coord_flip() +
     ggplot2::theme_bw() +
     ggplot2::theme(legend.position = "none") +
-    ggplot2::scale_fill_viridis_d(option = "plasma", end = 0.8)
+    ggplot2::scale_fill_viridis_c(option = "plasma", end = 0.8)
 
   feature_names <- names %>% 
     dplyr::slice(-1) %>% 
