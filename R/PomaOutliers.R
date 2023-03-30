@@ -100,8 +100,10 @@ PomaOutliers <- function(data,
       ggplot2::geom_label(data = centroids, ggplot2::aes(x = PCoA1, y = PCoA2, color = rownames(centroids), label = rownames(centroids)), show.legend = FALSE) +
       {if(labels)ggplot2::geom_text(ggplot2::aes(label = sample))} +
       theme_poma() +
-      scale_fill_poma_d() +
-      scale_color_poma_d()
+      # scale_fill_poma_d() +
+      # scale_color_poma_d() +
+      ggplot2::scale_fill_viridis_d(option = "plasma", end = 0.8) +
+      ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
     
     distance_boxplot <- ggplot2::ggplot(detect_outliers, ggplot2::aes(Groups, distances, fill = Groups)) +
       ggplot2::geom_boxplot(coef = coef, alpha = 0.5) +
@@ -109,7 +111,8 @@ PomaOutliers <- function(data,
                     y = "Distance to group centroid") + 
       {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], ggplot2::aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
       theme_poma() +
-      scale_fill_poma_d()
+      # scale_fill_poma_d() +
+      ggplot2::scale_fill_viridis_d(option = "plasma", end = 0.8)
     
     return(list(polygon_plot = polygon_plot, 
                 distance_boxplot = distance_boxplot, 

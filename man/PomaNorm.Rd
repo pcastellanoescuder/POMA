@@ -2,16 +2,16 @@
 % Please edit documentation in R/PomaNorm.R
 \name{PomaNorm}
 \alias{PomaNorm}
-\title{Collection of Normalization Methods for Mass Spectrometry Data}
+\title{Collection of Normalization Methods for Omics Data}
 \usage{
-PomaNorm(data, method = "log_pareto", sample_norm = TRUE, round = 3)
+PomaNorm(data, method = "log_pareto", sample_norm = "none", round = 3)
 }
 \arguments{
 \item{data}{A SummarizedExperiment object.}
 
 \item{method}{Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".}
 
-\item{sample_norm}{Logical. Sample quantile normalization.}
+\item{sample_norm}{Character vector. Sample normalization method. Options are: "none" (default), "sum", "quantile".}
 
 \item{round}{Numeric. Number of decimal places (Default is 3).}
 }
@@ -27,7 +27,7 @@ data("st000284")
 PomaNorm(st000284, method = "log_pareto")
 }
 \references{
-van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.
+Van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.
 }
 \author{
 Pol Castellano-Escuder

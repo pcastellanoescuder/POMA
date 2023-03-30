@@ -3,7 +3,7 @@
 #'
 #' Compute quantile normalization.
 #' 
-#' @param data A data matrix.
+#' @param data A data matrix (samples in rows).
 quantile_norm <- function(data) {
   df_rank <- apply(data, 1, dplyr::dense_rank)
   df_sorted <- data.frame(apply(data, 1, sort))
@@ -20,23 +20,23 @@ quantile_norm <- function(data) {
 
 #' Sample Sum Normalization
 #'
-#' Compute sum normalization.
+#' Compute sum normalization. Final unit is %.
 #' 
-#' @param data A data matrix.
+#' @param data A data matrix (samples in rows).
 sum_norm <- function(data) {
   row_sums <- apply(data, 1, sum, na.rm = TRUE)
-  normalized_data <- t(t(data) / row_sums)
+  normalized_data <- t(t(data) / row_sums) * 100
   
   return(normalized_data)
 }
 
-#' Collection of Normalization Methods for Mass Spectrometry Data
+#' Collection of Normalization Methods for Omics Data
 #'
 #' @description PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
 #'
 #' @param data A SummarizedExperiment object.
 #' @param method Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".
-#' @param sample_norm Logical. Sample sum normalization.
+#' @param sample_norm Character vector. Sample normalization method. Options are: "none" (default), "sum", "quantile".
 #' @param round Numeric. Number of decimal places (Default is 3).
 #'
 #' @export
@@ -51,7 +51,7 @@ sum_norm <- function(data) {
 #' PomaNorm(st000284, method = "log_pareto")
 PomaNorm <- function(data,
                      method = "log_pareto",
-                     sample_norm = TRUE,
+                     sample_norm = "none",
                      round = 3){
 
   if (missing(data)) {
@@ -77,8 +77,13 @@ PomaNorm <- function(data,
   to_norm_data <- to_norm_data[, !apply(to_norm_data, 2, var) == 0]
 
   # Sample normalization
-  if (sample_norm) {
-    to_norm_data <- sum_norm(to_norm_data)
+  if (sample_norm != "none") {
+    if (sample_norm == "sum") {
+      to_norm_data <- sum_norm(to_norm_data)
+    }
+    else if (sample_norm == "quantile") {
+      to_norm_data <- quantile_norm(to_norm_data)
+    }
   }
   
   if (method == "none"){

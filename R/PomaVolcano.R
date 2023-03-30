@@ -106,12 +106,12 @@ PomaVolcano <- function(data,
     ggplot2::geom_point(size = 1.75) +
     ggplot2::xlim(c(-(xlim), xlim)) +
     ggplot2::labs(x = "log2 Fold Change",
-                  y = "-log10 p-value",
+                  y = "-log10 (p-value)",
                   title = paste0(names(table(SummarizedExperiment::colData(data)[,1]))[2], "/", 
                                  names(table(SummarizedExperiment::colData(data)[,1]))[1])) +
     ggplot2::geom_vline(xintercept = c(-log2FC, log2FC), colour = "orange", linetype = "dashed") +
     ggplot2::geom_hline(yintercept = -log10(pval_cutoff), colour = "orange", linetype = "dashed") +
-    {if(labels)ggrepel::geom_label_repel(data = df[df$pvalue < pval_cutoff & (df$logFC > log2FC | df$logFC < -log2FC),],
+    {if(labels)ggrepel::geom_text_repel(data = df[df$pvalue < pval_cutoff & (df$logFC > log2FC | df$logFC < -log2FC),],
                                          ggplot2::aes(x = logFC, y = -log10(pvalue), label = names), show.legend = FALSE)} +
     ggplot2::scale_color_manual(values = c("Down-regulated" = "#E64B35FF",
                                            "Up-regulated" = "#4DBBD5FF",

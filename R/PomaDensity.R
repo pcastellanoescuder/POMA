@@ -82,7 +82,8 @@ PomaDensity <- function(data,
       ggplot2::geom_density(alpha = 0.5) +
       ggplot2::labs(x = "Value", y = "Density") +
       do.call(theme_poma, theme_params) +
-      scale_fill_poma_d(palette = palette)
+      # scale_fill_poma_d(palette = palette)
+      ggplot2::scale_fill_viridis_d(option = "plasma", end = 0.8)
 
   } else {
     plot_data <- data %>%

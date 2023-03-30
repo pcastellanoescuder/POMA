@@ -111,8 +111,7 @@ PomaMultivariate <- function(data,
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
-      ggplot2::scale_colour_viridis_d(begin = 0, end = 0.8)
-
+      ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
     # scree plot
     eigenvalues <- data.frame(pc_var_exp = round(pca_res$prop_expl_var$X*100, 3)) %>% 
       tibble::rownames_to_column("component") %>% 
@@ -125,7 +124,7 @@ PomaMultivariate <- function(data,
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
-      ggplot2::scale_fill_viridis_c(begin = 0, end = 0.8)
+      ggplot2::scale_fill_viridis_c(option = "plasma", end = 0.8)
 
     # loading plot
     loadings_tb <- pca_res$loadings$X %>% 
@@ -144,7 +143,7 @@ PomaMultivariate <- function(data,
       ggplot2::labs(x = NULL,
                     y = "PCA loadings") +
       ggplot2::theme_bw() +
-      ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8) +
+      ggplot2::scale_fill_viridis_d(option = "plasma", end = 0.8) +
       ggplot2::theme(legend.position = legend_position,
                      legend.title = ggplot2::element_blank(),
                      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
@@ -178,7 +177,7 @@ PomaMultivariate <- function(data,
                         label = rownames(PCAloadings), size = 4) +
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
-      ggplot2::scale_colour_viridis_d(begin = 0, end = 0.8)
+      ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
 
     return(list(screeplot = screeplot, 
                 scoresplot = scoresplot,
@@ -209,7 +208,7 @@ PomaMultivariate <- function(data,
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
-      ggplot2::scale_colour_viridis_d(begin = 0, end = 0.8)
+      ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
 
     perf_plsda <- mixOmics::perf(plsda_res, validation = validation, folds = folds,
                                  progressBar = TRUE, auc = TRUE, nrepeat = nrepeat)
@@ -236,7 +235,7 @@ PomaMultivariate <- function(data,
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
-      ggplot2::scale_colour_viridis_d(begin = 0, end = 0.8)
+      ggplot2::scale_fill_viridis_d(option = "plasma", end = 0.8)
 
     plsda_vip <- data.frame(mixOmics::vip(plsda_res)) %>%
       tibble::rownames_to_column("feature") %>%
@@ -255,8 +254,8 @@ PomaMultivariate <- function(data,
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
-      ggplot2::scale_fill_viridis_c(begin = 0, end = 0.8)
-
+      ggplot2::scale_fill_viridis_c(option = "plasma", end = 0.8)
+    
     scores_plsda <- PLSDAi %>% 
       dplyr::select(-Groups, -ID) %>%
       dplyr::as_tibble()
@@ -305,7 +304,7 @@ PomaMultivariate <- function(data,
                     y = "Error") +
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
-      ggplot2::scale_colour_viridis_d(begin = 0, end = 0.8)
+      ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
 
     if (ncomp == 1) {
       ncompX <- 2
@@ -327,7 +326,7 @@ PomaMultivariate <- function(data,
       ggplot2::theme_bw() +
       ggplot2::theme(legend.title = ggplot2::element_blank(),
                      legend.position = legend_position) +
-      ggplot2::scale_colour_viridis_d(begin = 0, end = 0.8)
+      ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
 
     scores_splsda <- SPLSDAi %>% 
       dplyr::select(-Groups, -ID) %>%

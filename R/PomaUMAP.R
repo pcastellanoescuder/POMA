@@ -106,7 +106,7 @@ PomaUMAP <- function(data,
     ggplot2::theme_bw() +
     ggplot2::theme(legend.title = ggplot2::element_blank(),
                    legend.position = legend_position) +
-    ggplot2::scale_color_viridis_d(begin = 0, end = 0.8)
+    ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
   
   return(list(umap_table = umap_result,
               umap_plot = umap_plot))

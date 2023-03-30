@@ -146,7 +146,7 @@ PomaLasso <- function(data,
     ggplot2::theme_bw() +
     {if(labels)ggplot2::geom_label(data = tidied_cv2_names, ggplot2::aes(label = term))} +
     ggplot2::theme(legend.position = "none") +
-    ggplot2::scale_color_viridis_d(begin = 0, end = 0.8)
+    ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
 
   if(!is.null(ntest)){
     return(list(coefficients = final_coef, 
