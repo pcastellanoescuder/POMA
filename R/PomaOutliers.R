@@ -135,6 +135,5 @@ PomaOutliers <- function(data,
       return(dataCleaned)
     
   }
-  
 }
 
