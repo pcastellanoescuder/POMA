@@ -2,32 +2,35 @@
 % Please edit documentation in R/PomaImpute.R
 \name{PomaImpute}
 \alias{PomaImpute}
-\title{Collection of Imputation Methods for Mass Spectrometry Data}
+\title{Impute Missing Values}
 \usage{
 PomaImpute(
   data,
-  ZerosAsNA = FALSE,
-  RemoveNA = TRUE,
+  zeros_as_na = FALSE,
+  remove_na = TRUE,
   cutoff = 20,
+  group_by = TRUE,
   method = "knn"
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{ZerosAsNA}{Logical that indicates if the zeros in the data are missing values. Default is FALSE.}
+\item{zeros_as_na}{Logical. Indicates if the zeros in the data are missing values. Default is FALSE.}
 
-\item{RemoveNA}{Logical that indicates if those features with more than selected cutoff missing values in each group have to be removed. Default is TRUE.}
+\item{remove_na}{Logical. Indicates if features with a percentage of missing values over the \code{cutoff} parameter should be removed. Default is TRUE.}
 
-\item{cutoff}{Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these feature will not be removed.}
+\item{cutoff}{Numeric. Percentage of missing values allowed in each feature.}
 
-\item{method}{Imputation method. Options are: "none", "half_min", "median", "mean", "min", "knn" and "rf". If "none", all missing values will be replaced by zero.}
+\item{group_by}{Logical. If \code{metadata} file is present and its first variable is a factor, it can be used to compute missing values per group and drop them accordingly. Features will be removed only if all of the groups contain more missing values than allowed. Default is TRUE.}
+
+\item{method}{Character. The imputation method to use. Options include "none" (no imputation, replace missings by zeros), "half_min" (replace missing values with half of the minimum value), "median" (replace missing values with the median), "mean" (replace missing values with the mean), "min" (replace missing values with the minimum value), "knn" (replace missing values using k-nearest neighbors imputation), and "rf" (replace missing values using random forest imputation).}
 }
 \value{
-A SummarizedExperiment object with cleaned data.
+A \code{SummarizedExperiment} object without missing values.
 }
 \description{
-PomaImpute() offers different methods to impute missing values in MS data.
+\code{PomaImpute} performs missing value imputation on a dataset using various imputation methods.
 }
 \examples{
 data("st000336")

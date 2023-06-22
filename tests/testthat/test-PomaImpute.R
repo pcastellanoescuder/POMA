@@ -20,28 +20,28 @@ test_that("PomaImpute works", {
   target <- SummarizedExperiment::colData(st000284) %>% 
     as.data.frame() %>% 
     tibble::rownames_to_column() 
-  testimput <- PomaSummarizedExperiment(features = data, target = target)
+  testimput <- PomaSummarizedExperiment(features = data, metadata = target)
 
-  a <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 8))))
-  b <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", ZerosAsNA = TRUE, RemoveNA = FALSE, cutoff = 8))))
-  c <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 8))))
-  d <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", ZerosAsNA = TRUE, RemoveNA = TRUE, cutoff = 8))))
+  a <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 8))))
+  b <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = TRUE, remove_na = FALSE, cutoff = 8))))
+  c <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 8))))
+  d <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = TRUE, remove_na = TRUE, cutoff = 8))))
 
-  e <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20))))
-  f <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 10))))
+  e <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 20))))
+  f <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 10))))
 
-  g <- PomaImpute(testimput, method = "half_min", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20)
-  h <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20)
+  g <- PomaImpute(testimput, method = "half_min", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 20)
+  h <- PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 20)
   
-  i <- PomaImpute(testimput, method = "half_min", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 1)
-  j <- PomaImpute(testimput, method = "mean", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 1)
-  k <- PomaImpute(testimput, method = "median", ZerosAsNA = FALSE, RemoveNA = FALSE, cutoff = 1)
+  i <- PomaImpute(testimput, method = "half_min", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 1)
+  j <- PomaImpute(testimput, method = "mean", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 1)
+  k <- PomaImpute(testimput, method = "median", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 1)
 
-  l <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 20)
+  l <- PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 20)
   m <- PomaImpute(testimput, method = "knn")
 
-  n <- PomaImpute(testimput, method = "none", RemoveNA = FALSE, cutoff = 2)
-  o <- PomaImpute(testimput, method = "none", RemoveNA = FALSE, cutoff = 5)
+  n <- PomaImpute(testimput, method = "none", remove_na = FALSE, cutoff = 2)
+  o <- PomaImpute(testimput, method = "none", remove_na = FALSE, cutoff = 5)
   p <- PomaImpute(testimput, method = "none", cutoff = 20)
   q <- PomaImpute(testimput, method = "min", cutoff = 20)
 
@@ -59,7 +59,7 @@ test_that("PomaImpute works", {
   v <- PomaImpute(testimput2, method = "knn")
   
   SummarizedExperiment::assay(testimput)[5, 175:190] <- NA
-  h_1 <- PomaImpute(testimput, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 1)
+  h_1 <- PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 1)
   
   ##
   

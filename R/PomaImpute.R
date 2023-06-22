@@ -53,9 +53,12 @@ PomaImpute <- function(data,
     method <- "none"
   }
   
+  grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
+                            is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  
   # remove NA
   if (remove_na){
-    if (group_by & ncol(SummarizedExperiment::colData(data)) > 0 & is.factor(SummarizedExperiment::colData(data)[,1])) {
+    if (group_by & ncol(SummarizedExperiment::colData(data)) > 0 & grouping_factor) {
       to_impute <- data.frame(cbind(group_factor = SummarizedExperiment::colData(data)[,1], to_impute))
       
       count_na <- aggregate(. ~ group_factor, data = to_impute,

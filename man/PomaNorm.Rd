@@ -2,24 +2,22 @@
 % Please edit documentation in R/PomaNorm.R
 \name{PomaNorm}
 \alias{PomaNorm}
-\title{Collection of Normalization Methods for Omics Data}
+\title{Normalize Data}
 \usage{
-PomaNorm(data, method = "log_pareto", sample_norm = "none", round = 3)
+PomaNorm(data, sample_norm = "none", method = "log_pareto")
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{method}{Normalization method. Options are: "none", "auto_scaling", "level_scaling", "log_scaling", "log_transformation", "vast_scaling" and "log_pareto".}
+\item{sample_norm}{Character. Sample normalization method. Options include "none" (default), "sum", or "quantile".}
 
-\item{sample_norm}{Character vector. Sample normalization method. Options are: "none" (default), "sum", "quantile".}
-
-\item{round}{Numeric. Number of decimal places (Default is 3).}
+\item{method}{Character. The normalization method to use. Options include "none" (no normalization), "auto_scaling" (autoscaling normalization, i.e., Z-score normalization), "level_scaling" (level scaling normalization), "log_scaling" (log scaling normalization), "log_transform" (log transformation normalization), "vast_scaling" (vast scaling normalization), "log_pareto" (log Pareto scaling normalization), "min_max" (min-max normalization), and "box_cox" (Box-Cox transformation).}
 }
 \value{
-A SummarizedExperiment object with normalized data.
+A \code{SummarizedExperiment} object with normalized data.
 }
 \description{
-PomaNorm() offers different methods to normalize MS data. This function contains both centering and scaling functions to normalize the data.
+\code{PomaNorm} performs data normalization using various normalization methods.
 }
 \examples{
 data("st000284")

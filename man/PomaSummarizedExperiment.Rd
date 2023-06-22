@@ -2,32 +2,32 @@
 % Please edit documentation in R/PomaSummarizedExperiment.R
 \name{PomaSummarizedExperiment}
 \alias{PomaSummarizedExperiment}
-\title{Convert data frames to a SummarizedExperiment Object}
+\title{Create a \code{SummarizedExperiment} Object}
 \usage{
-PomaSummarizedExperiment(target, features)
+PomaSummarizedExperiment(metadata = NULL, features = NULL, ...)
 }
 \arguments{
-\item{target}{Metadata variables structured in columns. Sample ID must be the first column.}
+\item{metadata}{Metadata variables structured in columns. Sample ID must be the first column.}
 
-\item{features}{Matrix of features. Each feature in one column.}
+\item{features}{Matrix of features. Each feature is a column.}
 }
 \value{
-A SummarizedExperiment object.
+A \code{SummarizedExperiment} object.
 }
 \description{
-This function converts data frame objects to a SummarizedExperiment object.
+\code{PomaSummarizedExperiment} creates a \code{SummarizedExperiment} object from data frames.
 }
 \examples{
 data(iris)
 
-# create target: two column (or more) data frame with IDs and Group factor
-target <- data.frame(ID = 1:150, Group = iris$Species)
+# Create metadata: Data frame with sample names and a group factor
+metadata <- data.frame(ID = 1:150, Group = iris$Species)
 
-# create features: p column data frame (or matrix) with features
-features <- iris[,1:4]
+# Create features: `p` column data frame with features
+features <- iris[, 1:4]
 
-# create an SummarizedExperiment object with POMA
-object <- PomaSummarizedExperiment(target = target, features = features)
+# Create a `SummarizedExperiment` object with `POMA`
+object <- PomaSummarizedExperiment(metadata = metadata, features = features)
 }
 \references{
 Morgan M, Obenchain V, Hester J, Pagès H (2021). SummarizedExperiment: SummarizedExperiment container. R package version 1.24.0, https://bioconductor.org/packages/SummarizedExperiment.

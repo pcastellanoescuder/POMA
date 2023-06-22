@@ -1,4 +1,4 @@
-# POMA 1.8.8
+# POMA 1.8.9
 
 * New POMA palette and theme
 * Sample sum and quantile normalization

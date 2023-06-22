@@ -10,5 +10,5 @@ sum_norm(data)
 \item{data}{A data matrix (samples in rows).}
 }
 \description{
-Compute sum normalization. Final unit is \%.
+Compute sum normalization. Final unit is a percentage.
 }

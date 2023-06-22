@@ -22,20 +22,20 @@ test_that("PomaNorm works", {
     as.data.frame() %>% 
     tibble::rownames_to_column()
   
-  testnorm <- PomaSummarizedExperiment(features = data, target = target)
+  testnorm <- PomaSummarizedExperiment(features = data, metadata = target)
 
-  newdata <- POMA::PomaImpute(testnorm, method = "knn", ZerosAsNA = FALSE, RemoveNA = TRUE, cutoff = 2)
+  newdata <- POMA::PomaImpute(testnorm, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 2)
   newdata2 <- POMA::PomaNorm(newdata, method = "log_pareto")
 
   ####
 
-  a <- dim(PomaNorm(newdata, method = "auto_scaling", round = 2))
-  b <- dim(PomaNorm(newdata, method = "level_scaling", round = 2))
-  c <- dim(PomaNorm(newdata, method = "log_scaling", round = 2))
-  d <- dim(PomaNorm(newdata, method = "log_transformation", round = 2))
-  e <- dim(PomaNorm(newdata, method = "vast_scaling", round = 2))
-  f <- dim(PomaNorm(newdata, method = "log_pareto", round = 2))
-  g <- dim(PomaNorm(newdata, method = "none", round = 2))
+  a <- dim(PomaNorm(newdata, method = "auto_scaling"))
+  b <- dim(PomaNorm(newdata, method = "level_scaling"))
+  c <- dim(PomaNorm(newdata, method = "log_scaling"))
+  d <- dim(PomaNorm(newdata, method = "log_transform"))
+  e <- dim(PomaNorm(newdata, method = "vast_scaling"))
+  f <- dim(PomaNorm(newdata, method = "log_pareto"))
+  g <- dim(PomaNorm(newdata, method = "none"))
 
   expect_equal(a, b)
   expect_equal(b, c)
@@ -43,7 +43,7 @@ test_that("PomaNorm works", {
   expect_equal(e, f)
   expect_equal(f, g)
 
-  expect_error(PomaNorm(newdata, method = "log", round = 2))
+  expect_error(PomaNorm(newdata, method = "log"))
   expect_message(PomaNorm(newdata))
 
   ##

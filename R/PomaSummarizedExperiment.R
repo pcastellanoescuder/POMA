@@ -41,6 +41,9 @@ PomaSummarizedExperiment <- function(metadata = NULL,
   
   # metadata
   if(!is.null(metadata)){
+    if(!is.data.frame(metadata)){
+      stop("metadata file is not a data.frame()")
+    }
     if(sum(sapply(metadata, function(x)sum(is.na(x)))) > 0){
       stop("Missing values not allowed in metadata file")
     }
@@ -63,7 +66,6 @@ PomaSummarizedExperiment <- function(metadata = NULL,
   } else {
     data <- SummarizedExperiment::SummarizedExperiment(assays = t(features))
   }
-  # data@NAMES <- make.names(data@NAMES)
   
   if(validObject(data))
     return(data)
