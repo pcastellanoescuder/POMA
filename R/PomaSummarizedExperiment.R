@@ -1,10 +1,23 @@
 
+#' Detect decimals
+#'
+#' Detect decimal variables.
+#' 
+#' @param data A data matrix (samples in rows).
+detect_decimals <- function(data) {
+  decimal_columns <- sapply(data, function(col) {
+    any(col %% 1 != 0)
+  })
+  return(decimal_columns)
+}
+
 #' Create a `SummarizedExperiment` Object
 #'
 #' @description `PomaSummarizedExperiment` creates a `SummarizedExperiment` object from data frames.
 #' 
 #' @param metadata Metadata variables structured in columns. Sample ID must be the first column.
 #' @param features Matrix of features. Each feature is a column.
+#' @param factor_levels Numeric. Integer variables with more levels than indicated by this parameter will be treated as factors.
 #'
 #' @export
 #'
@@ -27,6 +40,7 @@
 #' object <- PomaSummarizedExperiment(metadata = metadata, features = features)
 PomaSummarizedExperiment <- function(metadata = NULL,
                                      features = NULL,
+                                     factor_levels = 10,
                                      ...){
   
   if(missing(features)){
@@ -50,15 +64,51 @@ PomaSummarizedExperiment <- function(metadata = NULL,
     if(nrow(metadata) != nrow(features)){
       stop("Different number of samples in metadata and features")
     }
-    
+
     metadata <- metadata %>%
       as.data.frame() %>% 
       janitor::clean_names() %>% 
       tibble::remove_rownames() %>%
       dplyr::rename(sample_id = 1) %>%
       tibble::column_to_rownames("sample_id") %>% 
-      dplyr::mutate_if(is.character, as.factor)
+      dplyr::mutate_if(is.character, as.factor) %>% 
+      dplyr::as_tibble()
 
+    numeric_vars <- metadata %>% 
+      dplyr::select_if(is.numeric)
+    
+    decimal_vars <- detect_decimals(numeric_vars)
+    decimal_vars <- names(decimal_vars)[decimal_vars]
+    
+    numerical_float <- numeric_vars %>% 
+      dplyr::select(dplyr::all_of(decimal_vars)) %>% 
+      dplyr::mutate_all(as.double)
+    
+    numerical_integer <- numeric_vars %>% 
+      dplyr::select(-dplyr::all_of(decimal_vars)) %>% 
+      dplyr::mutate_all(as.integer)
+    
+    if (any(apply(numerical_integer, 2, function(x) length(table(x))) > factor_levels)) {
+      other_decimals <- names(which(apply(numerical_integer, 2, function(x) length(table(x))) > factor_levels))
+      decimal_vars <- c(decimal_vars, other_decimals)
+      
+      numerical_float <- numeric_vars %>% 
+        dplyr::select(dplyr::all_of(decimal_vars)) %>% 
+        dplyr::mutate_all(as.double)
+      
+      numerical_integer <- numeric_vars %>% 
+        dplyr::select(-dplyr::all_of(decimal_vars)) %>% 
+        dplyr::mutate_all(as.integer)
+    }
+    
+    metadata <- metadata %>% 
+      dplyr::select(-dplyr::all_of(colnames(numerical_integer))) %>% 
+      dplyr::select(-dplyr::all_of(colnames(numerical_float))) %>% 
+      dplyr::bind_cols(numerical_integer) %>% 
+      dplyr::bind_cols(numerical_float) %>% 
+      dplyr::mutate_if(is.integer, as.factor) %>% 
+      dplyr::as_tibble()
+    
     rownames(features) <- rownames(metadata)
     
     # create a SummarizedExperiment object
