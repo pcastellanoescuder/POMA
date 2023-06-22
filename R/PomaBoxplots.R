@@ -4,7 +4,7 @@
 #' @description PomaBoxplots() generates a boxplot for subjects or features. This boxplot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
 #'
 #' @param data A SummarizedExperiment object.
-#' @param group Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.
+#' @param group Grouping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.
 #' @param jitter Logical. If it's TRUE (default), the boxplot will show all points.
 #' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.
 #' @param theme_params List indicating `theme_poma` parameters.
@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-#' @return A ggplot2 object.
+#' @return A `ggplot` object.
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%
@@ -21,10 +21,14 @@
 #' data("st000284")
 #' 
 #' # samples
-#' st000284 %>% PomaNorm() %>% PomaBoxplots(theme_params = list(axistext = "y"))
+#' st000284 %>%
+#' PomaNorm() %>% 
+#' PomaBoxplots(theme_params = list(axistext = "y"))
 #' 
 #' # features
-#' st000284 %>% PomaNorm() %>% PomaBoxplots(group = "features", theme_params = list(axis_x_rotate = TRUE))
+#' st000284 %>% 
+#' PomaNorm() %>% 
+#' PomaBoxplots(group = "features", theme_params = list(axis_x_rotate = TRUE))
 #'              
 #' # concrete features
 #' PomaBoxplots(st000284, group = "features", 
@@ -36,10 +40,7 @@ PomaBoxplots <- function(data,
                          theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE),
                          palette = "nature",
                          ...) {
-  
-  if (missing(data)) {
-    stop("data argument is empty!")
-  }
+
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
   }

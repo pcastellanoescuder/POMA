@@ -5,7 +5,7 @@
 #'
 #' @param data A `SummarizedExperiment` object.
 #' @param method Character. The univariate statistical test to be performed. Available options include "ttest" (T-test), "anova" (analysis of variance), "mann" (Wilcoxon rank-sum test), and "kruskal" (Kruskal-Wallis test).
-#' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates in the analysis. Default is NULL (no covariates).
+#' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates. Default is NULL (no covariates). If not NULL, an ANCOVA model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.
 #' @param paired Logical. Indicates if the data is paired or not. Default is FALSE.
 #' @param var_equal Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.
 #' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
@@ -31,10 +31,18 @@
 #' PomaUnivariate(method = "mann", paired = FALSE, adjust = "fdr")
 #' 
 #' data("st000284")
-#' # Perform ANOVA with covariates
+#' # Perform Two-Way ANOVA
+#' st000284 %>% 
+#' PomaUnivariate(method = "anova", covs = c("gender"))
+#' 
+#' # Perform Three-Way ANOVA
 #' st000284 %>% 
 #' PomaUnivariate(method = "anova", covs = c("gender", "smoking_condition"))
-#'
+#' 
+#' # Perform ANCOVA with one numeric covariate and one factor covariate
+#' st000284 %>% 
+#' PomaUnivariate(method = "anova", covs = c("age_at_consent", "smoking_condition"))
+#' 
 #' # Perform Kruskal-Wallis test
 #' st000284 %>% 
 #' PomaUnivariate(method = "kruskal", adjust = "holm")
@@ -105,24 +113,18 @@ PomaUnivariate <- function(data,
       dplyr::mutate(fold_change = as.numeric(round(group_means[,2] / group_means[,1], 3)),
                     diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
       dplyr::select(feature, fold_change, diff_means, pvalue, adj_pvalue, dplyr::everything()) %>% 
+      dplyr::arrange(pvalue) %>% 
       dplyr::as_tibble()
 
     return(res_ttest)
   }
 
   else if (method == "anova") {
-
     covariates <- SummarizedExperiment::colData(data) %>%
       as.data.frame() %>%
-      dplyr::select(-1) %>% 
-      dplyr::select_if(is.factor)
-    
-    if (ncol(covariates) == 0 & !is.null(covs)) {
-      message("No factorial covariates to be used")
-    }
+      dplyr::select(-1)
     
     if (is.null(covs)) {
-      
       res_aov <- data.frame(pvalue = apply(to_univariate, 2, function(x) {anova(aov(x ~ group_factor))$"Pr(>F)"[1]})) %>%
         dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>% 
         dplyr::bind_cols(group_means, group_sd) %>% 
@@ -177,6 +179,7 @@ PomaUnivariate <- function(data,
         dplyr::mutate(fold_change = as.numeric(round(group_means[,2]/group_means[,1], 3)),
                       diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
         dplyr::select(feature, fold_change, diff_means, pvalue, adj_pvalue, dplyr::everything()) %>% 
+        dplyr::arrange(pvalue) %>% 
         dplyr::as_tibble()
     })
     
@@ -191,6 +194,7 @@ PomaUnivariate <- function(data,
       dplyr::bind_cols(group_means, group_sd) %>%
       tibble::rownames_to_column("feature") %>%
       dplyr::select(feature, kw_rank_sum, pvalue, adj_pvalue, dplyr::everything()) %>%
+      dplyr::arrange(pvalue) %>% 
       dplyr::as_tibble()
 
     return(res_kruskal)

@@ -4,12 +4,19 @@
 \alias{PomaSummarizedExperiment}
 \title{Create a \code{SummarizedExperiment} Object}
 \usage{
-PomaSummarizedExperiment(metadata = NULL, features = NULL, ...)
+PomaSummarizedExperiment(
+  metadata = NULL,
+  features = NULL,
+  factor_levels = 10,
+  ...
+)
 }
 \arguments{
 \item{metadata}{Metadata variables structured in columns. Sample ID must be the first column.}
 
 \item{features}{Matrix of features. Each feature is a column.}
+
+\item{factor_levels}{Numeric. Integer variables with more levels than indicated by this parameter will be treated as factors.}
 }
 \value{
 A \code{SummarizedExperiment} object.

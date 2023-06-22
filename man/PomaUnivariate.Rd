@@ -2,56 +2,65 @@
 % Please edit documentation in R/PomaUnivariate.R
 \name{PomaUnivariate}
 \alias{PomaUnivariate}
-\title{Univariate Statistical Methods for Mass Spectrometry Data}
+\title{Univariate Statistical Test}
 \usage{
 PomaUnivariate(
   data,
-  covariates = FALSE,
-  covs = NULL,
   method = "ttest",
+  covs = NULL,
   paired = FALSE,
   var_equal = FALSE,
   adjust = "fdr"
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{colData} will be used as covariates. Default = FALSE.}
+\item{method}{Character. The univariate statistical test to be performed. Available options include "ttest" (T-test), "anova" (analysis of variance), "mann" (Wilcoxon rank-sum test), and "kruskal" (Kruskal-Wallis test).}
 
-\item{covs}{Character vector indicating the name of \code{colData} columns that will be included as covariates. Default is NULL (all variables).}
+\item{covs}{Character vector. Indicates the names of \code{colData} columns to be included as covariates. Default is NULL (no covariates). If not NULL, an ANCOVA model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.}
 
-\item{method}{Univariate statistical method. Options are: "ttest", "anova", "mann" and "kruskal".}
+\item{paired}{Logical. Indicates if the data is paired or not. Default is FALSE.}
 
-\item{paired}{Logical that indicates if the data is paired or not.}
+\item{var_equal}{Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.}
 
-\item{var_equal}{Logical that indicates if the data variance is equal or not.}
-
-\item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
+\item{adjust}{Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).}
 }
 \value{
-A tibble with results.
+A \code{tibble} with the results.
 }
 \description{
-PomaUnivariate() allows users to perform different univariate statistical analysis on MS data.
+\code{PomaUnivariate} performs a univariate statistical test on a \code{SummarizedExperiment} object to compare groups or conditions.
 }
 \examples{
 data("st000336")
-data("st000284")
 
-# ttest
+# Perform T-test
 st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaOutliers() \%>\%
-  PomaUnivariate(method = "ttest")
+PomaImpute() \%>\% 
+PomaUnivariate(method = "ttest")
 
-# ANOVA
+# Perform Mann-Whitney U test
+st000336 \%>\% 
+PomaImpute() \%>\% 
+PomaUnivariate(method = "mann", paired = FALSE, adjust = "fdr")
+
+data("st000284")
+# Perform Two-Way ANOVA
 st000284 \%>\% 
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaOutliers() \%>\%
-  PomaUnivariate(method = "anova")
+PomaUnivariate(method = "anova", covs = c("gender"))
+
+# Perform Three-Way ANOVA
+st000284 \%>\% 
+PomaUnivariate(method = "anova", covs = c("gender", "smoking_condition"))
+
+# Perform ANCOVA with one numeric covariate and one factor covariate
+st000284 \%>\% 
+PomaUnivariate(method = "anova", covs = c("age_at_consent", "smoking_condition"))
+
+# Perform Kruskal-Wallis test
+st000284 \%>\% 
+PomaUnivariate(method = "kruskal", adjust = "holm")
 }
 \author{
 Pol Castellano-Escuder

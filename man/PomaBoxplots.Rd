@@ -17,7 +17,7 @@ PomaBoxplots(
 \arguments{
 \item{data}{A SummarizedExperiment object.}
 
-\item{group}{Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.}
+\item{group}{Grouping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.}
 
 \item{jitter}{Logical. If it's TRUE (default), the boxplot will show all points.}
 
@@ -28,7 +28,7 @@ PomaBoxplots(
 \item{palette}{POMA palette. One of "nature", "simpsons", or "futurama".}
 }
 \value{
-A ggplot2 object.
+A \code{ggplot} object.
 }
 \description{
 PomaBoxplots() generates a boxplot for subjects or features. This boxplot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
@@ -37,10 +37,14 @@ PomaBoxplots() generates a boxplot for subjects or features. This boxplot can he
 data("st000284")
 
 # samples
-st000284 \%>\% PomaNorm() \%>\% PomaBoxplots(theme_params = list(axistext = "y"))
+st000284 \%>\%
+PomaNorm() \%>\% 
+PomaBoxplots(theme_params = list(axistext = "y"))
 
 # features
-st000284 \%>\% PomaNorm() \%>\% PomaBoxplots(group = "features", theme_params = list(axis_x_rotate = TRUE))
+st000284 \%>\% 
+PomaNorm() \%>\% 
+PomaBoxplots(group = "features", theme_params = list(axis_x_rotate = TRUE))
              
 # concrete features
 PomaBoxplots(st000284, group = "features", 

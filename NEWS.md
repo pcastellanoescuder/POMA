@@ -1,7 +1,9 @@
-# POMA 1.8.10
+# POMA 1.8.11
 
 * New POMA palette and theme
 * Sample sum and quantile normalization
+* New feature normalization methods
+* Extensive review and improvement of `PomaImpute`, `PomaNorm`, and `PomaUnivariate`
 
 # POMA 1.7.19
 
