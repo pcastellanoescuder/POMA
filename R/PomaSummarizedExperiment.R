@@ -71,26 +71,14 @@ PomaSummarizedExperiment <- function(metadata = NULL,
       tibble::remove_rownames() %>%
       dplyr::rename(sample_id = 1) %>%
       tibble::column_to_rownames("sample_id") %>% 
-      dplyr::mutate_if(is.character, as.factor) %>% 
-      dplyr::as_tibble()
+      dplyr::mutate_if(is.character, as.factor)
 
     numeric_vars <- metadata %>% 
       dplyr::select_if(is.numeric)
     
-    decimal_vars <- detect_decimals(numeric_vars)
-    decimal_vars <- names(decimal_vars)[decimal_vars]
-    
-    numerical_float <- numeric_vars %>% 
-      dplyr::select(dplyr::all_of(decimal_vars)) %>% 
-      dplyr::mutate_all(as.double)
-    
-    numerical_integer <- numeric_vars %>% 
-      dplyr::select(-dplyr::all_of(decimal_vars)) %>% 
-      dplyr::mutate_all(as.integer)
-    
-    if (any(apply(numerical_integer, 2, function(x) length(table(x))) > factor_levels)) {
-      other_decimals <- names(which(apply(numerical_integer, 2, function(x) length(table(x))) > factor_levels))
-      decimal_vars <- c(decimal_vars, other_decimals)
+    if (ncol(numeric_vars) > 0) {
+      decimal_vars <- detect_decimals(numeric_vars)
+      decimal_vars <- names(decimal_vars)[decimal_vars]
       
       numerical_float <- numeric_vars %>% 
         dplyr::select(dplyr::all_of(decimal_vars)) %>% 
@@ -99,15 +87,27 @@ PomaSummarizedExperiment <- function(metadata = NULL,
       numerical_integer <- numeric_vars %>% 
         dplyr::select(-dplyr::all_of(decimal_vars)) %>% 
         dplyr::mutate_all(as.integer)
+      
+      if (any(apply(numerical_integer, 2, function(x) length(table(x))) > factor_levels)) {
+        other_decimals <- names(which(apply(numerical_integer, 2, function(x) length(table(x))) > factor_levels))
+        decimal_vars <- c(decimal_vars, other_decimals)
+        
+        numerical_float <- numeric_vars %>% 
+          dplyr::select(dplyr::all_of(decimal_vars)) %>% 
+          dplyr::mutate_all(as.double)
+        
+        numerical_integer <- numeric_vars %>% 
+          dplyr::select(-dplyr::all_of(decimal_vars)) %>% 
+          dplyr::mutate_all(as.integer)
+      }
+      
+      metadata <- metadata %>% 
+        dplyr::select(-dplyr::all_of(colnames(numerical_integer))) %>% 
+        dplyr::select(-dplyr::all_of(colnames(numerical_float))) %>% 
+        dplyr::bind_cols(numerical_integer) %>% 
+        dplyr::bind_cols(numerical_float) %>% 
+        dplyr::mutate_if(is.integer, as.factor) 
     }
-    
-    metadata <- metadata %>% 
-      dplyr::select(-dplyr::all_of(colnames(numerical_integer))) %>% 
-      dplyr::select(-dplyr::all_of(colnames(numerical_float))) %>% 
-      dplyr::bind_cols(numerical_integer) %>% 
-      dplyr::bind_cols(numerical_float) %>% 
-      dplyr::mutate_if(is.integer, as.factor) %>% 
-      dplyr::as_tibble()
     
     rownames(features) <- rownames(metadata)
     
