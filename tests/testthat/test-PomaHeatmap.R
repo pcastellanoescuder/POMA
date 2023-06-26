@@ -27,4 +27,3 @@ test_that("PomaHeatmap works", {
   expect_error(PomaHeatmap(iris))
   
 })
-
