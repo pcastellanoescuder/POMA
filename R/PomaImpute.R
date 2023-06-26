@@ -8,7 +8,7 @@
 #' @param remove_na Logical. Indicates if features with a percentage of missing values over the `cutoff` parameter should be removed. Default is TRUE.
 #' @param cutoff Numeric. Percentage of missing values allowed in each feature.
 #' @param group_by Logical. If `metadata` file is present and its first variable is a factor, it can be used to compute missing values per group and drop them accordingly. Features will be removed only if all of the groups contain more missing values than allowed. Default is TRUE.
-#' @param method Character. The imputation method to use. Options include "none" (no imputation, replace missings by zeros), "half_min" (replace missing values with half of the minimum value), "median" (replace missing values with the median), "mean" (replace missing values with the mean), "min" (replace missing values with the minimum value), "knn" (replace missing values using k-nearest neighbors imputation), and "rf" (replace missing values using random forest imputation).
+#' @param method Character. The imputation method to use. Options include "none" (no imputation, replace missing values by zeros), "half_min" (replace missing values with half of the minimum value), "median" (replace missing values with the median), "mean" (replace missing values with the mean), "min" (replace missing values with the minimum value), "knn" (replace missing values using k-nearest neighbors imputation), and "random_forest" (replace missing values using random forest imputation).
 #'
 #' @export
 #'
@@ -30,9 +30,9 @@ PomaImpute <- function(data,
                        method = "knn"){
 
   if (!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
-  if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn", "rf"))) {
+  if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn", "random_forest"))) {
     stop("Incorrect value for method argument")
   }
   if (missing(method)) {
@@ -59,7 +59,7 @@ PomaImpute <- function(data,
   # remove NA
   if (remove_na){
     if (group_by & ncol(SummarizedExperiment::colData(data)) > 0 & grouping_factor) {
-      to_impute <- data.frame(cbind(group_factor = SummarizedExperiment::colData(data)[,1], to_impute))
+      to_impute <- data.frame(group_factor = SummarizedExperiment::colData(data)[,1], to_impute)
       
       count_na <- aggregate(. ~ group_factor, data = to_impute,
                             function(x) {100*(sum(is.na(x))/(sum(is.na(x)) + sum(!is.na(x))))},
@@ -112,11 +112,11 @@ PomaImpute <- function(data,
     imputed <- t(imputed_res$data)
   }
   
-  else if (method == "rf"){
+  else if (method == "random_forest"){
     if (ncol(SummarizedExperiment::colData(data)) == 0 | !is.factor(SummarizedExperiment::colData(data)[,1])) {
       stop("This imputation method is not compatible with the provided metadata")
     }
-    imputed <- data.frame(cbind(group_factor = SummarizedExperiment::colData(data)[,1], to_impute))
+    imputed <- data.frame(group_factor = SummarizedExperiment::colData(data)[,1], to_impute)
     imputed <- randomForest::rfImpute(group_factor ~ ., imputed)
     imputed <- imputed %>% 
       dplyr::select(-group_factor)

@@ -2,13 +2,10 @@
 % Please edit documentation in R/colors.R
 \name{scale_fill_poma_c}
 \alias{scale_fill_poma_c}
-\title{Fill scale constructor for continuous POMA color palettes}
+\title{Fill scale constructor for continuous \code{viridis} "plasma" palette}
 \usage{
-scale_fill_poma_c(palette = "nature")
-}
-\arguments{
-\item{palette}{Character name of palette in poma_palettes}
+scale_fill_poma_c()
 }
 \description{
-Fill scale constructor for continuous POMA color palettes
+Fill scale constructor for continuous \code{viridis} "plasma" palette
 }

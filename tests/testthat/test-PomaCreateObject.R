@@ -1,6 +1,6 @@
-context("PomaSummarizedExperiment")
+context("PomaCreateObject")
 
-test_that("PomaSummarizedExperiment works", {
+test_that("PomaCreateObject works", {
 
   target <- data.frame(ID = c("One", "Two", "Three", "Four"), 
                        Group = c("Trtd", "Ctrl", "Trtd", "Ctrl"), 
@@ -19,8 +19,8 @@ test_that("PomaSummarizedExperiment works", {
   features <- data.frame(Feat.1 = c(1,2,3,4), Feat.2 = c(6,3,7,3), Feat.3 = c(3,5,23,24))
   features_error <- data.frame(Feat.1 = c(1,2,3,4,5), Feat.2 = c(6,3,7,4,3), Feat.3 = c(3,4,5,23,24))
 
-  a <- PomaSummarizedExperiment(target, features)
-  b <- PomaSummarizedExperiment(target2, features)
+  a <- PomaCreateObject(target, features)
+  b <- PomaCreateObject(target2, features)
 
   ##
 
@@ -33,10 +33,10 @@ test_that("PomaSummarizedExperiment works", {
 
   ##
 
-  expect_error(PomaSummarizedExperiment(target_error, features))
-  expect_error(PomaSummarizedExperiment(target, features_error))
-  expect_error(PomaSummarizedExperiment(target))
-  # expect_error(PomaSummarizedExperiment(features))
+  expect_error(PomaCreateObject(target_error, features))
+  expect_error(PomaCreateObject(target, features_error))
+  expect_error(PomaCreateObject(target))
+  # expect_error(PomaCreateObject(features))
   
   ##
   
@@ -48,7 +48,7 @@ test_that("PomaSummarizedExperiment works", {
   
   ##
   
-  expect_error(PomaSummarizedExperiment(target_error_2, features))
+  expect_error(PomaCreateObject(target_error_2, features))
   
 })
 

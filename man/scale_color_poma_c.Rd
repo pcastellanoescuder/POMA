@@ -2,13 +2,10 @@
 % Please edit documentation in R/colors.R
 \name{scale_color_poma_c}
 \alias{scale_color_poma_c}
-\title{Color scale constructor for continuous POMA color palettes}
+\title{Color scale constructor for continuous \code{viridis} "plasma" palette}
 \usage{
-scale_color_poma_c(palette = "nature")
-}
-\arguments{
-\item{palette}{Character name of palette in poma_palettes}
+scale_color_poma_c()
 }
 \description{
-Color scale constructor for continuous POMA color palettes
+Color scale constructor for continuous \code{viridis} "plasma" palette
 }

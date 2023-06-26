@@ -9,18 +9,18 @@ test_that("PomaBoxplots works", {
   
   a <- PomaBoxplots(norm_none, label_size = 12)
   b <- PomaBoxplots(norm_ls, label_size = 10)
-  c <- PomaBoxplots(norm_none, group = "features")
-  d <- PomaBoxplots(norm_ls, group = "features")
+  c <- PomaBoxplots(norm_none, x = "features")
+  d <- PomaBoxplots(norm_ls, x = "features")
   
-  e <- PomaBoxplots(norm_none, group = "samples")
+  e <- PomaBoxplots(norm_none, x = "samples")
   
-  f <- PomaBoxplots(norm_none, group = "samples", jitter = TRUE)
-  g <- PomaBoxplots(norm_none, group = "samples", jitter = FALSE)
-  h <- PomaBoxplots(norm_none, group = "features", jitter = TRUE)
-  i <- PomaBoxplots(norm_none, group = "features", jitter = FALSE)
+  f <- PomaBoxplots(norm_none, x = "samples", violin = TRUE)
+  g <- PomaBoxplots(norm_none, x = "samples", violin = FALSE)
+  h <- PomaBoxplots(norm_none, x = "features", violin = TRUE)
+  i <- PomaBoxplots(norm_none, x = "features", violin = FALSE)
   
-  j <- PomaBoxplots(norm_ls, group = "features", feature_name = "methyl_succinate")
-  k <- PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
+  j <- PomaBoxplots(norm_ls, x = "features", feature_name = "methyl_succinate")
+  k <- PomaBoxplots(norm_ls, x = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
   
   
   df_a <- ggplot2::layer_data(a)
@@ -39,13 +39,10 @@ test_that("PomaBoxplots works", {
   
   ####
   
-  expect_false(all(df_a$ymin == df_c$ymin))
-  expect_false(all(df_b$ymin == df_d$ymin))
+  expect_true(min(df_a$ymin) == min(df_c$ymin))
+  expect_true(min(df_b$ymin) != min(df_d$ymin))
   expect_false(all(df_a$ymin == df_b$ymin))
   expect_false(all(df_c$ymin == df_d$ymin))
-  
-  expect_equal(df_f$outliers, df_g$outliers)
-  expect_equal(df_h$outliers, df_i$outliers)
   
   expect_equal(df_a, df_e)
   
@@ -55,17 +52,17 @@ test_that("PomaBoxplots works", {
   
   ##
   
-  expect_error(PomaBoxplots(norm_ls, group = "samp"))
-  expect_error(PomaBoxplots(group = "sample"))
-  expect_error(PomaBoxplots(iris, group = "sample"))
+  expect_error(PomaBoxplots(norm_ls, x = "samp"))
+  expect_error(PomaBoxplots(x = "sample"))
+  expect_error(PomaBoxplots(iris, x = "sample"))
   
   ##
   
-  expect_error(PomaBoxplots(norm_ls, group = "features", feature_name = "hello"))
-  expect_error(PomaBoxplots(norm_ls, group = "features", feature_name = "methyl_succina"))
+  expect_error(PomaBoxplots(norm_ls, x = "features", feature_name = "hello"))
+  expect_error(PomaBoxplots(norm_ls, x = "features", feature_name = "methyl_succina"))
   
-  expect_warning(PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succina", "linoleic_acid")))
-  expect_warning(PomaBoxplots(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_aci")))
+  expect_message(PomaBoxplots(norm_ls, x = "features", feature_name = c("methyl_succina", "linoleic_acid")))
+  expect_message(PomaBoxplots(norm_ls, x = "features", feature_name = c("methyl_succinate", "linoleic_aci")))
   
 })
 

@@ -2,8 +2,6 @@ context("PomaImpute")
 
 test_that("PomaImpute works", {
   
-  library(SummarizedExperiment)
-  
   data("st000284")
 
   data <- t(SummarizedExperiment::assay(st000284))
@@ -20,7 +18,7 @@ test_that("PomaImpute works", {
   target <- SummarizedExperiment::colData(st000284) %>% 
     as.data.frame() %>% 
     tibble::rownames_to_column() 
-  testimput <- PomaSummarizedExperiment(features = data, metadata = target)
+  testimput <- PomaCreateObject(features = data, metadata = target)
 
   a <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 8))))
   b <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = TRUE, remove_na = FALSE, cutoff = 8))))
@@ -50,7 +48,7 @@ test_that("PomaImpute works", {
   data2[1:4, 5] <- 1000
   data2[73:77, 5] <- 1000
 
-  testimput2 <- PomaSummarizedExperiment(features = data2, target = target)
+  testimput2 <- PomaCreateObject(features = data2, target = target)
 
   r <- PomaImpute(testimput2, method = "half_min")
   s <- PomaImpute(testimput2, method = "median")
@@ -83,19 +81,19 @@ test_that("PomaImpute works", {
   expect_equal(c, e)
   expect_equal(e, f)
   
-  expect_false(all(assay(g) == assay(h)))
+  expect_false(all(SummarizedExperiment::assay(g) == SummarizedExperiment::assay(h)))
   expect_equal(dim(g), dim(h))
 
   expect_equal(dim(i), dim(j))
   expect_equal(dim(j), dim(k))
 
-  expect_false(all(assay(i) == assay(j)))
-  expect_false(all(assay(j) == assay(k)))
-  expect_false(all(assay(k) == assay(i)))
+  expect_false(all(SummarizedExperiment::assay(i) == SummarizedExperiment::assay(j)))
+  expect_false(all(SummarizedExperiment::assay(j) == SummarizedExperiment::assay(k)))
+  expect_false(all(SummarizedExperiment::assay(k) == SummarizedExperiment::assay(i)))
 
   expect_equal(SummarizedExperiment::assay(l), SummarizedExperiment::assay(m))
   expect_equal(SummarizedExperiment::assay(n), SummarizedExperiment::assay(o))
-  expect_true(all(assay(p) == assay(q)))
+  expect_true(all(SummarizedExperiment::assay(p) == SummarizedExperiment::assay(q)))
 
   expect_equal(dim(r), dim(s))
   expect_equal(dim(s), dim(t))
@@ -104,19 +102,19 @@ test_that("PomaImpute works", {
 
   ####
 
-  expect_false(all(assay(r) == assay(s)))
-  expect_false(all(assay(r) == assay(t)))
-  expect_false(all(assay(r) == assay(u)))
-  expect_false(all(assay(r) == assay(v)))
+  expect_false(all(SummarizedExperiment::assay(r) == SummarizedExperiment::assay(s)))
+  expect_false(all(SummarizedExperiment::assay(r) == SummarizedExperiment::assay(t)))
+  expect_false(all(SummarizedExperiment::assay(r) == SummarizedExperiment::assay(u)))
+  expect_false(all(SummarizedExperiment::assay(r) == SummarizedExperiment::assay(v)))
 
-  expect_false(all(assay(s) == assay(t)))
-  expect_false(all(assay(s) == assay(u)))
-  expect_false(all(assay(s) == assay(v)))
+  expect_false(all(SummarizedExperiment::assay(s) == SummarizedExperiment::assay(t)))
+  expect_false(all(SummarizedExperiment::assay(s) == SummarizedExperiment::assay(u)))
+  expect_false(all(SummarizedExperiment::assay(s) == SummarizedExperiment::assay(v)))
 
-  expect_false(all(assay(t) == assay(u)))
-  expect_false(all(assay(t) == assay(v)))
+  expect_false(all(SummarizedExperiment::assay(t) == SummarizedExperiment::assay(u)))
+  expect_false(all(SummarizedExperiment::assay(t) == SummarizedExperiment::assay(v)))
 
-  expect_false(all(assay(u) == assay(v)))
+  expect_false(all(SummarizedExperiment::assay(u) == SummarizedExperiment::assay(v)))
 
   ####
 
@@ -127,7 +125,7 @@ test_that("PomaImpute works", {
   ####
   
   expect_message(PomaImpute(st000284, method = "knn"))
-  expect_message(PomaImpute(st000284, method = "rf"))
+  expect_message(PomaImpute(st000284, method = "random_forest"))
   
   ##
   

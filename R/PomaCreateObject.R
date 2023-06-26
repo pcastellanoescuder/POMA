@@ -13,7 +13,7 @@ detect_decimals <- function(data) {
 
 #' Create a `SummarizedExperiment` Object
 #'
-#' @description `PomaSummarizedExperiment` creates a `SummarizedExperiment` object from data frames.
+#' @description `PomaCreateObject` creates a `SummarizedExperiment` object from data frames.
 #' 
 #' @param metadata Metadata variables structured in columns. Sample ID must be the first column.
 #' @param features Matrix of features. Each feature is a column.
@@ -37,11 +37,11 @@ detect_decimals <- function(data) {
 #' features <- iris[, 1:4]
 #' 
 #' # Create a `SummarizedExperiment` object with `POMA`
-#' object <- PomaSummarizedExperiment(metadata = metadata, features = features)
-PomaSummarizedExperiment <- function(metadata = NULL,
-                                     features = NULL,
-                                     factor_levels = 10,
-                                     ...){
+#' object <- PomaCreateObject(metadata = metadata, features = features)
+PomaCreateObject <- function(metadata = NULL,
+                             features = NULL,
+                             factor_levels = 10,
+                             ...){
   
   if(missing(features)){
     stop("No features file")

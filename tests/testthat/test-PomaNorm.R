@@ -1,8 +1,6 @@
 context("PomaNorm")
 
 test_that("PomaNorm works", {
-
-  library(SummarizedExperiment)
   
   data("st000284")
 
@@ -22,7 +20,7 @@ test_that("PomaNorm works", {
     as.data.frame() %>% 
     tibble::rownames_to_column()
   
-  testnorm <- PomaSummarizedExperiment(features = data, metadata = target)
+  testnorm <- POMA::PomaCreateObject(features = data, metadata = target)
 
   newdata <- POMA::PomaImpute(testnorm, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 2)
   newdata2 <- POMA::PomaNorm(newdata, method = "log_pareto")

@@ -24,7 +24,7 @@ PomaImpute(
 
 \item{group_by}{Logical. If \code{metadata} file is present and its first variable is a factor, it can be used to compute missing values per group and drop them accordingly. Features will be removed only if all of the groups contain more missing values than allowed. Default is TRUE.}
 
-\item{method}{Character. The imputation method to use. Options include "none" (no imputation, replace missings by zeros), "half_min" (replace missing values with half of the minimum value), "median" (replace missing values with the median), "mean" (replace missing values with the mean), "min" (replace missing values with the minimum value), "knn" (replace missing values using k-nearest neighbors imputation), and "rf" (replace missing values using random forest imputation).}
+\item{method}{Character. The imputation method to use. Options include "none" (no imputation, replace missing values by zeros), "half_min" (replace missing values with half of the minimum value), "median" (replace missing values with the median), "mean" (replace missing values with the mean), "min" (replace missing values with the minimum value), "knn" (replace missing values using k-nearest neighbors imputation), and "random_forest" (replace missing values using random forest imputation).}
 }
 \value{
 A \code{SummarizedExperiment} object without missing values.

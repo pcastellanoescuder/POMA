@@ -2,45 +2,48 @@
 % Please edit documentation in R/PomaDensity.R
 \name{PomaDensity}
 \alias{PomaDensity}
-\title{Distribution Plot}
+\title{Density Plots}
 \usage{
 PomaDensity(
   data,
-  group = "samples",
+  x = "samples",
   feature_name = NULL,
-  theme_params = list(),
-  palette = "nature",
+  theme_params = list(legend_title = FALSE),
   ...
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{group}{Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.}
+\item{x}{Character. Options are "samples" (to visualize sample density plots) and "features" (to visualize feature density plots). Default is "samples".}
 
-\item{feature_name}{A vector with the name/s of feature/s to plot. If it's NULL (default) a density plot of all variables will be created.}
+\item{feature_name}{Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).}
 
-\item{theme_params}{List indicating \code{theme_poma} parameters.}
-
-\item{palette}{POMA palette. One of "nature", "simpsons", or "futurama".}
+\item{theme_params}{List. Indicates \code{theme_poma} parameters.}
 }
 \value{
-A ggplot2 object.
+A \code{ggplot} object.
 }
 \description{
-PomaDensity() generates a density plot of not normalized and normalized MS data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
+\code{PomaDensity} generates a density plot for samples and features. This function can be used for data exploration (e.g., comparison between pre and post normalized datasets).
 }
 \examples{
 data("st000284")
 
-# samples
-PomaDensity(st000284)
+# Sample density plots
+st000284 \%>\%
+PomaNorm() \%>\% 
+PomaDensity(theme_params = list(axistext = "y"))
 
-# features
-PomaDensity(st000284, group = "features")
-
-# concrete features
-PomaDensity(st000284, group = "features", 
+# All feature density plots
+st000284 \%>\% 
+PomaNorm() \%>\% 
+PomaDensity(x = "features", theme_params = list(legend_position = "none"))
+             
+# Specific feature density plots
+st000284 \%>\% 
+PomaNorm() \%>\% 
+PomaDensity(x = "features", 
             feature_name = c("ornithine", "orotate"))
 }
 \author{

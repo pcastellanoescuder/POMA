@@ -1,14 +1,13 @@
 
-#' Classical Boxplots
+#' Boxplots and Violin Plots
 #'
-#' @description PomaBoxplots() generates a boxplot for subjects or features. This boxplot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
+#' @description `PomaBoxplots` generates boxplots and violin plots for samples and features. This function can be used for data exploration (e.g., comparison between pre and post normalized datasets).
 #'
-#' @param data A SummarizedExperiment object.
-#' @param group Grouping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.
-#' @param jitter Logical. If it's TRUE (default), the boxplot will show all points.
-#' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.
-#' @param theme_params List indicating `theme_poma` parameters.
-#' @param palette POMA palette. One of "nature", "simpsons", or "futurama".
+#' @param data A `SummarizedExperiment` object.
+#' @param x Character. Options are "samples" (to visualize sample boxplots) and "features" (to visualize feature boxplots). Default is "samples".
+#' @param violin Logical. Indicates if violin plots should be displayed instead of boxplots. Default is FALSE.
+#' @param feature_name Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).
+#' @param theme_params List. Indicates `theme_poma` parameters.
 #'
 #' @export
 #'
@@ -20,85 +19,120 @@
 #' @examples 
 #' data("st000284")
 #' 
-#' # samples
+#' # Sample boxplots
 #' st000284 %>%
 #' PomaNorm() %>% 
 #' PomaBoxplots(theme_params = list(axistext = "y"))
 #' 
-#' # features
+#' # Sample violin plots
+#' st000284 %>%
+#' PomaNorm() %>% 
+#' PomaBoxplots(violin = TRUE, theme_params = list(axistext = "y"))
+#' 
+#' # All feature boxplots
 #' st000284 %>% 
 #' PomaNorm() %>% 
-#' PomaBoxplots(group = "features", theme_params = list(axis_x_rotate = TRUE))
+#' PomaBoxplots(x = "features", theme_params = list(axis_x_rotate = TRUE))
 #'              
-#' # concrete features
-#' PomaBoxplots(st000284, group = "features", 
+#' # Specific feature boxplots
+#' st000284 %>% 
+#' PomaNorm() %>% 
+#' PomaBoxplots(x = "features", 
+#'              feature_name = c("ornithine", "orotate"))
+#'              
+#' # Specific feature violin plots
+#' st000284 %>% 
+#' PomaNorm() %>% 
+#' PomaBoxplots(x = "features", 
+#'              violin = TRUE,
 #'              feature_name = c("ornithine", "orotate"))
 PomaBoxplots <- function(data,
-                         group = "samples",
-                         jitter = FALSE,
+                         x = "samples",
+                         violin = FALSE,
                          feature_name = NULL,
                          theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE),
-                         palette = "nature",
                          ...) {
 
   if(!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
-  if (!(group %in% c("samples", "features"))) {
-    stop("Incorrect value for group argument!")
+  if (!(x %in% c("samples", "features"))) {
+    stop("Incorrect value for x argument")
   }
   if (!is.null(feature_name)) {
     if(!any(feature_name %in% rownames(SummarizedExperiment::assay(data)))) {
-      stop("None of the specified features found")
+      stop("Features not found")
     }
-    if(!all(feature_name %in% rownames(SummarizedExperiment::assay(data)))){
-      warning(paste0("Feature/s ",
-                     paste0(feature_name[!feature_name %in% rownames(SummarizedExperiment::assay(data))], collapse = ", "),
+    if(!all(feature_name %in% rownames(SummarizedExperiment::assay(data)))) {
+      message(paste0(paste0(feature_name[!feature_name %in% rownames(SummarizedExperiment::assay(data))], collapse = ", "),
                      " not found"))
     }
   }
   
-  e <- t(SummarizedExperiment::assay(data))
-  target <- SummarizedExperiment::colData(data) %>%
-    as.data.frame() %>% 
-    tibble::rownames_to_column("ID") %>%
-    dplyr::rename(Group = 2) %>%
-    dplyr::select(ID, Group)
+  plot_data <- t(SummarizedExperiment::assay(data))
   
-  data <- cbind(target, e)
+  grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
+                            is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  
+  if (grouping_factor) {
+    plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
+                            group_factor = SummarizedExperiment::colData(data)[,1], 
+                            plot_data)
+  } else {
+    if (ncol(SummarizedExperiment::colData(data)) > 0) {
+      sample_names <- rownames(SummarizedExperiment::colData(data))
+    } else {
+      sample_names <- colnames(SummarizedExperiment::assay(data))
+    }
+      
+    if (is.null(sample_names)) {
+      sample_names <- paste0("sample_", 1:ncol(SummarizedExperiment::assay(data)))
+    }
+    
+    plot_data <- data.frame(sample_id = sample_names,
+                            group_factor = "no_groups",
+                            plot_data)
+  }
 
-  if(group == "samples"){
-    plot_data <- data %>%
-      tidyr::pivot_longer(cols = -c(ID, Group)) %>%
-      ggplot2::ggplot(ggplot2::aes(ID, value, color = Group, fill = Group))
+  if (x == "samples") {
+    plot_data <- plot_data %>%
+      tidyr::pivot_longer(cols = -c(sample_id, group_factor)) %>%
+      dplyr::group_by(sample_id) %>% 
+      dplyr::mutate(median_rank = median(value, na.rm = TRUE)) %>% 
+      dplyr::ungroup() %>% 
+      ggplot2::ggplot(ggplot2::aes(reorder(sample_id, median_rank), value))
   }
   
-  else {
-    plot_data <- data %>%
-      dplyr::select(-ID) %>%
-      tidyr::pivot_longer(cols = -Group)
+  else if (x == "features") {
+    plot_data <- plot_data %>%
+      dplyr::select(-sample_id) %>%
+      tidyr::pivot_longer(cols = -group_factor)
     
-    if(!is.null(feature_name)){
+    if (!is.null(feature_name)){
       plot_data <- plot_data %>% 
         dplyr::filter(name %in% feature_name)
     }
     
     plot_data <- plot_data %>% 
-      ggplot2::ggplot(ggplot2::aes(name, value, color = Group, fill = Group))
-    
+      ggplot2::ggplot(ggplot2::aes(name, value))
   }
   
   plot_complete <- plot_data +
-    ggplot2::geom_boxplot(alpha = 0.5) +
-    {if(jitter)ggplot2::geom_jitter(alpha = 0.5, position = ggplot2::position_jitterdodge())} +
-    ggplot2::labs(x = NULL, y = "Value") +
+    # boxplots
+    {if(grouping_factor & !violin)ggplot2::geom_boxplot(ggplot2::aes(color = group_factor, fill = group_factor), alpha = 0.5)} +
+    {if(!grouping_factor & !violin)ggplot2::geom_boxplot(alpha = 0.5)} +
+    # violin plots
+    {if(grouping_factor & violin)ggplot2::geom_violin(ggplot2::aes(color = group_factor, fill = group_factor), alpha = 0.5)} +
+    {if(!grouping_factor & violin)ggplot2::geom_violin(alpha = 0.5)} +
+    # aesthetics
+    ggplot2::labs(x = NULL, 
+                  y = "Value",
+                  fill = NULL,
+                  color = NULL) +
     do.call(theme_poma, theme_params) +
-    # scale_color_poma_d(palette = palette) +
-    # scale_fill_poma_d(palette = palette)
-    ggplot2::scale_fill_viridis_d(option = "plasma", end = 0.8) +
-    ggplot2::scale_color_viridis_d(option = "plasma", end = 0.8)
+    scale_fill_poma_d() +
+    scale_color_poma_d()
   
   return(plot_complete)
-  
 }
 

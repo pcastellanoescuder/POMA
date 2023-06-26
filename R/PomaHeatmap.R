@@ -50,6 +50,5 @@ PomaHeatmap <- function(data,
                             show_column_names = sample_names,
                             show_heatmap_legend = show_legend)
   )
-  
 }
 

@@ -1,9 +1,13 @@
-# POMA 1.8.12
+# POMA 1.8.13
 
-* New POMA palette and theme
-* Sample sum and quantile normalization
+* New POMA theme and colorblind-friendly palette
+* Available sample normalization (sum and quantile)
 * New feature normalization methods
-* Extensive review and improvement of `PomaImpute`, `PomaNorm`, and `PomaUnivariate`
+* Extensive review and improvement of all `POMA` functions
+* Major documentation updates
+* Rename `PomaSummarizedExperiment` to `PomaCreateObject`
+* Auto-recognition of variable types and automatic variable re-labeling in `PomaCreateObject`
+* Available violin plots with `PomaBoxplots`
 
 # POMA 1.7.19
 

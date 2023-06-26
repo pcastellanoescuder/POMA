@@ -2,13 +2,10 @@
 % Please edit documentation in R/colors.R
 \name{scale_fill_poma_d}
 \alias{scale_fill_poma_d}
-\title{Fill scale constructor for discrete POMA color palettes}
+\title{Fill scale constructor for discrete \code{viridis} "plasma" palette}
 \usage{
-scale_fill_poma_d(palette = "nature")
-}
-\arguments{
-\item{palette}{Character name of palette in poma_palettes}
+scale_fill_poma_d()
 }
 \description{
-Fill scale constructor for discrete POMA color palettes
+Fill scale constructor for discrete \code{viridis} "plasma" palette
 }

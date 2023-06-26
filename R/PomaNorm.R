@@ -67,7 +67,7 @@ PomaNorm <- function(data,
                      method = "log_pareto"){
 
   if(!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(method %in% c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transform",
                       "vast_scaling", "log_pareto", "min_max", "box_cox"))) {
@@ -80,6 +80,10 @@ PomaNorm <- function(data,
   to_norm <- t(SummarizedExperiment::assay(data)) %>% 
     as.data.frame()
 
+  if (sum(is.na(to_norm)) != 0){
+    stop("Missing values not allowed")
+  }
+  
   # remove features with only zeros
   to_norm <- to_norm[, apply(to_norm, 2, function(x) !all(x==0))]
 
