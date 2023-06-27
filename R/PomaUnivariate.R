@@ -1,7 +1,7 @@
 
 #' Univariate Statistical Test
 #' 
-#' @description `PomaUnivariate` performs a univariate statistical test on a `SummarizedExperiment` object to compare groups or conditions.
+#' @description `PomaUnivariate` performs parametric and non-parametric univariate statistical tests on a `SummarizedExperiment` object to compare groups or conditions. Available methods include T-test, ANOVA, ANCOVA, Mann Whitney U Test (Wilcoxon Rank Sum Test), and Kruskal-Wallis.
 #'
 #' @param data A `SummarizedExperiment` object.
 #' @param method Character. The univariate statistical test to be performed. Available options include "ttest" (T-test), "anova" (analysis of variance), "mann" (Wilcoxon rank-sum test), and "kruskal" (Kruskal-Wallis test).

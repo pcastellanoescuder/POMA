@@ -85,11 +85,17 @@ PomaNorm <- function(data,
   }
   
   # remove features with only zeros
-  to_norm <- to_norm[, apply(to_norm, 2, function(x) !all(x==0))]
+  to_norm <- data.frame(to_norm[, apply(to_norm, 2, function(x) !all(x==0))])
 
   # remove features with no variance
-  to_norm <- to_norm[, !apply(to_norm, 2, var) == 0]
+  to_norm <- data.frame(to_norm[, !apply(to_norm, 2, var) == 0])
 
+  if (ncol(to_norm) == 1) {
+    colnames(to_norm) <- t(SummarizedExperiment::assay(data)) %>% 
+      as.data.frame() %>% 
+      colnames()
+  }
+  
   # sample normalization
   if (sample_norm != "none") {
     if (sample_norm == "sum") {
