@@ -30,7 +30,7 @@ PomaUnivariate(
 A \code{tibble} with the results.
 }
 \description{
-\code{PomaUnivariate} performs a univariate statistical test on a \code{SummarizedExperiment} object to compare groups or conditions.
+\code{PomaUnivariate} performs parametric and non-parametric univariate statistical tests on a \code{SummarizedExperiment} object to compare groups or conditions. Available methods include T-test, ANOVA, ANCOVA, Mann Whitney U Test (Wilcoxon Rank Sum Test), and Kruskal-Wallis.
 }
 \examples{
 data("st000336")
