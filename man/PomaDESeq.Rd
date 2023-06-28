@@ -2,27 +2,30 @@
 % Please edit documentation in R/PomaDESeq.R
 \name{PomaDESeq}
 \alias{PomaDESeq}
-\title{Differential expression analysis based on the Negative Binomial distribution}
+\title{Differential Expression Analysis Based on the Negative Binomial Distribution}
 \usage{
-PomaDESeq(data, adjust = "BH")
+PomaDESeq(data, adjust = "fdr")
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
 \item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", and "BY".}
 }
 \value{
-A tibble with the results.
+A \code{tibble} with the results.
 }
 \description{
-\code{DESeq2} package wrapper to estimate variance-mean dependence in count data from high-throughput sequencing assays and test for differential expression based on a model using the negative binomial distribution.
+\code{PomaDESeq} is a \code{DESeq2} package wrapper to estimate variance-mean dependence in count data from high-throughput sequencing assays and test for differential expression based on a model using the negative binomial distribution.
 }
 \examples{
 data("st000284")
+
 st000284_sub <- st000284[, st000284@colData$factors \%in\% c("CRC", "Healthy")] # select two groups
+
 SummarizedExperiment::assay(st000284_sub) <- floor(SummarizedExperiment::assay(st000284_sub)) # convert all values to integers
+
 st000284_sub \%>\% 
-  PomaDESeq(adjust = "fdr")
+  PomaDESeq()
 }
 \references{
 Love, M.I., Huber, W., Anders, S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2 Genome Biology 15(12):550 (2014)
