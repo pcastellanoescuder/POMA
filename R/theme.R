@@ -24,7 +24,8 @@ theme_poma <- function(base_size = 15,
                        legend_position = "bottom",
                        legend_title = TRUE,
                        axis_x_rotate = FALSE,
-                       margin = 2, ...) {
+                       margin = 2, 
+                       ...) {
   
   if(!is.character(axistitle)) stop('axistitle must be a character: "none" or any combination of "X", "Y", "x" and "y"')
   if(!is.character(axistext)) stop('axistext must be a character: "none" or any combination of "X", "Y", "x" and "y"')

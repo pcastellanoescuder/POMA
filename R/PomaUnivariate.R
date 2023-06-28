@@ -54,7 +54,7 @@ PomaUnivariate <- function(data,
                            adjust = "fdr"){
 
   if(!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
   if (!(method %in% c("ttest", "anova", "mann", "kruskal"))) {
     stop("Incorrect value for method argument")
