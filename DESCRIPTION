@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.8.16
+Version: 1.8.17
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -47,6 +47,7 @@ Imports:
     impute,
     janitor,
     limma,
+    lme4,
     magrittr,
     MASS,
     mixOmics,

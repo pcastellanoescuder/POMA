@@ -11,6 +11,7 @@ PomaPLS(
   ncomp = 5,
   labels = FALSE,
   ellipse = TRUE,
+  cross_validation = FALSE,
   validation = "Mfold",
   folds = 5,
   nrepeat = 10,
@@ -32,6 +33,14 @@ PomaPLS(
 \item{labels}{Logical. Indicates if sample names should be displayed.}
 
 \item{ellipse}{Logical. Indicates whether a 95 percent confidence interval ellipse should be displayed. Default is TRUE.}
+
+\item{cross_validation}{Logical. Indicates if cross-validation should be performed for PLS-DA ("plsda") and sPLS-DA ("splsda") methods. Default is FALSE.}
+
+\item{validation}{Character. (Only for "plsda" and "splsda" methods). Indicates the cross-validation method. Options are "Mfold" and "loo" (Leave-One-Out).}
+
+\item{folds}{Numeric. (Only for "plsda" and "splsda" methods). Number of folds for "Mfold" cross-validation method (default is 5). If the validation method is "loo", this value is set to 1.}
+
+\item{nrepeat}{Numeric. (Only for "plsda" and "splsda" methods). Number of times the cross-validation process is repeated.}
 
 \item{vip}{Numeric. (Only for "plsda" method). Indicates the variable importance in the projection (VIP) cutoff.}
 
@@ -60,12 +69,24 @@ st000336 \%>\%
   PomaImpute() \%>\%
   PomaNorm() \%>\%
   PomaPLS(method = "plsda")
-
+  
+# PLSDA with Cross-Validation
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaPLS(method = "plsda", cross_validation = TRUE)
+  
 # sPLSDA
 st000336 \%>\% 
   PomaImpute() \%>\%
   PomaNorm() \%>\%
   PomaPLS(method = "splsda")
+  
+# sPLSDA with Cross-Validation
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaNorm() \%>\%
+  PomaPLS(method = "splsda", ncomp = 3, cross_validation = TRUE)
 }
 \author{
 Pol Castellano-Escuder

@@ -8,6 +8,7 @@ PomaPCA(
   data,
   center = TRUE,
   scale = TRUE,
+  ncomp = 4,
   labels = FALSE,
   ellipse = FALSE,
   load_length = 1,
@@ -20,6 +21,8 @@ PomaPCA(
 \item{center}{Logical. Indicates whether the variables should be shifted to be zero centered. Default is TRUE.}
 
 \item{scale}{Logical. Indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is TRUE.}
+
+\item{ncomp}{Numeric. Number of components to be included in the results. Default is 4.}
 
 \item{labels}{Logical. Indicates if sample names should be displayed.}
 

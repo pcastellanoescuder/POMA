@@ -4,47 +4,37 @@
 \alias{PomaPCR}
 \title{Principal Components Regression}
 \usage{
-PomaPCR(
-  data,
-  n_components = 5,
-  scale = TRUE,
-  center = TRUE,
-  outcome = NULL,
-  intercept = TRUE
-)
+PomaPCR(data, center = TRUE, scale = TRUE, ncomp = 2, y = NULL, adjust = "fdr")
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{n_components}{The number of Principal Components used in the PCR model. Defaults is 5.}
+\item{center}{Logical. Indicates whether the variables should be shifted to be zero centered. Default is TRUE.}
 
-\item{scale}{A logical value indicating whether the variables should be scaled to have unit variance before the analysis takes place.}
+\item{scale}{Logical. Indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is TRUE.}
 
-\item{center}{A logical value indicating whether the variables should be shifted to be zero centered.}
+\item{ncomp}{Numeric. Indicates the number of principal components used as predictors in the model. Default is 2.}
 
-\item{outcome}{Character string indicating the variable name in \code{colData} to be used as the outcome.}
+\item{y}{Character. Indicates the name of \code{colData} columns to be used as dependent variable. If it's set to NULL, the first numeric variable in \code{colData} will be used as the dependent variable.}
 
-\item{intercept}{A logical value indicating whether intercept should be included in the LM. Default is TRUE.}
+\item{adjust}{Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).}
 }
 \value{
-A list with PCR results.
+A \code{tibble} with the results.
 }
 \description{
-Fits a Linear Model using the indicated variable as the dependent variable (outcome) and the indicated number of Principal Components as independent variables.
+\code{PomaPCR} performs Principal Components Regression.
 }
 \examples{
 data("st000284")
 
+PCR with 2 components
 st000284 \%>\%
-  PomaPCR(outcome = "age_at_consent")
-
-data("st000336")
+  PomaPCR(y = "age_at_consent")
   
-st000336 \%>\% 
-PomaImpute() \%>\% 
-PomaPCR(n_components = 2, 
-        outcome = "steroids", 
-        intercept = FALSE)
+PCR with 10 components
+st000284 \%>\%
+  PomaPCR(ncomp = 10)
 }
 \author{
 Pol Castellano-Escuder
