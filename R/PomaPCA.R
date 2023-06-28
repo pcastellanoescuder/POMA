@@ -1,7 +1,7 @@
 
 #' Principal Components Analysis
 #'
-#' @description `PomaPCA` performs Principal Components Analysis.
+#' @description `PomaPCA` performs a principal components analysis on the given `SummarizedExperiment` object.
 #'
 #' @param data A `SummarizedExperiment` object.
 #' @param center Logical. Indicates whether the variables should be shifted to be zero centered. Default is TRUE.
@@ -12,7 +12,7 @@
 #' 
 #' @export
 #'
-#' @return A list with all results for multivariate statistical analysis including plots and tables.
+#' @return A `list` with results including plots and tables.
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%

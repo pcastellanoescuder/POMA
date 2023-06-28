@@ -1,4 +1,4 @@
-# POMA 1.8.15
+# POMA 1.8.16
 
 * New POMA theme and colorblind-friendly palette
 * Available sample normalization (sum and quantile)
@@ -8,7 +8,7 @@
 * Rename `PomaSummarizedExperiment` to `PomaCreateObject`
 * Auto-recognition of variable types and automatic variable re-labeling in `PomaCreateObject`
 * Available violin plots with `PomaBoxplots`
-* `PomaPCA` as and individual function outside `PomaMultivariate`
+* New function `PomaPCA` as a stand-alone function from the old `PomaMultivariate`
 * New functions: `PomaLM`
 
 # POMA 1.7.19

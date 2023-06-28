@@ -28,10 +28,10 @@ PomaPCA(
 \item{load_length}{Numeric. Indicates the length of biplot loading arrows. Value between 1 and 2. Default is 1.}
 }
 \value{
-A list with all results for multivariate statistical analysis including plots and tables.
+A \code{list} with results including plots and tables.
 }
 \description{
-\code{PomaPCA} performs Principal Components Analysis.
+\code{PomaPCA} performs a principal components analysis on the given \code{SummarizedExperiment} object.
 }
 \examples{
 data("st000336")
