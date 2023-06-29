@@ -4,13 +4,14 @@
 #' @description `PomaLMM` performs linear mixed models on a `SummarizedExperiment` object.
 #'
 #' @param data A `SummarizedExperiment` object.
-#' @param x Character vector. Indicates the names of independent variables. If it's null, all features will be used.
-#' @param y Character. Indicates the name of `colData` columns to be used as dependent variable. If it's set to NULL, the first numeric variable in `colData` will be used as the dependent variable.
+#' @param x Character vector. Indicates the names of `colData` columns to be used as random and fixed effects (independent variables). If it's set to NULL (default), all variables in `colData` will be used.
+#' @param y Character vector. Indicates the names of dependent variables. If it's NULL (default), all features will be used.
 #' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
+#' @param clean_plot xxxxxxxxx
 #'
 #' @export
 #'
-#' @return A `tibble` with the results.
+#' @return A `list` with results including plots and tables. Table values indicate the percentage variance explained per variable.
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%
@@ -24,11 +25,31 @@
 #' 
 #' # Perform linear mixed model with two features
 #' st000284 %>% 
-#' PomaLMM(x = c("x1_methyladenosine", "x2_deoxyuridine"))
+#' PomaLMM(y = c("x1_methyladenosine", "x1_methylhistamine"))
+#' 
+#' # Perform linear mixed model with one random effect
+#' st000284 %>% 
+#' PomaLMM(x = "smoking_condition")
+#' 
+#' # Perform linear mixed model with two random effects and two features
+#' st000284 %>% 
+#' PomaLMM(x = c("smoking_condition", "gender"),
+#'         y = c("x1_methyladenosine", "x1_methylhistamine"))
+#'         
+#' # Perform linear mixed model with no random effects and two features, therefore, a linear model will be fitted
+#' st000284 %>% 
+#' PomaLMM(x = "age_at_consent", # Numerical, i.e., fixed effect
+#'         y = c("x1_methyladenosine", "x1_methylhistamine"))
+#'         
+#' # Perform linear mixed model with no random effects and all features, therefore, a linear model will be fitted
+#' st000284 %>% 
+#' PomaLMM(x = "age_at_consent") # Numerical i.e., fixed effect
 PomaLMM <- function(data,
                     x = NULL,
                     y = NULL,
-                    adjust = "fdr"){
+                    adjust = "fdr",
+                    clean_plot = FALSE,
+                    ...) {
   
   if (!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
@@ -36,13 +57,13 @@ PomaLMM <- function(data,
   if (ncol(SummarizedExperiment::colData(data)) == 0) {
     stop("metadata file required")
   }
-  if (is.null(y)) {
-    y <- colnames(SummarizedExperiment::colData(data))
+  if (is.null(x)) {
+    x <- colnames(SummarizedExperiment::colData(data))
   }
   
   independent_variables <- SummarizedExperiment::colData(data) %>% 
     as.data.frame() %>% 
-    dplyr::select(dplyr::all_of(y))
+    dplyr::select(dplyr::all_of(x))
   
   fixed_effects <- independent_variables %>% 
     as.data.frame() %>% 
@@ -52,46 +73,79 @@ PomaLMM <- function(data,
     as.data.frame() %>% 
     dplyr::select_if(is.factor)
   
+  if (ncol(random_effects) == 0) {
+    message("No random effects. A linear model will be fitted.")
+    
+    res_lm <- PomaLM(data = data, 
+                     x = y,
+                     y = colnames(fixed_effects)[1],
+                     adjust = adjust)
+    
+    return(res_lm)
+  }
+  
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
     stop("Incorrect value for adjust argument")
   }
   
-  to_lmm <- data.frame(independent_variables, t(SummarizedExperiment::assay(data)))
+  to_lmm <- t(SummarizedExperiment::assay(data))
+
+  if (!is.null(y)) {
+    to_lmm <- to_lmm[, colnames(to_lmm) %in% y]
+  }
   
-  fixed_effects_names <- ifelse(ncol(fixed_effects) > 0,
-                                paste0(colnames(fixed_effects), collapse = " + "),
-                                NULL)
+  formula_str <- paste0("response ~ ", paste(names(fixed_effects), collapse = " + "))
+  if (ncol(random_effects) > 0) {
+    formula_str <- paste0(formula_str, " + (1 | ", paste(names(random_effects), collapse = ") + (1 | "), ")")
+  }
   
-  random_effects_names <- ifelse(ncol(random_effects) > 0,
-                                 paste0("(1|", colnames(random_effects), ")", collapse = " + "),
-                                 NULL)
+  lmm_fun <- function(x) {
+    model <- lme4::lmer(formula_str, data = data.frame(response = x, fixed_effects, random_effects), REML = FALSE)
+    
+    random_effects_variances <- data.frame(lme4::VarCorr(model))[, c(1,4)] %>% 
+      dplyr::as_tibble()
+    
+    fixed_effects_variances <- data.frame(vcov = diag(as.matrix(vcov(model)))) %>% 
+      tibble::rownames_to_column("grp") %>% 
+      dplyr::as_tibble()
+    
+    total_vars <- fixed_effects_variances %>% 
+      dplyr::bind_rows(random_effects_variances) %>% 
+      dplyr::mutate(variance_percent = 100*(vcov/sum(vcov))) %>% 
+      dplyr::select(-vcov) %>% 
+      tidyr::pivot_wider(names_from = grp, values_from = variance_percent)
+    
+    return(total_vars)
+  }
   
-  formula_lmm <- paste0(fixed_effects_names, " + ", random_effects_names)
-  formula_lmm <- as.formula(paste0(colnames(to_lmm)[1], " ~ ", formula_lmm))
+  # variances
+  suppressMessages({
+    res_lmm <- dplyr::bind_rows(apply(to_lmm, 2, function(x){lmm_fun(x)})) %>% 
+      dplyr::mutate(feature = colnames(to_lmm)) %>% 
+      dplyr::select(feature, dplyr::everything()) %>% 
+      dplyr::as_tibble()
+  })
   
-  fit <- lme4::lmer(formula_lmm, independent_variables, REML = FALSE, data = to_lmm)
+  # variances plot
+  plot_data <- res_lmm %>% 
+    tidyr::pivot_longer(cols = -feature)
   
-  # to_linear_model <- data.frame(dependent_variable, t(SummarizedExperiment::assay(data)))
-  # 
-  # if (is.null(x)) {
-  #   res_lm <- broom::tidy(rlang::inject(lm(!!y_name ~ 0 + ., data = to_linear_model))) %>% 
-  #     dplyr::mutate(adj_pvalue = p.adjust(p.value, method = adjust)) %>% 
-  #     dplyr::select(feature = term, estimate, std_err = std.error, statistic, pvalue = p.value, adj_pvalue) %>% 
-  #     dplyr::arrange(pvalue) %>% 
-  #     dplyr::as_tibble()
-  #   
-  # } else {
-  #   predictors <- to_linear_model %>%
-  #     dplyr::select(dplyr::all_of(x))
-  #   
-  #   predictors <- data.frame(dependent_variable, predictors)
-  #   
-  #   res_lm <- broom::tidy(rlang::inject(lm(!!y_name ~ 0 + ., data = predictors))) %>% 
-  #     dplyr::mutate(adj_pvalue = p.adjust(p.value, method = adjust)) %>% 
-  #     dplyr::select(feature = term, estimate, std_err = std.error, statistic, pvalue = p.value, adj_pvalue) %>% 
-  #     dplyr::arrange(pvalue) %>% 
-  #     dplyr::as_tibble()
-  # }
-  # return(res_lm)
+  if (clean_plot) {
+    plot_data <- plot_data %>% 
+      dplyr::filter(!name %in% c("(Intercept)", "Residual"))
+  }
+  
+  variances_plot <- plot_data %>%
+    ggplot2::ggplot(ggplot2::aes(name, value)) +
+    ggplot2::geom_boxplot(ggplot2::aes(fill = name), show.legend = FALSE) +
+    ggplot2::labs(x = NULL,
+                  y = "Variance Explained (%)",
+                  fill = NULL) +
+    theme_poma(axis_x_rotate = TRUE) +
+    scale_fill_poma_d()
+    
+  return(list(variances = res_lmm,
+              variances_plot = variances_plot)
+         )
 }
 

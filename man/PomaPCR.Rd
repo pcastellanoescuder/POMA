@@ -28,13 +28,13 @@ A \code{tibble} with the results.
 \examples{
 data("st000284")
 
-PCR with 2 components
+# PCR with 2 components
 st000284 \%>\%
   PomaPCR(y = "age_at_consent")
   
-PCR with 10 components
+# PCR with 20 components
 st000284 \%>\%
-  PomaPCR(ncomp = 10)
+  PomaPCR(ncomp = 20)
 }
 \author{
 Pol Castellano-Escuder
