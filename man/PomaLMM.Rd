@@ -15,7 +15,7 @@ PomaLMM(data, x = NULL, y = NULL, adjust = "fdr", clean_plot = FALSE, ...)
 
 \item{adjust}{Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).}
 
-\item{clean_plot}{xxxxxxxxx}
+\item{clean_plot}{Logical. Indicates if remove intercept and linear mixed model residues boxplots from the plot. Defasult is FALSE.}
 }
 \value{
 A \code{list} with results including plots and tables. Table values indicate the percentage variance explained per variable.

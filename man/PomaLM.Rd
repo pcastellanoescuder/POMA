@@ -11,7 +11,7 @@ PomaLM(data, x = NULL, y = NULL, adjust = "fdr")
 
 \item{x}{Character vector. Indicates the names of independent variables. If it's NULL (default), all features will be used.}
 
-\item{y}{Character. Indicates the name of \code{colData} columns to be used as dependent variable. If it's set to NULL, the first numeric variable in \code{colData} will be used as the dependent variable.}
+\item{y}{Character. Indicates the name of \code{colData} numeric columns to be used as dependent variable. If it's set to NULL, the first numeric variable in \code{colData} will be used as the dependent variable.}
 
 \item{adjust}{Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).}
 }

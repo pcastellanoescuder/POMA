@@ -7,7 +7,7 @@
 #' @param x Character vector. Indicates the names of `colData` columns to be used as random and fixed effects (independent variables). If it's set to NULL (default), all variables in `colData` will be used.
 #' @param y Character vector. Indicates the names of dependent variables. If it's NULL (default), all features will be used.
 #' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
-#' @param clean_plot xxxxxxxxx
+#' @param clean_plot Logical. Indicates if remove intercept and linear mixed model residues boxplots from the plot. Defasult is FALSE. 
 #'
 #' @export
 #'

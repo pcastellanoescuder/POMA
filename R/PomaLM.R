@@ -5,7 +5,7 @@
 #'
 #' @param data A `SummarizedExperiment` object.
 #' @param x Character vector. Indicates the names of independent variables. If it's NULL (default), all features will be used.
-#' @param y Character. Indicates the name of `colData` columns to be used as dependent variable. If it's set to NULL, the first numeric variable in `colData` will be used as the dependent variable.
+#' @param y Character. Indicates the name of `colData` numeric columns to be used as dependent variable. If it's set to NULL, the first numeric variable in `colData` will be used as the dependent variable.
 #' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
 #'
 #' @export
