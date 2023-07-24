@@ -10,7 +10,7 @@
 #'
 #' @export
 #'
-#' @return A `tibble` with the results.
+#' @return A `list` with results including plots and tables. 
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%
@@ -78,6 +78,21 @@ PomaLM <- function(data,
       dplyr::arrange(pvalue) %>% 
       dplyr::as_tibble()
   }
-  return(res_lm)
+  
+  # regression plot
+  regression_plot <- res_lm %>%
+    ggplot2::ggplot(ggplot2::aes(x = estimate, y = reorder(feature, estimate), fill = pvalue)) +
+    ggplot2::geom_vline(xintercept = 0, size = 0.25, linetype = "dashed") +
+    ggplot2::geom_errorbarh(ggplot2::aes(xmax = estimate + std_err, xmin = estimate - std_err), size = 0.5, height = 1, color = "gray50") +
+    ggplot2::geom_point(size = 3, pch = 21, alpha = 0.6) + 
+    ggplot2::labs(x = "Coefficient",
+                  y = NULL,
+                  fill = "p-value") +
+    theme_poma() +
+    scale_fill_poma_c()
+  
+  return(list(lm_table = res_lm,
+              regression_plot = regression_plot)
+         )
 }
 

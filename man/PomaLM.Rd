@@ -16,7 +16,7 @@ PomaLM(data, x = NULL, y = NULL, adjust = "fdr")
 \item{adjust}{Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).}
 }
 \value{
-A \code{tibble} with the results.
+A \code{list} with results including plots and tables.
 }
 \description{
 \code{PomaLM} performs a linear model on a \code{SummarizedExperiment} object.
