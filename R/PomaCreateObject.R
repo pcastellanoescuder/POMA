@@ -67,7 +67,7 @@ PomaCreateObject <- function(metadata = NULL,
 
     metadata <- metadata %>%
       as.data.frame() %>% 
-      janitor::clean_names() %>% 
+      janitor::clean_names(case = "all_caps") %>% 
       tibble::remove_rownames() %>%
       dplyr::rename(sample_id = 1) %>%
       tibble::column_to_rownames("sample_id") %>% 
