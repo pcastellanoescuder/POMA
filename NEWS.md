@@ -1,4 +1,4 @@
-# POMA 1.8.22
+# POMA 1.8.23
 
 * New POMA theme and colorblind-friendly palette
 * Available sample normalization (sum and quantile)
