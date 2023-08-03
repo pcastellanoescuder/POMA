@@ -3,7 +3,7 @@
 #'
 #' @description This function allows users to analyze outliers by different plots and remove them from an SummarizedExperiment object.
 #'
-#' @param data A SummarizedExperiment object.
+#' @param data A `SummarizedExperiment` object.
 #' @param do Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.
 #' @param method Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See `?dist()`.
 #' @param type Type of outliers analysis to perform. Options are "median" (default) and "centroid". See `vegan::betadisper`.

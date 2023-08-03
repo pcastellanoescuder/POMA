@@ -1,132 +1,108 @@
 
 #' Volcano Plot
 #'
-#' @description PomaVolcano() generates a volcano plot. Data should not contain negative values.  
+#' @description `PomaVolcano` generates a volcano plot. Data should not contain negative values.  
 #'
-#' @param data A SummarizedExperiment object.
-#' @param method Statistical method to compute p-values and log2FC. Options are "ttest", "limma", and "DESeq".
-#' @param pval Select a pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".
-#' @param pval_cutoff Numeric. Define the pvalue cutoff (horizontal line).
-#' @param adjust Multiple comparisons correction method for t test result. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
-#' @param log2FC Numeric. Define the log2 fold change cutoff (vertical lines).
-#' @param xlim Numeric. Define the limits for x axis.
-#' @param labels Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.
-#' @param paired Only if method == "ttest". Logical that indicates if the data is paired or not.
-#' @param var_equal Only if method == "ttest". Logical that indicates if the data variance is equal or not.
-#' @param interactive Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.
-#' @param theme_params List indicating `theme_poma` parameters.
+#' @param data A `SummarizedExperiment` object.
+#' @param method Character. Indicates the statistical method to use. Options are "ttest", "mann", "limma", and "DESeq".
+#' @param pval Character. Indicates the pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".
+#' @param pval_cutoff Numeric. Indicated the pvalue cutoff (horizontal line).
+#' @param adjust Character, Indicates the multiple correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
+#' @param log2fc_cutoff Numeric. Indicates the log2 fold change cutoff (vertical lines).
+#' @param labels Logical. Indicates if significant labels should be plotted. Defaul is FALSE.
+#' @param paired Logical. Indicates if the data is paired or not. Default is FALSE.
+#' @param var_equal Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.
 #' 
 #' @export
 #'
-#' @return A ggplot2 object.
+#' @return A `ggplot` object.
 #' @author Pol Castellano-Escuder
 #'
-#' @importFrom magrittr %>% %<>%
+#' @importFrom magrittr %>%
 #' 
 #' @examples 
 #' data("st000336")
-#' data("st000284")
 #' 
 #' st000336 %>% 
 #'   PomaImpute() %>%
 #'   PomaVolcano()
 #'   
-#' st000284_sub <- st000284[, st000284@colData$factors %in% c("CRC", "Healthy")] # select two groups
-#' 
-#' st000284_sub %>% 
-#'   PomaVolcano(method = "ttest")
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaVolcano(labels = TRUE)
 #'   
-#' SummarizedExperiment::assay(st000284_sub) <- floor(SummarizedExperiment::assay(st000284_sub)) # convert all values to integers
-#' 
-#' st000284_sub %>% 
-#'   PomaVolcano(method = "DESeq")
+#' st000336 %>% 
+#'   PomaImpute() %>%
+#'   PomaVolcano(labels = TRUE, pval = "adjusted")
 PomaVolcano <- function(data,
                         method = "ttest",
                         pval = "raw",
                         pval_cutoff = 0.05,
                         adjust = "fdr",
-                        log2FC = 1,
-                        xlim = 2,
+                        log2fc_cutoff = NULL,
                         labels = FALSE,
                         paired = FALSE,
                         var_equal = FALSE,
-                        interactive = FALSE,
-                        theme_params = list(legend_title = FALSE),
                         ...) {
 
-  if (missing(data)) {
-    stop("data argument is empty!")
-  }
   if(!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
-  if (length(table(SummarizedExperiment::colData(data)[,1])) > 2) {
-    stop("Your data have more than two groups!")
+  if (length(table(SummarizedExperiment::colData(data)[,1])) != 2) {
+    stop("Grouping factor must have exactly 2 levels (first column of the metadata file)")
   }
   if (!(pval %in% c("raw", "adjusted"))) {
-    stop("Incorrect value for pval argument!")
+    stop('Incorrect value for pval argument. Options are: "raw" and "adjusted"')
   }
   if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
-    stop("Incorrect value for adjust argument!")
+    stop("Incorrect value for adjust argument.")
   }
 
-  names <- rownames(SummarizedExperiment::assay(data))
-  
   if (method == "ttest") {
-    df <- PomaUnivariate(data, method = "ttest", adjust = adjust, paired = paired, var_equal = var_equal) %>% 
-      dplyr::mutate(logFC = log2(FC))
-  } 
+    volcano_res <- data %>% 
+      PomaUnivariate(method = "ttest", adjust = adjust, paired = paired, var_equal = var_equal) %>%
+      dplyr::mutate(logFC = log2(fold_change))
+  }
+  else if (method == "mann") {
+    volcano_res <- data %>% 
+      PomaUnivariate(method = "mann", adjust = adjust, paired = paired, var_equal = var_equal) %>%
+      dplyr::mutate(logFC = log2(fold_change))
+  }
   else if (method == "limma") {
     contrast <- paste0(names(table(SummarizedExperiment::colData(data)[,1])), collapse = "-")
-    df <- PomaLimma(data, adjust = adjust, contrast = contrast) %>% 
-      dplyr::rename(pvalue = P.Value,
-                    pvalueAdj = adj.P.Val)
-  } 
+    
+    volcano_res <- data %>% 
+      PomaLimma(adjust = adjust, contrast = contrast)
+  }
   else if (method == "DESeq") {
-    df <- PomaDESeq(data, adjust = adjust) %>% 
-      dplyr::rename(logFC = log2FoldChange,
-                    pvalueAdj = padj)
+    volcano_res <- data %>%
+      PomaDESeq(adjust = adjust)
   }
   
-  if(pval == "raw"){
-    df <- data.frame(pvalue = df$pvalue, logFC = df$logFC, names = names)
+  if (pval == "raw") {
+    volcano_res <- volcano_res %>% 
+      dplyr::select(feature, logFC, pvalue = pvalue)
+  } else {
+    volcano_res <- volcano_res %>% 
+      dplyr::select(feature, logFC, pvalue = adj_pvalue)
   }
-  else {
-    df <- data.frame(pvalue = df$pvalueAdj, logFC = df$logFC, names = names)
-  }
-  
-  df %<>%
-    dplyr::mutate(threshold = dplyr::case_when(df$pvalue >= pval_cutoff ~ "None",
-                                               df$logFC < -log2FC ~ "Down-regulated",
-                                               df$logFC > log2FC ~ "Up-regulated"
-                                               )
-    )
-  
-  volcanoP <- ggplot2::ggplot(data = df, ggplot2::aes(x = logFC, y = -log10(pvalue), colour = threshold, label = names)) +
-    ggplot2::geom_point(size = 1.75) +
-    ggplot2::xlim(c(-(xlim), xlim)) +
-    ggplot2::labs(x = "log2 Fold Change",
-                  y = "-log10 (p-value)",
-                  title = paste0(names(table(SummarizedExperiment::colData(data)[,1]))[2], "/", 
-                                 names(table(SummarizedExperiment::colData(data)[,1]))[1])) +
-    ggplot2::geom_vline(xintercept = c(-log2FC, log2FC), colour = "orange", linetype = "dashed") +
-    ggplot2::geom_hline(yintercept = -log10(pval_cutoff), colour = "orange", linetype = "dashed") +
-    {if(labels)ggrepel::geom_text_repel(data = df[df$pvalue < pval_cutoff & (df$logFC > log2FC | df$logFC < -log2FC),],
-                                         ggplot2::aes(x = logFC, y = -log10(pvalue), label = names), show.legend = FALSE)} +
-    ggplot2::scale_color_manual(values = c("Down-regulated" = "#E64B35FF",
-                                           "Up-regulated" = "#4DBBD5FF",
-                                           "None" = "#636363")) +
-    do.call(theme_poma, theme_params)
 
-  if(interactive) {
-    if(!(requireNamespace("plotly", character.only = TRUE))){
-      warning("Package 'plotly' is required for an interactive volcano plot\nUse 'install.packages('plotly')'")
-    } else {
-      volcanoP <- plotly::ggplotly(volcanoP)
-      }
-    }
-
-  return(volcanoP)
+  if (is.null(log2fc_cutoff)) {
+    log2fc_cutoff <- quantile(abs(volcano_res$logFC), 0.75) 
+  }
+  
+  plot_complete <- volcano_res %>% 
+    ggplot2::ggplot(ggplot2::aes(logFC, -log10(pvalue), label = feature)) +
+    ggplot2::geom_point(fill = "gray", size = 3, pch = 21, alpha = 0.6) +
+    ggplot2::geom_point(data = volcano_res[volcano_res$pvalue < pval_cutoff & abs(volcano_res$logFC) > log2fc_cutoff ,], fill = "red", size = 3, pch = 21,) +
+    {if(labels) ggrepel::geom_label_repel(data = volcano_res[volcano_res$pvalue < pval_cutoff & abs(volcano_res$logFC) > log2fc_cutoff ,], color = "black", size = 4)} +
+    ggplot2::geom_vline(xintercept = c(-log2fc_cutoff, log2fc_cutoff), linetype = "dashed", color = "orange") +
+    ggplot2::geom_hline(yintercept = -log10(pval_cutoff), linetype = "dashed", color = "orange") +
+    ggplot2::labs(x = "log2 (Fold Change)",
+                  y = ifelse(pval == "raw", "-log10 (P-value)", "-log10 (Adjusted P-value)")) +
+    theme_poma()
+  
+  return(plot_complete)
   
 }
 

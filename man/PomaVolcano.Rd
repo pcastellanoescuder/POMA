@@ -10,64 +10,52 @@ PomaVolcano(
   pval = "raw",
   pval_cutoff = 0.05,
   adjust = "fdr",
-  log2FC = 1,
-  xlim = 2,
+  log2fc_cutoff = NULL,
   labels = FALSE,
   paired = FALSE,
   var_equal = FALSE,
-  interactive = FALSE,
-  theme_params = list(legend_title = FALSE),
   ...
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{method}{Statistical method to compute p-values and log2FC. Options are "ttest", "limma", and "DESeq".}
+\item{method}{Character. Indicates the statistical method to use. Options are "ttest", "mann", "limma", and "DESeq".}
 
-\item{pval}{Select a pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".}
+\item{pval}{Character. Indicates the pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".}
 
-\item{pval_cutoff}{Numeric. Define the pvalue cutoff (horizontal line).}
+\item{pval_cutoff}{Numeric. Indicated the pvalue cutoff (horizontal line).}
 
-\item{adjust}{Multiple comparisons correction method for t test result. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
+\item{adjust}{Character, Indicates the multiple correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 
-\item{log2FC}{Numeric. Define the log2 fold change cutoff (vertical lines).}
+\item{log2fc_cutoff}{Numeric. Indicates the log2 fold change cutoff (vertical lines).}
 
-\item{xlim}{Numeric. Define the limits for x axis.}
+\item{labels}{Logical. Indicates if significant labels should be plotted. Defaul is FALSE.}
 
-\item{labels}{Logical that indicates if selected labels will be plotted or not. Defaul is FALSE.}
+\item{paired}{Logical. Indicates if the data is paired or not. Default is FALSE.}
 
-\item{paired}{Only if method == "ttest". Logical that indicates if the data is paired or not.}
-
-\item{var_equal}{Only if method == "ttest". Logical that indicates if the data variance is equal or not.}
-
-\item{interactive}{Logical that indicates if an interactive plot will be plotted or not. Defaul is FALSE.}
-
-\item{theme_params}{List indicating \code{theme_poma} parameters.}
+\item{var_equal}{Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.}
 }
 \value{
-A ggplot2 object.
+A \code{ggplot} object.
 }
 \description{
-PomaVolcano() generates a volcano plot. Data should not contain negative values.
+\code{PomaVolcano} generates a volcano plot. Data should not contain negative values.
 }
 \examples{
 data("st000336")
-data("st000284")
 
 st000336 \%>\% 
   PomaImpute() \%>\%
   PomaVolcano()
   
-st000284_sub <- st000284[, st000284@colData$factors \%in\% c("CRC", "Healthy")] # select two groups
-
-st000284_sub \%>\% 
-  PomaVolcano(method = "ttest")
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaVolcano(labels = TRUE)
   
-SummarizedExperiment::assay(st000284_sub) <- floor(SummarizedExperiment::assay(st000284_sub)) # convert all values to integers
-
-st000284_sub \%>\% 
-  PomaVolcano(method = "DESeq")
+st000336 \%>\% 
+  PomaImpute() \%>\%
+  PomaVolcano(labels = TRUE, pval = "adjusted")
 }
 \author{
 Pol Castellano-Escuder
