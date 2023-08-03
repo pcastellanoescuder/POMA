@@ -20,9 +20,9 @@ test_that("PomaRandForest works", {
 
   expect_error(PomaRandForest())
   expect_error(PomaRandForest(iris))
-  expect_true(length(res) == 11)
+  expect_true(length(res) == 10)
   expect_false(length(res) == length(res2))
-  expect_true(length(res2) == 6)
+  expect_true(length(res2) == 5)
   
   expect_false(all(df_a$y == df_c$y))
   expect_false(length(df_b$y) == length(df_d$y))

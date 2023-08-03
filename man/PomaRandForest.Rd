@@ -14,23 +14,23 @@ PomaRandForest(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).}
+\item{ntest}{Numeric. Indicates the percentage of observations that will be used as test set. Default is NULL (no test set).}
 
-\item{ntree}{Number of trees to grow.}
+\item{ntree}{Numeric. Indicates the number of trees to grow.}
 
-\item{mtry}{Number of variables randomly sampled as candidates at each split. This value is set sqrt(p) (where p is number of variables in data) by default.}
+\item{mtry}{Numeric. Indicates the number of variables randomly sampled as candidates at each split. This value is set sqrt(p) (where p is number of variables in data) by default.}
 
-\item{nodesize}{Minimum size of terminal nodes. By default is equal to 1.}
+\item{nodesize}{Numeric. Indicates the minimum size of terminal nodes. Default is 1.}
 
-\item{nvar}{Number of variables to show in the Gini plot.}
+\item{nvar}{Numeric. Indicates the number of variables to show in the Gini Index plot.}
 }
 \value{
-A list with all results for Random Forest including plots and tables.
+A \code{list} with results including plots and tables.
 }
 \description{
-PomaRandForest() allows users to perform a classification Random Forest using the classical \code{randomForest} R package.
+\code{PomaRandForest} performs classification random forest. This method can be used both for prediction and variable selection.
 }
 \examples{
 data("st000336")
