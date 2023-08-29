@@ -1,10 +1,10 @@
 
 #' Differential Expression Analysis Based on the Negative Binomial Distribution
 #'
-#' @description `PomaDESeq` is a `DESeq2` package wrapper to estimate variance-mean dependence in count data from high-throughput sequencing assays and test for differential expression based on a model using the negative binomial distribution.
+#' @description `PomaDESeq` estimates variance-mean dependence in count data from high-throughput sequencing assays and test for differential expression based on a model using the negative binomial distribution.
 #'
 #' @param data A `SummarizedExperiment` object.
-#' @param adjust Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", and "BY".
+#' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
 #' 
 #' @export
 #'
@@ -13,20 +13,10 @@
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%
-#' 
-#' @examples
-#' data("st000284")
-#' 
-#' st000284_sub <- st000284[, st000284@colData$factors %in% c("CRC", "Healthy")] # select two groups
-#' 
-#' SummarizedExperiment::assay(st000284_sub) <- floor(SummarizedExperiment::assay(st000284_sub)) # convert all values to integers
-#' 
-#' st000284_sub %>% 
-#'   PomaDESeq()
 PomaDESeq <- function(data,
                       adjust = "fdr") {
   
-  if(!is(data, "SummarizedExperiment")){
+  if (!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
   if (ncol(SummarizedExperiment::colData(data)) == 0) {
@@ -42,12 +32,12 @@ PomaDESeq <- function(data,
     tibble::rownames_to_column("sample_id") %>% 
     dplyr::rename(condition = 2)
   
-  dds <- DESeq2::DESeqDataSetFromMatrix(countData = counts,
-                                        colData = coldata,
-                                        design = ~ condition
-                                        )
+  deseq_object <- DESeq2::DESeqDataSetFromMatrix(countData = counts,
+                                                 colData = coldata,
+                                                 design = ~ condition
+                                                 )
 
-  res_df <- dds %>% 
+  res_df <- deseq_object %>% 
     DESeq2::DESeq() %>% 
     DESeq2::results(pAdjustMethod = adjust) %>% 
     dplyr::as_tibble(rownames = "feature") %>% 
