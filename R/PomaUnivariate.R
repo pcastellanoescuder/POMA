@@ -12,7 +12,7 @@
 #'
 #' @export
 #'
-#' @return A `tibble` with the results.
+#' @return A `list` with the results.
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%
@@ -116,7 +116,7 @@ PomaUnivariate <- function(data,
       dplyr::arrange(pvalue) %>% 
       dplyr::as_tibble()
 
-    return(result)
+    return(list(result = result))
   }
 
   else if (method == "anova") {
@@ -211,7 +211,7 @@ PomaUnivariate <- function(data,
         dplyr::as_tibble()
     })
     
-    return(result)
+    return(list(result = result))
   }
 
   else if (method == "kruskal") {
