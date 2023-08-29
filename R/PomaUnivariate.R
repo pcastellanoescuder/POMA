@@ -132,7 +132,19 @@ PomaUnivariate <- function(data,
         dplyr::select(feature, pvalue, adj_pvalue, dplyr::everything()) %>% 
         dplyr::as_tibble()
 
-      return(res_aov)
+      # Post-hoc tests
+      post_hoc_tests <- list()
+      for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+        post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
+                                             broom::tidy(TukeyHSD(aov(to_univariate[,i] ~ group_factor)))[,c(2, 7)])
+      }
+  
+      post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>% 
+        dplyr::rename(adj_pvalue = adj.p.value) %>% 
+        dplyr::arrange(adj_pvalue)
+      
+      return(list(res_aov = res_aov, 
+                  post_hoc_tests = post_hoc_tests))
 
     } else {
       covariates <- covariates %>%
@@ -160,8 +172,24 @@ PomaUnivariate <- function(data,
         dplyr::bind_cols(group_means, group_sd) %>% 
         dplyr::select(feature, dplyr::everything()) %>% 
         dplyr::as_tibble()
-
-      return(res_aov_cov)
+      
+      # Post-hoc tests
+      post_hoc_tests <- list()
+      for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+        post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
+                                             as.data.frame(TukeyHSD(
+                                               aov(as.formula(paste(colnames(covariates_feat)[1], "~", model_names)),
+                                                   data = covariates_feat))$group_factor) %>% 
+                                               tibble::rownames_to_column("contrast") %>% 
+                                               dplyr::select(contrast, adj_pvalue = `p adj`)
+                                             )
+      }
+      
+      post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>%
+        dplyr::arrange(adj_pvalue)
+      
+      return(list(res_aov_cov = res_aov_cov, 
+                  post_hoc_tests = post_hoc_tests))
     }
   }
 
@@ -197,7 +225,22 @@ PomaUnivariate <- function(data,
       dplyr::arrange(pvalue) %>% 
       dplyr::as_tibble()
 
-    return(res_kruskal)
+    # Post-hoc tests
+    post_hoc_tests <- list()
+    for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+      post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i],
+                                           FSA::dunnTest(to_univariate[,i] ~ group_factor,
+                                                         data = as.data.frame(to_univariate))$res
+                                           )
+    }
+    
+    post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>%
+      dplyr::select(feature, contrast = Comparison, adj_pvalue = P.adj) %>%
+      dplyr::mutate(contrast = gsub(" ", "", contrast)) %>% 
+      dplyr::arrange(adj_pvalue)
+    
+    return(list(res_kruskal = res_kruskal, 
+                post_hoc_tests = post_hoc_tests))
   }
 }
 

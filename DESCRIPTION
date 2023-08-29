@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.8.25
+Version: 1.8.26
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -40,6 +40,7 @@ Imports:
     dbscan,
     dplyr,
     DESeq2,
+    FSA,
     ggplot2,
     ggrepel,
     glasso (>= 1.11),
