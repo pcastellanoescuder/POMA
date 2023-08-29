@@ -103,10 +103,10 @@ PomaUnivariate <- function(data,
       stop("Grouping factor must have exactly 2 levels (first column of the metadata file)")
     }
 
-    res_ttest <- data.frame(pvalue = apply(to_univariate, 2, function(x){t.test(x ~ group_factor, na.rm = TRUE, 
-                                                                                alternative = "two.sided",
-                                                                                var.equal = var_equal, 
-                                                                                paired = paired)$p.value})) %>% 
+    result <- data.frame(pvalue = apply(to_univariate, 2, function(x){t.test(x ~ group_factor, na.rm = TRUE, 
+                                                                             alternative = "two.sided",
+                                                                             var.equal = var_equal, 
+                                                                             paired = paired)$p.value})) %>% 
       tibble::rownames_to_column("feature") %>%
       dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
       dplyr::bind_cols(group_means, group_sd) %>%
@@ -116,7 +116,7 @@ PomaUnivariate <- function(data,
       dplyr::arrange(pvalue) %>% 
       dplyr::as_tibble()
 
-    return(res_ttest)
+    return(result)
   }
 
   else if (method == "anova") {
@@ -143,7 +143,7 @@ PomaUnivariate <- function(data,
         dplyr::rename(adj_pvalue = adj.p.value) %>% 
         dplyr::arrange(adj_pvalue)
       
-      return(list(res_aov = res_aov, 
+      return(list(result = res_aov, 
                   post_hoc_tests = post_hoc_tests))
 
     } else {
@@ -188,7 +188,7 @@ PomaUnivariate <- function(data,
       post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>%
         dplyr::arrange(adj_pvalue)
       
-      return(list(res_aov_cov = res_aov_cov, 
+      return(list(result = res_aov_cov, 
                   post_hoc_tests = post_hoc_tests))
     }
   }
@@ -199,8 +199,8 @@ PomaUnivariate <- function(data,
     }
 
     suppressWarnings({
-      res_mann <- data.frame(pvalue = apply(to_univariate, 2, function(x){wilcox.test(x ~ as.factor(group_factor),
-                                                                                      paired = paired)$p.value})) %>% 
+      result <- data.frame(pvalue = apply(to_univariate, 2, function(x){wilcox.test(x ~ as.factor(group_factor),
+                                                                                    paired = paired)$p.value})) %>% 
         tibble::rownames_to_column("feature") %>%
         dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
         dplyr::bind_cols(group_means, group_sd) %>%
@@ -211,7 +211,7 @@ PomaUnivariate <- function(data,
         dplyr::as_tibble()
     })
     
-    return(res_mann)
+    return(result)
   }
 
   else if (method == "kruskal") {
@@ -239,7 +239,7 @@ PomaUnivariate <- function(data,
       dplyr::mutate(contrast = gsub(" ", "", contrast)) %>% 
       dplyr::arrange(adj_pvalue)
     
-    return(list(res_kruskal = res_kruskal, 
+    return(list(result = res_kruskal, 
                 post_hoc_tests = post_hoc_tests))
   }
 }
