@@ -61,11 +61,13 @@ PomaVolcano <- function(data,
   if (method == "ttest") {
     volcano_res <- data %>% 
       PomaUnivariate(method = "ttest", adjust = adjust, paired = paired, var_equal = var_equal) %>%
+      magrittr::extract2("result") %>% 
       dplyr::mutate(logFC = log2(fold_change))
   }
   else if (method == "mann") {
     volcano_res <- data %>% 
       PomaUnivariate(method = "mann", adjust = adjust, paired = paired, var_equal = var_equal) %>%
+      magrittr::extract2("result") %>% 
       dplyr::mutate(logFC = log2(fold_change))
   }
   else if (method == "limma") {
