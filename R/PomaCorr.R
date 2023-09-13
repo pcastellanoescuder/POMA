@@ -69,7 +69,7 @@ PomaCorr <- function(data,
                      corr_type = "cor",
                      coeff = 0.7,
                      theme_params = list(),
-                     ...){
+                     ...) {
   
   if (missing(data)) {
     stop("data argument is empty!")
@@ -87,10 +87,10 @@ PomaCorr <- function(data,
     stop("Incorrect value for method argument!")
   }
   
-  e <- t(SummarizedExperiment::assay(data))
+  to_correlation <- t(SummarizedExperiment::assay(data))
   
-  cor_matrix <- cor(e, method = method)
-  cor_pval <- cor_pmat(e, method = method)
+  cor_matrix <- cor(to_correlation, method = method)
+  cor_pval <- cor_pmat(to_correlation, method = method)
   
   correlations <- flattenCorrMatrix(cor_matrix, cor_pval) %>% 
     dplyr::rename(feature1 = row, feature2 = column, corr = cor, pvalue = p) %>% 
