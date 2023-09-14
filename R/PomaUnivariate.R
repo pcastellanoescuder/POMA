@@ -99,7 +99,7 @@ PomaUnivariate <- function(data,
     dplyr::rename_all(~ paste0("sd_", .))
   
   if (method == "ttest") {
-    if (length(table(SummarizedExperiment::colData(data)[,1])) != 2) {
+    if (length(table(group_factor)[table(group_factor) != 0]) != 2) {
       stop("Grouping factor must have exactly 2 levels (first column of the metadata file)")
     }
 
@@ -194,7 +194,7 @@ PomaUnivariate <- function(data,
   }
 
   else if (method == "mann") {
-    if (length(table(SummarizedExperiment::colData(data)[,1])) != 2) {
+    if (length(table(group_factor)[table(group_factor) != 0]) != 2) {
       stop("Grouping factor must have exactly 2 levels (first column of the metadata file)")
     }
 

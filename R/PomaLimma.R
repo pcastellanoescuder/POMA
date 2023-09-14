@@ -29,9 +29,6 @@ PomaLimma <- function(data,
                       adjust = "fdr",
                       weights = FALSE) {
 
-  if (missing(data)) {
-    stop("data argument is empty!")
-  }
   if (!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }

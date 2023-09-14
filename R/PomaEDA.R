@@ -3,7 +3,7 @@
 #'
 #' @description This function automatically generates a HTML report with different exploratory plots and tables from an `SummarizedExperiment` object.
 #'
-#' @param data A SummarizedExperiment object.
+#' @param data A `SummarizedExperiment` object.
 #' @param imputation Imputation method. See `?POMA::PomaImpute()`.
 #' @param normalization Normalization method. See `?POMA::PomaNorm()`.
 #' @param clean_outliers Logical. If it's set to TRUE, outliers will be removed from EDA.
@@ -22,6 +22,8 @@ PomaEDA <- function(data, # nocov start
                     coeff_outliers = 1.5,
                     username = NULL,
                     institution = NULL){
+  
+  .Deprecated(new = return(NULL), msg = "This function has been deprecated")
   
   if (missing(data)) {
     stop("data argument is empty!")

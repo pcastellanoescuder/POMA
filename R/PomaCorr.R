@@ -65,7 +65,7 @@ flattenCorrMatrix <- function(cormat, pmat) {
 #' # PomaCorr(st000284, corr_type = "glasso")
 PomaCorr <- function(data,
                      method = "pearson",
-                     label_size = 2,
+                     label_size = 8,
                      theme_params = list(),
                      ...) {
   

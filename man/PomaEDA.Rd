@@ -15,7 +15,7 @@ PomaEDA(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
 \item{imputation}{Imputation method. See \code{?POMA::PomaImpute()}.}
 

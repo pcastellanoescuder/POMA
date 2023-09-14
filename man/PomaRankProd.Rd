@@ -2,35 +2,26 @@
 % Please edit documentation in R/PomaRankProd.R
 \name{PomaRankProd}
 \alias{PomaRankProd}
-\title{Rank Product/Rank Sum Analysis for Mass Spectrometry Data}
+\title{Rank Product/Rank Sum Analysis}
 \usage{
-PomaRankProd(
-  data,
-  logged = TRUE,
-  logbase = 2,
-  paired = NA,
-  cutoff = 0.05,
-  method = "pfp"
-)
+PomaRankProd(data, logged = TRUE, paired = NA, cutoff = 0.05, method = "pfp")
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{logged}{If "TRUE" (default) data have been previously log transformed.}
+\item{logged}{Logical. Indicates if data should be log transformed first.}
 
-\item{logbase}{Numerical. Base for log transformation.}
+\item{paired}{Numeric. Indicates the number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.}
 
-\item{paired}{Number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.}
+\item{cutoff}{Numeric. Indicates the pfp/pvalue threshold value used to select features.}
 
-\item{cutoff}{The pfp/pvalue threshold value used to select features.}
-
-\item{method}{If cutoff is provided, the method needs to be selected to identify features. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.}
+\item{method}{Character. Indicates the method to identify features. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.}
 }
 \value{
-A list with all results for Rank Product analysis including tables and plots.
+A \code{list} with results including plots and tables.
 }
 \description{
-PomaRankProd() performs the Rank Product method to identify differential feature concentration/intensity.
+\code{PomaRankProd} performs the Rank Product (or Rank Sum) method to identify differentially expressed genes.
 }
 \examples{
 data("st000336")
