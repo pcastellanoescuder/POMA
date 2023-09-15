@@ -2,35 +2,32 @@
 % Please edit documentation in R/PomaOutliers.R
 \name{PomaOutliers}
 \alias{PomaOutliers}
-\title{Remove and Analyze Outliers}
+\title{Analyse and Remove Statistical Outliers}
 \usage{
 PomaOutliers(
   data,
-  do = "clean",
   method = "euclidean",
   type = "median",
-  coef = 1.5,
+  coef = 2,
   labels = FALSE
 )
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}
 
-\item{do}{Action to do. Options are "clean" (to remove detected outliers) and "analyze" (to analyze data outliers). Note that the output of this function will be different depending on this parameter.}
+\item{method}{Character. Indicates the distance measure method to perform MDS.}
 
-\item{method}{Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See \code{?dist()}.}
+\item{type}{Character. Indicates the type of outlier analysis to perform. Options are "median" (default) and "centroid". See \code{vegan::betadisper}.}
 
-\item{type}{Type of outliers analysis to perform. Options are "median" (default) and "centroid". See \code{vegan::betadisper}.}
+\item{coef}{Numeric. Indicates the outlier coefficient. Lower values are more sensitive to outliers while higher values are less restrictive about outliers.}
 
-\item{coef}{This value corresponds to the classical 1.5 in \eqn{Q3 + 1.5*IQR} formula to detect outliers. By changing this value, the permissiveness in outlier detection will change.}
-
-\item{labels}{Logical indicating if sample IDs should to be plotted or not.}
+\item{labels}{Logical. Indicates if sample names should to be plotted.}
 }
 \value{
-A SummarizedExperiment object without outliers OR an exploratory outlier analysis including both plots and tables (depending on "do" parameter).
+A \code{list} with the results.
 }
 \description{
-This function allows users to analyze outliers by different plots and remove them from an SummarizedExperiment object.
+\code{PomaOutliers} analyses and removes statistical outliers from the data.
 }
 \examples{
 data("st000336")
@@ -40,12 +37,6 @@ st000336 \%>\%
   PomaImpute() \%>\%
   PomaNorm() \%>\%
   PomaOutliers()
-
-# analyze outliers
-st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaOutliers(do = "analyze")
 }
 \author{
 Pol Castellano-Escuder
