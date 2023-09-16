@@ -3,7 +3,7 @@
 #'
 #' @description PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.
 #'
-#' @param data A SummarizedExperiment object.
+#' @param data A `SummarizedExperiment` object.
 #' @param feature_name A vector with the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.
 #' @param covariates Logical that indicates if covariates will be included in logistic regression model. Default is `FALSE`.
 #' @param covs Character vector indicating the name of `colData` columns that will be included as covariates. Default is NULL (all variables).

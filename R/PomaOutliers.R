@@ -89,7 +89,8 @@ PomaOutliers <- function(data,
     ggplot2::geom_boxplot(coef = coef, alpha = 0.6) +
     ggplot2::labs(x = NULL,
                   y = "Distance to group centroid") + 
-    {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], ggplot2::aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
+    {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], 
+                                         ggplot2::aes(label = sample), na.rm = TRUE, size = 4, show.legend = FALSE)} +
     theme_poma(legend_title = FALSE) +
     scale_fill_poma_d()
   
