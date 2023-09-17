@@ -75,7 +75,7 @@ PomaUnivariate <- function(data,
   group_factor <- SummarizedExperiment::colData(data)[,1]
   to_univariate <- t(SummarizedExperiment::assay(data))
 
-  # group mean and sd
+  # group mean and SD
   group_means <- to_univariate %>%
     as.data.frame() %>% 
     dplyr::mutate(group = group_factor) %>%
