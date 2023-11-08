@@ -8,14 +8,16 @@ quantile_norm <- function(data) {
   df_rank <- apply(data, 1, dplyr::dense_rank)
   df_sorted <- data.frame(apply(data, 1, sort))
   df_mean <- apply(df_sorted, 2, mean)
-  
+
   index_to_mean <- function(my_index, my_mean){
     return(my_mean[my_index])
   }
+
+  normalized_data <- apply(df_rank, 1, index_to_mean, my_mean = df_mean)
+  rownames(normalized_data) <- rownames(data)
+  colnames(normalized_data) <- colnames(data)
   
-  df_final <- apply(df_rank, 1, index_to_mean, my_mean = df_mean)
-  rownames(df_final) <- rownames(data)
-  return(df_final)
+  return(normalized_data)
 }
 
 #' Sample Sum Normalization
