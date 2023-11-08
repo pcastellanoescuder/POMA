@@ -40,7 +40,12 @@ PomaOutliers <- function(data,
     stop("Incorrect value for type argument")
   }
   
-  group_factor <- SummarizedExperiment::colData(data)[,1]
+  if (ncol(SummarizedExperiment::colData(data)) > 0) {
+    group_factor <- SummarizedExperiment::colData(data)[,1]
+  } else {
+    group_factor <- rep("All Samples", ncol(SummarizedExperiment::assay(data)))
+  }
+  
   to_outliers <- t(SummarizedExperiment::assay(data))
   
   dd <- stats::dist(to_outliers, method = method)
