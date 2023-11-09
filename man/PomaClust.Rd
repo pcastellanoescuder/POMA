@@ -10,30 +10,27 @@ PomaClust(
   k = NA,
   k_max = 15,
   show_clusters = TRUE,
-  labels = FALSE,
-  show_group = FALSE
+  labels = FALSE
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{method}{Distance measure method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See \code{?dist()}.}
+\item{method}{Character. Indicates the distance method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See \code{?dist()}.}
 
-\item{k}{Number of clusters (default is \code{NA}). The optimum number of clusters will be used by default.}
+\item{k}{Numeric. Indicates the number of clusters (default is \code{NA}). The optimal number of clusters will be used by default.}
 
-\item{k_max}{Number of clusters among which the optimal one will be selected.}
+\item{k_max}{Numeric. Indicates the number of clusters among which the optimal one will be selected.}
 
-\item{show_clusters}{Logical indicating if clusters should be plotted or not. If this parameter is set to \code{FALSE} the resultant plot will be a classical 2-dimension MDS plot.}
+\item{show_clusters}{Logical. Indicates if clusters should be plotted or not.}
 
-\item{labels}{Logical indicating if sample names should be plotted or not.}
-
-\item{show_group}{Logical indicating if the original sample group from target should be plotted instead of sample ID or not. Only works if labels is set to \code{TRUE}.}
+\item{labels}{Logical. Indicates if sample names should be plotted or not.}
 }
 \value{
-A list with the results.
+A \code{list} with results including plots and tables.
 }
 \description{
-This function performs a classical multidimensional scaling (MDS) using all features in the data and computes a cluster analysis for \code{k} clusters. Then, the calculated clusters will be represented on a MDS plot.
+\code{PomaClust} performs a k-means clustering and plots the results in a classical multidimensional scaling (MDS) plot.
 }
 \examples{
 data("st000284")
