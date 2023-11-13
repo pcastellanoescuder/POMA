@@ -95,7 +95,7 @@ PomaVolcano <- function(data,
   
   plot_complete <- volcano_res %>% 
     ggplot2::ggplot(ggplot2::aes(logFC, -log10(pvalue), label = feature)) +
-    ggplot2::geom_point(fill = "gray", size = 3, pch = 21, alpha = 0.6) +
+    ggplot2::geom_point(fill = "gray", size = 3, pch = 21, alpha = 0.8) +
     ggplot2::geom_point(data = volcano_res[volcano_res$pvalue < pval_cutoff & abs(volcano_res$logFC) > log2fc_cutoff ,], fill = "red", size = 3, pch = 21,) +
     {if(labels) ggrepel::geom_label_repel(data = volcano_res[volcano_res$pvalue < pval_cutoff & abs(volcano_res$logFC) > log2fc_cutoff ,], color = "black", size = 4)} +
     ggplot2::geom_vline(xintercept = c(-log2fc_cutoff, log2fc_cutoff), linetype = "dashed", color = "orange") +

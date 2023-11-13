@@ -4,30 +4,22 @@
 \alias{PomaOddsRatio}
 \title{Logistic Regression Model Odds Ratios}
 \usage{
-PomaOddsRatio(
-  data,
-  feature_name = NULL,
-  covariates = FALSE,
-  covs = NULL,
-  showCI = TRUE
-)
+PomaOddsRatio(data, feature_name = NULL, covs = NULL, show_ci = TRUE)
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}
 
-\item{feature_name}{A vector with the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.}
+\item{feature_name}{Character vector. Indicates the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.}
 
-\item{covariates}{Logical that indicates if covariates will be included in logistic regression model. Default is \code{FALSE}.}
+\item{covs}{Character vector. Indicates the names of \code{colData} columns to be included as covariates. Default is NULL (no covariates).}
 
-\item{covs}{Character vector indicating the name of \code{colData} columns that will be included as covariates. Default is NULL (all variables).}
-
-\item{showCI}{Logical that indicates if the 95\% confidence intervals will be plotted. Default is \code{TRUE}.}
+\item{show_ci}{Logical. Indicates if the 95\% confidence intervals will be plotted. Default is \code{TRUE}.}
 }
 \value{
-A tibble with the Odds Ratios for all features with their 95\% confidence intervals and a ggplot2 object.
+A \code{list} with results including plots and tables.
 }
 \description{
-PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.
+\code{PomaOddsRatio} calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.
 }
 \examples{
 data("st000336")
@@ -35,8 +27,7 @@ data("st000336")
 st000336 \%>\% 
   PomaImpute() \%>\%
   PomaNorm() \%>\%
-  PomaOddsRatio(feature_name = c("glutamic_acid", "glutamine", 
-                                 "glycine", "histidine"))
+  PomaOddsRatio(feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine"))
 }
 \author{
 Pol Castellano-Escuder

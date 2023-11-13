@@ -81,7 +81,7 @@ PomaClust <- function(data,
   if (!show_clusters) {
     
     mds_plot <- ggplot2::ggplot(mds_data, ggplot2::aes(x = Dim1, y = Dim2)) +
-      {if(!labels)ggplot2::geom_point(pch = 21, size = 3, alpha = 0.6)} +
+      {if(!labels)ggplot2::geom_point(pch = 21, size = 3, alpha = 0.8)} +
       ggplot2::labs(x = "Dimension 1",
                     y = "Dimension 2") +
       {if(labels)ggplot2::geom_text(ggplot2::aes(label = sample))} +
@@ -92,7 +92,7 @@ PomaClust <- function(data,
     small <- nrow(to_clust) < 500
       
     mds_plot <- ggplot2::ggplot(mds_data, ggplot2::aes(x = Dim1, y = Dim2, fill = clust)) +
-      ggplot2::geom_point(pch = 21, size = 3, alpha = 0.6) +
+      ggplot2::geom_point(pch = 21, size = 3, alpha = 0.8) +
       ggplot2::labs(x = "Dimension 1",
                     y = "Dimension 2",
                     fill = "Cluster") +

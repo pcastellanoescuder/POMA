@@ -111,7 +111,7 @@ PomaPLS <- function(data,
     
     # factors plot
     factors_plot <- ggplot2::ggplot(pls_res_df, ggplot2::aes(x = comp1, y = comp2))+
-      {if(!labels)ggplot2::geom_point(ggplot2::aes(fill = y), size = 3, alpha = 0.6, pch = 21)} +
+      {if(!labels)ggplot2::geom_point(ggplot2::aes(fill = y), size = 3, alpha = 0.8, pch = 21)} +
       ggplot2::labs(x = "Component 1",
                     y = "Component 2",
                     fill = "Dependent\nvariable (Y)",
@@ -177,7 +177,7 @@ PomaPLS <- function(data,
    
     # factors plot
     factors_plot <- ggplot2::ggplot(plsda_res_df, ggplot2::aes(x = comp1, y = comp2))+
-      {if(!labels)ggplot2::geom_point(ggplot2::aes(fill = y), size = 3, alpha = 0.6, pch = 21)} +
+      {if(!labels)ggplot2::geom_point(ggplot2::aes(fill = y), size = 3, alpha = 0.8, pch = 21)} +
       ggplot2::labs(x = "Component 1",
                     y = "Component 2",
                     fill = "Dependent\nvariable (Y)",
@@ -228,7 +228,7 @@ PomaPLS <- function(data,
       # errors plot
       errors_plsda_plot <- ggplot2::ggplot(data = errors_plsda, ggplot2::aes(x = component, y = value)) +
         ggplot2::geom_line(ggplot2::aes(color = name, group = name), show.legend = FALSE) +
-        ggplot2::geom_point(ggplot2::aes(fill = name), size = 3, alpha = 0.6, pch = 21) +
+        ggplot2::geom_point(ggplot2::aes(fill = name), size = 3, alpha = 0.8, pch = 21) +
         ggplot2::labs(x = "Component",
                       y = "Error",
                       fill = "Error\nType") +
@@ -289,7 +289,7 @@ PomaPLS <- function(data,
     
     # factors plot
     factors_plot <- ggplot2::ggplot(splsda_res_df, ggplot2::aes(x = comp1, y = comp2))+
-      {if(!labels)ggplot2::geom_point(ggplot2::aes(fill = y), size = 3, alpha = 0.6, pch = 21)} +
+      {if(!labels)ggplot2::geom_point(ggplot2::aes(fill = y), size = 3, alpha = 0.8, pch = 21)} +
       ggplot2::labs(x = "Component 1",
                     y = "Component 2",
                     fill = "Dependent\nvariable (Y)",
@@ -340,7 +340,7 @@ PomaPLS <- function(data,
       # errors plot
       errors_splsda_plot <- ggplot2::ggplot(errors_splsda, ggplot2::aes(x = as.factor(as.numeric(feature)), y = value)) +
         ggplot2::geom_line(ggplot2::aes(color = name, group = name), show.legend = FALSE) +
-        ggplot2::geom_point(ggplot2::aes(fill = name), size = 3, alpha = 0.6, pch = 21) +
+        ggplot2::geom_point(ggplot2::aes(fill = name), size = 3, alpha = 0.8, pch = 21) +
         ggplot2::geom_errorbar(ggplot2::aes(ymin = value - sd, ymax = value + sd, color = name), width = 0.1, show.legend = FALSE) +
         ggplot2::labs(x = "# Features",
                       y = "Error",

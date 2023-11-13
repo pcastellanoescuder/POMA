@@ -59,8 +59,8 @@ PomaPCA <- function(data,
   
   # factors plot
   factors_plot <- ggplot2::ggplot(pca_res_df, ggplot2::aes(x = PC1, y = PC2)) +
-    {if(grouping_factor & !labels)ggplot2::geom_point(ggplot2::aes(fill = group), pch = 21, size = 3, alpha = 0.6)} +
-    {if(!grouping_factor & !labels)ggplot2::geom_point(pch = 21, size = 3, alpha = 0.6)} +
+    {if(grouping_factor & !labels)ggplot2::geom_point(ggplot2::aes(fill = group), pch = 21, size = 3, alpha = 0.8)} +
+    {if(!grouping_factor & !labels)ggplot2::geom_point(pch = 21, size = 3, alpha = 0.8)} +
     ggplot2::labs(x = paste0("PC1 (", round(100*(((pca_res$sdev^2)[1]) / sum(pca_res$sdev^2)), 2), "%)"),
                   y = paste0("PC2 (", round(100*(((pca_res$sdev^2)[2]) / sum(pca_res$sdev^2)), 2), "%)"),
                   fill = NULL,

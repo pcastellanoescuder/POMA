@@ -80,7 +80,7 @@ PomaOutliers <- function(data,
   
   polygon_plot <- ggplot2::ggplot(total_outliers, ggplot2::aes(x = PCoA1, y = PCoA2)) +
     ggplot2::geom_polygon(data = hulls, alpha = 0.4, ggplot2::aes(fill = group)) +
-    {if(!labels)ggplot2::geom_point(ggplot2::aes(fill = group), size = 3, alpha = 0.6, pch = 21)} +
+    {if(!labels)ggplot2::geom_point(ggplot2::aes(fill = group), size = 3, alpha = 0.8, pch = 21)} +
     ggplot2::geom_label(data = centroids, ggplot2::aes(x = PCoA1, y = PCoA2, color = rownames(centroids), 
                                                        label = rownames(centroids)), show.legend = FALSE) +
     {if(labels)ggplot2::geom_text(ggplot2::aes(label = sample))} +
@@ -91,7 +91,7 @@ PomaOutliers <- function(data,
     scale_color_poma_d()
   
   distance_boxplot <- ggplot2::ggplot(detect_outliers, ggplot2::aes(groups, distances, fill = groups)) +
-    ggplot2::geom_boxplot(coef = coef, alpha = 0.6) +
+    ggplot2::geom_boxplot(coef = coef, alpha = 0.8) +
     ggplot2::labs(x = NULL,
                   y = "Distance to group centroid") + 
     {if(labels)ggrepel::geom_label_repel(data = detect_outliers[detect_outliers$out == 1,], 
