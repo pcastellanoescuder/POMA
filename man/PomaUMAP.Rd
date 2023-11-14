@@ -15,6 +15,7 @@ PomaUMAP(
   hdbscan_minpts = floor(nrow(data) * 0.05),
   show_clusters = TRUE,
   hide_noise = TRUE,
+  labels = FALSE,
   theme_params = list(legend_title = TRUE, legend_position = "bottom")
 )
 }
@@ -38,6 +39,8 @@ PomaUMAP(
 \item{show_clusters}{Logical. Indicates if clusters computed with HDBSCAN method should be plotted or not.}
 
 \item{hide_noise}{Logical. Specifies whether to hide Cluster 0 in the plot. In HDBSCAN, Cluster 0 is typically regarded as "noise."}
+
+\item{labels}{Logical. Indicates if sample names should be plotted or not.}
 
 \item{theme_params}{List. Indicates \code{theme_poma} parameters.}
 }

@@ -13,6 +13,7 @@
 #' @param hdbscan_minpts Numeric. Indicates the minimum size of clusters. See `?dbscan::hdbscan()`.
 #' @param show_clusters Logical. Indicates if clusters computed with HDBSCAN method should be plotted or not.
 #' @param hide_noise Logical. Specifies whether to hide Cluster 0 in the plot. In HDBSCAN, Cluster 0 is typically regarded as "noise."
+#' @param labels Logical. Indicates if sample names should be plotted or not.
 #' @param theme_params List. Indicates `theme_poma` parameters.
 #' 
 #' @export
@@ -40,6 +41,7 @@ PomaUMAP <- function(data,
                      hdbscan_minpts = floor(nrow(data) * 0.05),
                      show_clusters = TRUE,
                      hide_noise = TRUE,
+                     labels = FALSE,
                      theme_params = list(legend_title = TRUE, legend_position = "bottom")) {
   
   if(!is(data, "SummarizedExperiment")){
@@ -73,9 +75,13 @@ PomaUMAP <- function(data,
     plot_data <- umap_clusters
   }
   
+  small <- nrow(to_umap) < 500
+  
   umap_plot <- ggplot2::ggplot(plot_data, ggplot2::aes(UMAP1, UMAP2)) +
     {if(!show_clusters)ggplot2::geom_point(pch = 21, size = 3, alpha = 0.8)} +
     {if(show_clusters)ggplot2::geom_point(ggplot2::aes(fill = clust), pch = 21, size = 3, alpha = 0.8)} +
+    {if(labels & !small)ggplot2::geom_text(ggplot2::aes(label = sample), show.legend = FALSE)} +
+    {if(labels & small)ggrepel::geom_text_repel(ggplot2::aes(label = sample), show.legend = FALSE)} +
     ggplot2::labs(x = "UMAP 1",
                   y = "UMAP 2",
                   fill = "Cluster") +
