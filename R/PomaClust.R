@@ -6,7 +6,7 @@
 #' @param data A `SummarizedExperiment` object.
 #' @param method Character. Indicates the distance method to perform MDS. Options are "euclidean", "maximum", "manhattan", "canberra" and "minkowski". See `?dist()`.
 #' @param k Numeric. Indicates the number of clusters (default is `NA`). The optimal number of clusters will be used by default.
-#' @param k_max Numeric. Indicates the number of clusters among which the optimal one will be selected.
+#' @param k_max Numeric. Indicates the number of clusters among which the optimal `k` will be selected.
 #' @param show_clusters Logical. Indicates if clusters should be plotted or not. 
 #' @param labels Logical. Indicates if sample names should be plotted or not.
 #' 
@@ -24,7 +24,7 @@
 PomaClust <- function(data,
                       method = "euclidean",
                       k = NA,
-                      k_max = 15,
+                      k_max = floor(min(dim(data))/2),
                       show_clusters = TRUE,
                       labels = FALSE) {
   
@@ -36,7 +36,6 @@ PomaClust <- function(data,
   }
   
   to_clust <- scale(t(SummarizedExperiment::assay(data)))
-  target <- SummarizedExperiment::colData(data)
   
   ## Optimal number of clusters
   wss <- data.frame(wss = sapply(1:k_max, function(k){stats::kmeans(to_clust, k)$tot.withinss})) %>%
@@ -73,7 +72,7 @@ PomaClust <- function(data,
     stats::dist(method = method) %>% 
     stats::cmdscale() %>% 
     as.data.frame() %>% 
-    dplyr::mutate(sample = rownames(target),
+    dplyr::mutate(sample = rownames(SummarizedExperiment::colData(data)),
                   clust = as.factor(clusters$cluster)) %>%
     dplyr::select(sample, clust, Dim1 = V1, Dim2 = V2) %>% 
     dplyr::as_tibble()

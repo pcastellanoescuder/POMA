@@ -8,7 +8,7 @@ PomaClust(
   data,
   method = "euclidean",
   k = NA,
-  k_max = 15,
+  k_max = floor(min(dim(data))/2),
   show_clusters = TRUE,
   labels = FALSE
 )
@@ -20,7 +20,7 @@ PomaClust(
 
 \item{k}{Numeric. Indicates the number of clusters (default is \code{NA}). The optimal number of clusters will be used by default.}
 
-\item{k_max}{Numeric. Indicates the number of clusters among which the optimal one will be selected.}
+\item{k_max}{Numeric. Indicates the number of clusters among which the optimal \code{k} will be selected.}
 
 \item{show_clusters}{Logical. Indicates if clusters should be plotted or not.}
 
