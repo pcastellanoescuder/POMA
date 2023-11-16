@@ -71,7 +71,7 @@ PomaVolcano <- function(data,
       dplyr::mutate(logFC = log2(fold_change))
   }
   else if (method == "limma") {
-    contrast <- paste0(names(table(SummarizedExperiment::colData(data)[,1])), collapse = "-")
+    contrast <- paste0(rev(names(table(SummarizedExperiment::colData(data)[,1]))), collapse = "-")
     
     volcano_res <- data %>% 
       PomaLimma(adjust = adjust, contrast = contrast)
@@ -90,7 +90,7 @@ PomaVolcano <- function(data,
   }
 
   if (is.null(log2fc_cutoff)) {
-    log2fc_cutoff <- quantile(abs(volcano_res$logFC), 0.75) 
+    log2fc_cutoff <- quantile(abs(volcano_res$logFC), 0.75, na.rm = TRUE) 
   }
   
   plot_complete <- volcano_res %>% 
@@ -105,6 +105,5 @@ PomaVolcano <- function(data,
     theme_poma()
   
   return(plot_complete)
-  
 }
 

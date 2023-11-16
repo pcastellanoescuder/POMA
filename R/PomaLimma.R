@@ -79,9 +79,9 @@ PomaLimma <- function(data,
   result <- limma::topTable(modelstats, number = nrow(to_limma),
                             coef = contrast, sort.by = "p", adjust.method = adjust) %>% 
     tibble::rownames_to_column("feature") %>% 
+    dplyr::rename(pvalue = P.Value, adj_pvalue = adj.P.Val) %>% 
     dplyr::as_tibble()
   
   return(result)
-  
 }
 
