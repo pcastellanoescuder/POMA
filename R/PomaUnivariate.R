@@ -9,7 +9,8 @@
 #' @param paired Logical. Indicates if the data is paired or not. Default is FALSE.
 #' @param var_equal Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.
 #' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
-#'
+#' @param run_post_hoc Logical. Indicates if computing post-hoc tests or not. Setting this parameter to FALSE can save time for large datasets. 
+#' 
 #' @export
 #'
 #' @return A `list` with the results.
@@ -51,7 +52,8 @@ PomaUnivariate <- function(data,
                            covs = NULL,
                            paired = FALSE,
                            var_equal = FALSE,
-                           adjust = "fdr"){
+                           adjust = "fdr",
+                           run_post_hoc = TRUE){
 
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
@@ -133,15 +135,19 @@ PomaUnivariate <- function(data,
         dplyr::as_tibble()
 
       # Post-hoc tests
-      post_hoc_tests <- list()
-      for (i in 1:nrow(SummarizedExperiment::assay(data))) {
-        post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
-                                             broom::tidy(TukeyHSD(aov(to_univariate[,i] ~ group_factor)))[,c(2, 7)])
+      if (run_post_hoc) {
+        post_hoc_tests <- list()
+        for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+          post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
+                                               broom::tidy(TukeyHSD(aov(to_univariate[,i] ~ group_factor)))[,c(2, 7)])
+        }
+        
+        post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>% 
+          dplyr::rename(adj_pvalue = adj.p.value) %>% 
+          dplyr::arrange(adj_pvalue) 
+      } else {
+        post_hoc_tests <- NULL
       }
-  
-      post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>% 
-        dplyr::rename(adj_pvalue = adj.p.value) %>% 
-        dplyr::arrange(adj_pvalue)
       
       return(list(result = res_aov, 
                   post_hoc_tests = post_hoc_tests))
@@ -174,19 +180,23 @@ PomaUnivariate <- function(data,
         dplyr::as_tibble()
       
       # Post-hoc tests
-      post_hoc_tests <- list()
-      for (i in 1:nrow(SummarizedExperiment::assay(data))) {
-        post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
-                                             as.data.frame(TukeyHSD(
-                                               aov(as.formula(paste(colnames(covariates_feat)[1], "~", model_names)),
-                                                   data = covariates_feat))$group_factor) %>% 
-                                               tibble::rownames_to_column("contrast") %>% 
-                                               dplyr::select(contrast, adj_pvalue = `p adj`)
-                                             )
+      if (run_post_hoc) {
+        post_hoc_tests <- list()
+        for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+          post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
+                                               as.data.frame(TukeyHSD(
+                                                 aov(as.formula(paste(colnames(covariates_feat)[1], "~", model_names)),
+                                                     data = covariates_feat))$group_factor) %>% 
+                                                 tibble::rownames_to_column("contrast") %>% 
+                                                 dplyr::select(contrast, adj_pvalue = `p adj`)
+          )
+        }
+        
+        post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>%
+          dplyr::arrange(adj_pvalue)
+      } else {
+        post_hoc_tests <- NULL
       }
-      
-      post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>%
-        dplyr::arrange(adj_pvalue)
       
       return(list(result = res_aov_cov, 
                   post_hoc_tests = post_hoc_tests))
@@ -226,18 +236,22 @@ PomaUnivariate <- function(data,
       dplyr::as_tibble()
 
     # Post-hoc tests
-    post_hoc_tests <- list()
-    for (i in 1:nrow(SummarizedExperiment::assay(data))) {
-      post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i],
-                                           FSA::dunnTest(to_univariate[,i] ~ group_factor,
-                                                         data = as.data.frame(to_univariate))$res
-                                           )
+    if (run_post_hoc) {
+      post_hoc_tests <- list()
+      for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+        post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i],
+                                             FSA::dunnTest(to_univariate[,i] ~ group_factor,
+                                                           data = as.data.frame(to_univariate))$res
+        )
+      }
+      
+      post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>%
+        dplyr::select(feature, contrast = Comparison, adj_pvalue = P.adj) %>%
+        dplyr::mutate(contrast = gsub(" ", "", contrast)) %>% 
+        dplyr::arrange(adj_pvalue) 
+    } else {
+      post_hoc_tests <- NULL
     }
-    
-    post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>%
-      dplyr::select(feature, contrast = Comparison, adj_pvalue = P.adj) %>%
-      dplyr::mutate(contrast = gsub(" ", "", contrast)) %>% 
-      dplyr::arrange(adj_pvalue)
     
     return(list(result = res_kruskal, 
                 post_hoc_tests = post_hoc_tests))

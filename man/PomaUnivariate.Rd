@@ -10,7 +10,8 @@ PomaUnivariate(
   covs = NULL,
   paired = FALSE,
   var_equal = FALSE,
-  adjust = "fdr"
+  adjust = "fdr",
+  run_post_hoc = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ PomaUnivariate(
 \item{var_equal}{Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.}
 
 \item{adjust}{Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).}
+
+\item{run_post_hoc}{Logical. Indicates if computing post-hoc tests or not. Setting this parameter to FALSE can save time for large datasets.}
 }
 \value{
 A \code{list} with the results.
