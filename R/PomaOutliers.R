@@ -41,7 +41,9 @@ PomaOutliers <- function(data,
   }
   
   if (ncol(SummarizedExperiment::colData(data)) > 0) {
-    group_factor <- SummarizedExperiment::colData(data)[,1]
+    if (is.factor(SummarizedExperiment::colData(data)[,1])) {
+      group_factor <- factor(SummarizedExperiment::colData(data)[,1])
+    }
   } else {
     group_factor <- rep("All Samples", ncol(SummarizedExperiment::assay(data)))
   }
