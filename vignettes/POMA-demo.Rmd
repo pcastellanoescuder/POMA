@@ -1,7 +1,7 @@
 ---
 title: "POMA Workflow"
 author: 
-- name: Pol Castellano-Escuder
+- name: Pol Castellano-Escuder, Ph.D.
   affiliation: Duke University
   email: polcaes@gmail.com
 date: "`r BiocStyle::doc_date()`"
@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2022-08-01
+**Last edited**: 2023-11-20
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(
 
 # Installation
 
-Run the following code to install the Bioconductor version of package.        
+To install the Bioconductor version of the POMA package, run the following code:     
 
 ```{r, eval = FALSE}
 # install.packages("BiocManager")
@@ -46,33 +46,32 @@ BiocManager::install("POMA")
 library(POMA)
 ```
 
-You can also load some additional packages that will be very useful in this vignette.   
+Additionally, you can load other useful packages for this vignette:
 
 ```{r, warning = FALSE, message = FALSE}
 library(ggplot2)
-library(ggraph)
 library(plotly)
 ```
 
 # The POMA Workflow
 
-`POMA` functions can be divided in three sequential well separated blocks: **Data Preparation**, **Pre-processing** and **Statistical Analysis**.   
+The `POMA` package functions are organized into three sequential, distinct blocks: Data Preparation, Pre-processing, and Statistical Analysis.
 
 ## Data Preparation
 
-The **SummarizedExperiment** Bioconductor package provides a well defined computational data structures to represent omics experiment data types [@SummarizedExperiment]. Since data structures can mean a marked improvement in data analysis, **POMA** functions use **SummarizedExperiment** objects from **SummarizedExperiment** package, allowing the reusability of existing methods for this class and contributing to the improvement of robust and reproducible workflows.    
+The `SummarizedExperiment` package from Bioconductor offers well-defined computational data structures for representing various types of omics experiment data [@SummarizedExperiment]. Utilizing these data structures can significantly improve data analysis. `POMA` leverages `SummarizedExperiment` objects, enhancing the reusability of existing methods for this class and contributing to more robust and reproducible workflows.
 
-The first step of workflow will be load or create a `SummarizedExperiment` object. Often, you will have your data stored in separated matrix and/or data frames and you will want to create your `SummarizedExperiment` object. The `PomaSummarizedExperiment` function makes this step fast and easy building this `SummarizedExperiment` object for you.       
+The workflow begins with either loading or creating a `SummarizedExperiment` object. Typically, your data might be stored in separate matrices and/or data frames. The `PomaCreateObject` function simplifies this step by quickly building a SummarizedExperiment object for you.    
 
 ```{r, eval = FALSE}
 # create an SummarizedExperiment object from two separated data frames
 target <- readr::read_csv("your_target.csv")
 features <- readr::read_csv("your_features.csv")
 
-data <- PomaSummarizedExperiment(target = target, features = features)
+data <- PomaCreateObject(metadata = target, features = features)
 ```
 
-Alternatively, if your data is already stored in a `SummarizedExperiment` object, you can skip this step and go directly to the pre-processing step. In this vignette we will use the sample data provided in `POMA`.        
+Alternatively, if your data is already in a `SummarizedExperiment` object, you can proceed directly to the pre-processing step. This vignette uses sample data provided in `POMA`.         
 
 ```{r, warning = FALSE, message = FALSE}
 # load example data
@@ -83,33 +82,37 @@ data("st000336")
 st000336
 ```
 
-### Brief Description of Example Data
+### Brief Description of the Example Data
 
-This example data is composed of 57 samples, 31 metabolites, 1 covariate and 2 experimental groups (Controls and DMD) from a targeted LC/MS study.    
+This dataset comprises 57 samples, 31 metabolites, 1 covariate, and 2 experimental groups (Controls and DMD) from a targeted LC/MS study.  
 
 _Duchenne Muscular Dystrophy (DMD) is an X-linked recessive form of muscular dystrophy that affects males via a mutation in the gene for the muscle protein, dystrophin. Progression of the disease results in severe muscle loss, ultimately leading to paralysis and death. Steroid therapy has been a commonly employed method for reducing the severity of symptoms. This study aims to quantify the urine levels of amino acids and organic acids in patients with DMD both with and without steroid treatment. Track the progression of DMD in patients who have provided multiple urine samples._    
 
-This data was collected from [here](https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?Mode=Study&DataMode=AllData&StudyID=ST000336&StudyType=MS&ResultType=1#DataTabs).    
+This data was obtained from [Metabolomics Workbench](https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?Mode=Study&DataMode=AllData&StudyID=ST000336&StudyType=MS&ResultType=1#DataTabs).    
 
 ## Pre Processing
 
-This is a critical point in the workflow because all final statistical results will depend on the decisions made here. Again, this block can be divided in 3 steps: **Missing Value Imputation**, **Normalization** and **Outlier Detection**.
+This stage of the workflow is pivotal, as the decisions made here fundamentally influence the final statistical results. This phase is methodically segmented into three steps: Missing Value Imputation, Normalization, and Outlier Detection.
 
 ### Missing Value Imputation
 
-Often, due to biological and technical reasons, some features can not be identified or quantified in some samples in MS [@imputation]. **POMA** offers 7 different imputation methods to deal with this situation. Just run the following line of code to impute your missings!   
+In metabolomics studies, it's not uncommon for certain features to be undetectable or unquantifiable in some samples, owing to a variety of biological and technical factors [@imputation]. To address this prevalent issue, `POMA` provides a suite of seven distinct imputation methods, each designed to effectively handle missing data. The choice of method can significantly impact the subsequent analysis, so it's crucial to select the one that aligns best with the specific characteristics and requirements of your dataset. To perform imputation, simply execute the following code:
 
 ```{r}
-imputed <- PomaImpute(st000336, ZerosAsNA = TRUE, RemoveNA = TRUE, cutoff = 20, method = "knn")
+imputed <- st000336 %>% 
+  PomaImpute(method = "knn", zeros_as_na = TRUE, remove_na = TRUE, cutoff = 20)
+
 imputed
 ```
 
 ### Normalization
 
-The next step of this block is the data normalization. Often, some factors can introduce variability in some types of MS data having a critical influence on the final statistical results, making normalization a key step in the workflow [@normalization]. Again, **POMA** offers several methods to normalize the data by running just the following line of code:    
+Following missing value imputation, the next crucial step in the process is Data Normalization. In mass spectrometry (MS) data, various factors can introduce significant variability that profoundly impacts the final statistical outcomes. Normalization is thus an essential step, as it corrects for these variations, ensuring that the data can be compared more reliably across.      
 
 ```{r}
-normalized <- PomaNorm(imputed, method = "log_pareto")
+normalized <- imputed %>% 
+  PomaNorm(method = "log_pareto")
+
 normalized
 ```
 

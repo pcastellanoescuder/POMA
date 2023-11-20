@@ -1,4 +1,4 @@
-# POMA 1.8.42
+# POMA 1.8.43
 
 * New POMA theme and colorblind-friendly palette
 * Available sample normalization (sum and quantile)
@@ -11,6 +11,7 @@
 * New functions `PomaPCA` and `PomaPLS` as stand-alone functions from the old `PomaMultivariate` (deprecated)
 * Other new functions: `PomaLM`, `PomaLMM`
 * Post-hoc pairwise comparisons in `PomaUnivariate`
+* Update tests and vignettes
 
 # POMA 1.7.19
 

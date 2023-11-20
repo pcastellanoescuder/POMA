@@ -35,6 +35,8 @@ PomaClust <- function(data,
     stop("Incorrect value for method argument")
   }
   
+  if (is.infinite(k_max)) {k_max <- 2}
+  
   to_clust <- scale(t(SummarizedExperiment::assay(data)))
   
   ## Optimal number of clusters
@@ -54,6 +56,8 @@ PomaClust <- function(data,
   
   dists <- sqrt((wss$k - xcross)^2 + (wss$wss - ycross)^2)
   elbowi <- which.max(dists)
+  
+  if (k_max <= 2) {elbowi <- 2}
   
   optimum_clusters <- ggplot2::ggplot(wss, ggplot2::aes(as.factor(k), wss, group = 1)) +
     ggplot2::geom_point() +
@@ -78,7 +82,6 @@ PomaClust <- function(data,
     dplyr::as_tibble()
   
   if (!show_clusters) {
-    
     mds_plot <- ggplot2::ggplot(mds_data, ggplot2::aes(x = Dim1, y = Dim2)) +
       {if(!labels)ggplot2::geom_point(pch = 21, size = 3, alpha = 0.8)} +
       ggplot2::labs(x = "Dimension 1",
@@ -87,7 +90,6 @@ PomaClust <- function(data,
       POMA::theme_poma()
     
   } else {
-    
     small <- nrow(to_clust) < 500
       
     mds_plot <- ggplot2::ggplot(mds_data, ggplot2::aes(x = Dim1, y = Dim2, fill = clust)) +
