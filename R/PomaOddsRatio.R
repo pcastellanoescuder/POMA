@@ -35,9 +35,9 @@ PomaOddsRatio <- function(data,
   }
   if (!is.factor(SummarizedExperiment::colData(data)[,1])) {
     stop("Grouping factor must be a factor (first column of the metadata file)")
-    if (length(table(SummarizedExperiment::colData(data)[,1])[table(SummarizedExperiment::colData(data)[,1]) != 0]) != 2) {
-      stop("Grouping factor must have exactly 2 levels (first column of the metadata file)")
-    }
+  }
+  if (length(table(SummarizedExperiment::colData(data)[,1])[table(SummarizedExperiment::colData(data)[,1]) != 0]) != 2) {
+    stop("Grouping factor must have exactly 2 levels (first column of the metadata file)")
   }
   if (!is.null(feature_name)) {
     if(!any(feature_name %in% rownames(SummarizedExperiment::assay(data)))) {
@@ -99,7 +99,7 @@ PomaOddsRatio <- function(data,
     ggplot2::geom_point(size = 3, pch = 21, fill = "orange") +
     ggplot2::labs(x = "Odds Ratio",
                   y = NULL) +
-    POMA::theme_poma()
+    theme_poma()
 
   return(list(odds_ratio_table = odds, 
               odds_ratio_plot = ORPlot))

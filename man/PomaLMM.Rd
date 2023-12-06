@@ -4,7 +4,7 @@
 \alias{PomaLMM}
 \title{Linear Mixed Models}
 \usage{
-PomaLMM(data, x = NULL, y = NULL, adjust = "fdr", clean_plot = FALSE, ...)
+PomaLMM(data, x = NULL, y = NULL, adjust = "fdr", clean_plot = FALSE)
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}

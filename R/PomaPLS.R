@@ -324,7 +324,7 @@ PomaPLS <- function(data,
                                            test.keepX = c(1:num_features), nrepeat = nrepeat)
 
       opt_ncomp <- tune_splsda$choice.ncomp$ncomp # optimal number of components based on t-tests
-      select_keepX <- tune_splsda$choice.keepX[1:ncomp]  # optimal number of variables to select
+      select_keepX <- tune_splsda$choice.keepX[1:ncomp] # optimal number of variables to select
 
       errors_splsda_sd <- data.frame(tune_splsda$error.rate.sd) %>%
         tibble::rownames_to_column("feature_sd") %>%

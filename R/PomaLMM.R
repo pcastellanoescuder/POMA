@@ -48,8 +48,7 @@ PomaLMM <- function(data,
                     x = NULL,
                     y = NULL,
                     adjust = "fdr",
-                    clean_plot = FALSE,
-                    ...) {
+                    clean_plot = FALSE) {
   
   if (!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")

@@ -43,12 +43,30 @@ make_legend <- function(fun,
   return(legend)
 }
 
-create_mock_summarized_experiment <- function(binary = FALSE) {
+create_mock_summarized_experiment <- function(binary = FALSE, paired = FALSE, integers = FALSE) {
   
-  if (!binary) {g_labels <- c("A", "B", "C")} else {g_labels <- c("A", "B")}
+  if (!binary) {
+    g_labels <- sample(c("A", "B", "C"), 20, replace = TRUE)
+  } else {
+    g_labels <- sample(c("A", "B"), 20, replace = TRUE)
+    if (paired) {
+      g_labels <- c(rep("A", 10), rep("B", 10))
+    }
+  }
   
-  matrix_data <- matrix(runif(100), nrow = 20)
-  col_data <- data.frame(sample = paste0("Sample", 1:20), group = sample(g_labels, 20, replace = TRUE))
+  if (integers) {
+    matrix_data <- matrix(sample(1:100, 20 * 10, replace = TRUE), nrow = 20, ncol = 10)
+  } else {
+    matrix_data <- matrix(runif(100), nrow = 20)
+  }
+  
+  col_data <- data.frame(sample = paste0("Sample", 1:20), group = g_labels)
   PomaCreateObject(features = matrix_data, metadata = col_data)
+}
+
+create_mock_data <- function() {
+  features <- as.data.frame(matrix(runif(100), ncol = 10))
+  metadata <- data.frame(ID = 1:10, Group = factor(rep(c("A", "B"), each = 5)))
+  list(features = features, metadata = metadata)
 }
 

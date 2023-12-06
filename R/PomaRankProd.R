@@ -75,12 +75,8 @@ PomaRankProd <- function(data,
           
   one <- as.data.frame(top_rank$Table1)
   two <- as.data.frame(top_rank$Table2)
-
-  if(nrow(one) == 0 & nrow(two) == 0){
-    stop("No significant features found...")
-  }
   
-  if(nrow(one) != 0){
+  if (nrow(one) != 0){
     
     one <- one %>% 
       tibble::rownames_to_column("feature") %>% 
@@ -92,7 +88,7 @@ PomaRankProd <- function(data,
     colnames(one)[4] <- paste0("FC_", class1, "_", class2)
   }
   
-  if(nrow(two) != 0){
+  if (nrow(two) != 0){
     
     two <- two %>% 
       tibble::rownames_to_column("feature") %>% 
@@ -132,14 +128,14 @@ PomaRankProd <- function(data,
 
   plot1 <- ggplot2::ggplot(rp_plot, ggplot2::aes(x = rank1, y = pfp1)) +
     ggplot2::geom_point(size = 1.5, alpha=0.9) +
-    ggplot2::theme_bw() +
+    theme_poma() +
     ggplot2::labs(x = "Number of identified features",
                   y = "Estimated PFP",
                   title = paste0("Up-regulated features in ", class2))
 
   plot2 <- ggplot2::ggplot(rp_plot, ggplot2::aes(x = rank2, y = pfp2)) +
     ggplot2::geom_point(size = 1.5, alpha=0.9) +
-    ggplot2::theme_bw() +
+    theme_poma() +
     ggplot2::labs(x = "Number of identified features",
                   y = "Estimated PFP",
                   title = paste0("Down-regulated features in ", class2))
@@ -148,6 +144,5 @@ PomaRankProd <- function(data,
               down_regulated = two,
               up_regulated_plot = plot1,
               down_regulated_plot = plot2))
-
 }
 

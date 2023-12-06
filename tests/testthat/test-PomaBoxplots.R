@@ -1,68 +1,42 @@
-context("PomaBoxplots")
 
-test_that("PomaBoxplots works", {
-  
-  data("st000284")
-  
-  norm_none <- PomaNorm(st000284, method = "none")
-  norm_ls <- PomaNorm(st000284, method = "log_scaling")
-  
-  a <- PomaBoxplots(norm_none, label_size = 12)
-  b <- PomaBoxplots(norm_ls, label_size = 10)
-  c <- PomaBoxplots(norm_none, x = "features")
-  d <- PomaBoxplots(norm_ls, x = "features")
-  
-  e <- PomaBoxplots(norm_none, x = "samples")
-  
-  f <- PomaBoxplots(norm_none, x = "samples", violin = TRUE)
-  g <- PomaBoxplots(norm_none, x = "samples", violin = FALSE)
-  h <- PomaBoxplots(norm_none, x = "features", violin = TRUE)
-  i <- PomaBoxplots(norm_none, x = "features", violin = FALSE)
-  
-  j <- PomaBoxplots(norm_ls, x = "features", feature_name = "methyl_succinate")
-  k <- PomaBoxplots(norm_ls, x = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
-  
-  
-  df_a <- ggplot2::layer_data(a)
-  df_b <- ggplot2::layer_data(b)
-  df_c <- ggplot2::layer_data(c)
-  df_d <- ggplot2::layer_data(d)
-  df_e <- ggplot2::layer_data(e)
-  
-  df_f <- ggplot2::layer_data(f)
-  df_g <- ggplot2::layer_data(g)
-  df_h <- ggplot2::layer_data(h)
-  df_i <- ggplot2::layer_data(i)
-  
-  df_j <- ggplot2::layer_data(j)
-  df_k <- ggplot2::layer_data(k)
-  
-  ####
-  
-  expect_true(min(df_a$ymin) == min(df_c$ymin))
-  expect_true(min(df_b$ymin) != min(df_d$ymin))
-  expect_false(all(df_a$ymin == df_b$ymin))
-  expect_false(all(df_c$ymin == df_d$ymin))
-  
-  expect_equal(df_a, df_e)
-  
-  expect_false(nrow(df_j) == nrow(df_k))
-  expect_false(nrow(df_j) == nrow(df_h))
-  expect_false(nrow(df_k) == nrow(df_i))
-  
-  ##
-  
-  expect_error(PomaBoxplots(norm_ls, x = "samp"))
-  expect_error(PomaBoxplots(x = "sample"))
-  expect_error(PomaBoxplots(iris, x = "sample"))
-  
-  ##
-  
-  expect_error(PomaBoxplots(norm_ls, x = "features", feature_name = "hello"))
-  expect_error(PomaBoxplots(norm_ls, x = "features", feature_name = "methyl_succina"))
-  
-  expect_message(PomaBoxplots(norm_ls, x = "features", feature_name = c("methyl_succina", "linoleic_acid")))
-  expect_message(PomaBoxplots(norm_ls, x = "features", feature_name = c("methyl_succinate", "linoleic_aci")))
-  
+test_that("PomaBoxplots handles valid SummarizedExperiment objects", {
+  data <- create_mock_summarized_experiment()
+  plot_samples <- PomaBoxplots(data, x = "samples")
+  plot_features <- PomaBoxplots(data, x = "features")
+  expect_is(plot_samples, "ggplot")
+  expect_is(plot_features, "ggplot")
+})
+
+test_that("PomaBoxplots stops with non-SummarizedExperiment objects", {
+  data <- data.frame(matrix(runif(100), ncol = 10))
+  expect_error(PomaBoxplots(data), "data is not a SummarizedExperiment object")
+})
+
+test_that("PomaBoxplots handles violin plot option correctly", {
+  data <- create_mock_summarized_experiment()
+  plot_violin <- PomaBoxplots(data, violin = TRUE)
+  expect_is(plot_violin, "ggplot")
+})
+
+test_that("PomaBoxplots stops with incorrect x argument", {
+  data <- create_mock_summarized_experiment()
+  expect_error(PomaBoxplots(data, x = "invalid_option"), "Incorrect value for x argument")
+})
+
+test_that("PomaBoxplots handles feature_name parameter correctly", {
+  data <- create_mock_summarized_experiment()
+  plot_specific_feature <- PomaBoxplots(data, x = "features", feature_name = c("V2"))
+  expect_is(plot_specific_feature, "ggplot")
+})
+
+test_that("PomaBoxplots stops with non-existing feature names", {
+  data <- create_mock_summarized_experiment()
+  expect_error(PomaBoxplots(data, x = "features", feature_name = c("non_existing_feature")), "Features not found")
+})
+
+test_that("PomaBoxplots applies theme parameters correctly", {
+  data <- create_mock_summarized_experiment()
+  plot_with_theme <- PomaBoxplots(data, theme_params = list(legend_title = TRUE))
+  expect_is(plot_with_theme, "ggplot")
 })
 

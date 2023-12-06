@@ -13,8 +13,7 @@ PomaVolcano(
   log2fc_cutoff = NULL,
   labels = FALSE,
   paired = FALSE,
-  var_equal = FALSE,
-  ...
+  var_equal = FALSE
 )
 }
 \arguments{

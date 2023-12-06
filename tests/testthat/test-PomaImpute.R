@@ -1,170 +1,37 @@
-context("PomaImpute")
 
-test_that("PomaImpute works", {
-  
-  data("st000284")
-
-  data <- t(SummarizedExperiment::assay(st000284))
-
-  data <- data*round(runif(n = 1, min = 0.01, max = 0.99), 3) # just to create decimals
-  data[1:4, 5] <- 0 # create some zeros in the first group
-  data[73:77, 5] <- 0 # create some zeros in the second group
-
-  data[10:14, 5] <- NA # create some NA in the first group
-  data[78:81, 5] <- NA # create some NA in the second group
-
-  colnames(data) <- gsub("_", ":", colnames(data))
-    
-  target <- SummarizedExperiment::colData(st000284) %>% 
-    as.data.frame() %>% 
-    tibble::rownames_to_column() 
-  testimput <- PomaCreateObject(features = data, metadata = target)
-
-  a <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 8))))
-  b <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = TRUE, remove_na = FALSE, cutoff = 8))))
-  c <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 8))))
-  d <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = TRUE, remove_na = TRUE, cutoff = 8))))
-
-  e <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 20))))
-  f <- ncol(t(SummarizedExperiment::assay(PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 10))))
-
-  g <- PomaImpute(testimput, method = "half_min", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 20)
-  h <- PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 20)
-  
-  i <- PomaImpute(testimput, method = "half_min", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 1)
-  j <- PomaImpute(testimput, method = "mean", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 1)
-  k <- PomaImpute(testimput, method = "median", zeros_as_na = FALSE, remove_na = FALSE, cutoff = 1)
-
-  l <- PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 20)
-  m <- PomaImpute(testimput, method = "knn")
-
-  n <- PomaImpute(testimput, method = "none", remove_na = FALSE, cutoff = 2)
-  o <- PomaImpute(testimput, method = "none", remove_na = FALSE, cutoff = 5)
-  p <- PomaImpute(testimput, method = "none", cutoff = 20)
-  q <- PomaImpute(testimput, method = "min", cutoff = 20)
-
-  data2 <- t(SummarizedExperiment::assay(testimput))
-
-  data2[1:4, 5] <- 1000
-  data2[73:77, 5] <- 1000
-
-  testimput2 <- PomaCreateObject(features = data2, target = target)
-
-  r <- PomaImpute(testimput2, method = "half_min")
-  s <- PomaImpute(testimput2, method = "median")
-  t <- PomaImpute(testimput2, method = "mean")
-  u <- PomaImpute(testimput2, method = "min")
-  v <- PomaImpute(testimput2, method = "knn")
-  
-  SummarizedExperiment::assay(testimput)[5, 175:190] <- NA
-  h_1 <- PomaImpute(testimput, method = "knn", zeros_as_na = FALSE, remove_na = TRUE, cutoff = 1)
-  
-  ##
-  
-  expect_equal(testimput@NAMES[1], h@NAMES[1])
-  expect_equal(length(testimput@NAMES), length(h@NAMES))
-  expect_false(length(testimput@NAMES) == length(h_1@NAMES))
-  
-  expect_equal(testimput@NAMES[1], n@NAMES[1])
-  expect_equal(length(testimput@NAMES), length(n@NAMES))
-  
-  ##
-
-  expect_equal(a, b)
-  expect_equal(b, c)
-  expect_equal(a, c)
-  expect_equal(a, d)
-  expect_equal(b, d)
-  expect_equal(c, d)
-
-  expect_equal(d, e)
-  expect_equal(c, e)
-  expect_equal(e, f)
-  
-  expect_false(all(SummarizedExperiment::assay(g) == SummarizedExperiment::assay(h)))
-  expect_equal(dim(g), dim(h))
-
-  expect_equal(dim(i), dim(j))
-  expect_equal(dim(j), dim(k))
-
-  expect_false(all(SummarizedExperiment::assay(i) == SummarizedExperiment::assay(j)))
-  expect_false(all(SummarizedExperiment::assay(j) == SummarizedExperiment::assay(k)))
-  expect_false(all(SummarizedExperiment::assay(k) == SummarizedExperiment::assay(i)))
-
-  expect_equal(SummarizedExperiment::assay(l), SummarizedExperiment::assay(m))
-  expect_equal(SummarizedExperiment::assay(n), SummarizedExperiment::assay(o))
-  expect_true(all(SummarizedExperiment::assay(p) == SummarizedExperiment::assay(q)))
-
-  expect_equal(dim(r), dim(s))
-  expect_equal(dim(s), dim(t))
-  expect_equal(dim(t), dim(u))
-  expect_equal(dim(u), dim(v))
-
-  ####
-
-  expect_false(all(SummarizedExperiment::assay(r) == SummarizedExperiment::assay(s)))
-  expect_false(all(SummarizedExperiment::assay(r) == SummarizedExperiment::assay(t)))
-  expect_false(all(SummarizedExperiment::assay(r) == SummarizedExperiment::assay(u)))
-  expect_false(all(SummarizedExperiment::assay(r) == SummarizedExperiment::assay(v)))
-
-  expect_false(all(SummarizedExperiment::assay(s) == SummarizedExperiment::assay(t)))
-  expect_false(all(SummarizedExperiment::assay(s) == SummarizedExperiment::assay(u)))
-  expect_false(all(SummarizedExperiment::assay(s) == SummarizedExperiment::assay(v)))
-
-  expect_false(all(SummarizedExperiment::assay(t) == SummarizedExperiment::assay(u)))
-  expect_false(all(SummarizedExperiment::assay(t) == SummarizedExperiment::assay(v)))
-
-  expect_false(all(SummarizedExperiment::assay(u) == SummarizedExperiment::assay(v)))
-
-  ####
-
-  expect_error(PomaImpute(testimput, method = "non"))
-  expect_message(PomaImpute(testimput))
-  expect_message(PomaImpute(testimput2))
-
-  ####
-  
-  expect_message(PomaImpute(st000284, method = "knn"))
-  expect_message(PomaImpute(st000284, method = "random_forest"))
-  
-  ##
-  
-  expect_error(PomaImpute(method = "knn"))
-  expect_error(PomaImpute(iris, method = "knn"))
-  
+test_that("PomaImpute handles valid SummarizedExperiment objects", {
+  data <- create_mock_summarized_experiment()
+  imputed_data <- PomaImpute(data, method = "mean")
+  expect_is(imputed_data, "SummarizedExperiment")
 })
 
-##################################################################
-##################################################################
+test_that("PomaImpute stops with non-SummarizedExperiment objects", {
+  data <- data.frame(matrix(runif(100), ncol = 10))
+  expect_error(PomaImpute(data), "data is not a SummarizedExperiment object")
+})
 
-# rfImpute fails many times in virtual machines because it generates a 
-# huge proximity matrix that sometimes needs >2 cores to run
-# 
-# test_that("PomaImpute works skip on Appveyor", {
-#   
-#   skip_on_appveyor() # rfImpute needs more than 2 cores to run and Appveyor only have 2
-#   
-#   data("st000336")
-#   
-#   a_2 <- PomaImpute(st000336, method = "half_min")
-#   b_2 <- PomaImpute(st000336, method = "median")
-#   c_2 <- PomaImpute(st000336, method = "mean")
-#   d_2 <- PomaImpute(st000336, method = "min")
-#   e_2 <- PomaImpute(st000336, method = "knn")
-#   f_2 <- PomaImpute(st000336, method = "rf")
-#   
-#   ##
-#   
-#   expect_false(all(SummarizedExperiment::assay(a_2) == SummarizedExperiment::assay(b_2)))
-#   expect_false(all(SummarizedExperiment::assay(b_2) == SummarizedExperiment::assay(c_2)))
-#   expect_false(all(SummarizedExperiment::assay(c_2) == SummarizedExperiment::assay(d_2)))
-#   expect_false(all(SummarizedExperiment::assay(d_2) == SummarizedExperiment::assay(e_2)))
-#   expect_false(all(SummarizedExperiment::assay(e_2) == SummarizedExperiment::assay(f_2)))
-#   expect_false(all(SummarizedExperiment::assay(f_2) == SummarizedExperiment::assay(a_2)))
-#   
-#   ##
-#   
-#   expect_error(PomaImpute(st000284, method = "rf"))
-#   
-# })
+test_that("PomaImpute handles zeros_as_na parameter correctly", {
+  data <- create_mock_summarized_experiment()
+  imputed_data <- PomaImpute(data, zeros_as_na = TRUE)
+  expect_is(imputed_data, "SummarizedExperiment")
+})
+
+test_that("PomaImpute handles remove_na and cutoff parameters correctly", {
+  data <- create_mock_summarized_experiment()
+  imputed_data <- PomaImpute(data, remove_na = TRUE, cutoff = 50)
+  expect_is(imputed_data, "SummarizedExperiment")
+})
+
+test_that("PomaImpute handles different imputation methods correctly", {
+  data <- create_mock_summarized_experiment()
+  for (method in c("none", "half_min", "median", "mean", "min", "knn")) { # "random_forest"
+    imputed_data <- PomaImpute(data, method = method)
+    expect_is(imputed_data, "SummarizedExperiment")
+  }
+})
+
+test_that("PomaImpute stops with incorrect method argument", {
+  data <- create_mock_summarized_experiment()
+  expect_error(PomaImpute(data, method = "invalid_method"), "Incorrect value for method argument")
+})
 

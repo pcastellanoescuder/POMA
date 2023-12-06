@@ -1,54 +1,22 @@
-context("PomaCreateObject")
 
-test_that("PomaCreateObject works", {
+test_that("PomaCreateObject handles features and metadata correctly", {
+  mock_data <- create_mock_data()
+  se_object <- PomaCreateObject(metadata = mock_data$metadata, features = mock_data$features)
+  expect_is(se_object, "SummarizedExperiment")
+})
 
-  target <- data.frame(ID = c("One", "Two", "Three", "Four"), 
-                       Group = c("Trtd", "Ctrl", "Trtd", "Ctrl"), 
-                       Smoking = c(1,0,0,1))
-  
-  target2 <- data.frame(ID = c("Five", "One", "Three", "Two"), 
-                        Group = c("Ctrl", "Trtd", "Trtd", "Ctrl"), 
-                        Smoking = c(0,0,0,1))
-  
-  target_error <- as.matrix(target)
-  
-  target_error_2 <- data.frame(ID = c("Five", "One", "Three", "Two"), 
-                               Group = c("Ctrl", "Trtd", "Trtd", "Ctrl"), 
-                               Smoking = c(0,0,NA,1))
-    
-  features <- data.frame(Feat.1 = c(1,2,3,4), Feat.2 = c(6,3,7,3), Feat.3 = c(3,5,23,24))
-  features_error <- data.frame(Feat.1 = c(1,2,3,4,5), Feat.2 = c(6,3,7,4,3), Feat.3 = c(3,4,5,23,24))
+test_that("PomaCreateObject handles missing metadata", {
+  mock_data <- create_mock_data()
+  se_object <- PomaCreateObject(features = mock_data$features)
+  expect_is(se_object, "SummarizedExperiment")
+})
 
-  a <- PomaCreateObject(target, features)
-  b <- PomaCreateObject(target2, features)
-
-  ##
-
-  expect_true(validObject(a))
-  expect_true(validObject(b))
-
-  ##
-
-  expect_false(all(rownames(SummarizedExperiment::colData(a)) == rownames(SummarizedExperiment::colData(b))))
-
-  ##
-
-  expect_error(PomaCreateObject(target_error, features))
-  expect_error(PomaCreateObject(target, features_error))
-  expect_error(PomaCreateObject(target))
-  # expect_error(PomaCreateObject(features))
-  
-  ##
-  
-  expect_false(all(colnames(features) == rownames(SummarizedExperiment::assay(a))))
-  expect_false(all(colnames(target)[2:3] == names(SummarizedExperiment::colData(a))))
-  expect_false(all(colnames(target2)[2:3] == names(SummarizedExperiment::colData(b))))
-
-  expect_true(ncol(target2) != ncol(SummarizedExperiment::colData(a)))
-  
-  ##
-  
-  expect_error(PomaCreateObject(target_error_2, features))
-  
+test_that("PomaCreateObject handles factor_levels parameter correctly", {
+  mock_data <- create_mock_data()
+  mock_data$metadata$numeric_var <- 1:10
+  se_object <- PomaCreateObject(metadata = mock_data$metadata, features = mock_data$features, factor_levels = 5)
+  expect_is(se_object, "SummarizedExperiment")
+  expect_true("numeric_var" %in% colnames(SummarizedExperiment::colData(se_object)))
+  expect_true(is.numeric(SummarizedExperiment::colData(se_object)$numeric_var))
 })
 

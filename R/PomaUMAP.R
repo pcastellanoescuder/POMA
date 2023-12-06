@@ -48,6 +48,8 @@ PomaUMAP <- function(data,
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
   
+  if (hdbscan_minpts < 2) {hdbscan_minpts <- 2}
+  
   to_umap <- t(SummarizedExperiment::assay(data))
   
   umap_res <- uwot::umap(to_umap,

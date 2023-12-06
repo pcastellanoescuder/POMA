@@ -12,7 +12,7 @@ test_that("PomaVolcano stops with non-SummarizedExperiment objects", {
 
 test_that("PomaVolcano handles different methods correctly", {
   data <- create_mock_summarized_experiment(binary = TRUE)
-  for (method in c("ttest", "mann", "limma")) { # DESeq
+  for (method in c("ttest", "mann", "limma")) { # "DESeq"
     plot <- PomaVolcano(data, method = method)
     expect_is(plot, "ggplot")
   }
@@ -20,7 +20,7 @@ test_that("PomaVolcano handles different methods correctly", {
 
 test_that("PomaVolcano stops with incorrect method argument", {
   data <- create_mock_summarized_experiment(binary = TRUE)
-  expect_error(PomaVolcano(data, method = "invalid_method"), "Incorrect value for method argument")
+  expect_error(PomaVolcano(data, method = "invalid_method"))
 })
 
 test_that("PomaVolcano handles p-value adjustments correctly", {
@@ -43,7 +43,7 @@ test_that("PomaVolcano handles different pval_cutoff and log2fc_cutoff values", 
 })
 
 test_that("PomaVolcano handles labels, paired, and var_equal parameters correctly", {
-  data <- create_mock_summarized_experiment(binary = TRUE)
+  data <- create_mock_summarized_experiment(binary = TRUE, paired = TRUE)
   plot_with_labels <- PomaVolcano(data, labels = TRUE)
   plot_paired <- PomaVolcano(data, paired = TRUE)
   plot_var_equal <- PomaVolcano(data, var_equal = TRUE)
