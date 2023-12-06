@@ -1,0 +1,282 @@
+---
+title: "Get Started"
+author: 
+- name: Pol Castellano-Escuder, Ph.D.
+  affiliation: Duke University
+  email: polcaes@gmail.com
+date: "`r BiocStyle::doc_date()`"
+output: 
+    BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Get Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+bibliography: ["POMA.bib"]
+biblio-style: apalike
+link-citations: true
+---
+
+**Compiled date**: `r Sys.Date()`
+
+**Last edited**: 2023-12-06
+
+**License**: `r packageDescription("POMA")[["License"]]`
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.align = "center",
+  comment = ">"
+)
+```
+
+# Installation
+
+To install the Bioconductor version of the POMA package, run the following code:     
+
+```{r, eval = FALSE}
+# install.packages("BiocManager")
+BiocManager::install("POMA")
+```
+
+# Load POMA 
+
+```{r, warning = FALSE, message = FALSE}
+library(POMA)
+```
+
+Additionally, you can load other useful packages for this vignette:
+
+```{r, warning = FALSE, message = FALSE}
+library(ggplot2)
+library(plotly)
+```
+
+# The POMA Workflow
+
+The `POMA` package functions are organized into three sequential, distinct blocks: Data Preparation, Pre-processing, and Statistical Analysis.
+
+## Data Preparation
+
+The `SummarizedExperiment` package from Bioconductor offers well-defined computational data structures for representing various types of omics experiment data [@SummarizedExperiment]. Utilizing these data structures can significantly improve data analysis. `POMA` leverages `SummarizedExperiment` objects, enhancing the reusability of existing methods for this class and contributing to more robust and reproducible workflows.
+
+The workflow begins with either loading or creating a `SummarizedExperiment` object. Typically, your data might be stored in separate matrices and/or data frames. The `PomaCreateObject` function simplifies this step by quickly building a SummarizedExperiment object for you.    
+
+```{r, eval = FALSE}
+# create an SummarizedExperiment object from two separated data frames
+target <- readr::read_csv("your_target.csv")
+features <- readr::read_csv("your_features.csv")
+
+data <- PomaCreateObject(metadata = target, features = features)
+```
+
+Alternatively, if your data is already in a `SummarizedExperiment` object, you can proceed directly to the pre-processing step. This vignette uses example data provided in `POMA`.         
+
+```{r, warning = FALSE, message = FALSE}
+# load example data
+data("st000336")
+```
+
+```{r, warning = FALSE, message = FALSE}
+st000336
+```
+
+<!-- ### Brief Description of the Example Data -->
+
+<!-- This dataset comprises 57 samples, 31 metabolites, 1 covariate, and 2 experimental groups (Controls and DMD) from a targeted LC/MS study.   -->
+
+<!-- _Duchenne Muscular Dystrophy (DMD) is an X-linked recessive form of muscular dystrophy that affects males via a mutation in the gene for the muscle protein, dystrophin. Progression of the disease results in severe muscle loss, ultimately leading to paralysis and death. Steroid therapy has been a commonly employed method for reducing the severity of symptoms. This study aims to quantify the urine levels of amino acids and organic acids in patients with DMD both with and without steroid treatment. Track the progression of DMD in patients who have provided multiple urine samples._     -->
+
+<!-- This data was obtained from [Metabolomics Workbench](https://www.metabolomicsworkbench.org/data/DRCCMetadata.php?Mode=Study&DataMode=AllData&StudyID=ST000336&StudyType=MS&ResultType=1#DataTabs).     -->
+
+## Pre Processing
+
+<!-- This stage of the workflow is pivotal, as the decisions made here fundamentally influence the final statistical results. This phase is methodically segmented into three steps: Missing Value Imputation, Normalization, and Outlier Detection. -->
+
+### Missing Value Imputation
+
+<!-- In metabolomics studies, it's not uncommon for certain features to be undetectable or unquantifiable in some samples, owing to a variety of biological and technical factors [@imputation]. To address this prevalent issue, `POMA` provides a suite of seven distinct imputation methods, each designed to effectively handle missing data. The choice of method can significantly impact the subsequent analysis, so it's crucial to select the one that aligns best with the specific characteristics and requirements of your dataset. To perform imputation, simply execute the following code: -->
+
+```{r}
+imputed <- st000336 %>% 
+  PomaImpute(method = "knn", zeros_as_na = TRUE, remove_na = TRUE, cutoff = 20)
+
+imputed
+```
+
+### Normalization
+
+<!-- Following missing value imputation, the next crucial step in the process is Data Normalization. In mass spectrometry (MS) data, various factors can introduce significant variability that profoundly impacts the final statistical outcomes. Normalization is thus an essential step, as it corrects for these variations, ensuring that the data can be compared more reliably across.       -->
+
+```{r}
+normalized <- imputed %>% 
+  PomaNorm(method = "log_pareto")
+
+normalized
+```
+
+#### Normalization effect
+
+<!-- `PomaBoxplots` generates boxplots for all samples or features of a `SummarizedExperiment` object. Here, we can compare objects before and after normalization step.     -->
+
+```{r, message = FALSE}
+PomaBoxplots(imputed, 
+             x = "samples",
+             legend_position = "none") +
+  ggplot2::ggtitle("Not Normalized") # data before normalization
+```
+
+```{r, message = FALSE}
+PomaBoxplots(normalized, 
+             x = "samples", 
+             legend_position = "none") +
+  ggplot2::ggtitle("Normalized") # data after normalization
+```
+
+<!-- On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process.     -->
+
+```{r, message = FALSE}
+PomaDensity(imputed, 
+            x = "features") +
+  ggplot2::ggtitle("Not Normalized") # data before normalization
+```
+
+```{r, message = FALSE}
+PomaDensity(normalized, 
+            x = "features") +
+  ggplot2::ggtitle("Normalized") # data after normalization
+```
+
+### Outlier Detection
+
+<!-- Finally, the last step of this block is the Outlier Detection. Outlers are defined as observations that are not concordant with those of the vast majority of the remaining data points. These values can have an enormous influence on the resultant statistical analysis, being a dangerous ground for all required assumptions in the most commonly applied parametric tests in mass spectrometry as well as for all also required assumptions in many regression techniques and predictive modeling approaches. **POMA** allows the analysis of outliers as well as the possibility to remove them from the analysis using different modulable parameters.     -->
+
+<!-- Analyze and remove outliers running the following two lines of code.   -->
+
+```{r}
+PomaOutliers(normalized)$polygon_plot
+pre_processed <- PomaOutliers(normalized)$data
+pre_processed
+```
+
+## Statistical Analysis
+
+<!-- Once the data have been pre-processed, you can start with the statistical analysis step! **POMA** offers many different statistical methods and possible combinations to compute. However, in this vignette we will comment only some of the most used.     -->
+
+### Univariate Analysis
+
+<!-- `PomaUnivariate` computes four univariate methods (ttest, ANOVA and ANCOVA, Wilcoxon test and Kruskal-Wallis Rank Sum Test) that you can perform changing only the "method" argument.    -->
+
+#### T-test
+
+```{r}
+PomaUnivariate(pre_processed, method = "ttest")
+```
+
+<!-- You can also compute a volcano plot using the T-test results.    -->
+
+```{r}
+PomaVolcano(imputed, pval = "adjusted", labels = TRUE)
+```
+
+#### Wilcoxon Test
+
+```{r, warning = FALSE}
+PomaUnivariate(pre_processed, method = "mann")
+```
+
+<!-- ### Limma -->
+
+<!-- Other of the wide used statistical methods in many different omics, such as epigenomics or transcriptomics, is **limma** [@limma]. **POMA** provides an easy use implementation of _limma_ you only have to specify the desired contrast to compute.      -->
+
+```{r}
+# PomaLimma(pre_processed, contrast = "Controls-DMD", adjust = "fdr")
+```
+
+<!-- ### Multivariate Analysis -->
+
+<!-- On the other hand, multivariate analysis implemented in **POMA** is quite similar to the univariate approaches. `PomaMultivariate` allows users to compute a PCA, PLS-DA or sPLS-DA by changing only the "method" parameter. This function is based on **mixOmics** package [@mixOmics].     -->
+
+<!-- #### Principal Component Analysis -->
+
+```{r}
+# poma_pca <- PomaMultivariate(pre_processed, method = "pca")
+```
+
+```{r}
+# poma_pca$scoresplot +
+#   ggplot2::ggtitle("Scores Plot")
+```
+
+<!-- #### PLS-DA -->
+
+```{r, warning = FALSE, message = FALSE, results = 'hide'}
+# poma_plsda <- PomaMultivariate(pre_processed, method = "plsda")
+```
+
+```{r}
+# poma_plsda$scoresplot +
+#   ggplot2::ggtitle("Scores Plot")
+```
+
+```{r}
+# poma_plsda$errors_plsda_plot +
+#   ggplot2::ggtitle("Error Plot")
+```
+
+<!-- ### Correlation Analysis -->
+
+<!-- Often, correlation analysis is used to explore and discover relationships and patterns within our data. `PomaCorr` provides a flexible and easy way to do that providing a table with all pairwise coorelations in the data, a correlogram and a correlation graph.     -->
+
+```{r}
+# poma_cor <- PomaCorr(pre_processed, label_size = 8, coeff = 0.6)
+# poma_cor$correlations
+# poma_cor$corrplot
+# poma_cor$graph
+```
+
+<!-- Alternatively, if you switch the "corr_type" parameter to "glasso", this function will compute a **Gaussian Graphical Model** using the **glmnet** package [@glasso].    -->
+
+```{r}
+# PomaCorr(pre_processed, corr_type = "glasso", coeff = 0.6)$graph
+```
+
+<!-- ### Lasso, Ridge and Elasticnet -->
+
+<!-- **POMA** also provides a function to perform a Lasso, Ridge and Elasticnet regression for binary outcomes in a very intuitive and easy way. `PomaLasso` is based on **glmnet** package [@glmnet]. This function allows you to create a test subset in your data, evaluate the prediction of your models and export the model computed (it could be useful to perform prediction models with MS data). If "ntest" parameter is set to NULL, `PomaLasso` will use all observations to create the model (useful for feature selection).     -->
+
+```{r}
+# alpha = 1 for Lasso
+# PomaLasso(pre_processed, alpha = 1, labels = TRUE)$coefficientPlot
+```
+
+<!-- ### Random Forest -->
+
+<!-- Finally, the random forest algorithm is also implemented in **POMA**. `PomaRandForest` uses the **randomForest** package [@randomForest] to facilitate the implementation of the algorithm and creates automatically both test and train sets to compute and evaluate the resultant models.      -->
+
+```{r}
+# poma_rf <- PomaRandForest(pre_processed, ntest = 10, nvar = 10)
+# poma_rf$error_tree
+```
+
+<!-- Resultant random forest model confusion matrix for **test** set:   -->
+
+```{r}
+# poma_rf$confusionMatrix$table
+```
+
+<!-- Gini index plot for the top 10 predictors:   -->
+
+```{r}
+# poma_rf$MeanDecreaseGini_plot
+```
+
+# Session Information
+
+```{r}
+sessionInfo()
+```
+
+# References
+

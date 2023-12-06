@@ -2,39 +2,50 @@
 % Please edit documentation in R/PomaHeatmap.R
 \name{PomaHeatmap}
 \alias{PomaHeatmap}
-\title{Classical Heatmap}
+\title{Heatmap Plot}
 \usage{
 PomaHeatmap(
   data,
-  cols = 1,
+  covs = NULL,
   sample_names = TRUE,
   feature_names = FALSE,
   show_legend = TRUE
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{cols}{Numerical vector indicating the column index of variables in \code{colData} to be displayed. Default is 1 (main group).}
+\item{covs}{Character vector. Indicates the names of \code{colData} columns to be included as covariates. Default is NULL (no covariates).}
 
-\item{sample_names}{Logical indicating if sample names should be plotted or not. Default is TRUE.}
+\item{sample_names}{Logical. Indicates if sample names should be displayed or not. Default is TRUE.}
 
-\item{feature_names}{Logical indicating if feature names should be plotted or not. Default is FALSE.}
+\item{feature_names}{Logical. Indicates if feature names should be displayed or not. Default is FALSE.}
 
-\item{show_legend}{Logical indicating if legend should be plotted or not. Default is TRUE.}
+\item{show_legend}{Logical. Indicates if legend should be displayed or not. Default is TRUE.}
 }
 \value{
 A heatmap plot.
 }
 \description{
-This function returns a basic heatmap plot made with base R.
+\code{PomaHeatmap} generates a heatmap.
 }
 \examples{
 data("st000284")
 
+# Basic heatmap
 st000284 \%>\% 
   PomaNorm() \%>\% 
   PomaHeatmap()
+  
+# Heatmap with one covariate  
+st000284 \%>\% 
+  PomaNorm() \%>\% 
+  PomaHeatmap(covs = "factors")
+  
+# Heatmap with two covariates
+st000284 \%>\% 
+  PomaNorm() \%>\% 
+  PomaHeatmap(covs = c("factors", "smoking_condition"))
 }
 \author{
 Pol Castellano-Escuder

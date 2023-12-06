@@ -1,82 +1,34 @@
-context("PomaOddsRatio")
 
-test_that("PomaOddsRatio works", {
+test_that("PomaOddsRatio handles valid SummarizedExperiment objects", {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  odds_ratio_results <- PomaOddsRatio(data)
+  expect_is(odds_ratio_results, "list")
+  expect_true(all(c("odds_ratio_table", "odds_ratio_plot") %in% names(odds_ratio_results)))
+})
 
-  data("st000336")
+test_that("PomaOddsRatio stops with non-SummarizedExperiment objects", {
+  data <- data.frame(matrix(runif(100), ncol = 10))
+  expect_error(PomaOddsRatio(data), "data is not a SummarizedExperiment object")
+})
 
-  imputed <- POMA::PomaImpute(st000336, method = "knn")
-  
-  norm_none <- PomaNorm(imputed, method = "none")
-  norm_ls <- PomaNorm(imputed, method = "log_scaling")
+test_that("PomaOddsRatio handles specific feature names correctly", {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  feature_name <- rownames(SummarizedExperiment::assay(data))[1:2]
+  odds_ratio_results <- PomaOddsRatio(data, feature_name = feature_name)
+  expect_is(odds_ratio_results, "list")
+  expect_true(all(feature_name %in% odds_ratio_results$odds_ratio_table$feature))
+})
 
-  a <- PomaOddsRatio(norm_none, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"))$OddsRatioPlot
-  b <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"))$OddsRatioPlot
+test_that("PomaOddsRatio stops with incorrect feature names", {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  expect_error(PomaOddsRatio(data, feature_name = "non_existing_feature"))
+})
 
-  c <- PomaOddsRatio(norm_ls, feature_name = "glutamic_acid")$OddsRatioPlot
-  d <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "arginine"))$OddsRatioPlot
-
-  df_a <- ggplot2::layer_data(a)
-  df_b <- ggplot2::layer_data(b)
-
-  ##
-
-  expect_equal(nrow(df_a), nrow(df_b))
-
-  ##
-  
-  e <- PomaOddsRatio(norm_none)$OddsRatioTable
-  f <- PomaOddsRatio(norm_ls)$OddsRatioTable
-  g <- PomaOddsRatio(norm_ls, feature_name = "glutamic_acid")$OddsRatioTable
-  h <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "arginine"))$OddsRatioTable
-  h_1 <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "arginine"), covariates = TRUE)$OddsRatioTable
-
-  ##
-
-  expect_equal(dim(e), dim(f))
-  expect_false(nrow(f) == nrow(g))
-  expect_false(nrow(g) == nrow(h))
-  expect_false(nrow(h) == nrow(h_1))
-
-  ##
-
-  i <- PomaOddsRatio(norm_ls, feature_name = NULL, covariates = TRUE)$OddsRatioTable
-  j <- PomaOddsRatio(norm_ls, feature_name = NULL, covariates = FALSE)$OddsRatioTable
-
-  ##
-
-  expect_false(nrow(i) == nrow(j))
-
-  ##
-
-  k <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"))$OddsRatioPlot
-  l <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"), showCI = FALSE)$OddsRatioPlot
-  m <- PomaOddsRatio(norm_ls, feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine", "isoleucine", "leucine", "lysine"), showCI = FALSE, covariates = TRUE)$OddsRatioPlot
-
-  df_k <- ggplot2::layer_data(k)
-  df_l <- ggplot2::layer_data(l)
-  df_m <- ggplot2::layer_data(m)
-
-  ##
-
-  expect_equal(nrow(df_k), nrow(df_l))
-
-  ##
-
-  expect_error(PomaOddsRatio(norm_ls, feature_name = "hello"))
-  expect_error(PomaOddsRatio(norm_ls, feature_name = "glutamic_aci"))
-  
-  expect_warning(PomaOddsRatio(norm_ls, feature_name = c("glutamic_aci", "arginine")))
-  expect_warning(PomaOddsRatio(norm_ls, feature_name = c("glutamic_aci", "arginine", "glutamine")))
-
-  ##
-
-  SummarizedExperiment::colData(imputed) <- SummarizedExperiment::colData(imputed)[1]
-  expect_error(PomaOddsRatio(imputed, covariates = TRUE))
-  
-  ##
-  
-  expect_error(PomaOddsRatio())
-  expect_error(PomaOddsRatio(iris))
-
+test_that("PomaOddsRatio handles covariates and show_ci parameters correctly", {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  odds_ratio_results_with_covs <- PomaOddsRatio(data, covs = c("Group"))
+  odds_ratio_results_no_ci <- PomaOddsRatio(data, show_ci = FALSE)
+  expect_is(odds_ratio_results_with_covs, "list")
+  expect_is(odds_ratio_results_no_ci, "list")
 })
 

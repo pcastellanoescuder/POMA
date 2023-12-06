@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.7.19
+Version: 1.8.47
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -13,7 +13,7 @@ Description:
     and statistical analysis of omics datasets. The main aim of POMA is to enable a flexible data cleaning and 
     statistical analysis processes in one comprehensible and user-friendly R package. This package has a Shiny app 
     version called POMAShiny that implements all POMA functions. See https://github.com/pcastellanoescuder/POMAShiny. 
-    See Castellano-Escuder P, González-Domínguez R, Carmona-Pontaque F, et al. (2021) <doi:10.1371/journal.pcbi.1009148> 
+    See Castellano-Escuder et al. (2021) <doi:10.1371/journal.pcbi.1009148> 
     for more details.
 License: GPL-3
 Encoding: UTF-8
@@ -40,16 +40,22 @@ Imports:
     dbscan,
     dplyr,
     DESeq2,
+    FSA,
     ggplot2,
     ggrepel,
     glasso (>= 1.11),
     glmnet,
     impute,
+    janitor,
     limma,
+    lme4,
     magrittr,
+    MASS,
+    Matrix,
     mixOmics,
     randomForest,
     RankProd (>= 3.14),
+    rlang,
     rmarkdown,
     SummarizedExperiment,
     tibble,
@@ -66,7 +72,7 @@ Suggests:
     tidyverse,
     testthat (>= 2.3.2)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Depends: R (>= 4.0)
 VignetteBuilder: knitr
 URL: https://github.com/pcastellanoescuder/POMA

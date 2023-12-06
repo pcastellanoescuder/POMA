@@ -1,55 +1,37 @@
-context("PomaLasso")
 
-test_that("PomaLasso works", {
+test_that("PomaLasso handles valid SummarizedExperiment objects", {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  lasso_results <- PomaLasso(data, alpha = 1)
+  expect_is(lasso_results, "list")
+  expect_true(all(c("coefficients", "coefficients_plot", "cv_plot", "model") %in% names(lasso_results)))
+})
 
-  data("st000336")
+test_that("PomaLasso stops with non-SummarizedExperiment objects", {
+  data <- data.frame(matrix(runif(100), ncol = 10))
+  expect_error(PomaLasso(data), "data is not a SummarizedExperiment object")
+})
 
-  normalized <- st000336 %>%
-    POMA::PomaImpute(method = "knn") %>%
-    POMA::PomaNorm(method = "log_scaling")
+test_that("PomaLasso handles different alpha values correctly", {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  for (alpha in c(0, 0.5, 1)) { # Testing Ridge, Elasticnet, and Lasso
+    lasso_results <- PomaLasso(data, alpha = alpha)
+    expect_is(lasso_results, "list")
+    expect_true(all(c("coefficients", "coefficients_plot", "cv_plot", "model") %in% names(lasso_results)))
+  }
+})
 
-  normalized_test <- normalized
-  normalized_test_less <- normalized
-  SummarizedExperiment::colData(normalized_test)[,1] <- c(rep("C", 30), rep("G", 20), rep("P", 7))
-  SummarizedExperiment::colData(normalized_test_less)[,1] <- "Control"
+test_that("PomaLasso stops with incorrect alpha argument", {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  expect_error(PomaLasso(data, alpha = -1), "alpha must be a number between 0 and 1")
+  expect_error(PomaLasso(data, alpha = 2), "alpha must be a number between 0 and 1")
+})
 
-  lasso_res <- PomaLasso(normalized, alpha = 1, ntest = NULL, nfolds = 3, labels = TRUE)
-  ridge_res <- PomaLasso(normalized, alpha = 0, ntest = NULL, nfolds = 10)
-  enet_res <- PomaLasso(normalized, alpha = 0.5, ntest = NULL, nfolds = 5, labels = TRUE)
-  lasso_self_lambda <- PomaLasso(normalized, alpha = 1, ntest = NULL, nfolds = 10, lambda = seq(0.002, 20, length.out = 100))
-  
-  ## TABLES
-
-  expect_false(nrow(lasso_res$coefficients) == nrow(ridge_res$coefficients))
-  expect_false(nrow(lasso_res$coefficients) == nrow(enet_res$coefficients))
-  
-  expect_equal(ncol(lasso_res$coefficients), ncol(ridge_res$coefficients))
-  expect_equal(ncol(ridge_res$coefficients), ncol(enet_res$coefficients))
-  expect_equal(ncol(lasso_res$coefficients), ncol(lasso_self_lambda$coefficients))
-
-  ## PLOTS
-
-  df_a <- ggplot2::layer_data(lasso_res$coefficientPlot)
-  df_b <- ggplot2::layer_data(ridge_res$coefficientPlot)
-  df_e <- ggplot2::layer_data(enet_res$coefficientPlot)
-
-  df_c <- ggplot2::layer_data(lasso_res$cvLassoPlot)
-  df_d <- ggplot2::layer_data(ridge_res$cvLassoPlot)
-
-  expect_false(length(df_a$y) == length(df_b$y))
-  expect_false(length(df_c$y) == length(df_d$y))
-  expect_false(length(df_a$y) == length(df_e$y))
-
-  ## ERRORS
-  
-  expect_error(PomaLasso(normalized, alpha = 2))
-  expect_error(PomaLasso(normalized, alpha = -0.5))
-  expect_error(PomaLasso(iris, alpha = 1))
-  expect_error(PomaLasso(normalized_test, alpha = 1))
-  expect_error(PomaLasso(normalized_test_less, alpha = 1))
-  expect_error(PomaLasso())
-  expect_error(PomaLasso(normalized, ntest = 60))
-  expect_error(PomaLasso(normalized, ntest = 2))
-  
+test_that("PomaLasso handles ntest and nfolds parameters correctly", {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  lasso_results_with_ntest <- PomaLasso(data, ntest = 10)
+  lasso_results_with_nfolds <- PomaLasso(data, nfolds = 5)
+  expect_is(lasso_results_with_ntest, "list")
+  expect_true("confusion_matrix" %in% names(lasso_results_with_ntest))
+  expect_is(lasso_results_with_nfolds, "list")
 })
 

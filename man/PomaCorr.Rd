@@ -4,39 +4,22 @@
 \alias{PomaCorr}
 \title{Correlation Analysis}
 \usage{
-PomaCorr(
-  data,
-  method = "pearson",
-  low = "red",
-  outline = "white",
-  high = "blue",
-  label_size = 12,
-  corr_type = "cor",
-  coeff = 0.7
-)
+PomaCorr(data, method = "pearson", label_size = 8, theme_params = list(), ...)
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{method}{Character indicating which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".}
+\item{method}{Character. Indicates which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".}
 
-\item{low}{Color for low end of the gradient in corrplot.}
+\item{label_size}{Numeric. Indicates plot label size.}
 
-\item{outline}{Color for the outline of the gradient in corrplot.}
-
-\item{high}{Color for high end of the gradient in corrplot.}
-
-\item{label_size}{Numeric indicating label size in corrplot.}
-
-\item{corr_type}{Type of correlation network. Options are "cor" (for global correlations) and "glasso" (for gaussian graphical model). Default is "cor". See \code{glasso} R package for the second option.}
-
-\item{coeff}{Numeric indicating correlation coefficient. Edges with absolute weight below this value will be removed from the network. If "corr_type" is set to "glasso", this parameter indicates the regularization parameter for lasso (rho = 0 means no regularization). See \code{glasso::glasso()}.}
+\item{theme_params}{List. Indicating \code{theme_poma} parameters.}
 }
 \value{
-A list with the results.
+A \code{list} with the results.
 }
 \description{
-This function returns different correlation plots and a table with all pairwise correlations in the data.
+\code{PomaCorr} computes all pairwise correlations in the data.
 }
 \examples{
 data("st000284")
