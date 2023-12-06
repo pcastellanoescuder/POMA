@@ -43,3 +43,12 @@ make_legend <- function(fun,
   return(legend)
 }
 
+create_mock_summarized_experiment <- function(binary = FALSE) {
+  
+  if (!binary) {g_labels <- c("A", "B", "C")} else {g_labels <- c("A", "B")}
+  
+  matrix_data <- matrix(runif(100), nrow = 20)
+  col_data <- data.frame(sample = paste0("Sample", 1:20), group = sample(g_labels, 20, replace = TRUE))
+  PomaCreateObject(features = matrix_data, metadata = col_data)
+}
+

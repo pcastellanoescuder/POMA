@@ -1,44 +1,41 @@
-context("PomaRandForest")
 
-test_that("PomaRandForest works", {
+test_that("PomaRandForest handles valid SummarizedExperiment objects", {
+  data <- create_mock_summarized_experiment()
+  result <- PomaRandForest(data)
+  expect_is(result, "list")
+  expect_true(all(c("MeanDecreaseGini", "MeanDecreaseGini_plot", "oob_error", "error_tree", "model") %in% names(result)))
+})
 
-  # library(tidyverse)
+test_that("PomaRandForest stops with non-SummarizedExperiment objects", {
+  data <- data.frame(matrix(runif(100), ncol = 10))
+  expect_error(PomaRandForest(data), "data is not a SummarizedExperiment object")
+})
 
-  data("st000284")
+test_that("PomaRandForest handles different ntest values correctly", {
+  data <- create_mock_summarized_experiment()
+  for (ntest in c(5, 10, 20, 30, 40, 50)) {
+    result <- PomaRandForest(data, ntest = ntest)
+    expect_is(result, "list")
+    expect_true(all(c("confusionMatrix", "train_x", "train_y", "test_x", "test_y") %in% names(result)))
+  }
+})
 
-  res <- PomaRandForest(st000284, ntest = 15, nvar = 15)
-  res1 <- PomaRandForest(st000284, ntest = 30, mtry = 5)
-  res2 <- PomaRandForest(st000284, mtry = 5)
-  
-  df_a <- ggplot2::layer_data(res$error_tree)
-  df_b <- ggplot2::layer_data(res$MeanDecreaseGini_plot)
+test_that("PomaRandForest stops with invalid ntest argument", {
+  data <- create_mock_summarized_experiment()
+  expect_error(PomaRandForest(data, ntest = 60), "Incorrect value for ntest argument")
+  expect_error(PomaRandForest(data, ntest = 0), "Incorrect value for ntest argument")
+})
 
-  df_c <- ggplot2::layer_data(res1$error_tree)
-  df_d <- ggplot2::layer_data(res1$MeanDecreaseGini_plot)
+test_that("PomaRandForest handles different values for ntree, mtry, and nodesize", {
+  data <- create_mock_summarized_experiment()
+  result <- PomaRandForest(data, ntree = 100, mtry = 2, nodesize = 2)
+  expect_is(result, "list")
+})
 
-  ####
-
-  expect_error(PomaRandForest())
-  expect_error(PomaRandForest(iris))
-  expect_true(length(res) == 10)
-  expect_false(length(res) == length(res2))
-  expect_true(length(res2) == 5)
-  
-  expect_false(all(df_a$y == df_c$y))
-  expect_false(length(df_b$y) == length(df_d$y))
-
-  expect_equal(length(df_a$y), length(df_c$y))
-  expect_false(length(df_b$y) == length(df_d$y))
-
-  expect_false(all(res$oob_error == res1$oob_error))
-  expect_equal(nrow(res$oob_error), nrow(res1$oob_error))
-
-  expect_equal(dim(res$confusionMatrix), dim(res1$confusionMatrix))
-  expect_false(all(res$confusionMatrix$table == res1$confusionMatrix$table))
-  expect_equal(dim(res2$confusionMatrix), NULL)
-  
-  expect_error(PomaRandForest(st000284, ntest = 1))
-  expect_error(PomaRandForest(st000284, ntest = 51))
-
+test_that("PomaRandForest returns expected results with nvar parameter", {
+  data <- create_mock_summarized_experiment()
+  result <- PomaRandForest(data, nvar = 5)
+  expect_is(result, "list")
+  expect_equal(nrow(result$MeanDecreaseGini), 5)
 })
 

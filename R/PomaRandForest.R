@@ -141,6 +141,5 @@ PomaRandForest <- function(data,
                 model = RF_model)
            )
   }
-  
 }
 
