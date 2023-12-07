@@ -17,7 +17,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 | *BioC* branch                                                           | Status                                                                                                                                                  | Version                                                                                                                                            | Dependencies                                                                                                                                         | Rank                                                                                                                         |
 |-------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | [Release](http://bioconductor.org/packages/release/bioc/html/POMA.html) | [![Bioc release status](https://bioconductor.org/shields/build/release/bioc/POMA.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/POMA/) | [![BioC released version](https://img.shields.io/badge/release%20version-1.6.0-blue.svg)](https://www.bioconductor.org/packages/POMA)              | [![Dependencies](http://bioconductor.org/shields/dependencies/release/POMA.svg)](http://bioconductor.org/packages/release/bioc/html/POMA.html#since) | [![Rank](http://www.bioconductor.org/shields/downloads/release/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA) |
-| [Devel](http://bioconductor.org/packages/devel/bioc/html/POMA.html)     | [![Bioc devel status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)       | [![BioC devel version](https://img.shields.io/badge/devel%20version-1.8.52-blue.svg)](https://bioconductor.org/packages/devel/bioc/html/POMA.html) | [![Dependencies](http://bioconductor.org/shields/dependencies/devel/POMA.svg)](http://bioconductor.org/packages/devel/bioc/html/POMA.html#since)     | [![Rank](http://www.bioconductor.org/shields/downloads/devel/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA)   |
+| [Devel](http://bioconductor.org/packages/devel/bioc/html/POMA.html)     | [![Bioc devel status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)       | [![BioC devel version](https://img.shields.io/badge/devel%20version-1.8.53-blue.svg)](https://bioconductor.org/packages/devel/bioc/html/POMA.html) | [![Dependencies](http://bioconductor.org/shields/dependencies/devel/POMA.svg)](http://bioconductor.org/packages/devel/bioc/html/POMA.html#since)     | [![Rank](http://www.bioconductor.org/shields/downloads/devel/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA)   |
 
 <!-- badges: end -->
 
@@ -57,10 +57,10 @@ devtools::install_github("pcastellanoescuder/POMA")
 
 ## Citation
 
-Castellano-Escuder P, González-Domínguez R, Carmona-Pontaque F, et
-al. POMAShiny: A user-friendly web-based workflow for metabolomics and
-proteomics data analysis. PLoS Comput Biol. 2021 Jul 1;17(7):e1009148.
-doi: 10.1371/journal.pcbi.1009148. PMID: 34197462; PMCID: PMC8279420.
+Castellano-Escuder et al. POMAShiny: A user-friendly web-based workflow
+for metabolomics and proteomics data analysis. PLoS Comput Biol. 2021
+Jul 1;17(7):e1009148. doi: 10.1371/journal.pcbi.1009148. PMID: 34197462;
+PMCID: PMC8279420.
 
 <!-- ### Cited In -->
 <!-- Bellio C, Emperador M, Castellano P, et al. GDF15 Is an Eribulin Response Biomarker also Required for Survival of DTP Breast Cancer Cells. Cancers (Basel). 2022 May 23;14(10):2562. doi: 10.3390/cancers14102562. PMID: 35626166; PMCID: PMC9139899. -->
@@ -73,10 +73,3 @@ doi: 10.1371/journal.pcbi.1009148. PMID: 34197462; PMCID: PMC8279420.
 Click
 [here](https://github.com/pcastellanoescuder/POMA/blob/master/NEWS.md)
 for the latest package updates.
-
-## Code of Conduct
-
-Please note that the ‘POMA’ project is released with a [Contributor Code
-of
-Conduct](https://pcastellanoescuder.github.io/POMA/CODE_OF_CONDUCT.html).
-By contributing to this project, you agree to abide by its terms.
