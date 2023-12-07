@@ -137,7 +137,7 @@ PomaUnivariate <- function(data,
       # Post-hoc tests
       if (run_post_hoc) {
         post_hoc_tests <- list()
-        for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+        for (i in seq_len(nrow(SummarizedExperiment::assay(data)))) {
           post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
                                                broom::tidy(TukeyHSD(aov(to_univariate[,i] ~ group_factor)))[,c(2, 7)])
         }
@@ -160,7 +160,7 @@ PomaUnivariate <- function(data,
       covariates_feat <- as.data.frame(cbind(to_univariate, covariates))
       
       result_cov <- vector(mode = "list", length = ncol(to_univariate))
-      for(i in 1:ncol(to_univariate)) {
+      for(i in seq_len(ncol(to_univariate))) {
         result_cov[[i]] <- broom::tidy(anova(aov(as.formula(paste(colnames(covariates_feat)[i], "~", model_names)),
                                                  data = covariates_feat))) %>% 
           dplyr::filter(term != "Residuals") %>% 
@@ -182,7 +182,7 @@ PomaUnivariate <- function(data,
       # Post-hoc tests
       if (run_post_hoc) {
         post_hoc_tests <- list()
-        for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+        for (i in seq_len(nrow(SummarizedExperiment::assay(data)))) {
           post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
                                                as.data.frame(TukeyHSD(
                                                  aov(as.formula(paste(colnames(covariates_feat)[1], "~", model_names)),
@@ -238,7 +238,7 @@ PomaUnivariate <- function(data,
     # Post-hoc tests
     if (run_post_hoc) {
       post_hoc_tests <- list()
-      for (i in 1:nrow(SummarizedExperiment::assay(data))) {
+      for (i in seq_len(nrow(SummarizedExperiment::assay(data)))) {
         post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i],
                                              FSA::dunnTest(to_univariate[,i] ~ group_factor,
                                                            data = as.data.frame(to_univariate))$res

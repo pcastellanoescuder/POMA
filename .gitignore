@@ -8,3 +8,4 @@ inst/doc
 Dockerfile
 pkgdown/
 docs/
+.DS_Store
