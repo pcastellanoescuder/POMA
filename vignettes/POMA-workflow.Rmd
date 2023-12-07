@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2023-12-06
+**Last edited**: 2023-12-07
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -44,13 +44,6 @@ BiocManager::install("POMA")
 
 ```{r, warning = FALSE, message = FALSE}
 library(POMA)
-```
-
-Additionally, you can load other useful packages for this vignette:
-
-```{r, warning = FALSE, message = FALSE}
-library(ggplot2)
-library(plotly)
 ```
 
 # The POMA Workflow
@@ -122,30 +115,24 @@ normalized
 
 ```{r, message = FALSE}
 PomaBoxplots(imputed, 
-             x = "samples",
-             legend_position = "none") +
-  ggplot2::ggtitle("Not Normalized") # data before normalization
+             x = "samples") # data before normalization
 ```
 
 ```{r, message = FALSE}
 PomaBoxplots(normalized, 
-             x = "samples", 
-             legend_position = "none") +
-  ggplot2::ggtitle("Normalized") # data after normalization
+             x = "samples") # data after normalization
 ```
 
 <!-- On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process.     -->
 
 ```{r, message = FALSE}
 PomaDensity(imputed, 
-            x = "features") +
-  ggplot2::ggtitle("Not Normalized") # data before normalization
+            x = "features") # data before normalization
 ```
 
 ```{r, message = FALSE}
 PomaDensity(normalized, 
-            x = "features") +
-  ggplot2::ggtitle("Normalized") # data after normalization
+            x = "features") # data after normalization
 ```
 
 ### Outlier Detection
@@ -171,19 +158,22 @@ pre_processed
 #### T-test
 
 ```{r}
-PomaUnivariate(pre_processed, method = "ttest")
+pre_processed %>% 
+  PomaUnivariate(method = "ttest")
 ```
 
 <!-- You can also compute a volcano plot using the T-test results.    -->
 
 ```{r}
-PomaVolcano(imputed, pval = "adjusted", labels = TRUE)
+imputed %>% 
+  PomaVolcano(pval = "adjusted", labels = TRUE)
 ```
 
 #### Wilcoxon Test
 
 ```{r, warning = FALSE}
-PomaUnivariate(pre_processed, method = "mann")
+pre_processed %>% 
+  PomaUnivariate(method = "mann")
 ```
 
 <!-- ### Limma -->
