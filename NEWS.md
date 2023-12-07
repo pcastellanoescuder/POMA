@@ -1,4 +1,4 @@
-# POMA 1.8.49
+# POMA 1.8.50
 
 * New POMA theme and colorblind-friendly palette
 * Available sample normalization (sum and quantile)
@@ -12,6 +12,7 @@
 * Other new functions: `PomaLM`, `PomaLMM`
 * Post-hoc pairwise comparisons in `PomaUnivariate`
 * Update tests and vignettes
+* Rename default GitHub branch from `master` to `main`
 
 # POMA 1.7.19
 
