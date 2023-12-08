@@ -1,18 +1,18 @@
 
 #' Principal Components Regression
 #'
-#' @description Fits a Linear Model using the indicated variable as the dependent variable (outcome) and the indicated number of Principal Components as independent variables.
+#' @description `PomaPCR` performs Principal Components Regression.
 #'
-#' @param data A SummarizedExperiment object.
-#' @param n_components The number of Principal Components used in the PCR model. Defaults is 5.
-#' @param scale A logical value indicating whether the variables should be scaled to have unit variance before the analysis takes place. 
-#' @param center A logical value indicating whether the variables should be shifted to be zero centered. 
-#' @param outcome Character string indicating the variable name in `colData` to be used as the outcome.
-#' @param intercept A logical value indicating whether intercept should be included in the LM. Default is TRUE.
+#' @param data A `SummarizedExperiment` object.
+#' @param center Logical. Indicates whether the variables should be shifted to be zero centered. Default is TRUE.
+#' @param scale Logical. Indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is TRUE.
+#' @param ncomp Numeric. Indicates the number of principal components used as predictors in the model. Default is 2.
+#' @param y Character. Indicates the name of `colData` columns to be used as dependent variable. If it's set to NULL, the first numeric variable in `colData` will be used as the dependent variable.
+#' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
 #' 
 #' @export
 #'
-#' @return A list with PCR results.
+#' @return A `tibble` with the results.
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>% %<>%
@@ -20,76 +20,58 @@
 #' @examples 
 #' data("st000284")
 #' 
+#' # PCR with 2 components
 #' st000284 %>%
-#'   PomaPCR(outcome = "age_at_consent")
-#' 
-#' data("st000336")
+#'   PomaPCR(y = "age_at_consent")
 #'   
-#' st000336 %>% 
-#' PomaImpute() %>% 
-#' PomaPCR(n_components = 2, 
-#'         outcome = "steroids", 
-#'         intercept = FALSE)
+#' # PCR with 20 components
+#' st000284 %>%
+#'   PomaPCR(ncomp = 20)
 PomaPCR <- function(data,
-                    n_components = 5,
-                    scale = TRUE,
                     center = TRUE,
-                    outcome = NULL,
-                    intercept = TRUE) {
+                    scale = TRUE,
+                    ncomp = 2,
+                    y = NULL,
+                    adjust = "fdr") {
   
-  if (missing(data)) {
-    stop("data argument is empty!")
-  }
   if(!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
-  if(is.null(outcome)){
-    stop("Select an outcome variable")
-  }
-  if(!outcome %in% colnames(SummarizedExperiment::colData(data))) {
-    stop(paste0("The variable ", outcome, " is not in your target data."))
+  if (ncol(SummarizedExperiment::colData(data)) == 0) {
+    stop("metadata file required")
   }
   
-  assay <- t(SummarizedExperiment::assay(data))
-  target <- SummarizedExperiment::colData(data)
+  dependent_variable <- SummarizedExperiment::colData(data) %>% 
+    as.data.frame() %>% 
+    dplyr::select_if(is.numeric)
   
-  pca_res <- prcomp(assay, scale. = scale, center = center)
-  
-  pca_loadings <- pca_res$rotation[, 1:n_components] %>% 
-    dplyr::as_tibble() %>% 
-    dplyr::mutate(feature = rownames(data)) %>% 
-    dplyr::relocate(feature, dplyr::everything()) %>% 
-    dplyr::arrange(dplyr::desc(abs(PC1)))
-  
-  pca_res <- pca_res$x[, 1:n_components]
-
-  outcome_df <- target %>%
-    as.data.frame() %>%
-    dplyr::select_at(dplyr::vars(outcome = dplyr::matches(outcome)))
-  
-  data_pcr <- cbind(outcome_df, pca_res)
-  
-  if(is(outcome_df$outcome, "integer") | is(outcome_df$outcome, "numeric")) {
-    data_pcr %<>%
-      dplyr::mutate(outcome = as.numeric(outcome))
-    
-    if(intercept) {
-      res_pcr <- lm(outcome ~ ., 
-                    data = data_pcr)  
-    } else {
-      res_pcr <- lm(outcome ~ . - 1, 
-                    data = data_pcr) 
-    }
+  if (ncol(dependent_variable) == 0) {
+    stop("No numeric variables to be used as dependent variable in metadata file")
+  }
+  if (is.null(y)) {
+    y <- colnames(dependent_variable)[1]
   }
   
-  else {
-    stop("The outcome variable is expected to be numeric")
+  y_name <- rlang::sym(y[1])
+  
+  dependent_variable <- dependent_variable %>% 
+    dplyr::select(dplyr::all_of(y_name))
+  
+  if (!(adjust %in% c("fdr", "holm", "hochberg", "hommel", "bonferroni", "BH", "BY"))) {
+    stop("Incorrect value for adjust argument")
   }
 
-  return(list(summary = broom::glance(res_pcr),
-              coefficients = broom::tidy(res_pcr),
-              loadings = pca_loadings)
-         )
+  pca_res <- POMA::PomaPCA(data, center = center, scale = scale, ncomp = ncomp)$factors %>% 
+    dplyr::select(PC1:paste0("PC", ncomp))
   
+  to_pcr <- data.frame(dependent_variable, pca_res)
+
+  res_pcr <- broom::tidy(rlang::inject(lm(!!y_name ~ 0 + ., data = to_pcr))) %>% 
+    dplyr::mutate(adj_pvalue = p.adjust(p.value, method = adjust)) %>% 
+    dplyr::select(component = term, estimate, std_err = std.error, statistic, pvalue = p.value, adj_pvalue) %>% 
+    dplyr::arrange(pvalue) %>% 
+    dplyr::as_tibble()
+
+  return(res_pcr)
 }
 

@@ -6,46 +6,49 @@
 \usage{
 PomaUMAP(
   data,
-  n_neighbors = NULL,
+  n_neighbors = floor(sqrt(nrow(data))),
   n_components = 2,
   metric = "euclidean",
   pca = NULL,
   min_dist = 0.01,
   spread = 1,
-  hdbscan_minpts = NULL,
-  show_clusters = FALSE,
-  show_group = FALSE,
-  legend_position = "bottom"
+  hdbscan_minpts = floor(nrow(data) * 0.05),
+  show_clusters = TRUE,
+  hide_noise = TRUE,
+  labels = FALSE,
+  theme_params = list(legend_title = TRUE, legend_position = "bottom")
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{n_neighbors}{The size of local neighborhood (sample points) used for manifold approximation.}
+\item{n_neighbors}{Numeric. Indicates the size of local neighborhood (sample points) used for manifold approximation.}
 
-\item{n_components}{The dimension of the space to embed into. Defaults is 2.}
+\item{n_components}{Numeric. Indicates the dimension of the space to embed into.}
 
-\item{metric}{Distance measure method to find nearest neighbors. Options are "euclidean", "cosine", "manhattan", "hamming" and "correlation". See \code{?uwot::umap()}.}
+\item{metric}{Character. Indicates the distance measure method to find nearest neighbors. Options are "euclidean", "cosine", "manhattan", "hamming" and "correlation". See \code{?uwot::umap()}.}
 
 \item{pca}{If not NULL (default), reduce data to this number of columns using PCA before UMAP.}
 
-\item{min_dist}{The effective minimum distance between embedded points.}
+\item{min_dist}{Numeric. Indicates the effective minimum distance between embedded points.}
 
-\item{spread}{The effective scale of embedded points.}
+\item{spread}{Numeric. Indicates the effective scale of embedded points.}
 
-\item{hdbscan_minpts}{Integer; Minimum size of clusters. See \code{?dbscan::hdbscan()}.}
+\item{hdbscan_minpts}{Numeric. Indicates the minimum size of clusters. See \code{?dbscan::hdbscan()}.}
 
-\item{show_clusters}{Logical indicating if clusters computed with HDBSCAN method should be plotted or not.}
+\item{show_clusters}{Logical. Indicates if clusters computed with HDBSCAN method should be plotted or not.}
 
-\item{show_group}{Logical indicating if the original sample group from target should be plotted or not.}
+\item{hide_noise}{Logical. Specifies whether to hide Cluster 0 in the plot. In HDBSCAN, Cluster 0 is typically regarded as "noise."}
 
-\item{legend_position}{Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".}
+\item{labels}{Logical. Indicates if sample names should be plotted or not.}
+
+\item{theme_params}{List. Indicates \code{theme_poma} parameters.}
 }
 \value{
-A list with results including plots and tables.
+A \code{list} with results including plots and tables.
 }
 \description{
-Dimension reduction of the data using the Uniform Manifold Approximation and Projection (UMAP) method. See \code{?uwot::umap()} for more.
+\code{PomaUMAP} performs a dimension reduction of the data using the Uniform Manifold Approximation and Projection (UMAP) method. See \code{?uwot::umap()} for more.
 }
 \examples{
 data("st000284")

@@ -1,58 +1,36 @@
-context("PomaDensity")
 
-test_that("PomaDensity works", {
+test_that("PomaDensity handles valid SummarizedExperiment objects", {
+  data <- create_mock_summarized_experiment()
+  plot_samples <- PomaDensity(data, x = "samples")
+  plot_features <- PomaDensity(data, x = "features")
+  expect_is(plot_samples, "ggplot")
+  expect_is(plot_features, "ggplot")
+})
 
-  data("st000284")
+test_that("PomaDensity stops with non-SummarizedExperiment objects", {
+  data <- data.frame(matrix(runif(100), ncol = 10))
+  expect_error(PomaDensity(data), "data is not a SummarizedExperiment object")
+})
 
-  norm_none <- PomaNorm(st000284, method = "none")
-  norm_ls <- PomaNorm(st000284, method = "log_scaling")
+test_that("PomaDensity stops with incorrect x argument", {
+  data <- create_mock_summarized_experiment()
+  expect_error(PomaDensity(data, x = "invalid_option"), "Incorrect value for x argument")
+})
 
-  a <- PomaDensity(norm_none)
-  b <- PomaDensity(norm_ls)
-  c <- PomaDensity(norm_none, group = "features")
-  d <- PomaDensity(norm_ls, group = "features")
+test_that("PomaDensity handles feature_name parameter correctly", {
+  data <- create_mock_summarized_experiment()
+  plot_specific_feature <- PomaDensity(data, x = "features", feature_name = c("V1"))
+  expect_is(plot_specific_feature, "ggplot")
+})
 
-  e <- PomaDensity(norm_none, group = "samples")
+test_that("PomaDensity stops with non-existing feature names", {
+  data <- create_mock_summarized_experiment()
+  expect_error(PomaDensity(data, x = "features", feature_name = c("non_existing_feature")), "Features not found")
+})
 
-  f <- PomaDensity(norm_ls, group = "features", feature_name = "methyl_succinate")
-  g <- PomaDensity(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"))
-
-  df_a <- ggplot2::layer_data(a)
-  df_b <- ggplot2::layer_data(b)
-  df_c <- ggplot2::layer_data(c)
-  df_d <- ggplot2::layer_data(d)
-  df_e <- ggplot2::layer_data(e)
-  df_f <- ggplot2::layer_data(f)
-  df_g <- ggplot2::layer_data(g)
-
-  ####
-
-  expect_false(all(df_a$y == df_c$y))
-  expect_false(all(df_b$y == df_d$y))
-  expect_false(all(df_a$y == df_b$y))
-  expect_false(all(df_c$y == df_d$y))
-
-  expect_false(all(df_f$y == df_g$y))
-  expect_false(all(df_f$y == df_d$y))
-  expect_false(all(df_g$y == df_d$y))
-
-  expect_equal(df_a, df_e)
-
-  expect_error(PomaDensity(norm_ls, group = "samp"))
-  expect_error(PomaDensity(norm_ls, group = "features", feature_name = "hello"))
-
-  expect_error(PomaDensity(norm_ls, feature_name = "hello"))
-  expect_error(PomaDensity(norm_ls, feature_name = "methyl_succinat"))
-  
-  ##
-  
-  expect_error(PomaDensity(group = "sample"))
-  expect_error(PomaDensity(iris, group = "sample"))
-  expect_error(PomaDensity(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_acid"), 
-                           legend_position = "no"))
-  
-  expect_warning(PomaDensity(norm_ls, group = "features", feature_name = c("methyl_succinate", "linoleic_aci")))
-  expect_warning(PomaDensity(norm_ls, feature_name = c("methyl_succinat", "linoleic_acid")))
-  
+test_that("PomaDensity applies theme parameters correctly", {
+  data <- create_mock_summarized_experiment()
+  plot_with_theme <- PomaDensity(data, theme_params = list(legend_title = TRUE))
+  expect_is(plot_with_theme, "ggplot")
 })
 

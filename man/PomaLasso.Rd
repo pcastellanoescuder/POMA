@@ -2,7 +2,7 @@
 % Please edit documentation in R/PomaLasso.R
 \name{PomaLasso}
 \alias{PomaLasso}
-\title{Lasso, Ridge and Elasticnet Regularized Generalized Linear Models for Binary Outcomes}
+\title{Lasso, Ridge, and Elasticnet Regularized Generalized Linear Models for Binary Outcomes}
 \usage{
 PomaLasso(
   data,
@@ -14,23 +14,23 @@ PomaLasso(
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{alpha}{Elasticnet mixing parameter. alpha = 1 is the lasso penalty and alpha = 0 is the ridge penalty. This value must be between 0 and 1.}
+\item{alpha}{Numeric. Indicates the elasticnet mixing parameter. alpha = 1 is the LASSO penalty and alpha = 0 is the Ridge penalty.}
 
-\item{ntest}{Numeric indicating the percentage of observations that will be used as test set. Default is NULL (no test set).}
+\item{ntest}{Numeric. Indicates the percentage of observations that will be used as test set. Default is NULL (no test set).}
 
-\item{nfolds}{Number of folds for CV (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.}
+\item{nfolds}{Numeric. Indicates number of folds for cross-validation (default is 10). Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds = 3.}
 
-\item{lambda}{A user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on \code{nlambda} and \code{lambda.min.ratio}. See \code{?glmnet::glmnet()}.}
+\item{lambda}{Numeric. Indicates the user supplied lambda sequence. Typical usage is to have the program compute its own lambda sequence based on \code{nlambda} and \code{lambda.min.ratio}. See \code{?glmnet::glmnet()}.}
 
-\item{labels}{Logical indicating if feature names should be plotted in coefficient plot or not. Default is FALSE.}
+\item{labels}{Logical. Indicates if feature names should be plotted in coefficient plot or not. Default is FALSE.}
 }
 \value{
-A list with all results including plots, tables and the resulting prediction model.
+A \code{list} with results.
 }
 \description{
-PomaLasso() is an implementation of the lasso, ridge and elasticnet regression from \code{glmnet} package for binary outcomes.
+\code{PomaLasso} performs LASSO, Ridge, and Elasticnet regression for feature selection and prediction purposes for binary outcomes.
 }
 \examples{
 data("st000336")
@@ -39,21 +39,18 @@ data("st000336")
 st000336 \%>\%
   PomaImpute() \%>\%
   PomaNorm() \%>\%
-  PomaOutliers() \%>\%
   PomaLasso()
 
 # elasticnet
 st000336 \%>\%
   PomaImpute() \%>\%
   PomaNorm() \%>\%
-  PomaOutliers() \%>\%
   PomaLasso(alpha = 0.5)
 
 # ridge
 st000336 \%>\%
   PomaImpute() \%>\%
   PomaNorm() \%>\%
-  PomaOutliers() \%>\%
   PomaLasso(alpha = 0)
 }
 \references{

@@ -1,16 +1,16 @@
 
-#' Distribution Plot
+#' Density Plots
 #'
-#' @description PomaDensity() generates a density plot of not normalized and normalized MS data. This plot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
+#' @description `PomaDensity` generates a density plot for samples and features. This function can be used for data exploration (e.g., comparison between pre and post normalized datasets).
 #'
-#' @param data A SummarizedExperiment object.
-#' @param group Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a density plot for each group and option "features" will create a density plot of each variable.
-#' @param feature_name A vector with the name/s of feature/s to plot. If it's NULL (default) a density plot of all variables will be created.
-#' @param legend_position Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".
+#' @param data A `SummarizedExperiment` object.
+#' @param x Character. Options are "samples" (to visualize sample density plots) and "features" (to visualize feature density plots). Default is "samples".
+#' @param feature_name Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).
+#' @param theme_params List. Indicates `theme_poma` parameters.
 #' 
 #' @export
 #'
-#' @return A ggplot2 object.
+#' @return A `ggplot` object.
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%
@@ -18,93 +18,112 @@
 #' @examples 
 #' data("st000284")
 #' 
-#' # samples
-#' PomaDensity(st000284)
+#' # Sample density plots
+#' st000284 %>%
+#' PomaNorm() %>% 
+#' PomaDensity(theme_params = list(axistext = "y"))
 #' 
-#' # features
-#' PomaDensity(st000284, group = "features")
-#' 
-#' # concrete features
-#' PomaDensity(st000284, group = "features", 
+#' # All feature density plots
+#' st000284 %>% 
+#' PomaNorm() %>% 
+#' PomaDensity(x = "features", theme_params = list(legend_position = "none"))
+#'              
+#' # Specific feature density plots
+#' st000284 %>% 
+#' PomaNorm() %>% 
+#' PomaDensity(x = "features", 
 #'             feature_name = c("ornithine", "orotate"))
 PomaDensity <- function(data,
-                        group = "samples",
+                        x = "samples",
                         feature_name = NULL,
-                        legend_position = "bottom"){
+                        theme_params = list(legend_title = FALSE),
+                        ...) {
 
-  if (missing(data)) {
-    stop("data argument is empty!")
-  }
   if(!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
-  if (!(group %in% c("samples", "features"))) {
-    stop("Incorrect value for group argument!")
+  if (!(x %in% c("samples", "features"))) {
+    stop("Incorrect value for x argument")
   }
   if (!is.null(feature_name)) {
     if(!any(feature_name %in% rownames(SummarizedExperiment::assay(data)))) {
-      stop("None of the specified features found")
+      stop("Features not found")
     }
-    if(!all(feature_name %in% rownames(SummarizedExperiment::assay(data)))){
-      warning(paste0("Feature/s ",
-                     paste0(feature_name[!feature_name %in% rownames(SummarizedExperiment::assay(data))], collapse = ", "),
+    if(!all(feature_name %in% rownames(SummarizedExperiment::assay(data)))) {
+      message(paste0(paste0(feature_name[!feature_name %in% rownames(SummarizedExperiment::assay(data))], collapse = ", "),
                      " not found"))
     }
-  }
-  if(!(legend_position %in% c("none", "top", "bottom", "left", "right"))) {
-    stop("Incorrect value for legend_position argument!")
-  }
-  
-  e <- t(SummarizedExperiment::assay(data))
-  target <- SummarizedExperiment::colData(data) %>%
-    as.data.frame() %>% 
-    tibble::rownames_to_column("ID") %>%
-    dplyr::rename(Group = 2) %>%
-    dplyr::select(ID, Group)
-  
-  data <- cbind(target, e)
-  
-  if(group == "samples"){
-    if (is.null(feature_name)){
-      plot_data <- data %>%
-        tidyr::pivot_longer(cols = -c(ID, Group)) %>%
-        ggplot2::ggplot(ggplot2::aes(value, fill = Group))
-      
-    } else {
-      plot_data <- data %>%
-        tidyr::pivot_longer(cols = -c(ID, Group)) %>%
-        dplyr::filter(name %in% feature_name) %>%
-        ggplot2::ggplot(ggplot2::aes(value, fill = Group))
-      
+    if(length(feature_name) > 10) {
+      stop("Maximum 10 features")
     }
-
+  }
+  
+  plot_data <- t(SummarizedExperiment::assay(data))
+  
+  grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
+                            is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  
+  if (grouping_factor) {
+    plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
+                            group_factor = SummarizedExperiment::colData(data)[,1], 
+                            plot_data)
   } else {
-    if (is.null(feature_name)){
-      plot_data <- data %>%
-        dplyr::select(-ID) %>%
-        tidyr::pivot_longer(cols = -Group) %>%
-        ggplot2::ggplot(ggplot2::aes(value, fill = name))
-
+    if (ncol(SummarizedExperiment::colData(data)) > 0) {
+      sample_names <- rownames(SummarizedExperiment::colData(data))
     } else {
-      plot_data <- data %>%
-        dplyr::select(-ID) %>%
-        tidyr::pivot_longer(cols = -Group) %>%
-        dplyr::filter(name %in% feature_name) %>%
-        ggplot2::ggplot(ggplot2::aes(value, fill = name))
-
+      sample_names <- colnames(SummarizedExperiment::assay(data))
     }
+    
+    if (is.null(sample_names)) {
+      sample_names <- paste0("sample_", 1:ncol(SummarizedExperiment::assay(data)))
+    }
+    
+    plot_data <- data.frame(sample_id = sample_names,
+                            group_factor = "no_groups",
+                            plot_data)
   }
   
-  plot_complete <- plot_data +
-    ggplot2::geom_density(alpha = 0.4) +
-    ggplot2::theme_bw() +
-    ggplot2::labs(x = "Value",
-                  y = "Density") +
-    ggplot2::theme(legend.title = ggplot2::element_blank(),
-                   legend.position = legend_position) +
-    ggplot2::scale_fill_viridis_d(begin = 0, end = 0.8)
+  if (x == "samples"){
+    plot_data <- plot_data %>%
+      tidyr::pivot_longer(cols = -c(sample_id, group_factor))
+    
+    if (!is.null(feature_name)){
+      plot_data <- plot_data %>% 
+        dplyr::filter(name %in% feature_name)
+    }
+    
+    plot_complete <- plot_data %>% 
+      ggplot2::ggplot(ggplot2::aes(value)) +
+      {if(grouping_factor)ggplot2::geom_density(ggplot2::aes(fill = group_factor), alpha = 0.5)} +
+      {if(!grouping_factor)ggplot2::geom_density(alpha = 0.5)} +
+      ggplot2::labs(x = "Value", 
+                    y = "Density",
+                    fill = NULL) +
+      do.call(theme_poma, theme_params) +
+      scale_fill_poma_d()
+
+  } 
+  
+  else if (x == "features") {
+    plot_data <- plot_data %>%
+      dplyr::select(-sample_id) %>%
+      tidyr::pivot_longer(cols = -group_factor)
+    
+    if (!is.null(feature_name)) {
+      plot_data <- plot_data %>% 
+        dplyr::filter(name %in% feature_name)
+    }
+
+    plot_complete <- plot_data %>% 
+      ggplot2::ggplot(ggplot2::aes(value, fill = name)) +
+      ggplot2::geom_density(alpha = 0.5) +
+      ggplot2::labs(x = "Value",
+                    y = "Density",
+                    fill = NULL) +
+      do.call(theme_poma, theme_params) +
+      scale_fill_poma_d()
+  }
   
   return(plot_complete)
-  
 }
 

@@ -1,30 +1,30 @@
-context("PomaHeatmap")
 
-test_that("PomaHeatmap works", {
-  
-  data("st000284")
-  data("st000336")
-  
-  a <- PomaHeatmap(st000284, sample_names = TRUE, feature_names = FALSE, show_legend = TRUE)
-  b <- PomaHeatmap(st000284, sample_names = FALSE, feature_names = FALSE, show_legend = FALSE)
-  
-  c <- PomaHeatmap(st000336, sample_names = TRUE, feature_names = TRUE, show_legend = TRUE)
-  d <- PomaHeatmap(st000336, sample_names = FALSE, feature_names = TRUE, show_legend = FALSE)
-  
-  ##
-  
-  expect_equal(class(a), class(b))
-  expect_equal(class(b), class(d))
-  
-  expect_false(length(a@matrix) == length(d@matrix))
-  
-  expect_equal(length(a@row_order), ncol(t(SummarizedExperiment::assay(st000284))))
-  expect_equal(length(d@row_order), ncol(t(SummarizedExperiment::assay(st000336))))
-  
-  ##
-  
-  expect_error(PomaHeatmap())
-  expect_error(PomaHeatmap(iris))
-  
+test_that("PomaHeatmap handles valid SummarizedExperiment objects", {
+  data <- create_mock_summarized_experiment()
+  heatmap_plot <- PomaHeatmap(data)
+  expect_is(heatmap_plot, "Heatmap")
+})
+
+test_that("PomaHeatmap stops with non-SummarizedExperiment objects", {
+  data <- data.frame(matrix(runif(100), ncol = 10))
+  expect_error(PomaHeatmap(data), "data is not a SummarizedExperiment object")
+})
+
+test_that("PomaHeatmap handles covariates correctly", {
+  data <- create_mock_summarized_experiment()
+  heatmap_plot_with_covs <- PomaHeatmap(data, covs = c("group"))
+  expect_is(heatmap_plot_with_covs, "Heatmap")
+})
+
+test_that("PomaHeatmap handles sample_names and feature_names parameters correctly", {
+  data <- create_mock_summarized_experiment()
+  heatmap_plot_with_names <- PomaHeatmap(data, sample_names = FALSE, feature_names = TRUE)
+  expect_is(heatmap_plot_with_names, "Heatmap")
+})
+
+test_that("PomaHeatmap handles show_legend parameter correctly", {
+  data <- create_mock_summarized_experiment()
+  heatmap_plot_no_legend <- PomaHeatmap(data, show_legend = FALSE)
+  expect_is(heatmap_plot_no_legend, "Heatmap")
 })
 

@@ -2,38 +2,26 @@
 % Please edit documentation in R/PomaLimma.R
 \name{PomaLimma}
 \alias{PomaLimma}
-\title{Easy Implementation of \code{limma} Bioconductor Package}
+\title{Differential Expression Analysis Using \code{limma}}
 \usage{
-PomaLimma(
-  data,
-  contrast = NULL,
-  covariates = FALSE,
-  covs = NULL,
-  adjust = "fdr",
-  weights = FALSE,
-  cutoff = NULL
-)
+PomaLimma(data, contrast = NULL, covs = NULL, adjust = "fdr", weights = FALSE)
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{contrast}{A character with the limma comparison. For example, "Group1-Group2" or "control-intervention".}
+\item{contrast}{Character. Indicates the comparison. For example, "Group1-Group2" or "control-intervention".}
 
-\item{covariates}{Logical. If it's set to \code{TRUE} all metadata variables stored in \code{colData} will be used as covariables. Default = FALSE.}
+\item{covs}{Character vector. Indicates the names of \code{colData} columns to be included as covariates. Default is NULL (no covariates). If not NULL, a limma model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.}
 
-\item{covs}{Character vector indicating the name of \code{colData} columns that will be included as covariates. Default is NULL (all variables).}
+\item{adjust}{Character. Indicates the multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 
-\item{adjust}{Multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
-
-\item{weights}{Logical indicating whether the limma model should estimate the relative quality weights for each group. See \code{?limma::arrayWeights()}.}
-
-\item{cutoff}{Default is NULL. If this value is replaced for a numeric value, the resultant table will contains only those features with an adjusted p-value below selected value.}
+\item{weights}{Logical. Indicates whether the limma model should estimate the relative quality weights for each group. See \code{?limma::arrayWeights()}.}
 }
 \value{
-A tibble with limma results.
+A \code{tibble} with the results.
 }
 \description{
-PomaLimma() uses the classical \code{limma} package.
+\code{PomaLimma} uses the classical \code{limma} package to compute differential expression analysis.
 }
 \examples{
 data("st000284")

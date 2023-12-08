@@ -2,47 +2,63 @@
 % Please edit documentation in R/PomaBoxplots.R
 \name{PomaBoxplots}
 \alias{PomaBoxplots}
-\title{Classical Boxplots}
+\title{Boxplots and Violin Plots}
 \usage{
 PomaBoxplots(
   data,
-  group = "samples",
-  jitter = FALSE,
+  x = "samples",
+  violin = FALSE,
   feature_name = NULL,
-  label_size = 10,
-  legend_position = "bottom"
+  theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE),
+  ...
 )
 }
 \arguments{
-\item{data}{A SummarizedExperiment object.}
+\item{data}{A \code{SummarizedExperiment} object.}
 
-\item{group}{Groupping factor for the plot. Options are "samples" and "features". Option "samples" (default) will create a boxplot for each sample and option "features" will create a boxplot of each variable.}
+\item{x}{Character. Options are "samples" (to visualize sample boxplots) and "features" (to visualize feature boxplots). Default is "samples".}
 
-\item{jitter}{Logical. If it's TRUE (default), the boxplot will show all points.}
+\item{violin}{Logical. Indicates if violin plots should be displayed instead of boxplots. Default is FALSE.}
 
-\item{feature_name}{A vector with the name/s of feature/s to plot. If it's NULL (default) a boxplot of all features will be created.}
+\item{feature_name}{Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).}
 
-\item{label_size}{Numeric indicating the size of x-axis labels.}
-
-\item{legend_position}{Character indicating the legend position. Options are "none", "top", "bottom", "left", and "right".}
+\item{theme_params}{List. Indicates \code{theme_poma} parameters.}
 }
 \value{
-A ggplot2 object.
+A \code{ggplot} object.
 }
 \description{
-PomaBoxplots() generates a boxplot for subjects or features. This boxplot can help in the comparison between pre and post normalized data and in the "validation" of the normalization process.
+\code{PomaBoxplots} generates boxplots and violin plots for samples and features. This function can be used for data exploration (e.g., comparison between pre and post normalized datasets).
 }
 \examples{
 data("st000284")
 
-# samples
-PomaBoxplots(st000284)
+# Sample boxplots
+st000284 \%>\%
+PomaNorm() \%>\% 
+PomaBoxplots(theme_params = list(axistext = "y"))
 
-# features
-PomaBoxplots(st000284, group = "features")
+# Sample violin plots
+st000284 \%>\%
+PomaNorm() \%>\% 
+PomaBoxplots(violin = TRUE, theme_params = list(axistext = "y"))
+
+# All feature boxplots
+st000284 \%>\% 
+PomaNorm() \%>\% 
+PomaBoxplots(x = "features", theme_params = list(axis_x_rotate = TRUE))
              
-# concrete features
-PomaBoxplots(st000284, group = "features", 
+# Specific feature boxplots
+st000284 \%>\% 
+PomaNorm() \%>\% 
+PomaBoxplots(x = "features", 
+             feature_name = c("ornithine", "orotate"))
+             
+# Specific feature violin plots
+st000284 \%>\% 
+PomaNorm() \%>\% 
+PomaBoxplots(x = "features", 
+             violin = TRUE,
              feature_name = c("ornithine", "orotate"))
 }
 \author{

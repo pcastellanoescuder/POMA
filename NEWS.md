@@ -1,3 +1,18 @@
+# POMA 1.8.54
+
+* New POMA theme and colorblind-friendly palette
+* Available sample normalization (sum and quantile)
+* New feature normalization methods
+* Extensive review and improvement of all `POMA` functions
+* Major documentation updates
+* Rename `PomaSummarizedExperiment` to `PomaCreateObject`
+* Auto-recognition of variable types and automatic variable re-labeling in `PomaCreateObject`
+* Available violin plots with `PomaBoxplots`
+* New functions `PomaPCA` and `PomaPLS` as stand-alone functions from the old `PomaMultivariate` (deprecated)
+* Other new functions: `PomaLM`, `PomaLMM`
+* Post-hoc pairwise comparisons in `PomaUnivariate`
+* Update tests and vignettes
+
 # POMA 1.7.19
 
 * New `biocViews` and `Description`
@@ -13,7 +28,7 @@
 
 * `MSnbase::MSnSet` class has been replaced by the `SummarizedExperiment` class
 * Color scale for all plots set to `viridis` (without yellow)
-* All output tables provided as `tibble` istead of `matrix` or `data.frame`
+* All output tables provided as `tibble` instead of `matrix` or `data.frame`
 * Allow users to select specific covariates and their position (importance) in the model for `PomaLimma`, `PomaUnivariate(method = "anova")`, and `PomaOddsRatio`
 * Add SD to `PomaUnivariate` output tables
 * Reduce dependencies

@@ -1,15 +1,2 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^\.travis\.yml$
-^codecov\.yml$
-^LICENSE\.md$
-^appveyor\.yml$
-^CODE_OF_CONDUCT\.md$
-^\.gitignore$
-^Dockerfile$
-^_pkgdown\.yml$
-^docs$
-^pkgdown$
-^doc$
-^Meta$
-^\.github$

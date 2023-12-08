@@ -1,14 +1,14 @@
 ---
-title: "POMA Normalization Methods"
+title: "Normalization Methods"
 author: 
-- name: Pol Castellano-Escuder
+- name: Pol Castellano-Escuder, Ph.D.
   affiliation: Duke University
   email: polcaes@gmail.com
 date: "`r BiocStyle::doc_date()`"
 output: 
     BiocStyle::html_document
 vignette: >
-  %\VignetteIndexEntry{POMA Normalization Methods}
+  %\VignetteIndexEntry{Normalization Methods}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\VignetteEncoding{UTF-8}
@@ -19,14 +19,14 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2022-08-01
+**Last edited**: 2023-12-07
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  # fig.align = "center",
+  fig.align = "center",
   comment = ">"
 )
 ```
@@ -49,33 +49,32 @@ library(patchwork)
 
 # Load Data and Imputation
 
-Let's create a cleaned `SummarizedExperiment` object from the sample `st000336` data to explore the normalization effects.  
+Let's create a cleaned `SummarizedExperiment` object from the sample data `st000336` to explore the normalization effects.  
 
 ```{r, warning = FALSE, comment = NA}
-# imputation using the default method KNN
 example_data <- st000336 %>% 
-  PomaImpute()
+  PomaImpute() # KNN imputation
 
 example_data
 ```
 
 # Normalization
 
-Here we will evaluate ALL normalization methods that POMA offers on the same `SummarizedExperiment` object to compare them [@normalization].  
+Here we will evaluate the normalization methods that POMA offers on the same `SummarizedExperiment` object to compare them [@normalization].  
 
 ```{r, warning = FALSE}
 none <- PomaNorm(example_data, method = "none")
 auto_scaling <- PomaNorm(example_data, method = "auto_scaling")
 level_scaling <- PomaNorm(example_data, method = "level_scaling")
 log_scaling <- PomaNorm(example_data, method = "log_scaling")
-log_transformation <- PomaNorm(example_data, method = "log_transformation")
+log_transformation <- PomaNorm(example_data, method = "log_transform")
 vast_scaling <- PomaNorm(example_data, method = "vast_scaling")
 log_pareto <- PomaNorm(example_data, method = "log_pareto")
 ```
 
 ## Normalization effect on data dimensions
 
-When we check for the dimension of the data after normalization we can see that ALL methods have the same effect on data dimension. `PomaNorm` **only** change the data dimension when the data have **features that only have zeros** and when the data have **features with 0 variance**. Only in these two cases `PomaNorm` will remove features of the data, changing the data dimensions.   
+When we check for the dimension of the data after normalization we can see that all methods have the same effect on data dimension. `PomaNorm` **only** modifies the data dimension when the dataset contains **only-zero features** or **zero-variance features**.   
 
 ```{r, warning = FALSE}
 dim(SummarizedExperiment::assay(none))
@@ -89,53 +88,46 @@ dim(SummarizedExperiment::assay(log_pareto))
 
 ## Normalization effect on samples
 
-Here we can evaluate the different normalization effects on samples [@normalization].   
+Here we can evaluate the normalization effects on samples [@normalization].   
 
 ```{r, message = FALSE, warning = FALSE}
 a <- PomaBoxplots(none, 
-                  group = "samples", 
-                  jitter = FALSE) +
+                  x = "samples") +
   ggplot2::ggtitle("Not Normalized")
 
 b <- PomaBoxplots(auto_scaling, 
-                  group = "samples", 
-                  jitter = FALSE, 
-                  legend_position = "none") +
+                  x = "samples", 
+                  theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Auto Scaling") +
   ggplot2::theme(axis.text.x = ggplot2::element_blank())
 
 c <- PomaBoxplots(level_scaling, 
-                  group = "samples", 
-                  jitter = FALSE, 
-                  legend_position = "none") +
+                  x = "samples", 
+                  theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Level Scaling") +
   ggplot2::theme(axis.text.x = ggplot2::element_blank())
 
 d <- PomaBoxplots(log_scaling, 
-                  group = "samples", 
-                  jitter = FALSE, 
-                  legend_position = "none") +
+                  x = "samples", 
+                  theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Log Scaling") +
   ggplot2::theme(axis.text.x = ggplot2::element_blank())
 
 e <- PomaBoxplots(log_transformation, 
-                  group = "samples", 
-                  jitter = FALSE, 
-                  legend_position = "none") +
+                  x = "samples", 
+                  theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Log Transformation") +
   ggplot2::theme(axis.text.x = ggplot2::element_blank())
 
 f <- PomaBoxplots(vast_scaling, 
-                  group = "samples", 
-                  jitter = FALSE, 
-                  legend_position = "none") +
+                  x = "samples", 
+                  theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Vast Scaling") +
   ggplot2::theme(axis.text.x = ggplot2::element_blank())
 
 g <- PomaBoxplots(log_pareto, 
-                  group = "samples", 
-                  jitter = FALSE, 
-                  legend_position = "none") +
+                  x = "samples", 
+                  theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Log Pareto") +
   ggplot2::theme(axis.text.x = ggplot2::element_blank())
 
@@ -145,52 +137,52 @@ a
 
 ## Normalization effect on features
 
-Here we can evaluate the different normalization effects on features.   
+Here we can evaluate the normalization effects on features.   
 
 ```{r, message = FALSE, warning = FALSE}
 h <- PomaDensity(none, 
-                 group = "features", 
-                 legend_position = "none") +
+                 x = "features", 
+                 theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Not Normalized")
 
 i <- PomaDensity(auto_scaling, 
-                 group = "features", 
-                 legend_position = "none") +
+                 x = "features", 
+                 theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Auto Scaling") +
   ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                  axis.title.y = ggplot2::element_blank())
 
 j <- PomaDensity(level_scaling, 
-                 group = "features", 
-                 legend_position = "none") +
+                 x = "features", 
+                 theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Level Scaling") +
   ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                  axis.title.y = ggplot2::element_blank())
 
 k <- PomaDensity(log_scaling, 
-                 group = "features", 
-                 legend_position = "none") +
+                 x = "features", 
+                 theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Log Scaling") +
   ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                  axis.title.y = ggplot2::element_blank())
 
 l <- PomaDensity(log_transformation, 
-                 group = "features", 
-                 legend_position = "none") +
+                 x = "features", 
+                 theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Log Transformation") +
   ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                  axis.title.y = ggplot2::element_blank())
 
 m <- PomaDensity(vast_scaling, 
-                 group = "features", 
-                 legend_position = "none") +
+                 x = "features", 
+                 theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Vast Scaling") +
   ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                  axis.title.y = ggplot2::element_blank())
 
 n <- PomaDensity(log_pareto, 
-                 group = "features", 
-                 legend_position = "none") +
+                 x = "features", 
+                 theme_params = list(legend_title = FALSE, legend_position = "none")) +
   ggplot2::ggtitle("Log Pareto") +
   ggplot2::theme(axis.title.x = ggplot2::element_blank(),
                  axis.title.y = ggplot2::element_blank())

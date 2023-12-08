@@ -1,17 +1,16 @@
 
 #' Logistic Regression Model Odds Ratios
 #'
-#' @description PomaOddsRatio() calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.
+#' @description `PomaOddsRatio` calculates the Odds Ratios for each feature from a logistic regression model using the binary outcome (group/type must be a binary factor) as a dependent variable.
 #'
-#' @param data A SummarizedExperiment object.
-#' @param feature_name A vector with the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.
-#' @param covariates Logical that indicates if covariates will be included in logistic regression model. Default is `FALSE`.
-#' @param covs Character vector indicating the name of `colData` columns that will be included as covariates. Default is NULL (all variables).
-#' @param showCI Logical that indicates if the 95% confidence intervals will be plotted. Default is `TRUE`.
+#' @param data A `SummarizedExperiment` object.
+#' @param feature_name Character vector. Indicates the name/s of feature/s that will be used to fit the model. If it's NULL (default), all variables will be included in the model.
+#' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates. Default is NULL (no covariates).
+#' @param show_ci Logical. Indicates if the 95% confidence intervals will be plotted. Default is `TRUE`.
 #'
 #' @export
 #'
-#' @return A tibble with the Odds Ratios for all features with their 95% confidence intervals and a ggplot2 object.
+#' @return A `list` with results including plots and tables.
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%
@@ -22,19 +21,23 @@
 #' st000336 %>% 
 #'   PomaImpute() %>%
 #'   PomaNorm() %>%
-#'   PomaOddsRatio(feature_name = c("glutamic_acid", "glutamine", 
-#'                                  "glycine", "histidine"))
+#'   PomaOddsRatio(feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine"))
 PomaOddsRatio <- function(data,
                           feature_name = NULL,
-                          covariates = FALSE,
                           covs = NULL,
-                          showCI = TRUE){
+                          show_ci = TRUE) {
 
-  if (missing(data)) {
-    stop("data argument is empty!")
+  if (!is(data, "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
-  if(!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
+  if (ncol(SummarizedExperiment::colData(data)) == 0) {
+    stop("metadata file required")
+  }
+  if (!is.factor(SummarizedExperiment::colData(data)[,1])) {
+    stop("Grouping factor must be a factor (first column of the metadata file)")
+  }
+  if (length(table(SummarizedExperiment::colData(data)[,1])[table(SummarizedExperiment::colData(data)[,1]) != 0]) != 2) {
+    stop("Grouping factor must have exactly 2 levels (first column of the metadata file)")
   }
   if (!is.null(feature_name)) {
     if(!any(feature_name %in% rownames(SummarizedExperiment::assay(data)))) {
@@ -46,51 +49,38 @@ PomaOddsRatio <- function(data,
                      " not found"))
     }
   }
-  if (length(levels(as.factor(SummarizedExperiment::colData(data)[,1]))) > 2) {
-    stop("Your data have more than two groups!")
-  }
-  if(covariates & ncol(SummarizedExperiment::colData(data)) == 1){
-    stop("No covariates found in colData")
-  }
 
-  e <- data.frame(t(SummarizedExperiment::assay(data)))
+  to_oddsratio <- data.frame(t(SummarizedExperiment::assay(data)))
   target <- SummarizedExperiment::colData(data) %>% 
     as.data.frame() %>% 
     dplyr::rename(group = 1)
-
-  if(!is.null(feature_name)){
-    e <- e[, colnames(e) %in% feature_name]
+  
+  # feature names
+  if (!is.null(feature_name)){
+    to_oddsratio <- to_oddsratio[, colnames(to_oddsratio) %in% feature_name]
     
-    if(is(e, "numeric")) {
-      e <- data.frame(e)
-      colnames(e) <- feature_name[feature_name %in% rownames(SummarizedExperiment::assay(data))]
+    if (is(to_oddsratio, "numeric")) {
+      to_oddsratio <- data.frame(to_oddsratio)
+      colnames(to_oddsratio) <- feature_name[feature_name %in% rownames(SummarizedExperiment::assay(data))]
     }
-  }
-
-  if(covariates) {
-    if(is.null(covs)){
-      data_or <- cbind(target, e) %>% 
-        as.data.frame() %>% 
-        dplyr::mutate(group = as.factor(ifelse(group == names(table(target$group))[1], 0, 1))) %>% 
-        dplyr::mutate_at(dplyr::vars(-group), as.numeric)
-    } 
-    else{
-      covariates <- target %>%
-        as.data.frame() %>%
-        dplyr::select_at(dplyr::vars(matches("group") | dplyr::matches(covs)))
-      
-      data_or <- cbind(covariates, e) %>% 
-        as.data.frame() %>% 
-        dplyr::mutate(group = as.factor(ifelse(group == names(table(target$group))[1], 0, 1))) %>% 
-        dplyr::mutate_at(dplyr::vars(-group), as.numeric)
-    }
-  }
-  else{
-    data_or <- cbind(group = target$group, e) %>% 
-      dplyr::mutate(group = as.factor(ifelse(group == names(table(target$group))[1], 0, 1))) %>% 
-      dplyr::mutate_at(dplyr::vars(-group), as.numeric)
   }
   
+  # covariates
+  if (!is.null(covs)) {
+    covariates <- target %>%
+      dplyr::select_at(dplyr::vars(dplyr::matches("group") | dplyr::matches(covs)))
+    
+  } else {
+    covariates <- target %>%
+      dplyr::select(group)
+  }
+  
+  data_or <- cbind(covariates, to_oddsratio) %>% 
+    as.data.frame() %>% 
+    dplyr::mutate(group = as.factor(ifelse(group == names(table(target$group))[1], 0, 1))) %>% 
+    dplyr::mutate_at(dplyr::vars(-group), as.numeric)
+  
+  # Logistic model
   logit_model <- stats::glm(group ~ 0 + ., 
                             family = stats::binomial(link = 'logit'), 
                             data = data_or)
@@ -105,14 +95,13 @@ PomaOddsRatio <- function(data,
 
   ORPlot <- ggplot2::ggplot(odds, ggplot2::aes(x = OddsRatio, y = feature)) +
     ggplot2::geom_vline(xintercept = 1, size = .25, linetype = "dashed") +
-    {if(showCI)ggplot2::geom_errorbarh(ggplot2::aes(xmax = upr, xmin = lwr), size = .5, height = .1, color = "gray50")} +
-    ggplot2::geom_point(size = 3, color = "orange") +
+    {if(show_ci) ggplot2::geom_errorbarh(ggplot2::aes(xmax = upr, xmin = lwr), size = .5, height = .1, color = "gray50")} +
+    ggplot2::geom_point(size = 3, pch = 21, fill = "orange") +
     ggplot2::labs(x = "Odds Ratio",
                   y = NULL) +
-    ggplot2::theme_bw()
+    theme_poma()
 
-  return(list(OddsRatioTable = odds, 
-              OddsRatioPlot = ORPlot))
-
+  return(list(odds_ratio_table = odds, 
+              odds_ratio_plot = ORPlot))
 }
 

@@ -1,17 +1,18 @@
 
-#' Collection of Imputation Methods for Mass Spectrometry Data
+#' Impute Missing Values
 #'
-#' @description PomaImpute() offers different methods to impute missing values in MS data.
+#' @description `PomaImpute` performs missing value imputation on a dataset using various imputation methods.
 #'
-#' @param data A SummarizedExperiment object.
-#' @param ZerosAsNA Logical that indicates if the zeros in the data are missing values. Default is FALSE.
-#' @param RemoveNA Logical that indicates if those features with more than selected cutoff missing values in each group have to be removed. Default is TRUE.
-#' @param cutoff Numeric that indicates the percentage of missing values allowed in each group. If one of the groups have less missing values than selected cutoff value, these feature will not be removed.
-#' @param method Imputation method. Options are: "none", "half_min", "median", "mean", "min", "knn" and "rf". If "none", all missing values will be replaced by zero.
+#' @param data A `SummarizedExperiment` object.
+#' @param zeros_as_na Logical. Indicates if the zeros in the data are missing values. Default is FALSE.
+#' @param remove_na Logical. Indicates if features with a percentage of missing values over the `cutoff` parameter should be removed. Default is TRUE.
+#' @param cutoff Numeric. Percentage of missing values allowed in each feature.
+#' @param group_by Logical. If `metadata` file is present and its first variable is a factor, it can be used to compute missing values per group and drop them accordingly. Features will be removed only if all of the groups contain more missing values than allowed. Default is TRUE.
+#' @param method Character. The imputation method to use. Options include "none" (no imputation, replace missing values by zeros), "half_min" (replace missing values with half of the minimum value), "median" (replace missing values with the median), "mean" (replace missing values with the mean), "min" (replace missing values with the minimum value), "knn" (replace missing values using k-nearest neighbors imputation), and "random_forest" (replace missing values using random forest imputation).
 #'
 #' @export
 #'
-#' @return A SummarizedExperiment object with cleaned data.
+#' @return A `SummarizedExperiment` object without missing values.
 #' @references Armitage, E. G., Godzien, J., Alonso‐Herranz, V., López‐Gonzálvez, Á., & Barbas, C. (2015). Missing value imputation strategies for metabolomics data. Electrophoresis, 36(24), 3050-3060.
 #' @author Pol Castellano-Escuder
 #'
@@ -22,118 +23,113 @@
 #' 
 #' PomaImpute(st000336, method = "knn")
 PomaImpute <- function(data,
-                       ZerosAsNA = FALSE,
-                       RemoveNA = TRUE,
+                       zeros_as_na = FALSE,
+                       remove_na = TRUE,
                        cutoff = 20,
+                       group_by = TRUE,
                        method = "knn"){
 
-  if (missing(data)) {
-    stop("data argument is empty!")
+  if (!is(data, "SummarizedExperiment")){
+    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
-  if(!is(data, "SummarizedExperiment")){
-    stop("data is not a SummarizedExperiment object. \nSee POMA::PomaSummarizedExperiment or SummarizedExperiment::SummarizedExperiment")
-  }
-  if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn", "rf"))) {
-    stop("Incorrect value for method argument!")
+  if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn", "random_forest"))) {
+    stop("Incorrect value for method argument")
   }
   if (missing(method)) {
-    message("method argument is empty! KNN will be used")
+    message("method argument is empty. KNN will be used")
   }
 
-  samples_groups <- SummarizedExperiment::colData(data)[,1]
-  to_imp_data <- t(SummarizedExperiment::assay(data))
+  to_impute <- t(SummarizedExperiment::assay(data)) %>% 
+    as.data.frame()
   
-  ##
-  
-  if (ZerosAsNA){
-    to_imp_data[to_imp_data == 0] <- NA
-    to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
-    colnames(to_imp_data)[2:ncol(to_imp_data)] <- data@NAMES
-
-  } else {
-    to_imp_data <- data.frame(cbind(Group = samples_groups, to_imp_data))
-    colnames(to_imp_data)[2:ncol(to_imp_data)] <- data@NAMES
+  # zeros as NA
+  if (zeros_as_na){
+    to_impute[to_impute == 0] <- NA
   }
-
-  ##
   
-  percent_na <- sum(is.na(to_imp_data))
+  percent_na <- sum(is.na(to_impute))
   if (percent_na == 0){
-    message("No missing values detected in your data")
-    if(method == "rf") {
-      method <- "none"
+    message("No missing values detected")
+    method <- "none"
+  }
+  
+  grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
+                            is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  
+  # remove NA
+  if (remove_na){
+    if (group_by & ncol(SummarizedExperiment::colData(data)) > 0 & grouping_factor) {
+      to_impute <- data.frame(group_factor = SummarizedExperiment::colData(data)[,1], to_impute)
+      
+      count_na <- aggregate(. ~ group_factor, data = to_impute,
+                            function(x) {100*(sum(is.na(x))/(sum(is.na(x)) + sum(!is.na(x))))},
+                            na.action = NULL) %>%
+        dplyr::select(-group_factor)
+      
+      to_impute <- to_impute %>%
+        dplyr::select(-group_factor)
+      
+    } else {
+      count_na <- apply(to_impute, 2, function(x) {100*(sum(is.na(x))/(sum(is.na(x)) + sum(!is.na(x))))})
     }
+    remove <- unlist(as.data.frame(lapply(count_na, function(x) all(x > cutoff))))
+    remove_names <- names(remove)[remove]
+    
+    to_impute <- to_impute %>% 
+      dplyr::select(-dplyr::all_of(remove_names)) %>% 
+      dplyr::mutate_all(~ as.numeric(as.character(.)))
   }
   
-  ##
-  
-  if (isTRUE(RemoveNA)){
-    count_NA <- aggregate(. ~ Group, data = to_imp_data,
-                          function(x) {100*(sum(is.na(x))/(sum(is.na(x))+sum(!is.na(x))))},
-                          na.action = NULL)
-    count_NA <- count_NA %>% 
-      dplyr::select(-Group)
-    correct_names <- names(count_NA)
-    supress <- unlist(as.data.frame(lapply(count_NA, function(x) all(x > cutoff))))
-    names(supress) <- correct_names
-    correct_names <- names(supress[supress == "FALSE"])
-    depurdata <- to_imp_data[, 2:ncol(to_imp_data)][!supress]
-    depurdata <- sapply(depurdata, function(x) as.numeric(as.character(x)))
-
-  } else {
-    depurdata <- to_imp_data[, 2:ncol(to_imp_data)]
-    depurdata <- sapply(depurdata, function(x) as.numeric(as.character(x)))
-    correct_names <- data@NAMES
-  }
-
-  ##
-  
+  # imputation
   if (method == "none"){
-    depurdata[is.na(depurdata)] <- 0
+    to_impute[is.na(to_impute)] <- 0
+    imputed <- to_impute
   }
 
   else if (method == "half_min"){
-    depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), min(x, na.rm = TRUE)/2, x) else x})
+    imputed <- to_impute %>% 
+      dplyr::mutate_all(~ ifelse(is.na(.), min(., na.rm = TRUE) / 2, .))
   }
 
   else if (method == "median"){
-    depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), median(x, na.rm = TRUE), x) else x})
+    imputed <- to_impute %>% 
+      dplyr::mutate_all(~ ifelse(is.na(.), median(., na.rm = TRUE), .))
   }
 
   else if (method == "mean"){
-    depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), mean(x, na.rm = TRUE), x) else x})
+    imputed <- to_impute %>% 
+      dplyr::mutate_all(~ ifelse(is.na(.), mean(., na.rm = TRUE), .))
   }
 
   else if (method == "min"){
-    depurdata <- apply(depurdata, 2, function(x) {
-      if(is.numeric(x)) ifelse(is.na(x), min(x, na.rm = TRUE), x) else x})
+    imputed <- to_impute %>% 
+      dplyr::mutate_all(~ ifelse(is.na(.), min(., na.rm = TRUE), .))
   }
 
   else if (method == "knn"){
-    depurdata <- t(depurdata)
-    datai <- impute::impute.knn(depurdata)
-    depurdata <- t(datai$data)
+    imputed_t <- t(to_impute)
+    imputed_res <- impute::impute.knn(imputed_t)
+    imputed <- t(imputed_res$data)
   }
   
-  else if (method == "rf"){
-    depurdata <- data.frame(group = samples_groups, depurdata)
-    depurdata <- randomForest::rfImpute(group ~ ., depurdata)
-    depurdata <- depurdata %>% 
-      dplyr::select(-group)
+  else if (method == "random_forest"){
+    if (ncol(SummarizedExperiment::colData(data)) == 0 | !is.factor(SummarizedExperiment::colData(data)[,1])) {
+      stop("This imputation method is not compatible with the provided metadata")
+    }
+    imputed <- data.frame(group_factor = SummarizedExperiment::colData(data)[,1], to_impute)
+    imputed <- randomForest::rfImpute(group_factor ~ ., imputed)
+    imputed <- imputed %>% 
+      dplyr::select(-group_factor)
   }
   
-  colnames(depurdata) <- correct_names
-  
-  target <- SummarizedExperiment::colData(data) %>% 
-    as.data.frame() %>%
-    tibble::rownames_to_column()
-  dataImputed <- PomaSummarizedExperiment(features = depurdata, target = target)
+  # create object
+  if (ncol(SummarizedExperiment::colData(data)) != 0) {
+    data <- SummarizedExperiment::SummarizedExperiment(assays = t(imputed), colData = SummarizedExperiment::colData(data))
+  } else {
+    data <- SummarizedExperiment::SummarizedExperiment(assays = t(imputed))
+  }
     
-  if (validObject(dataImputed))
-    return(dataImputed)
-
+  if (validObject(data))
+    return(data)
 }
 

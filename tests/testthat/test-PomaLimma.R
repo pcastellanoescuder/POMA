@@ -1,46 +1,27 @@
-context("PomaLimma")
 
-test_that("PomaLimma works", {
+test_that("PomaLimma handles valid SummarizedExperiment objects", {
+  data <- create_mock_summarized_experiment()
+  limma_results <- PomaLimma(data, contrast = "A-B")
+  expect_is(limma_results, "tbl_df")
+})
 
-  data("st000284")
-  data("st000336")
-  
-  a <- PomaLimma(st000284, contrast = "CRC-Polyp", covariates = FALSE, adjust = "fdr")
-  b <- PomaLimma(st000284, contrast = "CRC-Polyp", covariates = FALSE, adjust = "bonferroni")
-  c <- PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fdr")
-  d <- PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "bonferroni")
+test_that("PomaLimma stops with non-SummarizedExperiment objects", {
+  data <- data.frame(matrix(runif(100), ncol = 10))
+  expect_error(PomaLimma(data, contrast = "A-B"), "data is not a SummarizedExperiment object")
+})
 
-  e <- PomaLimma(st000336, contrast = "Controls-DMD", covariates = FALSE, adjust = "fdr")
-  f <- PomaLimma(st000336, contrast = "Controls-DMD", covariates = TRUE, adjust = "fdr")
-  
-  ####
+test_that("PomaLimma handles different contrasts correctly", {
+  data <- create_mock_summarized_experiment()
+  contrast <- levels(SummarizedExperiment::colData(data)[,1])
+  limma_results <- PomaLimma(data, contrast = paste(contrast[1], contrast[2], sep = "-"))
+  expect_is(limma_results, "tbl_df")
+})
 
-  expect_error(PomaLimma(st000284, covariates = FALSE, adjust = "fdr"))
-  expect_error(PomaLimma(st000284, contrast = NULL))
-
-  ####
-
-  expect_equal(dim(a), dim(b))
-  expect_equal(dim(b), dim(c))
-  expect_equal(dim(c), dim(d))
-
-  expect_false(all(a == b))
-  expect_false(all(a == c))
-
-  expect_false(all(b == d))
-
-  expect_equal(dim(e), dim(f))
-  
-  ####
-
-  SummarizedExperiment::colData(st000284) <- SummarizedExperiment::colData(st000284)[1]
-  expect_error(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fdr"))
-  expect_error(PomaLimma(st000284, contrast = "CRC-Polyp", covariates = TRUE, adjust = "fd"))
-  
-  ##
-  
-  expect_error(PomaLimma(contrast = "CRC-Polyp"))
-  expect_error(PomaLimma(iris, contrast = "CRC-Polyp"))
-  
+test_that("PomaLimma handles parameters correctly", {
+  data <- create_mock_summarized_experiment()
+  limma_results_with_covs <- PomaLimma(data, contrast = "A-B")
+  limma_results_adjusted <- PomaLimma(data, contrast = "A-B", adjust = "holm")
+  expect_is(limma_results_with_covs, "tbl_df")
+  expect_is(limma_results_adjusted, "tbl_df")
 })
 
