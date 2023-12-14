@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.13.2
+Version: 1.13.3
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -17,8 +17,8 @@ Description:
     SummarizedExperiment class from Bioconductor, ensuring seamless integration and compatibility
     with a wide array of Bioconductor tools. This approach guarantees maximum flexibility and 
     replicability, making POMA an essential asset for researchers handling omics datasets.
-    See https://github.com/pcastellanoescuder/POMAShiny. Paper: Castellano-Escuder et al. (2021) <doi:10.1371/journal.pcbi.1009148> 
-    for more details.
+    See https://github.com/pcastellanoescuder/POMAShiny. Paper: Castellano-Escuder 
+    et al. (2021) <doi:10.1371/journal.pcbi.1009148> for more details.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
