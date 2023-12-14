@@ -86,7 +86,7 @@ PomaPLS <- function(data,
 
   if (method == "pls") {
     dependent_variable <- SummarizedExperiment::colData(data) %>% 
-      as.data.frame() %>% 
+      dplyr::as_tibble() %>% 
       dplyr::select_if(is.numeric)
     
     if (ncol(dependent_variable) == 0) {
@@ -152,7 +152,7 @@ PomaPLS <- function(data,
   
   else if (method == "plsda") {
     dependent_variable <- SummarizedExperiment::colData(data) %>% 
-      as.data.frame() %>% 
+      dplyr::as_tibble() %>% 
       dplyr::select_if(is.factor)
     
     if (ncol(dependent_variable) == 0) {
@@ -263,7 +263,7 @@ PomaPLS <- function(data,
 
   else if (method == "splsda") {
     dependent_variable <- SummarizedExperiment::colData(data) %>% 
-      as.data.frame() %>% 
+      dplyr::as_tibble() %>% 
       dplyr::select_if(is.factor)
     
     if (ncol(dependent_variable) == 0) {

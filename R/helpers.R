@@ -1,7 +1,8 @@
 
 help_extract <- function(fun, 
-                         section = "Description") {
-  x <- capture.output(tools::Rd2txt(utils:::.getHelpFile(help(fun, ...)), options = list(sectionIndent = 0)))
+                         section = "Description",
+                         ...) {
+  x <- capture.output(tools::Rd2txt(utils:::.getHelpFile(utils::help(fun, ...)), options = list(sectionIndent = 0)))
   B <- grep("^_", x)
   x <- gsub("_\b", "", x, fixed = TRUE)
   X <- rep(FALSE, length(x))
@@ -20,8 +21,9 @@ help_extract <- function(fun,
   return(out)
 }
 
-title_extract <- function(fun) {
-  x <- capture.output(tools::Rd2txt(utils:::.getHelpFile(help(fun, ...)), options = list(sectionIndent = 0)))
+title_extract <- function(fun,
+                          ...) {
+  x <- capture.output(tools::Rd2txt(utils:::.getHelpFile(utils::help(fun, ...)), options = list(sectionIndent = 0)))
   x <- gsub("_\b", "", x, fixed = TRUE)
   title <- x[1]
   return(title)

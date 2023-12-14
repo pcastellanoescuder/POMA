@@ -122,8 +122,8 @@ PomaUnivariate <- function(data,
   }
 
   else if (method == "anova") {
-    covariates <- SummarizedExperiment::colData(data) %>%
-      as.data.frame() %>%
+    covariates <- SummarizedExperiment::colData(data) %>% 
+      dplyr::as_tibble() %>% 
       dplyr::select(-1)
     
     if (is.null(covs)) {
