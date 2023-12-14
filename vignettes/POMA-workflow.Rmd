@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2023-12-07
+**Last edited**: 2023-12-14
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -44,6 +44,7 @@ BiocManager::install("POMA")
 
 ```{r, warning = FALSE, message = FALSE}
 library(POMA)
+library(ggtext)
 ```
 
 # The POMA Workflow
@@ -114,25 +115,21 @@ normalized
 <!-- `PomaBoxplots` generates boxplots for all samples or features of a `SummarizedExperiment` object. Here, we can compare objects before and after normalization step.     -->
 
 ```{r, message = FALSE}
-PomaBoxplots(imputed, 
-             x = "samples") # data before normalization
+PomaBoxplots(imputed, x = "samples") # data before normalization
 ```
 
 ```{r, message = FALSE}
-PomaBoxplots(normalized, 
-             x = "samples") # data after normalization
+PomaBoxplots(normalized, x = "samples") # data after normalization
 ```
 
 <!-- On the other hand, `PomaDensity` shows the distribution of all features before and after the normalization process.     -->
 
 ```{r, message = FALSE}
-PomaDensity(imputed, 
-            x = "features") # data before normalization
+PomaDensity(imputed, x = "features") # data before normalization
 ```
 
 ```{r, message = FALSE}
-PomaDensity(normalized, 
-            x = "features") # data after normalization
+PomaDensity(normalized, x = "features") # data after normalization
 ```
 
 ### Outlier Detection

@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2023-12-07
+**Last edited**: 2023-12-14
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -44,6 +44,7 @@ BiocManager::install("POMA")
 
 ```{r, warning = FALSE, message = FALSE, comment = FALSE}
 library(POMA)
+library(ggtext)
 library(patchwork)
 ```
 

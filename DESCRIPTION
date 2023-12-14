@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.13.3
+Version: 1.13.4
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -70,6 +70,7 @@ Suggests:
     BiocStyle,
     covr,
     ggraph,
+    ggtext,
     knitr,
     patchwork,
     plotly,
