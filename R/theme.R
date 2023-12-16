@@ -31,7 +31,6 @@ theme_poma <- function(base_size = 15,
   if(!is.character(axistext)) stop('axistext must be a character: "none" or any combination of "X", "Y", "x" and "y"')
   if(!is.numeric(margin)) stop('margin must be a numeric value')
   
-  fontfamily_sans <- "Nunito Sans"
   fontfamily_slab <- "Roboto Slab"
   fontfamily_mono <- "Roboto Mono"
   
@@ -52,7 +51,7 @@ theme_poma <- function(base_size = 15,
         fill = "transparent"
       ),
       plot.title = ggtext::element_textbox_simple(
-        family = fontfamily_sans,
+        family = fontfamily_slab,
         size = base_size * 1.7,
         face = "bold",
         lineheight = .8,
@@ -60,25 +59,25 @@ theme_poma <- function(base_size = 15,
         margin = ggplot2::margin(t = 0, b = base_size * .67)
       ),
       plot.subtitle = ggtext::element_textbox_simple(
-        family = fontfamily_sans,
+        family = fontfamily_slab,
         size = base_size,
         lineheight = 1.2,
         color = light_col,
         margin = ggplot2::margin(t = 0, b = base_size * 1.5)
       ),
       plot.caption = ggtext::element_textbox_simple(
-        family = fontfamily_sans,
+        family = fontfamily_slab,
         size = base_size / 2,
         lineheight = 1.2,
         color = light_col,
         margin = ggplot2::margin(t = base_size * 1.5, b = 0)
       ),
       axis.title.x = ggplot2::element_text(
-        family = fontfamily_sans,
+        family = fontfamily_slab,
         margin = ggplot2::margin(t = base_size / 3, r = 3, b = 3, l = 3)
       ),
       axis.title.y = ggplot2::element_text(
-        family = fontfamily_sans,
+        family = fontfamily_slab,
         margin = ggplot2::margin(t = 3, r = 3, b = base_size / 3, l = 3)
       ),
       axis.text.x = ggplot2::element_text(
@@ -91,7 +90,7 @@ theme_poma <- function(base_size = 15,
       ),
       axis.ticks.length = grid::unit(.33, "lines"),
       strip.text = ggplot2::element_text(
-        family = fontfamily_sans,
+        family = fontfamily_slab,
         face = "bold"
       ),
       strip.background = ggplot2::element_blank(),
@@ -127,7 +126,7 @@ theme_poma <- function(base_size = 15,
   } else {
     out <- out +
       ggplot2::theme(legend.title = ggplot2::element_text(
-        family = fontfamily_sans,
+        family = fontfamily_slab,
         color = light_col,
         size = base_size * .75,
         margin = ggplot2::margin(b = 10)
