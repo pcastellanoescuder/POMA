@@ -6,6 +6,7 @@
 #' @param data A `SummarizedExperiment` object.
 #' @param method Character. The univariate statistical test to be performed. Available options include "ttest" (T-test), "anova" (analysis of variance), "mann" (Wilcoxon rank-sum test), and "kruskal" (Kruskal-Wallis test).
 #' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates. Default is NULL (no covariates). If not NULL, an ANCOVA model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.
+#' @param error Character vector. Indicates the name of a `colData` column to be included as an error term (e.g. replicates). Default is NULL (no error term).
 #' @param paired Logical. Indicates if the data is paired or not. Default is FALSE.
 #' @param var_equal Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.
 #' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
@@ -50,6 +51,7 @@
 PomaUnivariate <- function(data,
                            method = "ttest",
                            covs = NULL,
+                           error = NULL,
                            paired = FALSE,
                            var_equal = FALSE,
                            adjust = "fdr",
@@ -153,17 +155,24 @@ PomaUnivariate <- function(data,
                   post_hoc_tests = post_hoc_tests))
 
     } else {
-      covariates <- covariates %>%
-        dplyr::select_at(dplyr::vars(dplyr::matches(covs)))
-
-      model_names <- paste0(paste0(colnames(covariates), collapse = " * "), " * group_factor")
-      covariates_feat <- as.data.frame(cbind(to_univariate, covariates))
+      if (is.null(error)) {
+        covariates <- covariates %>%
+          dplyr::select_at(dplyr::vars(dplyr::matches(covs)))
+        
+        model_names <- paste0(paste0(colnames(covariates), collapse = " * "), " * group_factor")
+      } else {
+        covariates <- covariates %>%
+          dplyr::select_at(dplyr::vars(dplyr::matches(covs) | dplyr::matches(error)))
+        
+        model_names <- paste0(paste0(colnames(covariates)[colnames(covariates) != error], collapse = " * "), " * group_factor")
+        model_names <- paste0(model_names, paste0(" + Error(", error,")"))
+      }
       
+      covariates_feat <- as.data.frame(cbind(to_univariate, covariates))
       result_cov <- vector(mode = "list", length = ncol(to_univariate))
       for(i in seq_len(ncol(to_univariate))) {
-        result_cov[[i]] <- broom::tidy(anova(aov(as.formula(paste(colnames(covariates_feat)[i], "~", model_names)),
-                                                 data = covariates_feat))) %>% 
-          dplyr::filter(term != "Residuals") %>% 
+        result_cov[[i]] <- broom::tidy(aov(as.formula(paste(colnames(covariates_feat)[i], "~", model_names)), data = covariates_feat)) %>% 
+          dplyr::filter(term != "Residuals" & !is.na(p.value)) %>% 
           dplyr::mutate(term = gsub("group_factor", names(SummarizedExperiment::colData(data))[1], term)) %>% 
           dplyr::select(term, pvalue = p.value) %>% 
           tidyr::pivot_wider(names_from = term, values_from = pvalue)
@@ -180,12 +189,12 @@ PomaUnivariate <- function(data,
         dplyr::as_tibble()
       
       # Post-hoc tests
-      if (run_post_hoc) {
+      if (run_post_hoc & is.null(error)) {
         post_hoc_tests <- list()
         for (i in seq_len(nrow(SummarizedExperiment::assay(data)))) {
           post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
                                                as.data.frame(TukeyHSD(
-                                                 aov(as.formula(paste(colnames(covariates_feat)[1], "~", model_names)),
+                                                 aov(as.formula(paste(colnames(covariates_feat)[i], "~", model_names)),
                                                      data = covariates_feat))$group_factor) %>% 
                                                  tibble::rownames_to_column("contrast") %>% 
                                                  dplyr::select(contrast, adj_pvalue = `p adj`)
