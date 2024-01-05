@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2023-12-14
+**Last edited**: 2024-01-05
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -45,6 +45,7 @@ BiocManager::install("POMA")
 ```{r, warning = FALSE, message = FALSE}
 library(POMA)
 library(ggtext)
+library(magrittr)
 ```
 
 # The POMA Workflow
@@ -156,7 +157,8 @@ pre_processed
 
 ```{r}
 pre_processed %>% 
-  PomaUnivariate(method = "ttest")
+  PomaUnivariate(method = "ttest") %>% 
+  magrittr::extract2("result")
 ```
 
 <!-- You can also compute a volcano plot using the T-test results.    -->
@@ -170,7 +172,8 @@ imputed %>%
 
 ```{r, warning = FALSE}
 pre_processed %>% 
-  PomaUnivariate(method = "mann")
+  PomaUnivariate(method = "mann") %>% 
+  magrittr::extract2("result")
 ```
 
 <!-- ### Limma -->
