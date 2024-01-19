@@ -6,55 +6,39 @@
 \usage{
 PomaVolcano(
   data,
-  method = "ttest",
-  pval = "raw",
   pval_cutoff = 0.05,
-  adjust = "fdr",
   log2fc_cutoff = NULL,
   labels = FALSE,
-  paired = FALSE,
-  var_equal = FALSE
+  x_label = "log2 (Fold Change)",
+  y_label = "-log10 (P-value)"
 )
 }
 \arguments{
-\item{data}{A \code{SummarizedExperiment} object.}
+\item{data}{A data frame with at least three columns: feature names, statistical significance values, and magnitude of change values. These should be the first three columns of the data, in this exact order.}
 
-\item{method}{Character. Indicates the statistical method to use. Options are "ttest", "mann", "limma", and "DESeq".}
+\item{pval_cutoff}{Numeric. Specifies the p-value threshold for significance in the volcano plot. The default is set to 0.05. This parameter determines the horizontal line in the plot indicating the threshold for statistical significance.}
 
-\item{pval}{Character. Indicates the pvalue type to generate the volcano plot. Options are: "raw" and "adjusted".}
+\item{log2fc_cutoff}{Numeric. Specifies the log2 fold change cutoff for the volcano plot. If not provided, the cutoff is set to the 75th percentile of the absolute log2 fold changes in the data. This parameter determines the vertical lines in the plot indicating the magnitude of change threshold.}
 
-\item{pval_cutoff}{Numeric. Indicated the pvalue cutoff (horizontal line).}
+\item{labels}{Logical. Indicates whether to plot labels for significant features.}
 
-\item{adjust}{Character, Indicates the multiple correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
+\item{x_label}{Character. Custom label for the x-axis.}
 
-\item{log2fc_cutoff}{Numeric. Indicates the log2 fold change cutoff (vertical lines).}
-
-\item{labels}{Logical. Indicates if significant labels should be plotted. Defaul is FALSE.}
-
-\item{paired}{Logical. Indicates if the data is paired or not. Default is FALSE.}
-
-\item{var_equal}{Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.}
+\item{y_label}{Character. Custom label for the y-axis.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot} object representing the volcano plot.
 }
 \description{
-\code{PomaVolcano} generates a volcano plot. Data should not contain negative values.
+\code{PomaVolcano} creates a volcano plot from a given dataset. This function is designed to visualize the statistical significance (p-value) against the magnitude of change (log2 fold change) for features.
 }
 \examples{
-data("st000336")
-
 st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaVolcano()
-  
-st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaVolcano(labels = TRUE)
-  
-st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaVolcano(labels = TRUE, pval = "adjusted")
+PomaImpute() \%>\% 
+PomaUnivariate() \%>\% 
+magrittr::extract2("result") \%>\% 
+dplyr::select(feature, fold_change, pvalue) \%>\%
+PomaVolcano()
 }
 \author{
 Pol Castellano-Escuder

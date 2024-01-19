@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2024-01-05
+**Last edited**: 2024-01-19
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -164,8 +164,8 @@ pre_processed %>%
 <!-- You can also compute a volcano plot using the T-test results.    -->
 
 ```{r}
-imputed %>% 
-  PomaVolcano(pval = "adjusted", labels = TRUE)
+# imputed %>% 
+#   PomaVolcano(pval = "adjusted", labels = TRUE)
 ```
 
 #### Wilcoxon Test
