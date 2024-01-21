@@ -19,7 +19,7 @@ link-citations: true
 
 **Compiled date**: `r Sys.Date()`
 
-**Last edited**: 2024-01-19
+**Last edited**: 2024-01-21
 
 **License**: `r packageDescription("POMA")[["License"]]`
 
@@ -145,20 +145,20 @@ pre_processed <- PomaOutliers(normalized)$data
 pre_processed
 ```
 
-## Statistical Analysis
+<!-- ## Statistical Analysis -->
 
 <!-- Once the data have been pre-processed, you can start with the statistical analysis step! **POMA** offers many different statistical methods and possible combinations to compute. However, in this vignette we will comment only some of the most used.     -->
 
-### Univariate Analysis
+<!-- ### Univariate Analysis -->
 
 <!-- `PomaUnivariate` computes four univariate methods (ttest, ANOVA and ANCOVA, Wilcoxon test and Kruskal-Wallis Rank Sum Test) that you can perform changing only the "method" argument.    -->
 
-#### T-test
+<!-- #### T-test -->
 
 ```{r}
-pre_processed %>% 
-  PomaUnivariate(method = "ttest") %>% 
-  magrittr::extract2("result")
+# pre_processed %>% 
+#   PomaUnivariate(method = "ttest") %>% 
+#   magrittr::extract2("result")
 ```
 
 <!-- You can also compute a volcano plot using the T-test results.    -->
@@ -168,12 +168,12 @@ pre_processed %>%
 #   PomaVolcano(pval = "adjusted", labels = TRUE)
 ```
 
-#### Wilcoxon Test
+<!-- #### Wilcoxon Test -->
 
 ```{r, warning = FALSE}
-pre_processed %>% 
-  PomaUnivariate(method = "mann") %>% 
-  magrittr::extract2("result")
+# pre_processed %>% 
+#   PomaUnivariate(method = "mann") %>% 
+#   magrittr::extract2("result")
 ```
 
 <!-- ### Limma -->
