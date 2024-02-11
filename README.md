@@ -46,11 +46,11 @@ To install the Bioconductor last release version:
 BiocManager::install("POMA")
 ```
 
-To install the GitHub devel version:
+To install the GitHub version:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("pcastellanoescuder/POMA", ref = "devel")
+devtools::install_github("pcastellanoescuder/POMA")
 ```
 
 ## Citation
