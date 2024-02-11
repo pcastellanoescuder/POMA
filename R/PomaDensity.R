@@ -36,8 +36,7 @@
 PomaDensity <- function(data,
                         x = "samples",
                         feature_name = NULL,
-                        theme_params = list(legend_title = FALSE),
-                        ...) {
+                        theme_params = list(legend_title = FALSE)) {
 
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")

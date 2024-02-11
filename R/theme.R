@@ -7,6 +7,9 @@
 #' any combination of "X", "Y", "x" and "y".
 #' @param axistext (string) Axis text labels for values or groups.
 #' Options include "none" or any combination of "X", "Y", "x" and "y".
+#' @param legend_position Character. Legend position. See `ggplot2` documentation.
+#' @param legend_title Logical. Include legend title.
+#' @param axis_x_rotate Logical. Rotate x-axis 45 degrees.
 #' @param margin (numeric) Should a margin of x be added to the plot?
 #' Defaults to 0 (no margin by default).
 #' @param ... Other arguments passed to ggplot methods.
@@ -24,8 +27,7 @@ theme_poma <- function(base_size = 15,
                        legend_position = "bottom",
                        legend_title = TRUE,
                        axis_x_rotate = FALSE,
-                       margin = 2, 
-                       ...) {
+                       margin = 2) {
   
   if(!is.character(axistitle)) stop('axistitle must be a character: "none" or any combination of "X", "Y", "x" and "y"')
   if(!is.character(axistext)) stop('axistext must be a character: "none" or any combination of "X", "Y", "x" and "y"')

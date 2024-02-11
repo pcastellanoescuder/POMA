@@ -29,38 +29,6 @@ poma_pal_d <- function(palette = "nature") {
   pal <- poma_palettes[[palette]]
 }
 
-#' Color scale constructor for continuous POMA color palettes
-#'
-#' @param palette Character name of palette in poma_palettes
-#' 
-# scale_color_poma_c <- function(palette = "nature") {
-#   ggplot2::scale_colour_gradientn(colours = poma_pal_c(palette = palette))
-# }
-
-#' Color scale constructor for discrete POMA colors
-#'
-#' @param palette Character name of palette in poma_palettes
-#'
-# scale_color_poma_d <- function(palette = "nature") {
-#   ggplot2::scale_color_manual(values = poma_pal_d(palette = palette))
-# }
-
-#' Fill scale constructor for continuous POMA color palettes
-#'
-#' @param palette Character name of palette in poma_palettes
-#'
-# scale_fill_poma_c <- function(palette = "nature") {
-#   ggplot2::scale_fill_gradientn(colours = poma_pal_c(palette = palette))
-# }
-
-#' Fill scale constructor for discrete POMA color palettes
-#'
-#' @param palette Character name of palette in poma_palettes
-#'
-# scale_fill_poma_d <- function(palette = "nature") {
-#   ggplot2::scale_fill_manual(values = poma_pal_d(palette = palette))
-# }
-
 #' Color scale constructor for discrete `viridis` "plasma" palette
 #'
 #' @export

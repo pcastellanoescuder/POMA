@@ -40,8 +40,7 @@ detect_decimals <- function(data) {
 #' object <- PomaCreateObject(metadata = metadata, features = features)
 PomaCreateObject <- function(metadata = NULL,
                              features = NULL,
-                             factor_levels = 10,
-                             ...){
+                             factor_levels = 10){
   
   if(missing(features)){
     stop("No features file")

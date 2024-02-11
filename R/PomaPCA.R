@@ -31,8 +31,7 @@ PomaPCA <- function(data,
                     ncomp = 4,
                     labels = FALSE,
                     ellipse = FALSE,
-                    load_length = 1,
-                    ...) {
+                    load_length = 1) {
   
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")

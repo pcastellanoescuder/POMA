@@ -69,8 +69,7 @@ PomaPLS <- function(data,
                     nrepeat = 10,
                     vip = 1,
                     num_features = 10,
-                    theme_params = list(),
-                    ...) {
+                    theme_params = list()) {
 
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")

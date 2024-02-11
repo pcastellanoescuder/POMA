@@ -66,8 +66,7 @@ flattenCorrMatrix <- function(cormat, pmat) {
 PomaCorr <- function(data,
                      method = "pearson",
                      label_size = 8,
-                     theme_params = list(),
-                     ...) {
+                     theme_params = list()) {
   
   if (missing(data)) {
     stop("data argument is empty!")

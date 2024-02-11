@@ -50,8 +50,7 @@ PomaBoxplots <- function(data,
                          x = "samples",
                          violin = FALSE,
                          feature_name = NULL,
-                         theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE),
-                         ...) {
+                         theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE)) {
 
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
