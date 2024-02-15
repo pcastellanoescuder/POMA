@@ -17,8 +17,7 @@ PomaPLS(
   nrepeat = 10,
   vip = 1,
   num_features = 10,
-  theme_params = list(),
-  ...
+  theme_params = list()
 )
 }
 \arguments{

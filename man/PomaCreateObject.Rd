@@ -4,7 +4,7 @@
 \alias{PomaCreateObject}
 \title{Create a \code{SummarizedExperiment} Object}
 \usage{
-PomaCreateObject(metadata = NULL, features = NULL, factor_levels = 10, ...)
+PomaCreateObject(metadata = NULL, features = NULL, factor_levels = 10)
 }
 \arguments{
 \item{metadata}{Metadata variables structured in columns. Sample ID must be the first column.}

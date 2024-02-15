@@ -12,8 +12,7 @@ theme_poma(
   legend_position = "bottom",
   legend_title = TRUE,
   axis_x_rotate = FALSE,
-  margin = 2,
-  ...
+  margin = 2
 )
 }
 \arguments{
@@ -24,6 +23,12 @@ any combination of "X", "Y", "x" and "y".}
 
 \item{axistext}{(string) Axis text labels for values or groups.
 Options include "none" or any combination of "X", "Y", "x" and "y".}
+
+\item{legend_position}{Character. Legend position. See \code{ggplot2} documentation.}
+
+\item{legend_title}{Logical. Include legend title.}
+
+\item{axis_x_rotate}{Logical. Rotate x-axis 45 degrees.}
 
 \item{margin}{(numeric) Should a margin of x be added to the plot?
 Defaults to 0 (no margin by default).}

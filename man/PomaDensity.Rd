@@ -8,8 +8,7 @@ PomaDensity(
   data,
   x = "samples",
   feature_name = NULL,
-  theme_params = list(legend_title = FALSE),
-  ...
+  theme_params = list(legend_title = FALSE)
 )
 }
 \arguments{

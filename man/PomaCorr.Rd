@@ -4,7 +4,7 @@
 \alias{PomaCorr}
 \title{Correlation Analysis}
 \usage{
-PomaCorr(data, method = "pearson", label_size = 8, theme_params = list(), ...)
+PomaCorr(data, method = "pearson", label_size = 8, theme_params = list())
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}

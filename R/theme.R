@@ -33,8 +33,8 @@ theme_poma <- function(base_size = 15,
   if(!is.character(axistext)) stop('axistext must be a character: "none" or any combination of "X", "Y", "x" and "y"')
   if(!is.numeric(margin)) stop('margin must be a numeric value')
   
-  fontfamily_slab <- "Roboto Slab"
-  fontfamily_mono <- "Roboto Mono"
+  fontfamily_slab <- "" # "Roboto Slab"
+  fontfamily_mono <- "" # "Roboto Mono"
   
   base_col <- "black"
   light_col <- "grey20"

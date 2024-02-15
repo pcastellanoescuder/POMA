@@ -11,8 +11,7 @@ PomaPCA(
   ncomp = 4,
   labels = FALSE,
   ellipse = FALSE,
-  load_length = 1,
-  ...
+  load_length = 1
 )
 }
 \arguments{

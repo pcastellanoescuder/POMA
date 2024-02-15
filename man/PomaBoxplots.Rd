@@ -9,8 +9,7 @@ PomaBoxplots(
   x = "samples",
   violin = FALSE,
   feature_name = NULL,
-  theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE),
-  ...
+  theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE)
 )
 }
 \arguments{
