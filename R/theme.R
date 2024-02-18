@@ -12,7 +12,6 @@
 #' @param axis_x_rotate Logical. Rotate x-axis 45 degrees.
 #' @param margin (numeric) Should a margin of x be added to the plot?
 #' Defaults to 0 (no margin by default).
-#' @param ... Other arguments passed to ggplot methods.
 #'
 #' @examples
 #' \dontrun{

@@ -32,8 +32,6 @@ Options include "none" or any combination of "X", "Y", "x" and "y".}
 
 \item{margin}{(numeric) Should a margin of x be added to the plot?
 Defaults to 0 (no margin by default).}
-
-\item{...}{Other arguments passed to ggplot methods.}
 }
 \description{
 A ggplot theme which allow custom yet consistent styling of plots in the

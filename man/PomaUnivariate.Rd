@@ -61,8 +61,8 @@ st000284 \%>\%
 PomaUnivariate(method = "anova", covs = c("gender", "smoking_condition"))
 
 # Perform ANCOVA with one numeric covariate and one factor covariate
-st000284 \%>\% 
-PomaUnivariate(method = "anova", covs = c("age_at_consent", "smoking_condition"))
+# st000284 \%>\% 
+# PomaUnivariate(method = "anova", covs = c("age_at_consent", "smoking_condition"))
 
 # Perform Kruskal-Wallis test
 st000284 \%>\% 
