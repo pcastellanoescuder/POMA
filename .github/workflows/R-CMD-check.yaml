@@ -40,14 +40,14 @@ jobs:
       # Install lme4 from source; conditionally execute only on certain OS or R versions if necessary
       - name: Install lme4 (from source)
         run: |
-          install.packages("lme4", type = "source")
+          Rscript -e 'install.packages("lme4", type = "source")'
         if: matrix.config.os == 'ubuntu-latest'
 
       # Install covr and run codecov after checks
       - name: Run covr::codecov
         run: |
-          install.packages("covr")
-          covr::codecov()
+          Rscript -e 'install.packages("covr")'
+          Rscript -e 'covr::codecov()'
         if: matrix.config.os == 'ubuntu-latest' && matrix.config.r == 'release'
       
       - uses: r-lib/actions/setup-r-dependencies@v2
