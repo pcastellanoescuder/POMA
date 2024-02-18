@@ -143,11 +143,11 @@ theme_poma <- function(base_size = 15,
   
   ## remove axis titles if selected
   if (axistitle != "none") {
-    if (!stringr::str_detect(axistitle, "X|x")) {
+    if (!grepl("X|x", axistitle)) {
       out <- out +
         ggplot2::theme(axis.title.x = ggplot2::element_blank())
     }
-    if (!stringr::str_detect(axistitle, "Y|y")) {
+    if (!grepl("Y|y", axistitle)) {
       out <- out +
         ggplot2::theme(axis.title.y = ggplot2::element_blank())
     }
@@ -159,12 +159,12 @@ theme_poma <- function(base_size = 15,
   
   ## remove axis text if selected
   if (axistext != "none") {
-    if (!stringr::str_detect(axistext, "X|x")) {
+    if (!grepl("X|x", axistext)) {
       out <- out +
         ggplot2::theme(axis.text.x = ggplot2::element_blank(),
                        axis.ticks.x = ggplot2::element_blank())
     }
-    if (!stringr::str_detect(axistext, "Y|y")) {
+    if (!grepl("Y|y", axistext)) {
       out <- out +
         ggplot2::theme(axis.text.y = ggplot2::element_blank(),
                        axis.ticks.y = ggplot2::element_blank())
