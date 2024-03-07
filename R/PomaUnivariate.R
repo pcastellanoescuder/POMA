@@ -7,7 +7,7 @@
 #' @param method Character. The univariate statistical test to be performed. Available options include "ttest" (T-test), "anova" (analysis of variance), "mann" (Wilcoxon rank-sum test), and "kruskal" (Kruskal-Wallis test).
 #' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates. Default is NULL (no covariates). If not NULL, an ANCOVA model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.
 #' @param error Character vector. Indicates the name of a `colData` column to be included as an error term (e.g. replicates). Default is NULL (no error term).
-#' @param paired_samples Logical. Indicates if the data is paired or not. Default is FALSE.
+#' @param paired Logical. Indicates if the data is paired or not. Default is FALSE.
 #' @param var_equal Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.
 #' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).
 #' @param run_post_hoc Logical. Indicates if computing post-hoc tests or not. Setting this parameter to FALSE can save time for large datasets. 
@@ -30,7 +30,7 @@
 #' # Perform Mann-Whitney U test
 #' st000336 %>% 
 #' PomaImpute() %>% 
-#' PomaUnivariate(method = "mann", paired_samples = FALSE, adjust = "fdr")
+#' PomaUnivariate(method = "mann", adjust = "fdr")
 #' 
 #' data("st000284")
 #' # Perform Two-Way ANOVA
@@ -52,7 +52,7 @@ PomaUnivariate <- function(data,
                            method = "ttest",
                            covs = NULL,
                            error = NULL,
-                           paired_samples = FALSE,
+                           paired = FALSE,
                            var_equal = FALSE,
                            adjust = "fdr",
                            run_post_hoc = TRUE){
@@ -106,11 +106,27 @@ PomaUnivariate <- function(data,
     if (length(table(group_factor)[table(group_factor) != 0]) != 2) {
       stop("Grouping factor must have exactly 2 levels (first column of the metadata file)")
     }
-
-    result <- data.frame(pvalue = apply(to_univariate, 2, function(x){t.test(x ~ group_factor, na.rm = TRUE, 
-                                                                             alternative = "two.sided",
-                                                                             var.equal = var_equal, 
-                                                                             paired = paired_samples)$p.value})) %>% 
+    
+    test_result <- data.frame(pvalue = apply(to_univariate, 2, function(x) {
+      if (!paired) {
+        res <- t.test(x ~ group_factor, data = data.frame(x, group_factor), 
+                      na.rm = TRUE, 
+                      alternative = "two.sided", 
+                      var.equal = var_equal)
+      } else {
+        group1 <- x[group_factor == levels(group_factor)[1]]
+        group2 <- x[group_factor == levels(group_factor)[2]]
+        
+        res <- t.test(group1, group2, 
+                      na.rm = TRUE,
+                      alternative = "two.sided", 
+                      var.equal = var_equal, 
+                      paired = TRUE)
+      }
+      res$p.value
+    }))
+    
+    result <- test_result %>% 
       tibble::rownames_to_column("feature") %>%
       dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
       dplyr::bind_cols(group_means, group_sd) %>%
@@ -219,7 +235,7 @@ PomaUnivariate <- function(data,
 
     suppressWarnings({
       result <- data.frame(pvalue = apply(to_univariate, 2, function(x){wilcox.test(x ~ as.factor(group_factor),
-                                                                                    paired = paired_samples)$p.value})) %>% 
+                                                                                    paired = paired)$p.value})) %>% 
         tibble::rownames_to_column("feature") %>%
         dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
         dplyr::bind_cols(group_means, group_sd) %>%

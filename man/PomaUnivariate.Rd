@@ -9,7 +9,7 @@ PomaUnivariate(
   method = "ttest",
   covs = NULL,
   error = NULL,
-  paired_samples = FALSE,
+  paired = FALSE,
   var_equal = FALSE,
   adjust = "fdr",
   run_post_hoc = TRUE
@@ -24,7 +24,7 @@ PomaUnivariate(
 
 \item{error}{Character vector. Indicates the name of a \code{colData} column to be included as an error term (e.g. replicates). Default is NULL (no error term).}
 
-\item{paired_samples}{Logical. Indicates if the data is paired or not. Default is FALSE.}
+\item{paired}{Logical. Indicates if the data is paired or not. Default is FALSE.}
 
 \item{var_equal}{Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.}
 
@@ -49,7 +49,7 @@ PomaUnivariate(method = "ttest")
 # Perform Mann-Whitney U test
 st000336 \%>\% 
 PomaImpute() \%>\% 
-PomaUnivariate(method = "mann", paired_samples = FALSE, adjust = "fdr")
+PomaUnivariate(method = "mann", adjust = "fdr")
 
 data("st000284")
 # Perform Two-Way ANOVA
