@@ -1,4 +1,4 @@
-# POMA 1.13.23
+# POMA 1.13.24
 
 * New POMA theme and colorblind-friendly palette
 * Available sample normalization (sum and quantile)

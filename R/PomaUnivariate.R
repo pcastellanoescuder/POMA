@@ -234,8 +234,22 @@ PomaUnivariate <- function(data,
     }
 
     suppressWarnings({
-      result <- data.frame(pvalue = apply(to_univariate, 2, function(x){wilcox.test(x ~ as.factor(group_factor),
-                                                                                    paired = paired)$p.value})) %>% 
+      mann_result <- data.frame(pvalue = apply(to_univariate, 2, function(x) {
+        if (!paired) {
+          res <- wilcox.test(x ~ as.factor(group_factor), 
+                             data = data.frame(x, as.factor(group_factor)), 
+                             paired = FALSE)
+        } else {
+          group1 <- x[group_factor == levels(group_factor)[1]]
+          group2 <- x[group_factor == levels(group_factor)[2]]
+          
+          res <- wilcox.test(group1, group2, 
+                             paired = TRUE)
+        }
+        res$p.value
+      }))
+      
+      result <- mann_result %>% 
         tibble::rownames_to_column("feature") %>%
         dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
         dplyr::bind_cols(group_means, group_sd) %>%
