@@ -237,8 +237,7 @@ PomaUnivariate <- function(data,
       mann_result <- data.frame(pvalue = apply(to_univariate, 2, function(x) {
         if (!paired) {
           res <- wilcox.test(x ~ as.factor(group_factor), 
-                             data = data.frame(x, as.factor(group_factor)), 
-                             paired = FALSE)
+                             data = data.frame(x, as.factor(group_factor)))
         } else {
           group1 <- x[group_factor == levels(group_factor)[1]]
           group2 <- x[group_factor == levels(group_factor)[2]]
