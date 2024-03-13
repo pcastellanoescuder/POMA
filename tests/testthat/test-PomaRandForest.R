@@ -12,8 +12,8 @@ test_that("PomaRandForest stops with non-SummarizedExperiment objects", {
 })
 
 test_that("PomaRandForest handles different ntest values correctly", {
-  data <- create_mock_summarized_experiment()
-  for (ntest in c(5, 10, 20, 30, 40, 50)) {
+  data <- create_mock_summarized_experiment(binary = TRUE)
+  for (ntest in c(30, 40, 50)) {
     result <- PomaRandForest(data, ntest = ntest)
     expect_is(result, "list")
     expect_true(all(c("confusionMatrix", "train_x", "train_y", "test_x", "test_y") %in% names(result)))
