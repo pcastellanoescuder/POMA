@@ -4,7 +4,14 @@
 \alias{PomaLimma}
 \title{Differential Expression Analysis Using \code{limma}}
 \usage{
-PomaLimma(data, contrast = NULL, covs = NULL, adjust = "fdr", weights = FALSE)
+PomaLimma(
+  data,
+  contrast = NULL,
+  covs = NULL,
+  adjust = "fdr",
+  replicates = NULL,
+  weights = FALSE
+)
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}
@@ -14,6 +21,8 @@ PomaLimma(data, contrast = NULL, covs = NULL, adjust = "fdr", weights = FALSE)
 \item{covs}{Character vector. Indicates the names of \code{colData} columns to be included as covariates. Default is NULL (no covariates). If not NULL, a limma model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.}
 
 \item{adjust}{Character. Indicates the multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
+
+\item{replicates}{Character. Indicates the name of the \code{colData} column including the replicate factor label. Default is NULL (no replicates).}
 
 \item{weights}{Logical. Indicates whether the limma model should estimate the relative quality weights for each group. See \code{?limma::arrayWeights()}.}
 }

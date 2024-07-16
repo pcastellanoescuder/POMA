@@ -1,3 +1,11 @@
+# POMA 1.14.1
+
+* Analyzing data with replicates in `PomaLimma`
+
+# POMA 1.14.0
+
+* Released to Bioconductor 3.19
+
 # POMA 1.13.26
 
 * New POMA theme and colorblind-friendly palette

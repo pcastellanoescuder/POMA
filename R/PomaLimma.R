@@ -7,6 +7,7 @@
 #' @param contrast Character. Indicates the comparison. For example, "Group1-Group2" or "control-intervention".
 #' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates. Default is NULL (no covariates). If not NULL, a limma model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.
 #' @param weights Logical. Indicates whether the limma model should estimate the relative quality weights for each group. See `?limma::arrayWeights()`.
+#' @param replicates Character. Indicates the name of the `colData` column including the replicate factor label. Default is NULL (no replicates).
 #' @param adjust Character. Indicates the multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
 #'
 #' @export
@@ -27,6 +28,7 @@ PomaLimma <- function(data,
                       contrast = NULL,
                       covs = NULL,
                       adjust = "fdr",
+                      replicates = NULL,
                       weights = FALSE) {
 
   if (!is(data, "SummarizedExperiment")){
@@ -56,21 +58,34 @@ PomaLimma <- function(data,
     
     form <- as.formula(noquote(paste("~ 0 + main_factor + ", paste0(colnames(covariates), collapse = " + ", sep = ""), sep = "")))
     
-    initialmodel <- stats::model.matrix(form, covariates)
-    colnames(initialmodel)[1:length(levels(main_factor))] <- levels(main_factor)
+    design <- stats::model.matrix(form, data = covariates)
+    colnames(design)[1:length(levels(main_factor))] <- levels(main_factor)
     
   } else {
-    initialmodel <- stats::model.matrix( ~ 0 + main_factor)
-    colnames(initialmodel) <- levels(main_factor)
+    design <- stats::model.matrix( ~ 0 + main_factor)
+    colnames(design) <- levels(main_factor)
   }
   
-  cont_matrix <- limma::makeContrasts(contrasts = contrast, levels = initialmodel)
+  if (!is.null(replicates)) {
+    replicate <- SummarizedExperiment::colData(data) %>%
+      as.data.frame() %>%
+      dplyr::pull(replicates) %>% 
+      factor()
+    
+    corfit <- limma::duplicateCorrelation(to_limma, design, block = replicate)
+    lim_correlation <- corfit$consensus
+  } else {
+    replicate <- NULL
+    lim_correlation <- NULL
+  }
+  
+  cont_matrix <- limma::makeContrasts(contrasts = contrast, levels = design)
   
   if (weights) {
-    array_weights <- limma::arrayWeights(to_limma, design = initialmodel)
-    model <- limma::lmFit(to_limma, initialmodel, weights = array_weights)
+    array_weights <- limma::arrayWeights(to_limma, design = design)
+    model <- limma::lmFit(to_limma, design, weights = array_weights, block = replicate, correlation = lim_correlation)
   } else {
-    model <- limma::lmFit(to_limma, initialmodel)
+    model <- limma::lmFit(to_limma, design, block = replicate, correlation = lim_correlation)
   }
   
   model <- limma::contrasts.fit(model, cont_matrix)
