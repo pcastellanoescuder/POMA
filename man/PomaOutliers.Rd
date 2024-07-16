@@ -8,6 +8,7 @@ PomaOutliers(
   data,
   method = "euclidean",
   type = "median",
+  outcome = NULL,
   coef = 2,
   labels = FALSE
 )
@@ -18,6 +19,8 @@ PomaOutliers(
 \item{method}{Character. Indicates the distance measure method to perform MDS.}
 
 \item{type}{Character. Indicates the type of outlier analysis to perform. Options are "median" (default) and "centroid". See \code{vegan::betadisper}.}
+
+\item{outcome}{Character. Indicates the name of the \code{colData} column to be used as the outcome factor. Default is NULL (first factor variable in \code{colData}).}
 
 \item{coef}{Numeric. Indicates the outlier coefficient. Lower values are more sensitive to outliers while higher values are less restrictive about outliers.}
 

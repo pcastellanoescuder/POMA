@@ -5,7 +5,7 @@
 #'
 #' @param data A `SummarizedExperiment` object.
 #' @param x Character. Options are "samples" (to visualize sample density plots) and "features" (to visualize feature density plots). Default is "samples".
-#' @param outcome Character. Indicates the name of the `colData` column to be used as outcome factor. Default is NULL (first factor vatiable in `colData`).
+#' @param outcome Character. Indicates the name of the `colData` column to be used as the outcome factor. Default is NULL (first factor variable in `colData`).
 #' @param feature_name Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).
 #' @param theme_params List. Indicates `theme_poma` parameters.
 #' 

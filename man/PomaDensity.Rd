@@ -17,7 +17,7 @@ PomaDensity(
 
 \item{x}{Character. Options are "samples" (to visualize sample density plots) and "features" (to visualize feature density plots). Default is "samples".}
 
-\item{outcome}{Character. Indicates the name of the \code{colData} column to be used as outcome factor. Default is NULL (first factor vatiable in \code{colData}).}
+\item{outcome}{Character. Indicates the name of the \code{colData} column to be used as the outcome factor. Default is NULL (first factor variable in \code{colData}).}
 
 \item{feature_name}{Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).}
 
