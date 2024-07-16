@@ -5,6 +5,7 @@
 #'
 #' @param data A `SummarizedExperiment` object.
 #' @param x Character. Options are "samples" (to visualize sample density plots) and "features" (to visualize feature density plots). Default is "samples".
+#' @param outcome Character. Indicates the name of the `colData` column to be used as outcome factor. Default is NULL (first factor vatiable in `colData`).
 #' @param feature_name Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).
 #' @param theme_params List. Indicates `theme_poma` parameters.
 #' 
@@ -35,6 +36,7 @@
 #'             feature_name = c("ornithine", "orotate"))
 PomaDensity <- function(data,
                         x = "samples",
+                        outcome = NULL,
                         feature_name = NULL,
                         theme_params = list(legend_title = FALSE)) {
 
@@ -62,9 +64,16 @@ PomaDensity <- function(data,
   grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
                             is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
   
-  if (grouping_factor) {
+  if (grouping_factor & is.null(outcome)) {
     plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
                             group_factor = SummarizedExperiment::colData(data)[,1], 
+                            plot_data)
+  } else if (!is.null(outcome)) {
+    plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
+                            group_factor = SummarizedExperiment::colData(data) %>%
+                              as.data.frame() %>%
+                              dplyr::pull(outcome) %>% 
+                              factor(), 
                             plot_data)
   } else {
     if (ncol(SummarizedExperiment::colData(data)) > 0) {
