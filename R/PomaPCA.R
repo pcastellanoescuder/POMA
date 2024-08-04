@@ -73,7 +73,7 @@ PomaPCA <- function(data,
 
   # eigenvalues
   eigenvalues <- data.frame(comp = paste0("PC", 1:ncomp),
-                            var_exp = round(100*(((pca_res$sdev[1:ncomp]^2)) / sum(pca_res$sdev[1:ncomp]^2)), 2)) %>% 
+                            var_exp = 100*(((pca_res$sdev[1:ncomp]^2)) / sum(pca_res$sdev[1:ncomp]^2))) %>% 
     dplyr::as_tibble()
   
   # eigenvalues plot

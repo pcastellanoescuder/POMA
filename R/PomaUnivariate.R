@@ -130,8 +130,8 @@ PomaUnivariate <- function(data,
       tibble::rownames_to_column("feature") %>%
       dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
       dplyr::bind_cols(group_means, group_sd) %>%
-      dplyr::mutate(fold_change = as.numeric(round(group_means[,2] / group_means[,1], 3)),
-                    diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
+      dplyr::mutate(fold_change = as.numeric(group_means[,2] / group_means[,1]),
+                    diff_means = as.numeric(group_means[,2] - group_means[,1])) %>%
       dplyr::select(feature, fold_change, diff_means, pvalue, adj_pvalue, dplyr::everything()) %>% 
       dplyr::arrange(pvalue) %>% 
       dplyr::as_tibble()
@@ -252,8 +252,8 @@ PomaUnivariate <- function(data,
         tibble::rownames_to_column("feature") %>%
         dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
         dplyr::bind_cols(group_means, group_sd) %>%
-        dplyr::mutate(fold_change = as.numeric(round(group_means[,2]/group_means[,1], 3)),
-                      diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
+        dplyr::mutate(fold_change = as.numeric(group_means[,2]/group_means[,1]),
+                      diff_means = as.numeric(group_means[,2] - group_means[,1])) %>% 
         dplyr::select(feature, fold_change, diff_means, pvalue, adj_pvalue, dplyr::everything()) %>% 
         dplyr::arrange(pvalue) %>% 
         dplyr::as_tibble()

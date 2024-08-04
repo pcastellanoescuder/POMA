@@ -3,6 +3,7 @@
 * Analyzing data with replicates in `PomaLimma`
 * Select outcome factor in `PomaBoxplots`, `PomaDensity`, and `PomaOutliers`
 * Documentation improvements
+* Introduces `PomaORA` and `PomaGSEA` for enrichment analysis
 
 # POMA 1.14.0
 

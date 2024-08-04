@@ -20,7 +20,7 @@ test_that("PomaNorm handles sample normalization methods correctly", {
 
 test_that("PomaNorm handles different normalization methods correctly", {
   data <- create_mock_summarized_experiment()
-  for (method in c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transform",
+  for (method in c("none", "auto_scaling", "level_scaling", "log_scaling", "log",
                    "vast_scaling", "log_pareto", "min_max", "box_cox")) {
     normalized_data <- PomaNorm(data, method = method)
     expect_is(normalized_data, "SummarizedExperiment")
