@@ -1,9 +1,10 @@
-# POMA 1.14.6
+# POMA 1.14.7
 
 * Analyzing data with replicates in `PomaLimma`
 * Select outcome factor in `PomaBoxplots`, `PomaDensity`, and `PomaOutliers`
 * Documentation improvements
-* Introduces `PomaORA` and `PomaGSEA` for enrichment analysis
+* Introduces `PomaEnrichment` for enrichment analysis
+* Allows custom study designs in `PomaDESeq`
 
 # POMA 1.14.0
 

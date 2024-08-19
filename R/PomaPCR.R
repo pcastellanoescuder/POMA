@@ -18,15 +18,32 @@
 #' @importFrom magrittr %>% %<>%
 #' 
 #' @examples 
-#' data("st000284")
+#' data <- POMA::st000284 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaNorm()
 #' 
-#' # PCR with 2 components
-#' st000284 %>%
-#'   PomaPCR(y = "age_at_consent")
-#'   
-#' # PCR with 20 components
-#' st000284 %>%
-#'   PomaPCR(ncomp = 20)
+#' # PCR with 2 components and the default outcome (1st column of `colData`)
+#' data %>%
+#'   PomaPCR(center = TRUE,
+#'           scale = TRUE,
+#'           ncomp = 2,
+#'           y = NULL,
+#'           adjust = "fdr")
+#' 
+#' # PCR with 2 components and alternative outcome
+#' data %>%
+#'   PomaPCR(center = TRUE,
+#'           scale = TRUE,
+#'           ncomp = 2,
+#'           y = "age_at_consent",
+#'           adjust = "fdr")
+#' 
+#' # PCR with 20 components and alternative outcome
+#' data %>%
+#'   PomaPCR(center = TRUE,
+#'           scale = TRUE,
+#'           ncomp = 20,
+#'           y = "age_at_consent",
+#'           adjust = "fdr")
 PomaPCR <- function(data,
                     center = TRUE,
                     scale = TRUE,

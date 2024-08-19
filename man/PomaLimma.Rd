@@ -7,6 +7,7 @@
 PomaLimma(
   data,
   contrast = NULL,
+  outcome = NULL,
   covs = NULL,
   adjust = "fdr",
   replicates = NULL,
@@ -17,6 +18,8 @@ PomaLimma(
 \item{data}{A \code{SummarizedExperiment} object.}
 
 \item{contrast}{Character. Indicates the comparison. For example, "Group1-Group2" or "control-intervention".}
+
+\item{outcome}{Character. Indicates the name of the \code{colData} column to be used as the outcome factor. Default is NULL (first factor variable in \code{colData}).}
 
 \item{covs}{Character vector. Indicates the names of \code{colData} columns to be included as covariates. Default is NULL (no covariates). If not NULL, a limma model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.}
 
@@ -33,11 +36,45 @@ A \code{tibble} with the results.
 \code{PomaLimma} uses the classical \code{limma} package to compute differential expression analysis.
 }
 \examples{
-data("st000284")
+data <- POMA::st000284 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaNorm()
 
-st000284 \%>\%
-  PomaNorm() \%>\%
-  PomaLimma(contrast = "Healthy-CRC", adjust = "fdr")
+# Basic limma
+data \%>\% 
+  PomaLimma(contrast = "Healthy-CRC", 
+            covs = NULL,
+            adjust = "fdr",
+            replicates = NULL)
+
+# Basic limma on alternative outcome
+SummarizedExperiment::colData(data)$gender <- factor(ifelse(SummarizedExperiment::colData(data)$gender == 0, "male", "female"))
+data \%>\% 
+  PomaLimma(contrast = "male-female", 
+            outcome = "gender",
+            covs = NULL,
+            adjust = "fdr",
+            replicates = NULL)
+
+# limma with one covariate
+data \%>\% 
+  PomaLimma(contrast = "Healthy-CRC", 
+            covs = "gender",
+            adjust = "fdr",
+            replicates = NULL)
+
+# limma with two covariates
+data \%>\% 
+  PomaLimma(contrast = "Healthy-CRC", 
+            covs = c("gender", "age_at_consent"),
+            adjust = "fdr",
+            replicates = NULL)
+
+# limma with replicates
+# data \%>\% 
+#   PomaLimma(contrast = "Healthy-CRC", 
+#             covs = NULL,
+#             adjust = "fdr",
+#             replicates = "replicate)
 }
 \references{
 Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007

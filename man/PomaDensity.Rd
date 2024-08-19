@@ -30,23 +30,28 @@ A \code{ggplot} object.
 \code{PomaDensity} generates a density plot for samples and features. This function can be used for data exploration (e.g., comparison between pre and post normalized datasets).
 }
 \examples{
-data("st000284")
+data <- POMA::st000284 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaNorm() 
 
 # Sample density plots
-st000284 \%>\%
-PomaNorm() \%>\% 
-PomaDensity(theme_params = list(axistext = "y"))
+data \%>\%
+  PomaDensity(x = "samples",
+              outcome = NULL)
+
+# Sample density plots with covariate as outcome
+data \%>\%
+  PomaDensity(x = "samples",
+              outcome = "gender") # change outcome
 
 # All feature density plots
-st000284 \%>\% 
-PomaNorm() \%>\% 
-PomaDensity(x = "features", theme_params = list(legend_position = "none"))
-             
+data \%>\%
+  PomaDensity(x = "features",
+              theme_params = list(legend_position = "none"))
+
 # Specific feature density plots
-st000284 \%>\% 
-PomaNorm() \%>\% 
-PomaDensity(x = "features", 
-            feature_name = c("ornithine", "orotate"))
+data \%>\% 
+  PomaDensity(x = "features", 
+              feature_name = c("ornithine", "orotate"))
 }
 \author{
 Pol Castellano-Escuder

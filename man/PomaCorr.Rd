@@ -22,14 +22,11 @@ A \code{list} with the results.
 \code{PomaCorr} computes all pairwise correlations in the data.
 }
 \examples{
-data("st000284")
+## Output is a list with objects `correlations` (tibble) and `corrplot` (ggplot2 object)
+data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 
-# Pearson correlation
-PomaCorr(st000284)$correlations
-
-## Gaussian graphical model
-# library(ggraph)
-# PomaCorr(st000284, corr_type = "glasso")
+data \%>\% 
+  PomaCorr(method = "pearson")
 }
 \references{
 Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso

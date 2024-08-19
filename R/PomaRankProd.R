@@ -22,11 +22,13 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' data <- POMA::st000336 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaImpute()
 #' 
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaRankProd()
+#' ## Output is a list with objects `up_regulated` (tibble with up regulated features), `down_regulated` (tibble with down regulated features), `up_regulated_plot` (ggplot2 object), and `down_regulated_plot` (ggplot2 object) 
+#' ## Perform on no-scaled object to avoid negative values
+#' data %>% 
+#'   PomaRankProd(paired = NA, cutoff = 0.05, method = "pfp")
 PomaRankProd <- function(data,
                          logged = TRUE,
                          paired = NA,

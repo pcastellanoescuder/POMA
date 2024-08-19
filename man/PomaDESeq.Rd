@@ -4,18 +4,50 @@
 \alias{PomaDESeq}
 \title{Differential Expression Analysis Based on the Negative Binomial Distribution}
 \usage{
-PomaDESeq(data, adjust = "fdr")
+PomaDESeq(data, contrast = NULL, outcome = NULL, covs = NULL, adjust = "fdr")
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}
 
-\item{adjust}{Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).}
+\item{contrast}{Character. Indicates the comparison. For example, "Group1-Group2" or "control-intervention".}
+
+\item{outcome}{Character. Indicates the name of the \code{colData} column to be used as the outcome factor. Default is NULL (first factor variable in \code{colData}).}
+
+\item{covs}{Character vector. Indicates the names of \code{colData} columns to be included as covariates. Default is NULL (no covariates). If not NULL, a limma model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.}
+
+\item{adjust}{Character. Indicates the multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 }
 \value{
 A \code{tibble} with the results.
 }
 \description{
 \code{PomaDESeq} estimates variance-mean dependence in count data from high-throughput sequencing assays and test for differential expression based on a model using the negative binomial distribution.
+}
+\examples{
+#library("airway")
+#data("airway")
+#se <- airway
+#
+## Classic DESeq2
+#se \%>\% 
+#  PomaDESeq(contrast = NULL,
+#            outcome = "dex",
+#            covs = NULL,
+#            adjust = "fdr")
+#
+## DESeq2 with covariates
+#se \%>\% 
+#  PomaDESeq(contrast = NULL,
+#            outcome = "dex",
+#            covs = "cell",
+#            adjust = "fdr")
+#
+## DESeq2 with covariates and batch
+#se \%>\% 
+#  PomaDESeq(contrast = NULL,
+#            outcome = "dex",
+#            covs = c("batch", "cell"),
+#            adjust = "fdr")
 }
 \references{
 Love, M.I., Huber, W., Anders, S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2 Genome Biology 15(12):550 (2014)

@@ -25,38 +25,78 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000284")
+#' data <- POMA::st000284 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaImpute() %>% 
+#'   PomaNorm()
 #' 
+#' ## Output is a list with objects `factors` (tibble), `factors_plot` (ggplot2 object), `loadings` (tibble), and `loadings_plot` (ggplot2 object)
 #' # PLS
-#' st000284 %>% 
-#'   PomaNorm() %>%
-#'   PomaPLS(method = "pls")
-#'   
-#' data("st000336")
+#' data %>% 
+#'   PomaPLS(method = "pls",
+#'           y = NULL,
+#'           ncomp = 5,
+#'           labels = FALSE,
+#'           ellipse = FALSE)
 #' 
-#' # PLSDA
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaPLS(method = "plsda")
-#'   
-#' # PLSDA with Cross-Validation
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaPLS(method = "plsda", cross_validation = TRUE)
-#'   
-#' # sPLSDA
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaPLS(method = "splsda")
-#'   
-#' # sPLSDA with Cross-Validation
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaPLS(method = "splsda", ncomp = 3, cross_validation = TRUE)
+#' ## Output is a list with objects `factors` (tibble), `factors_plot` (ggplot2 object), `vip_values` (tibble), and `vip_plot` (ggplot2 object)
+#' # PLS-DA
+#' data %>%
+#'   PomaPLS(method = "plsda",
+#'           y = NULL,
+#'           ncomp = 5,
+#'           labels = FALSE,
+#'           ellipse = TRUE,
+#'           cross_validation = FALSE,
+#'           vip = 1)
+#' 
+#' # Alternative outcome (dependent variable)
+#' data %>%
+#'   PomaPLS(method = "plsda",
+#'           y = "gender",
+#'           ncomp = 5,
+#'           labels = FALSE,
+#'           ellipse = TRUE,
+#'           cross_validation = FALSE,
+#'           vip = 1)
+#' 
+#' ## Output is a list with objects `factors` (tibble), `factors_plot` (ggplot2 object), `vip_values` (tibble), `vip_plot` (ggplot2 object), `errors` (tibble), and `errors_plot` (ggplot2 object)
+#' # PLS-DA with Cross-Validation
+#' data %>% 
+#'   PomaPLS(method = "plsda",
+#'           y = NULL,
+#'           ncomp = 5,
+#'           labels = FALSE,
+#'           ellipse = TRUE,
+#'           cross_validation = TRUE,
+#'           validation = "Mfold",
+#'           folds = 5,
+#'           nrepeat = 10,
+#'           vip = 1)
+#' 
+#' ## Output is a list with objects `factors` (tibble), `factors_plot` (ggplot2 object), `selected_features` (tibble), and `selected_features_plot` (ggplot2 object)
+#' # sPLS-DA
+#' data %>% 
+#'   PomaPLS(method = "splsda",
+#'           y = NULL,
+#'           ncomp = 5,
+#'           labels = FALSE,
+#'           ellipse = TRUE,
+#'           cross_validation = FALSE,
+#'           num_features = 10)
+#' 
+#' ## Output is a list with objects `factors` (tibble), `factors_plot` (ggplot2 object), `selected_features` (tibble), `selected_features_plot` (ggplot2 object), `errors` (tibble), `errors_plot` (ggplot2 object), `optimal_components` (numeric value), and `optimal_features` (vector with optimal features per component)
+#' # sPLS-DA with Cross-Validation
+#' data %>% 
+#'   PomaPLS(method = "splsda",
+#'           y = NULL,
+#'           ncomp = 3,
+#'           labels = FALSE,
+#'           ellipse = TRUE,
+#'           cross_validation = TRUE,
+#'           validation = "Mfold",
+#'           folds = 5,
+#'           nrepeat = 10,
+#'           num_features = 10)
 PomaPLS <- function(data,
                     method = "pls",
                     y = NULL,

@@ -33,35 +33,49 @@ A \code{ggplot} object.
 \code{PomaBoxplots} generates boxplots and violin plots for samples and features. This function can be used for data exploration (e.g., comparison between pre and post normalized datasets).
 }
 \examples{
-data("st000284")
+data <- POMA::st000284 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaNorm() 
 
 # Sample boxplots
-st000284 \%>\%
-PomaNorm() \%>\% 
-PomaBoxplots(theme_params = list(axistext = "y"))
+data \%>\%
+  PomaBoxplots(x = "samples",
+               violin = FALSE,
+               outcome = NULL,
+               feature_name = NULL,
+               theme_params = list(axistext = "y")) # If too many samples
+
+# Sample boxplots with covariate as outcome
+data \%>\%
+  PomaBoxplots(x = "samples",
+               violin = FALSE,
+               outcome = "gender", # change outcome
+               feature_name = NULL,
+               theme_params = list(axistext = "y")) # If too many samples
 
 # Sample violin plots
-st000284 \%>\%
-PomaNorm() \%>\% 
-PomaBoxplots(violin = TRUE, theme_params = list(axistext = "y"))
+data \%>\%
+  PomaBoxplots(x = "samples",
+               violin = TRUE,
+               outcome = NULL,
+               feature_name = NULL,
+               theme_params = list(axistext = "y")) # If too many samples
+
 
 # All feature boxplots
-st000284 \%>\% 
-PomaNorm() \%>\% 
-PomaBoxplots(x = "features", theme_params = list(axis_x_rotate = TRUE))
-             
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               theme_params = list(axis_x_rotate = TRUE))
+
 # Specific feature boxplots
-st000284 \%>\% 
-PomaNorm() \%>\% 
-PomaBoxplots(x = "features", 
-             feature_name = c("ornithine", "orotate"))
-             
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               feature_name = c("ornithine", "orotate"))
+
 # Specific feature violin plots
-st000284 \%>\% 
-PomaNorm() \%>\% 
-PomaBoxplots(x = "features", 
-             violin = TRUE,
-             feature_name = c("ornithine", "orotate"))
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               violin = TRUE,
+               feature_name = c("ornithine", "orotate"))
 }
 \author{
 Pol Castellano-Escuder

@@ -4,6 +4,7 @@
 #' @description `PomaPCA` performs a principal components analysis on the given `SummarizedExperiment` object.
 #'
 #' @param data A `SummarizedExperiment` object.
+#' @param outcome Character. Indicates the name of the `colData` column to be used as the outcome factor. Default is NULL (first factor variable in `colData`).
 #' @param center Logical. Indicates whether the variables should be shifted to be zero centered. Default is TRUE.
 #' @param scale Logical. Indicates whether the variables should be scaled to have unit variance before the analysis takes place. Default is TRUE.
 #' @param ncomp Numeric. Number of components to be included in the results. Default is 4.
@@ -19,13 +20,28 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' data <- POMA::st000336 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaImpute() %>% 
+#'   PomaNorm()
 #' 
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaPCA()
+#' ## Output is a list with objects `factors` (tibble wth principal components), `eigenvalues` (tibble), `loadings` (tibble), `factors_plot` (ggplot2 object with PCA plot), `eigenvalues_plot` (ggplot2 object with eigenvalues plot), `loadings_plot` (ggplot2 object), and `biplot` (ggplot2 object)
+#' # Default outcome (first factor variable in `colData`)
+#' data %>%
+#'   PomaPCA(outcome = NULL,
+#'           center = TRUE,
+#'           scale = TRUE,
+#'           labels = FALSE,
+#'           ellipse = FALSE)
+#' 
+#' # Alternative outcome
+#' data %>%
+#'   PomaPCA(outcome = "steroids",
+#'           center = TRUE,
+#'           scale = TRUE,
+#'           labels = FALSE,
+#'           ellipse = FALSE)
 PomaPCA <- function(data,
+                    outcome = NULL,
                     center = TRUE,
                     scale = TRUE,
                     ncomp = 4,
@@ -44,18 +60,27 @@ PomaPCA <- function(data,
                             is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
   
   # factors
-  if (grouping_factor) {
+  if (grouping_factor & is.null(outcome)) {
     group_factor <- SummarizedExperiment::colData(data)[,1]
     pca_res_df <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
                              group = group_factor, 
                              pca_res$x[,1:ncomp]) %>% 
       dplyr::as_tibble()
-  } else {
+  } else if (!is.null(outcome)) {
+    pca_res_df <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
+                             group = SummarizedExperiment::colData(data) %>%
+                               as.data.frame() %>%
+                               dplyr::pull(outcome) %>% 
+                               factor(), 
+                             pca_res$x[,1:ncomp])
+  } else if (!grouping_factor & is.null(outcome)) {
     pca_res_df <- data.frame(sample_id = colnames(SummarizedExperiment::assay(data)),
                              pca_res$x[,1:ncomp]) %>% 
       dplyr::as_tibble()
   }
   
+  grouping_factor <- if (grouping_factor || !is.null(outcome))
+    
   # factors plot
   factors_plot <- ggplot2::ggplot(pca_res_df, ggplot2::aes(x = PC1, y = PC2)) +
     {if(grouping_factor & !labels)ggplot2::geom_point(ggplot2::aes(fill = group), pch = 21, size = 3, alpha = 0.8)} +

@@ -20,11 +20,11 @@ A \code{SummarizedExperiment} object with batch-corrected data.
 \code{PomaBatch} performs batch correction on a \code{SummarizedExperiment} object given a batch factor variable.
 }
 \examples{
-data("st000284")
+# Output is a batch corrected SummarizedExperiment object
+data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 
-st000284 \%>\%
-PomaImpute(method = "knn") \%>\% 
-PomaBatch(batch = "gender")
+data \%>\%
+  PomaBatch(batch = "gender")
 }
 \references{
 Leek JT, Johnson WE, Parker HS, Fertig EJ, Jaffe AE, Zhang Y, Storey JD, Torres LC (2023). sva: Surrogate Variable Analysis. doi:10.18129/B9.bioc.sva \url{https://doi.org/10.18129/B9.bioc.sva}

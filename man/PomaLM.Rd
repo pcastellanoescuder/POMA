@@ -22,15 +22,18 @@ A \code{list} with results including plots and tables.
 \code{PomaLM} performs a linear model on a \code{SummarizedExperiment} object.
 }
 \examples{
-data("st000284")
+data <- POMA::st000284 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaImpute() \%>\% 
+  PomaNorm()
 
+## Output is a list with objects `lm_table` (tibble) and `regression_plot` (ggplot2 object)
 # Perform linear model with all features
-st000284 \%>\% 
-PomaLM()
+data \%>\% 
+  PomaLM()
 
 # Perform linear model with two features
-st000284 \%>\% 
-PomaLM(x = c("x1_methyladenosine", "x2_deoxyuridine"))
+data \%>\% 
+  PomaLM(x = c("x1_methyladenosine", "x2_deoxyuridine"))
 }
 \author{
 Pol Castellano-Escuder

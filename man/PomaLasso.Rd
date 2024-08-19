@@ -33,25 +33,34 @@ A \code{list} with results.
 \code{PomaLasso} performs LASSO, Ridge, and Elasticnet regression for feature selection and prediction purposes for binary outcomes.
 }
 \examples{
-data("st000336")
+data <- POMA::st000336 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaImpute() \%>\% 
+  PomaNorm()
 
-# lasso
-st000336 \%>\%
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaLasso()
+## Output is a list with objects `coefficients` (tibble), `coefficients_plot` (ggplot2 object), `cv_plot` (ggplot2 object), and `model` (cv.glmnet object)
+# LASSO
+data \%>\%
+  PomaLasso(alpha = 1,
+            ntest = NULL,
+            nfolds = 10,
+            lambda = NULL,
+            labels = TRUE)
 
-# elasticnet
-st000336 \%>\%
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaLasso(alpha = 0.5)
+# Elasticnet
+data \%>\%
+  PomaLasso(alpha = 0.5,
+            ntest = NULL,
+            nfolds = 10,
+            lambda = NULL,
+            labels = TRUE)
 
-# ridge
-st000336 \%>\%
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaLasso(alpha = 0)
+# Ridge Regression
+data \%>\%
+  PomaLasso(alpha = 0,
+            ntest = NULL,
+            nfolds = 10,
+            lambda = NULL,
+            labels = FALSE)
 }
 \references{
 Jerome Friedman, Trevor Hastie, Robert Tibshirani (2010). Regularization Paths for Generalized Linear Models via Coordinate Descent. Journal of Statistical Software, 33(1), 1-22. URL http://www.jstatsoft.org/v33/i01/.

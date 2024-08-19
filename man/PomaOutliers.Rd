@@ -33,13 +33,29 @@ A \code{list} with the results.
 \code{PomaOutliers} analyses and removes statistical outliers from the data.
 }
 \examples{
-data("st000336")
+data <- POMA::st000336 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaImpute() \%>\% 
+  PomaNorm()
 
-# clean outliers
-st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaOutliers()
+## Output is a list with objects `polygon_plot` (ggplot2 object), `distance_boxplot` (ggplot2 object), `outliers` (tibble), and `data` (outlier-free SummarizedExperiment)
+outlier_results <- data \%>\% 
+  PomaOutliers(method = "euclidean",
+               type = "median",
+               outcome = NULL,
+               coef = 2,
+               labels = FALSE)
+
+outlier_results$data # cleaned SummarizedExperiment object
+
+## Change oulier group factor
+outlier_results2 <- data \%>\% 
+  PomaOutliers(method = "euclidean",
+               type = "median",
+               outcome = "steroids",
+               coef = 2,
+               labels = FALSE)
+
+outlier_results2$data # cleaned SummarizedExperiment object
 }
 \author{
 Pol Castellano-Escuder

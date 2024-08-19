@@ -16,7 +16,7 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 | *BioC* branch                                                           | Status                                                                                                                                                  | Version                                                                                                                                            | Rank                                                                                                                         |
 |-------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | [Release](http://bioconductor.org/packages/release/bioc/html/POMA.html) | [![Bioc release status](https://bioconductor.org/shields/build/release/bioc/POMA.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/POMA/) | [![BioC released version](https://img.shields.io/badge/release%20version-1.14.0-blue.svg)](https://www.bioconductor.org/packages/POMA)             | [![Rank](http://www.bioconductor.org/shields/downloads/release/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA) |
-| [Devel](http://bioconductor.org/packages/devel/bioc/html/POMA.html)     | [![Bioc devel status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)       | [![BioC devel version](https://img.shields.io/badge/devel%20version-1.14.6-blue.svg)](https://bioconductor.org/packages/devel/bioc/html/POMA.html) | [![Rank](http://www.bioconductor.org/shields/downloads/devel/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA)   |
+| [Devel](http://bioconductor.org/packages/devel/bioc/html/POMA.html)     | [![Bioc devel status](https://bioconductor.org/shields/build/devel/bioc/POMA.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/POMA/)       | [![BioC devel version](https://img.shields.io/badge/devel%20version-1.14.7-blue.svg)](https://bioconductor.org/packages/devel/bioc/html/POMA.html) | [![Rank](http://www.bioconductor.org/shields/downloads/devel/POMA.svg)](https://bioconductor.org/packages/stats/bioc/POMA)   |
 
 <!-- badges: end -->
 
@@ -32,9 +32,12 @@ Bioconductor tools. This approach guarantees maximum flexibility and
 replicability, making `POMA` an essential asset for researchers handling
 omics datasets.
 
-<!-- POMA provides two different Shiny apps both for exploratory data analysis and statistical analysis that implement all POMA functions in two user-friendly web interfaces.      -->
-<!--   - **POMAShiny**: Shiny version of this package. https://github.com/pcastellanoescuder/POMAShiny   -->
-<!--   - **POMAcounts**: Shiny version for exploratory and statistical analysis of mass spectrometry spectral counts data and RNAseq data. https://github.com/pcastellanoescuder/POMAcounts    -->
+<!-- 
+## push to Bioc (upstream remote at git@git.bioconductor.org)
+git push upstream main:devel
+&#10;## push to GitHub (origin remote)
+git push origin main
+-->
 
 ## Installation
 

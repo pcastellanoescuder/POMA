@@ -33,9 +33,16 @@ A \code{SummarizedExperiment} object without missing values.
 \code{PomaImpute} performs missing value imputation on a dataset using various imputation methods.
 }
 \examples{
-data("st000336")
+# Output is a imputed SummarizedExperiment object
+data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 
-PomaImpute(st000336, method = "knn")
+# No sample normalization
+data \%>\% 
+  PomaImpute(zeros_as_na = FALSE,
+             remove_na = TRUE,
+             cutoff = 20,
+             group_by = TRUE,
+             method = "knn")
 }
 \references{
 Armitage, E. G., Godzien, J., Alonso‐Herranz, V., López‐Gonzálvez, Á., & Barbas, C. (2015). Missing value imputation strategies for metabolomics data. Electrophoresis, 36(24), 3050-3060.

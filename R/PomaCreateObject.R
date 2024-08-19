@@ -49,7 +49,7 @@ PomaCreateObject <- function(metadata = NULL,
   # features
   features <- features %>% 
     as.data.frame() %>% 
-    janitor::clean_names(case = "all_caps") %>% 
+    janitor::clean_names() %>% 
     dplyr::mutate_all(~ as.numeric(as.character(.)))
   
   # metadata
