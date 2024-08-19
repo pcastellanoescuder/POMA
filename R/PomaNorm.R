@@ -51,7 +51,7 @@ box_cox_transformation <- function(data) {
 #' @description `PomaNorm` performs data normalization using various normalization methods.
 #'
 #' @param data A `SummarizedExperiment` object.
-#' @param sample_norm Character. Sample normalization method. Options include "none" (default), "sum", or "quantile".
+#' @param sample_norm Character. Sample normalization method. Options include "none" (default), "sum", or "quantile". Quantile is often used when >100 samples.
 #' @param method Character. The normalization method to use. Options include "none" (no normalization), "auto_scaling" (autoscaling, i.e., Z-score normalization), "level_scaling" (level scaling), "log_scaling" (log scaling), "log" (log transformation), "vast_scaling" (vast scaling), "log_pareto" (log Pareto scaling), "min_max" (min-max), and "box_cox" (Box-Cox transformation).
 #'
 #' @export
@@ -61,9 +61,18 @@ box_cox_transformation <- function(data) {
 #' @author Pol Castellano-Escuder
 #' 
 #' @examples 
-#' data("st000284")
+#' # Output is a normalized SummarizedExperiment object
+#' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
-#' PomaNorm(st000284, method = "log_pareto")
+#' # No sample normalization
+#' data %>% 
+#'   PomaNorm(sample_norm = "none", 
+#'            method = "log_pareto")
+#' 
+#' # Sum sample normalization
+#' data %>% 
+#'   PomaNorm(sample_norm = "sum", 
+#'            method = "log_pareto")
 PomaNorm <- function(data,
                      sample_norm = "none",
                      method = "log_pareto"){

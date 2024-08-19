@@ -18,12 +18,20 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples
-#' st000336 %>% 
-#' PomaImpute() %>% 
-#' PomaUnivariate() %>% 
-#' magrittr::extract2("result") %>% 
-#' dplyr::select(feature, fold_change, pvalue) %>%
-#' PomaVolcano()
+#' data <- POMA::st000336 # Example SummarizedExperiment object included in POMA
+#' 
+#' results <- data %>%
+#'   PomaImpute() %>% 
+#'   PomaUnivariate() %>% 
+#'   magrittr::extract2("result") %>% 
+#'   dplyr::select(feature, fold_change, pvalue)
+#' 
+#' results %>% 
+#'   PomaVolcano(pval_cutoff = 0.05,
+#'               log2fc_cutoff = NULL,
+#'               labels = FALSE,
+#'               x_label = "log2 (Fold Change)",
+#'               y_label = "-log10 (P-value)")
 PomaVolcano <- function(data,
                         pval_cutoff = 0.05,
                         log2fc_cutoff = NULL,

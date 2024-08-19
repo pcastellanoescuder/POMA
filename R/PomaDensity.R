@@ -17,23 +17,28 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000284")
+#' data <- POMA::st000284 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaNorm() 
 #' 
 #' # Sample density plots
-#' st000284 %>%
-#' PomaNorm() %>% 
-#' PomaDensity(theme_params = list(axistext = "y"))
+#' data %>%
+#'   PomaDensity(x = "samples",
+#'               outcome = NULL)
+#' 
+#' # Sample density plots with covariate as outcome
+#' data %>%
+#'   PomaDensity(x = "samples",
+#'               outcome = "gender") # change outcome
 #' 
 #' # All feature density plots
-#' st000284 %>% 
-#' PomaNorm() %>% 
-#' PomaDensity(x = "features", theme_params = list(legend_position = "none"))
-#'              
+#' data %>%
+#'   PomaDensity(x = "features",
+#'               theme_params = list(legend_position = "none"))
+#' 
 #' # Specific feature density plots
-#' st000284 %>% 
-#' PomaNorm() %>% 
-#' PomaDensity(x = "features", 
-#'             feature_name = c("ornithine", "orotate"))
+#' data %>% 
+#'   PomaDensity(x = "features", 
+#'               feature_name = c("ornithine", "orotate"))
 PomaDensity <- function(data,
                         x = "samples",
                         outcome = NULL,

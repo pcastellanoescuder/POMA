@@ -26,11 +26,19 @@
 #' @importFrom magrittr %>% %<>%
 #' 
 #' @examples 
-#' data("st000284")
+#' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
-#' st000284 %>%
+#' ## Output is a list with objects `umap_embeddings` (tibble) and `umap_plot` (ggplot2 object)
+#' data %>%
 #'   PomaNorm() %>%
-#'   PomaUMAP()
+#'   PomaUMAP(metric = "euclidean",
+#'            pca = NULL,
+#'            min_dist = 0.01,
+#'            spread = 1,
+#'            hdbscan_minpts = floor(nrow(data) * 0.05),
+#'            show_clusters = TRUE,
+#'            hide_noise = TRUE,
+#'            labels = FALSE)
 PomaUMAP <- function(data,
                      n_neighbors = floor(sqrt(nrow(data))),
                      n_components = 2,

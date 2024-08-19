@@ -19,9 +19,16 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' # Output is a imputed SummarizedExperiment object
+#' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
-#' PomaImpute(st000336, method = "knn")
+#' # No sample normalization
+#' data %>% 
+#'   PomaImpute(zeros_as_na = FALSE,
+#'              remove_na = TRUE,
+#'              cutoff = 20,
+#'              group_by = TRUE,
+#'              method = "knn")
 PomaImpute <- function(data,
                        zeros_as_na = FALSE,
                        remove_na = TRUE,
