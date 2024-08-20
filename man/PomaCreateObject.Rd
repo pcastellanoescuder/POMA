@@ -7,11 +7,11 @@
 PomaCreateObject(metadata = NULL, features = NULL, factor_levels = 10)
 }
 \arguments{
-\item{metadata}{Metadata variables structured in columns. Sample ID must be the first column.}
+\item{metadata}{Data frame. Metadata variables structured in columns. Sample ID must be the first column.}
 
 \item{features}{Matrix of features. Each feature is a column.}
 
-\item{factor_levels}{Numeric. Integer variables with more levels than indicated by this parameter will be treated as factors.}
+\item{factor_levels}{Numeric. Integer variables with less levels than indicated by this parameter will be treated as factors.}
 }
 \value{
 A \code{SummarizedExperiment} object.
@@ -23,13 +23,14 @@ A \code{SummarizedExperiment} object.
 data(iris)
 
 # Create metadata: Data frame with sample names and a group factor
-metadata <- data.frame(ID = 1:150, Group = iris$Species)
+metadata <- data.frame(sample_id = paste0("sample_", 1:150), group = iris$Species)
 
 # Create features: `p` column data frame with features
 features <- iris[, 1:4]
 
 # Create a `SummarizedExperiment` object with `POMA`
-object <- PomaCreateObject(metadata = metadata, features = features)
+object <- PomaCreateObject(metadata = metadata, 
+                           features = features)
 }
 \references{
 Morgan M, Obenchain V, Hester J, Pagès H (2021). SummarizedExperiment: SummarizedExperiment container. R package version 1.24.0, https://bioconductor.org/packages/SummarizedExperiment.
