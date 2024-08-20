@@ -1,3 +1,15 @@
+# POMA 1.14.8
+
+* Analyzing data with replicates in `PomaLimma`
+* Select outcome factor in `PomaBoxplots`, `PomaDensity`, and `PomaOutliers`
+* Documentation improvements
+* Introduces `PomaEnrichment` for enrichment analysis
+* Allows custom study designs in `PomaDESeq`
+
+# POMA 1.14.0
+
+* Released to Bioconductor 3.19
+
 # POMA 1.13.26
 
 * New POMA theme and colorblind-friendly palette

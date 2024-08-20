@@ -5,6 +5,7 @@
 #'
 #' @param data A `SummarizedExperiment` object.
 #' @param x Character. Options are "samples" (to visualize sample density plots) and "features" (to visualize feature density plots). Default is "samples".
+#' @param outcome Character. Indicates the name of the `colData` column to be used as the outcome factor. Default is NULL (first factor variable in `colData`).
 #' @param feature_name Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).
 #' @param theme_params List. Indicates `theme_poma` parameters.
 #' 
@@ -16,25 +17,31 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000284")
+#' data <- POMA::st000284 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaNorm() 
 #' 
 #' # Sample density plots
-#' st000284 %>%
-#' PomaNorm() %>% 
-#' PomaDensity(theme_params = list(axistext = "y"))
+#' data %>%
+#'   PomaDensity(x = "samples",
+#'               outcome = NULL)
+#' 
+#' # Sample density plots with covariate as outcome
+#' data %>%
+#'   PomaDensity(x = "samples",
+#'               outcome = "gender") # change outcome
 #' 
 #' # All feature density plots
-#' st000284 %>% 
-#' PomaNorm() %>% 
-#' PomaDensity(x = "features", theme_params = list(legend_position = "none"))
-#'              
+#' data %>%
+#'   PomaDensity(x = "features",
+#'               theme_params = list(legend_position = "none"))
+#' 
 #' # Specific feature density plots
-#' st000284 %>% 
-#' PomaNorm() %>% 
-#' PomaDensity(x = "features", 
-#'             feature_name = c("ornithine", "orotate"))
+#' data %>% 
+#'   PomaDensity(x = "features", 
+#'               feature_name = c("ornithine", "orotate"))
 PomaDensity <- function(data,
                         x = "samples",
+                        outcome = NULL,
                         feature_name = NULL,
                         theme_params = list(legend_title = FALSE)) {
 
@@ -62,9 +69,16 @@ PomaDensity <- function(data,
   grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
                             is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
   
-  if (grouping_factor) {
+  if (grouping_factor & is.null(outcome)) {
     plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
                             group_factor = SummarizedExperiment::colData(data)[,1], 
+                            plot_data)
+  } else if (!is.null(outcome)) {
+    plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
+                            group_factor = SummarizedExperiment::colData(data) %>%
+                              as.data.frame() %>%
+                              dplyr::pull(outcome) %>% 
+                              factor(), 
                             plot_data)
   } else {
     if (ncol(SummarizedExperiment::colData(data)) > 0) {

@@ -19,11 +19,16 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' data <- POMA::st000336 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaImpute() %>% 
+#'   PomaNorm()
 #' 
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaRandForest()
+#' ## Output is a list with objects `MeanDecreaseGini` (tibble), `MeanDecreaseGini_plot` (ggplot2 object), `oob_error` (tibble), `error_tree` (ggplot2 object), and `model` (randomForest object)
+#' data %>% 
+#'   PomaRandForest(ntree = 500,
+#'                  mtry = floor(sqrt(ncol(t(SummarizedExperiment::assay(data))))),
+#'                  nodesize = 1,
+#'                  nvar = 20)
 PomaRandForest <- function(data,
                            ntest = NULL,
                            ntree = 500,

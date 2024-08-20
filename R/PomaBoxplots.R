@@ -6,6 +6,7 @@
 #' @param data A `SummarizedExperiment` object.
 #' @param x Character. Options are "samples" (to visualize sample boxplots) and "features" (to visualize feature boxplots). Default is "samples".
 #' @param violin Logical. Indicates if violin plots should be displayed instead of boxplots. Default is FALSE.
+#' @param outcome Character. Indicates the name of the `colData` column to be used as the outcome factor. Default is NULL (first factor variable in `colData`).
 #' @param feature_name Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).
 #' @param theme_params List. Indicates `theme_poma` parameters.
 #'
@@ -17,38 +18,53 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000284")
+#' data <- POMA::st000284 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaNorm() 
 #' 
 #' # Sample boxplots
-#' st000284 %>%
-#' PomaNorm() %>% 
-#' PomaBoxplots(theme_params = list(axistext = "y"))
+#' data %>%
+#'   PomaBoxplots(x = "samples",
+#'                violin = FALSE,
+#'                outcome = NULL,
+#'                feature_name = NULL,
+#'                theme_params = list(axistext = "y")) # If too many samples
+#' 
+#' # Sample boxplots with covariate as outcome
+#' data %>%
+#'   PomaBoxplots(x = "samples",
+#'                violin = FALSE,
+#'                outcome = "gender", # change outcome
+#'                feature_name = NULL,
+#'                theme_params = list(axistext = "y")) # If too many samples
 #' 
 #' # Sample violin plots
-#' st000284 %>%
-#' PomaNorm() %>% 
-#' PomaBoxplots(violin = TRUE, theme_params = list(axistext = "y"))
+#' data %>%
+#'   PomaBoxplots(x = "samples",
+#'                violin = TRUE,
+#'                outcome = NULL,
+#'                feature_name = NULL,
+#'                theme_params = list(axistext = "y")) # If too many samples
+#' 
 #' 
 #' # All feature boxplots
-#' st000284 %>% 
-#' PomaNorm() %>% 
-#' PomaBoxplots(x = "features", theme_params = list(axis_x_rotate = TRUE))
-#'              
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                theme_params = list(axis_x_rotate = TRUE))
+#' 
 #' # Specific feature boxplots
-#' st000284 %>% 
-#' PomaNorm() %>% 
-#' PomaBoxplots(x = "features", 
-#'              feature_name = c("ornithine", "orotate"))
-#'              
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                feature_name = c("ornithine", "orotate"))
+#' 
 #' # Specific feature violin plots
-#' st000284 %>% 
-#' PomaNorm() %>% 
-#' PomaBoxplots(x = "features", 
-#'              violin = TRUE,
-#'              feature_name = c("ornithine", "orotate"))
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                violin = TRUE,
+#'                feature_name = c("ornithine", "orotate"))
 PomaBoxplots <- function(data,
                          x = "samples",
                          violin = FALSE,
+                         outcome = NULL,
                          feature_name = NULL,
                          theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE)) {
 
@@ -73,10 +89,19 @@ PomaBoxplots <- function(data,
   grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
                             is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
   
-  if (grouping_factor) {
+  if (grouping_factor & is.null(outcome)) {
     plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
                             group_factor = SummarizedExperiment::colData(data)[,1], 
-                            plot_data)
+                            plot_data) %>% 
+      dplyr::mutate(sample_id = factor(sample_id, levels = sample_id))
+  } else if (!is.null(outcome)) {
+    plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),
+                            group_factor = SummarizedExperiment::colData(data) %>%
+                              as.data.frame() %>%
+                              dplyr::pull(outcome) %>% 
+                              factor(), 
+                            plot_data) %>% 
+      dplyr::mutate(sample_id = factor(sample_id, levels = sample_id))
   } else {
     if (ncol(SummarizedExperiment::colData(data)) > 0) {
       sample_names <- rownames(SummarizedExperiment::colData(data))
@@ -97,9 +122,10 @@ PomaBoxplots <- function(data,
     plot_data <- plot_data %>%
       tidyr::pivot_longer(cols = -c(sample_id, group_factor)) %>%
       dplyr::group_by(sample_id) %>% 
-      dplyr::mutate(median_rank = median(value, na.rm = TRUE)) %>% 
+      # dplyr::mutate(median_rank = median(value, na.rm = TRUE)) %>% 
       dplyr::ungroup() %>% 
-      ggplot2::ggplot(ggplot2::aes(reorder(sample_id, median_rank), value))
+      # ggplot2::ggplot(ggplot2::aes(reorder(sample_id, median_rank), value)) %>% 
+      ggplot2::ggplot(ggplot2::aes(sample_id, value))
   }
   
   else if (x == "features") {

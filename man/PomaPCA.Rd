@@ -6,6 +6,7 @@
 \usage{
 PomaPCA(
   data,
+  outcome = NULL,
   center = TRUE,
   scale = TRUE,
   ncomp = 4,
@@ -16,6 +17,8 @@ PomaPCA(
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}
+
+\item{outcome}{Character. Indicates the name of the \code{colData} column to be used as the outcome factor. Default is NULL (first factor variable in \code{colData}).}
 
 \item{center}{Logical. Indicates whether the variables should be shifted to be zero centered. Default is TRUE.}
 
@@ -36,12 +39,26 @@ A \code{list} with results including plots and tables.
 \code{PomaPCA} performs a principal components analysis on the given \code{SummarizedExperiment} object.
 }
 \examples{
-data("st000336")
+data <- POMA::st000336 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaImpute() \%>\% 
+  PomaNorm()
 
-st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaNorm() \%>\%
-  PomaPCA()
+## Output is a list with objects `factors` (tibble wth principal components), `eigenvalues` (tibble), `loadings` (tibble), `factors_plot` (ggplot2 object with PCA plot), `eigenvalues_plot` (ggplot2 object with eigenvalues plot), `loadings_plot` (ggplot2 object), and `biplot` (ggplot2 object)
+# Default outcome (first factor variable in `colData`)
+data \%>\%
+  PomaPCA(outcome = NULL,
+          center = TRUE,
+          scale = TRUE,
+          labels = FALSE,
+          ellipse = FALSE)
+
+# Alternative outcome
+data \%>\%
+  PomaPCA(outcome = "steroids",
+          center = TRUE,
+          scale = TRUE,
+          labels = FALSE,
+          ellipse = FALSE)
 }
 \author{
 Pol Castellano-Escuder

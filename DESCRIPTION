@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis   
-Version: 1.13.26
+Version: 1.14.8
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -44,6 +44,7 @@ Imports:
     dbscan,
     dplyr,
     DESeq2,
+    fgsea,
     FSA,
     ggplot2,
     ggrepel,
@@ -55,6 +56,8 @@ Imports:
     magrittr,
     MASS,
     mixOmics,
+    msigdbr,
+    purrr,
     randomForest,
     RankProd (>= 3.14),
     rlang,

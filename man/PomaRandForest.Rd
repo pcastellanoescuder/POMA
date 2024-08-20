@@ -33,11 +33,16 @@ A \code{list} with results including plots and tables.
 \code{PomaRandForest} performs classification random forest. This method can be used both for prediction and variable selection.
 }
 \examples{
-data("st000336")
+data <- POMA::st000336 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaImpute() \%>\% 
+  PomaNorm()
 
-st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaRandForest()
+## Output is a list with objects `MeanDecreaseGini` (tibble), `MeanDecreaseGini_plot` (ggplot2 object), `oob_error` (tibble), `error_tree` (ggplot2 object), and `model` (randomForest object)
+data \%>\% 
+  PomaRandForest(ntree = 500,
+                 mtry = floor(sqrt(ncol(t(SummarizedExperiment::assay(data))))),
+                 nodesize = 1,
+                 nvar = 20)
 }
 \references{
 A. Liaw and M. Wiener (2002). Classification and Regression by randomForest. R News 2(3), 18--22.

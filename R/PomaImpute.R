@@ -19,9 +19,16 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' # Output is a imputed SummarizedExperiment object
+#' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
-#' PomaImpute(st000336, method = "knn")
+#' # No sample normalization
+#' data %>% 
+#'   PomaImpute(zeros_as_na = FALSE,
+#'              remove_na = TRUE,
+#'              cutoff = 20,
+#'              group_by = TRUE,
+#'              method = "knn")
 PomaImpute <- function(data,
                        zeros_as_na = FALSE,
                        remove_na = TRUE,
@@ -35,10 +42,12 @@ PomaImpute <- function(data,
   if (!(method %in% c("none", "half_min", "median", "mean", "min", "knn", "random_forest"))) {
     stop("Incorrect value for method argument")
   }
-  if (missing(method)) {
-    message("method argument is empty. KNN will be used")
-  }
+  # if (missing(method)) {
+  #   message("method argument is empty. KNN will be used")
+  # }
 
+  n_features_raw <- length(rownames(data))
+  
   to_impute <- t(SummarizedExperiment::assay(data)) %>% 
     as.data.frame()
   
@@ -107,9 +116,11 @@ PomaImpute <- function(data,
   }
 
   else if (method == "knn"){
-    imputed_t <- t(to_impute)
-    imputed_res <- impute::impute.knn(imputed_t)
-    imputed <- t(imputed_res$data)
+    suppressWarnings({
+      imputed_t <- t(to_impute)
+      imputed_res <- impute::impute.knn(imputed_t)
+      imputed <- t(imputed_res$data)
+    })
   }
   
   else if (method == "random_forest"){
@@ -128,7 +139,11 @@ PomaImpute <- function(data,
   } else {
     data <- SummarizedExperiment::SummarizedExperiment(assays = t(imputed))
   }
-    
+  
+  n_features_imputed <- length(rownames(data))
+  
+  message(paste0(n_features_raw - n_features_imputed, " features removed."))
+  
   if (validObject(data))
     return(data)
 }

@@ -8,6 +8,7 @@ PomaBoxplots(
   data,
   x = "samples",
   violin = FALSE,
+  outcome = NULL,
   feature_name = NULL,
   theme_params = list(legend_title = FALSE, axis_x_rotate = TRUE)
 )
@@ -18,6 +19,8 @@ PomaBoxplots(
 \item{x}{Character. Options are "samples" (to visualize sample boxplots) and "features" (to visualize feature boxplots). Default is "samples".}
 
 \item{violin}{Logical. Indicates if violin plots should be displayed instead of boxplots. Default is FALSE.}
+
+\item{outcome}{Character. Indicates the name of the \code{colData} column to be used as the outcome factor. Default is NULL (first factor variable in \code{colData}).}
 
 \item{feature_name}{Character vector. Indicates the feature/s to display. Default is NULL (all features will be displayed).}
 
@@ -30,35 +33,49 @@ A \code{ggplot} object.
 \code{PomaBoxplots} generates boxplots and violin plots for samples and features. This function can be used for data exploration (e.g., comparison between pre and post normalized datasets).
 }
 \examples{
-data("st000284")
+data <- POMA::st000284 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaNorm() 
 
 # Sample boxplots
-st000284 \%>\%
-PomaNorm() \%>\% 
-PomaBoxplots(theme_params = list(axistext = "y"))
+data \%>\%
+  PomaBoxplots(x = "samples",
+               violin = FALSE,
+               outcome = NULL,
+               feature_name = NULL,
+               theme_params = list(axistext = "y")) # If too many samples
+
+# Sample boxplots with covariate as outcome
+data \%>\%
+  PomaBoxplots(x = "samples",
+               violin = FALSE,
+               outcome = "gender", # change outcome
+               feature_name = NULL,
+               theme_params = list(axistext = "y")) # If too many samples
 
 # Sample violin plots
-st000284 \%>\%
-PomaNorm() \%>\% 
-PomaBoxplots(violin = TRUE, theme_params = list(axistext = "y"))
+data \%>\%
+  PomaBoxplots(x = "samples",
+               violin = TRUE,
+               outcome = NULL,
+               feature_name = NULL,
+               theme_params = list(axistext = "y")) # If too many samples
+
 
 # All feature boxplots
-st000284 \%>\% 
-PomaNorm() \%>\% 
-PomaBoxplots(x = "features", theme_params = list(axis_x_rotate = TRUE))
-             
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               theme_params = list(axis_x_rotate = TRUE))
+
 # Specific feature boxplots
-st000284 \%>\% 
-PomaNorm() \%>\% 
-PomaBoxplots(x = "features", 
-             feature_name = c("ornithine", "orotate"))
-             
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               feature_name = c("ornithine", "orotate"))
+
 # Specific feature violin plots
-st000284 \%>\% 
-PomaNorm() \%>\% 
-PomaBoxplots(x = "features", 
-             violin = TRUE,
-             feature_name = c("ornithine", "orotate"))
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               violin = TRUE,
+               feature_name = c("ornithine", "orotate"))
 }
 \author{
 Pol Castellano-Escuder

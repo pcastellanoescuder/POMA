@@ -16,12 +16,21 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' data <- POMA::st000336 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaImpute() %>% 
+#'   PomaNorm()
 #' 
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaOddsRatio(feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine"))
+#' ## Output is a list with objects `odds_ratio_table` (tibble) and `odds_ratio_plot` (ggplot2 object)
+#' data %>% 
+#'   PomaOddsRatio(feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine"),
+#'                 covs = NULL, 
+#'                 show_ci = TRUE)
+#' 
+#' # With covariates
+#' data %>% 
+#'   PomaOddsRatio(feature_name = c("glutamic_acid", "glutamine", "glycine", "histidine"),
+#'                 covs = "steroids", 
+#'                 show_ci = TRUE)
 PomaOddsRatio <- function(data,
                           feature_name = NULL,
                           covs = NULL,

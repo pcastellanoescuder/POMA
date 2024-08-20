@@ -51,11 +51,19 @@ A \code{list} with results including plots and tables.
 \code{PomaUMAP} performs a dimension reduction of the data using the Uniform Manifold Approximation and Projection (UMAP) method. See \code{?uwot::umap()} for more.
 }
 \examples{
-data("st000284")
+data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 
-st000284 \%>\%
+## Output is a list with objects `umap_embeddings` (tibble) and `umap_plot` (ggplot2 object)
+data \%>\%
   PomaNorm() \%>\%
-  PomaUMAP()
+  PomaUMAP(metric = "euclidean",
+           pca = NULL,
+           min_dist = 0.01,
+           spread = 1,
+           hdbscan_minpts = floor(nrow(data) * 0.05),
+           show_clusters = TRUE,
+           hide_noise = TRUE,
+           labels = FALSE)
 }
 \references{
 McInnes, L., Healy, J., & Melville, J. (2018). Umap: Uniform manifold approximation and projection for dimension reduction. arXiv preprint arXiv:1802.03426.

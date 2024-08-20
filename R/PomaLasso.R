@@ -19,25 +19,34 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' data <- POMA::st000336 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaImpute() %>% 
+#'   PomaNorm()
 #' 
-#' # lasso
-#' st000336 %>%
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaLasso()
+#' ## Output is a list with objects `coefficients` (tibble), `coefficients_plot` (ggplot2 object), `cv_plot` (ggplot2 object), and `model` (cv.glmnet object)
+#' # LASSO
+#' data %>%
+#'   PomaLasso(alpha = 1,
+#'             ntest = NULL,
+#'             nfolds = 10,
+#'             lambda = NULL,
+#'             labels = TRUE)
 #' 
-#' # elasticnet
-#' st000336 %>%
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaLasso(alpha = 0.5)
+#' # Elasticnet
+#' data %>%
+#'   PomaLasso(alpha = 0.5,
+#'             ntest = NULL,
+#'             nfolds = 10,
+#'             lambda = NULL,
+#'             labels = TRUE)
 #' 
-#' # ridge
-#' st000336 %>%
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaLasso(alpha = 0)
+#' # Ridge Regression
+#' data %>%
+#'   PomaLasso(alpha = 0,
+#'             ntest = NULL,
+#'             nfolds = 10,
+#'             lambda = NULL,
+#'             labels = FALSE)
 PomaLasso <- function(data,
                       alpha = 1,
                       ntest = NULL,

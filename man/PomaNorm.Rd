@@ -9,9 +9,9 @@ PomaNorm(data, sample_norm = "none", method = "log_pareto")
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}
 
-\item{sample_norm}{Character. Sample normalization method. Options include "none" (default), "sum", or "quantile".}
+\item{sample_norm}{Character. Sample normalization method. Options include "none" (default), "sum", or "quantile". Quantile is often used when >100 samples.}
 
-\item{method}{Character. The normalization method to use. Options include "none" (no normalization), "auto_scaling" (autoscaling normalization, i.e., Z-score normalization), "level_scaling" (level scaling normalization), "log_scaling" (log scaling normalization), "log_transform" (log transformation normalization), "vast_scaling" (vast scaling normalization), "log_pareto" (log Pareto scaling normalization), "min_max" (min-max normalization), and "box_cox" (Box-Cox transformation).}
+\item{method}{Character. The normalization method to use. Options include "none" (no normalization), "auto_scaling" (autoscaling, i.e., Z-score normalization), "level_scaling" (level scaling), "log_scaling" (log scaling), "log" (log transformation), "vast_scaling" (vast scaling), "log_pareto" (log Pareto scaling), "min_max" (min-max), and "box_cox" (Box-Cox transformation).}
 }
 \value{
 A \code{SummarizedExperiment} object with normalized data.
@@ -20,9 +20,18 @@ A \code{SummarizedExperiment} object with normalized data.
 \code{PomaNorm} performs data normalization using various normalization methods.
 }
 \examples{
-data("st000284")
+# Output is a normalized SummarizedExperiment object
+data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 
-PomaNorm(st000284, method = "log_pareto")
+# No sample normalization
+data \%>\% 
+  PomaNorm(sample_norm = "none", 
+           method = "log_pareto")
+
+# Sum sample normalization
+data \%>\% 
+  PomaNorm(sample_norm = "sum", 
+           method = "log_pareto")
 }
 \references{
 Van den Berg, R. A., Hoefsloot, H. C., Westerhuis, J. A., Smilde, A. K., & van der Werf, M. J. (2006). Centering, scaling, and transformations: improving the biological information content of metabolomics data. BMC genomics, 7(1), 142.

@@ -15,9 +15,9 @@ detect_decimals <- function(data) {
 #'
 #' @description `PomaCreateObject` creates a `SummarizedExperiment` object from data frames.
 #' 
-#' @param metadata Metadata variables structured in columns. Sample ID must be the first column.
+#' @param metadata Data frame. Metadata variables structured in columns. Sample ID must be the first column.
 #' @param features Matrix of features. Each feature is a column.
-#' @param factor_levels Numeric. Integer variables with more levels than indicated by this parameter will be treated as factors.
+#' @param factor_levels Numeric. Integer variables with less levels than indicated by this parameter will be treated as factors.
 #'
 #' @export
 #'
@@ -31,16 +31,17 @@ detect_decimals <- function(data) {
 #' data(iris)
 #' 
 #' # Create metadata: Data frame with sample names and a group factor
-#' metadata <- data.frame(ID = 1:150, Group = iris$Species)
+#' metadata <- data.frame(sample_id = paste0("sample_", 1:150), group = iris$Species)
 #' 
 #' # Create features: `p` column data frame with features
 #' features <- iris[, 1:4]
 #' 
 #' # Create a `SummarizedExperiment` object with `POMA`
-#' object <- PomaCreateObject(metadata = metadata, features = features)
+#' object <- PomaCreateObject(metadata = metadata, 
+#'                            features = features)
 PomaCreateObject <- function(metadata = NULL,
                              features = NULL,
-                             factor_levels = 10){
+                             factor_levels = 10) {
   
   if(missing(features)){
     stop("No features file")
@@ -49,13 +50,14 @@ PomaCreateObject <- function(metadata = NULL,
   # features
   features <- features %>% 
     as.data.frame() %>% 
-    janitor::clean_names(case = "all_caps") %>% 
+    dplyr::rename_all(~ gsub("\\s|-", "_", .)) %>% # Replace whitespaces and dashes with underscores
+    dplyr::rename_all(~ gsub("[^A-Za-z0-9_\\.]", "", .)) %>% # Remove special characters except dots
     dplyr::mutate_all(~ as.numeric(as.character(.)))
   
   # metadata
-  if(!is.null(metadata)){
+  if(!is.null(metadata)) {
     if(!is.data.frame(metadata)){
-      stop("metadata file is not a data.frame()")
+      stop("metadata file is not a data frame")
     }
     if(sum(sapply(metadata, function(x)sum(is.na(x)))) > 0){
       stop("Missing values not allowed in metadata file")
@@ -66,10 +68,11 @@ PomaCreateObject <- function(metadata = NULL,
 
     metadata <- metadata %>%
       as.data.frame() %>% 
-      janitor::clean_names() %>% 
+      dplyr::rename_all(~ gsub("\\s|-", "_", .)) %>% # Replace whitespaces and dashes with underscores
+      dplyr::rename_all(~ gsub("[^A-Za-z0-9_\\.]", "", .)) %>% # Remove special characters except dots
+      # janitor::clean_names() %>% 
       tibble::remove_rownames() %>%
-      dplyr::rename(sample_id = 1) %>%
-      tibble::column_to_rownames("sample_id") %>% 
+      tibble::column_to_rownames(var = colnames(metadata)[1]) %>%
       dplyr::mutate_if(is.character, as.factor)
 
     numeric_vars <- metadata %>% 
@@ -87,25 +90,27 @@ PomaCreateObject <- function(metadata = NULL,
         dplyr::select(-dplyr::all_of(decimal_vars)) %>% 
         dplyr::mutate_all(as.integer)
       
-      if (any(apply(numerical_integer, 2, function(x) length(table(x))) > factor_levels)) {
-        other_decimals <- names(which(apply(numerical_integer, 2, function(x) length(table(x))) > factor_levels))
-        decimal_vars <- c(decimal_vars, other_decimals)
+      if (any(apply(numerical_integer, 2, function(x) length(table(x))) < factor_levels)) {
+        factor_vars <- names(which(apply(numerical_integer, 2, function(x) length(table(x))) < factor_levels))
         
-        numerical_float <- numeric_vars %>% 
-          dplyr::select(dplyr::all_of(decimal_vars)) %>% 
-          dplyr::mutate_all(as.double)
+        numerical_factor <- numerical_integer %>% 
+          dplyr::select(dplyr::all_of(factor_vars)) %>% 
+          dplyr::mutate_all(as.factor)
         
-        numerical_integer <- numeric_vars %>% 
-          dplyr::select(-dplyr::all_of(decimal_vars)) %>% 
+        numerical_integer <- numerical_integer %>% 
+          dplyr::select(-dplyr::all_of(factor_vars)) %>% 
           dplyr::mutate_all(as.integer)
+        
+        numerical_integer <- numerical_integer %>% 
+          dplyr::bind_cols(numerical_factor)
+        
       }
       
       metadata <- metadata %>% 
         dplyr::select(-dplyr::all_of(colnames(numerical_integer))) %>% 
         dplyr::select(-dplyr::all_of(colnames(numerical_float))) %>% 
         dplyr::bind_cols(numerical_integer) %>% 
-        dplyr::bind_cols(numerical_float) %>% 
-        dplyr::mutate_if(is.integer, as.factor) 
+        dplyr::bind_cols(numerical_float)
     }
     
     rownames(features) <- rownames(metadata)

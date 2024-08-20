@@ -5,8 +5,10 @@
 #'
 #' @param data A `SummarizedExperiment` object.
 #' @param contrast Character. Indicates the comparison. For example, "Group1-Group2" or "control-intervention".
+#' @param outcome Character. Indicates the name of the `colData` column to be used as the outcome factor. Default is NULL (first factor variable in `colData`).
 #' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates. Default is NULL (no covariates). If not NULL, a limma model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.
 #' @param weights Logical. Indicates whether the limma model should estimate the relative quality weights for each group. See `?limma::arrayWeights()`.
+#' @param replicates Character. Indicates the name of the `colData` column including the replicate factor label. Default is NULL (no replicates).
 #' @param adjust Character. Indicates the multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
 #'
 #' @export
@@ -17,16 +19,52 @@
 #'
 #' @importFrom magrittr %>%
 #' 
-#' @examples 
-#' data("st000284")
+#' @examples
+#' data <- POMA::st000284 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaNorm()
 #' 
-#' st000284 %>%
-#'   PomaNorm() %>%
-#'   PomaLimma(contrast = "Healthy-CRC", adjust = "fdr")
+#' # Basic limma
+#' data %>% 
+#'   PomaLimma(contrast = "Healthy-CRC", 
+#'             covs = NULL,
+#'             adjust = "fdr",
+#'             replicates = NULL)
+#' 
+#' # Basic limma on alternative outcome
+#' SummarizedExperiment::colData(data)$gender <- factor(ifelse(SummarizedExperiment::colData(data)$gender == 0, "male", "female"))
+#' data %>% 
+#'   PomaLimma(contrast = "male-female", 
+#'             outcome = "gender",
+#'             covs = NULL,
+#'             adjust = "fdr",
+#'             replicates = NULL)
+#' 
+#' # limma with one covariate
+#' data %>% 
+#'   PomaLimma(contrast = "Healthy-CRC", 
+#'             covs = "gender",
+#'             adjust = "fdr",
+#'             replicates = NULL)
+#' 
+#' # limma with two covariates
+#' data %>% 
+#'   PomaLimma(contrast = "Healthy-CRC", 
+#'             covs = c("gender", "age_at_consent"),
+#'             adjust = "fdr",
+#'             replicates = NULL)
+#' 
+#' # limma with replicates
+#' # data %>% 
+#' #   PomaLimma(contrast = "Healthy-CRC", 
+#' #             covs = NULL,
+#' #             adjust = "fdr",
+#' #             replicates = "replicate)
 PomaLimma <- function(data,
                       contrast = NULL,
+                      outcome = NULL,
                       covs = NULL,
                       adjust = "fdr",
+                      replicates = NULL,
                       weights = FALSE) {
 
   if (!is(data, "SummarizedExperiment")){
@@ -35,9 +73,6 @@ PomaLimma <- function(data,
   if (ncol(SummarizedExperiment::colData(data)) == 0) {
     stop("metadata file required")
   }
-  if (!is.factor(SummarizedExperiment::colData(data)[,1])) {
-    stop("Grouping factor must be a factor (first column of the metadata file)")
-  }
   if (is.null(contrast)) {
     stop("Specify a contrast")
   }
@@ -45,32 +80,56 @@ PomaLimma <- function(data,
     stop("Incorrect value for adjust argument")
   }
 
-  main_factor <- as.factor(SummarizedExperiment::colData(data)[,1])
+  if (is.null(outcome)) {
+    grouping_factor <- SummarizedExperiment::colData(data)[,1]
+  } else {
+    grouping_factor <- SummarizedExperiment::colData(data) %>%
+      as.data.frame() %>%
+      dplyr::pull(outcome)
+  }
+  
+  if (!is.factor(grouping_factor)) {
+    stop("Outcome (dependent variable) must be a factor")
+  }
+  
+  grouping_factor <- factor(grouping_factor)
   to_limma <- SummarizedExperiment::assay(data)
 
   if (!is.null(covs)) {
     covariates <- SummarizedExperiment::colData(data) %>%
       as.data.frame() %>%
-      dplyr::select(-1) %>%
       dplyr::select_at(dplyr::vars(dplyr::matches(covs)))
     
-    form <- as.formula(noquote(paste("~ 0 + main_factor + ", paste0(colnames(covariates), collapse = " + ", sep = ""), sep = "")))
+    form <- as.formula(noquote(paste("~ 0 + grouping_factor + ", paste0(colnames(covariates), collapse = " + ", sep = ""), sep = "")))
     
-    initialmodel <- stats::model.matrix(form, covariates)
-    colnames(initialmodel)[1:length(levels(main_factor))] <- levels(main_factor)
+    design <- stats::model.matrix(form, data = covariates)
+    colnames(design)[1:length(levels(grouping_factor))] <- levels(grouping_factor)
     
   } else {
-    initialmodel <- stats::model.matrix( ~ 0 + main_factor)
-    colnames(initialmodel) <- levels(main_factor)
+    design <- stats::model.matrix( ~ 0 + grouping_factor)
+    colnames(design) <- levels(grouping_factor)
   }
   
-  cont_matrix <- limma::makeContrasts(contrasts = contrast, levels = initialmodel)
+  if (!is.null(replicates)) {
+    replicate <- SummarizedExperiment::colData(data) %>%
+      as.data.frame() %>%
+      dplyr::pull(replicates) %>% 
+      factor()
+    
+    corfit <- limma::duplicateCorrelation(to_limma, design, block = replicate)
+    lim_correlation <- corfit$consensus
+  } else {
+    replicate <- NULL
+    lim_correlation <- NULL
+  }
+  
+  cont_matrix <- limma::makeContrasts(contrasts = contrast, levels = design)
   
   if (weights) {
-    array_weights <- limma::arrayWeights(to_limma, design = initialmodel)
-    model <- limma::lmFit(to_limma, initialmodel, weights = array_weights)
+    array_weights <- limma::arrayWeights(to_limma, design = design)
+    model <- limma::lmFit(to_limma, design, weights = array_weights, block = replicate, correlation = lim_correlation)
   } else {
-    model <- limma::lmFit(to_limma, initialmodel)
+    model <- limma::lmFit(to_limma, design, block = replicate, correlation = lim_correlation)
   }
   
   model <- limma::contrasts.fit(model, cont_matrix)

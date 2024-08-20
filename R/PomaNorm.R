@@ -51,8 +51,8 @@ box_cox_transformation <- function(data) {
 #' @description `PomaNorm` performs data normalization using various normalization methods.
 #'
 #' @param data A `SummarizedExperiment` object.
-#' @param sample_norm Character. Sample normalization method. Options include "none" (default), "sum", or "quantile".
-#' @param method Character. The normalization method to use. Options include "none" (no normalization), "auto_scaling" (autoscaling normalization, i.e., Z-score normalization), "level_scaling" (level scaling normalization), "log_scaling" (log scaling normalization), "log_transform" (log transformation normalization), "vast_scaling" (vast scaling normalization), "log_pareto" (log Pareto scaling normalization), "min_max" (min-max normalization), and "box_cox" (Box-Cox transformation).
+#' @param sample_norm Character. Sample normalization method. Options include "none" (default), "sum", or "quantile". Quantile is often used when >100 samples.
+#' @param method Character. The normalization method to use. Options include "none" (no normalization), "auto_scaling" (autoscaling, i.e., Z-score normalization), "level_scaling" (level scaling), "log_scaling" (log scaling), "log" (log transformation), "vast_scaling" (vast scaling), "log_pareto" (log Pareto scaling), "min_max" (min-max), and "box_cox" (Box-Cox transformation).
 #'
 #' @export
 #'
@@ -61,9 +61,18 @@ box_cox_transformation <- function(data) {
 #' @author Pol Castellano-Escuder
 #' 
 #' @examples 
-#' data("st000284")
+#' # Output is a normalized SummarizedExperiment object
+#' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
-#' PomaNorm(st000284, method = "log_pareto")
+#' # No sample normalization
+#' data %>% 
+#'   PomaNorm(sample_norm = "none", 
+#'            method = "log_pareto")
+#' 
+#' # Sum sample normalization
+#' data %>% 
+#'   PomaNorm(sample_norm = "sum", 
+#'            method = "log_pareto")
 PomaNorm <- function(data,
                      sample_norm = "none",
                      method = "log_pareto"){
@@ -71,13 +80,13 @@ PomaNorm <- function(data,
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
   }
-  if (!(method %in% c("none", "auto_scaling", "level_scaling", "log_scaling", "log_transform",
+  if (!(method %in% c("none", "auto_scaling", "level_scaling", "log_scaling", "log",
                       "vast_scaling", "log_pareto", "min_max", "box_cox"))) {
     stop("Incorrect value for method argument")
   }
-  if (missing(method)) {
-    message("method argument is empty. log Pareto will be used")
-  }
+  # if (missing(method)) {
+  #   message("method argument is empty. log Pareto will be used")
+  # }
 
   to_norm <- t(SummarizedExperiment::assay(data)) %>% 
     as.data.frame()
@@ -122,11 +131,11 @@ PomaNorm <- function(data,
   }
 
   else if (method == "log_scaling"){
-    normalized <- apply(to_norm, 2, function(x) (log10(x + 1) - mean(log10(x + 1), na.rm = TRUE)) / sd(log10(x + 1), na.rm = TRUE))
+    normalized <- apply(to_norm, 2, function(x) (log(x + 1) - mean(log(x + 1), na.rm = TRUE)) / sd(log(x + 1), na.rm = TRUE))
   }
 
-  else if (method == "log_transform"){
-    normalized <- apply(to_norm, 2, function(x) (log10(x + 1)))
+  else if (method == "log"){
+    normalized <- apply(to_norm, 2, function(x) (log(x + 1)))
   }
 
   else if (method == "vast_scaling"){
@@ -134,7 +143,7 @@ PomaNorm <- function(data,
   }
 
   else if (method == "log_pareto"){
-    normalized <- apply(to_norm, 2, function(x) (log10(x + 1) - mean(log10(x + 1), na.rm = TRUE)) / sqrt(sd(log10(x + 1), na.rm = TRUE)))
+    normalized <- apply(to_norm, 2, function(x) (log(x + 1) - mean(log(x + 1), na.rm = TRUE)) / sqrt(sd(log(x + 1), na.rm = TRUE)))
   }
   
   else if (method == "min_max") {

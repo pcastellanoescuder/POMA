@@ -14,40 +14,59 @@
 #' 
 #' @export
 #'
-#' @return A `list` with the results.
+#' @return A `tibble` for "ttest" and "mann". A `list` for "anova" and "kruskal".
 #' @author Pol Castellano-Escuder
 #'
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' # Two groups
+#' ## Output columns: feature, fold_change, diff_means, pvalue, adj_pvalue, mean_xxx (group 1) mean_yyy (group 2), sd_xxx (group 1), sd_yyy (group 2)
+#' data <- POMA::st000336 # Example SummarizedExperiment object included in POMA
 #' 
-#' # Perform T-test
+#' ## Perform T-test
 #' st000336 %>% 
-#' PomaImpute() %>% 
-#' PomaUnivariate(method = "ttest")
+#'   PomaImpute() %>% 
+#'   PomaUnivariate(method = "ttest",
+#'                  paired = FALSE,
+#'                  var_equal = FALSE,
+#'                  adjust = "fdr")
 #' 
-#' # Perform Mann-Whitney U test
+#' ## Perform Mann-Whitney U test
 #' st000336 %>% 
-#' PomaImpute() %>% 
-#' PomaUnivariate(method = "mann", adjust = "fdr")
+#'   PomaImpute() %>% 
+#'   PomaUnivariate(method = "mann",
+#'                  paired = FALSE,
+#'                  var_equal = FALSE,
+#'                  adjust = "fdr")
 #' 
-#' data("st000284")
-#' # Perform Two-Way ANOVA
-#' st000284 %>% 
-#' PomaUnivariate(method = "anova", covs = c("gender"))
+#' # More than 2 groups
+#' ## Output is a list with objects `result` and `post_hoc_tests`
+#' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
-#' # Perform Three-Way ANOVA
-#' st000284 %>% 
-#' PomaUnivariate(method = "anova", covs = c("gender", "smoking_condition"))
+#' ## Perform Two-Way ANOVA
+#' data %>% 
+#'   PomaUnivariate(method = "anova",
+#'                  covs = c("gender"),
+#'                  error = NULL,
+#'                  adjust = "fdr",
+#'                  run_post_hoc = TRUE)
 #' 
-#' # Perform ANCOVA with one numeric covariate and one factor covariate
-#' # st000284 %>% 
-#' # PomaUnivariate(method = "anova", covs = c("age_at_consent", "smoking_condition"))
+#' ## Perform Three-Way ANOVA
+#' data %>% 
+#'   PomaUnivariate(method = "anova", 
+#'                  covs = c("gender", "smoking_condition"))
+#' 
+#' ## Perform ANCOVA with one numeric covariate and one factor covariate
+#' data %>% 
+#'   PomaUnivariate(method = "anova", 
+#'                  covs = c("age_at_consent", "smoking_condition"))
 #' 
 #' # Perform Kruskal-Wallis test
-#' st000284 %>% 
-#' PomaUnivariate(method = "kruskal", adjust = "holm")
+#' data %>% 
+#'   PomaUnivariate(method = "kruskal", 
+#'                  adjust = "holm",
+#'                  run_post_hoc = TRUE)
 PomaUnivariate <- function(data,
                            method = "ttest",
                            covs = NULL,
@@ -130,13 +149,13 @@ PomaUnivariate <- function(data,
       tibble::rownames_to_column("feature") %>%
       dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
       dplyr::bind_cols(group_means, group_sd) %>%
-      dplyr::mutate(fold_change = as.numeric(round(group_means[,2] / group_means[,1], 3)),
-                    diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>%
+      dplyr::mutate(fold_change = as.numeric(group_means[,2] / group_means[,1]),
+                    diff_means = as.numeric(group_means[,2] - group_means[,1])) %>%
       dplyr::select(feature, fold_change, diff_means, pvalue, adj_pvalue, dplyr::everything()) %>% 
       dplyr::arrange(pvalue) %>% 
       dplyr::as_tibble()
 
-    return(list(result = result))
+    return(result)
   }
 
   else if (method == "anova") {
@@ -252,14 +271,14 @@ PomaUnivariate <- function(data,
         tibble::rownames_to_column("feature") %>%
         dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = adjust)) %>%
         dplyr::bind_cols(group_means, group_sd) %>%
-        dplyr::mutate(fold_change = as.numeric(round(group_means[,2]/group_means[,1], 3)),
-                      diff_means = as.numeric(round(group_means[,2] - group_means[,1], 3))) %>% 
+        dplyr::mutate(fold_change = as.numeric(group_means[,2]/group_means[,1]),
+                      diff_means = as.numeric(group_means[,2] - group_means[,1])) %>% 
         dplyr::select(feature, fold_change, diff_means, pvalue, adj_pvalue, dplyr::everything()) %>% 
         dplyr::arrange(pvalue) %>% 
         dplyr::as_tibble()
     })
     
-    return(list(result = result))
+    return(result)
   }
 
   else if (method == "kruskal") {

@@ -30,21 +30,19 @@ A heatmap plot.
 \code{PomaHeatmap} generates a heatmap.
 }
 \examples{
-data("st000284")
+data <- POMA::st000284 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaNorm()
 
 # Basic heatmap
-st000284 \%>\% 
-  PomaNorm() \%>\% 
+data \%>\% 
   PomaHeatmap()
-  
+
 # Heatmap with one covariate  
-st000284 \%>\% 
-  PomaNorm() \%>\% 
+data \%>\% 
   PomaHeatmap(covs = "factors")
-  
+
 # Heatmap with two covariates
-st000284 \%>\% 
-  PomaNorm() \%>\% 
+data \%>\% 
   PomaHeatmap(covs = c("factors", "smoking_condition"))
 }
 \author{

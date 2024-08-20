@@ -24,11 +24,13 @@ A \code{list} with results including plots and tables.
 \code{PomaRankProd} performs the Rank Product (or Rank Sum) method to identify differentially expressed genes.
 }
 \examples{
-data("st000336")
+data <- POMA::st000336 \%>\% # Example SummarizedExperiment object included in POMA
+  PomaImpute()
 
-st000336 \%>\% 
-  PomaImpute() \%>\%
-  PomaRankProd()
+## Output is a list with objects `up_regulated` (tibble with up regulated features), `down_regulated` (tibble with down regulated features), `up_regulated_plot` (ggplot2 object), and `down_regulated_plot` (ggplot2 object) 
+## Perform on no-scaled object to avoid negative values
+data \%>\% 
+  PomaRankProd(paired = NA, cutoff = 0.05, method = "pfp")
 }
 \references{
 Breitling, R., Armengaud, P., Amtmann, A., and Herzyk, P.(2004) Rank Products: A simple, yet powerful, new method to detect differentially regulated genes in replicated microarray experiments, FEBS Letter, 57383-92

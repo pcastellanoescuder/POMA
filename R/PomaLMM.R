@@ -17,33 +17,36 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000284")
+#' data <- POMA::st000284 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaImpute() %>% 
+#'   PomaNorm()
 #' 
-#' # Perform linear mixed model with all features
-#' st000284 %>% 
-#' PomaLMM()
-#' 
-#' # Perform linear mixed model with two features
-#' st000284 %>% 
-#' PomaLMM(y = c("x1_methyladenosine", "x1_methylhistamine"))
-#' 
-#' # Perform linear mixed model with one random effect
-#' st000284 %>% 
-#' PomaLMM(x = "smoking_condition")
-#' 
-#' # Perform linear mixed model with two random effects and two features
-#' st000284 %>% 
-#' PomaLMM(x = c("smoking_condition", "gender"),
-#'         y = c("x1_methyladenosine", "x1_methylhistamine"))
-#'         
-#' # Perform linear mixed model with no random effects and two features, therefore, a linear model will be fitted
-#' st000284 %>% 
-#' PomaLMM(x = "age_at_consent", # Numerical, i.e., fixed effect
-#'         y = c("x1_methyladenosine", "x1_methylhistamine"))
-#'         
-#' # Perform linear mixed model with no random effects and all features, therefore, a linear model will be fitted
-#' st000284 %>% 
-#' PomaLMM(x = "age_at_consent") # Numerical i.e., fixed effect
+#' ## Output is a list with objects `lm_table` (tibble) and `regression_plot` (ggplot2 object)
+#' ## Perform linear mixed model with all features
+#' #data %>%
+#' #  PomaLMM()
+#' #
+#' ## Perform linear mixed model with two features
+#' #data %>% 
+#' #  PomaLMM(y = c("x1_methyladenosine", "x1_methylhistamine"))
+#' #
+#' ## Perform linear mixed model with one random effect
+#' #data %>% 
+#' #  PomaLMM(x = "smoking_condition")
+#' #
+#' ## Perform linear mixed model with two random effects and two features
+#' #data %>% 
+#' #  PomaLMM(x = c("smoking_condition", "gender"),
+#' #          y = c("x1_methyladenosine", "x1_methylhistamine"))
+#' #
+#' ## Perform linear mixed model with no random effects and two features, therefore, a linear model will be fitted
+#' #data %>% 
+#' #  PomaLMM(x = "age_at_consent", # Numerical, i.e., fixed effect
+#' #          y = c("x1_methyladenosine", "x1_methylhistamine"))
+#' #
+#' ## Perform linear mixed model with no random effects and all features, therefore, a linear model will be fitted
+#' #data %>% 
+#' #  PomaLMM(x = "age_at_consent") # Numerical i.e., fixed effect
 PomaLMM <- function(data,
                     x = NULL,
                     y = NULL,

@@ -16,11 +16,11 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000284")
+#' # Output is a batch corrected SummarizedExperiment object
+#' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
-#' st000284 %>%
-#' PomaImpute(method = "knn") %>% 
-#' PomaBatch(batch = "gender")
+#' data %>%
+#'   PomaBatch(batch = "gender")
 PomaBatch <- function(data, 
                       batch, 
                       mod = NULL) {

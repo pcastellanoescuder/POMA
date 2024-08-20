@@ -33,9 +33,16 @@ A \code{list} with results including plots and tables.
 \code{PomaClust} performs a k-means clustering and plots the results in a classical multidimensional scaling (MDS) plot.
 }
 \examples{
-data("st000284")
+## Output is a list with objects `mds_coordinates` (tibble), `mds_plot` (ggplot2 object), `optimal_clusters_number` (numeric value), 
+`optimal_clusters_number` (numeric value), and `optimal_clusters_plot` (ggplot2 object)
+data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 
-PomaClust(st000284)
+data \%>\% 
+  PomaClust(method = "euclidean",
+            k = NA,
+            k_max = floor(min(dim(data))/2), 
+            show_clusters = TRUE,
+            labels = FALSE)
 }
 \author{
 Pol Castellano-Escuder

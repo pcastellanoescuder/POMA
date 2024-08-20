@@ -6,6 +6,7 @@
 #' @param data A `SummarizedExperiment` object.
 #' @param method Character. Indicates the distance measure method to perform MDS.
 #' @param type Character. Indicates the type of outlier analysis to perform. Options are "median" (default) and "centroid". See `vegan::betadisper`.
+#' @param outcome Character. Indicates the name of the `colData` column to be used as the outcome factor. Default is NULL (first factor variable in `colData`).
 #' @param coef Numeric. Indicates the outlier coefficient. Lower values are more sensitive to outliers while higher values are less restrictive about outliers. 
 #' @param labels Logical. Indicates if sample names should to be plotted.
 #'
@@ -17,16 +18,33 @@
 #' @importFrom magrittr %>%
 #' 
 #' @examples 
-#' data("st000336")
+#' data <- POMA::st000336 %>% # Example SummarizedExperiment object included in POMA
+#'   PomaImpute() %>% 
+#'   PomaNorm()
 #' 
-#' # clean outliers
-#' st000336 %>% 
-#'   PomaImpute() %>%
-#'   PomaNorm() %>%
-#'   PomaOutliers()
+#' ## Output is a list with objects `polygon_plot` (ggplot2 object), `distance_boxplot` (ggplot2 object), `outliers` (tibble), and `data` (outlier-free SummarizedExperiment)
+#' outlier_results <- data %>% 
+#'   PomaOutliers(method = "euclidean",
+#'                type = "median",
+#'                outcome = NULL,
+#'                coef = 2,
+#'                labels = FALSE)
+#' 
+#' outlier_results$data # cleaned SummarizedExperiment object
+#' 
+#' ## Change oulier group factor
+#' outlier_results2 <- data %>% 
+#'   PomaOutliers(method = "euclidean",
+#'                type = "median",
+#'                outcome = "steroids",
+#'                coef = 2,
+#'                labels = FALSE)
+#' 
+#' outlier_results2$data # cleaned SummarizedExperiment object
 PomaOutliers <- function(data,
                          method = "euclidean",
                          type = "median",
+                         outcome = NULL,
                          coef = 2,
                          labels = FALSE) {
   
@@ -41,8 +59,13 @@ PomaOutliers <- function(data,
   }
   
   if (ncol(SummarizedExperiment::colData(data)) > 0) {
-    if (is.factor(SummarizedExperiment::colData(data)[,1])) {
+    if (is.factor(SummarizedExperiment::colData(data)[,1]) & is.null(outcome)) {
       group_factor <- factor(SummarizedExperiment::colData(data)[,1])
+    } else if (!is.null(outcome)) {
+      group_factor <- SummarizedExperiment::colData(data) %>%
+        as.data.frame() %>%
+        dplyr::pull(outcome) %>% 
+        factor()
     }
   } else {
     group_factor <- rep("All Samples", ncol(SummarizedExperiment::assay(data)))

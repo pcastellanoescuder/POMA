@@ -55,14 +55,11 @@ flattenCorrMatrix <- function(cormat, pmat) {
 #' @importFrom magrittr %>%
 #' 
 #' @examples
-#' data("st000284")
+#' ## Output is a list with objects `correlations` (tibble) and `corrplot` (ggplot2 object)
+#' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
-#' # Pearson correlation
-#' PomaCorr(st000284)$correlations
-#' 
-#' ## Gaussian graphical model
-#' # library(ggraph)
-#' # PomaCorr(st000284, corr_type = "glasso")
+#' data %>% 
+#'   PomaCorr(method = "pearson")
 PomaCorr <- function(data,
                      method = "pearson",
                      label_size = 8,
