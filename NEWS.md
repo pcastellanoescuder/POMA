@@ -1,3 +1,7 @@
+# POMA 1.15.1
+
+* Merge with Bioconductor
+
 # POMA 1.14.9
 
 * Analyzing data with replicates in `PomaLimma`
