@@ -1,4 +1,4 @@
-# POMA 1.15.2
+# POMA 1.15.3
 
 * Push to BioC `3.20`
 
