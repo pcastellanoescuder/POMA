@@ -1,6 +1,6 @@
-# POMA 1.15.1
+# POMA 1.15.2
 
-* Merge with Bioconductor
+* Push to BioC `3.20`
 
 # POMA 1.14.9
 

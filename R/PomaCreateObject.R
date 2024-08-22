@@ -73,7 +73,8 @@ PomaCreateObject <- function(metadata = NULL,
       # janitor::clean_names() %>% 
       tibble::remove_rownames() %>%
       tibble::column_to_rownames(var = colnames(metadata)[1]) %>%
-      dplyr::mutate_if(is.character, as.factor)
+      dplyr::mutate_if(is.character, as.factor) %>% 
+      dplyr::mutate(dplyr::across(dplyr::everything(), ~ gsub("\\s+", "_", .)))
 
     numeric_vars <- metadata %>% 
       dplyr::select_if(is.numeric)

@@ -35,11 +35,25 @@ A \code{ggplot} object representing the volcano plot.
 \examples{
 data <- POMA::st000336 # Example SummarizedExperiment object included in POMA
 
+# T-test
 results <- data \%>\%
   PomaImpute() \%>\% 
   PomaUnivariate() \%>\% 
-  magrittr::extract2("result") \%>\% 
   dplyr::select(feature, fold_change, pvalue)
+
+results \%>\% 
+  PomaVolcano(pval_cutoff = 0.05,
+              log2fc_cutoff = NULL,
+              labels = FALSE,
+              x_label = "log2 (Fold Change)",
+              y_label = "-log10 (P-value)")
+              
+# Limma
+results <- data \%>\%
+  PomaImpute() \%>\% 
+  PomaNorm() \%>\% 
+  PomaLimma(contrast = "DMD-Controls") \%>\% 
+  dplyr::select(feature, logFC, pvalue)
 
 results \%>\% 
   PomaVolcano(pval_cutoff = 0.05,
