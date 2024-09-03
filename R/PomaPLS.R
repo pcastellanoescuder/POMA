@@ -248,7 +248,7 @@ PomaPLS <- function(data,
     # cross-validation
     if (cross_validation) {
       perf_plsda <- mixOmics::perf(plsda_res, validation = validation, folds = folds,
-                                   progressBar = TRUE, auc = TRUE, nrepeat = nrepeat)
+                                   progressBar = FALSE, auc = TRUE, nrepeat = nrepeat)
 
       ber_errors <- data.frame(perf_plsda$error.rate$BER) %>%
         janitor::clean_names() %>% 
@@ -359,7 +359,7 @@ PomaPLS <- function(data,
       tune_splsda <- mixOmics::tune.splsda(X = to_pls,
                                            Y = dependent_variable, 
                                            ncomp = ncomp, validation = validation, folds = folds,
-                                           progressBar = TRUE, dist = 'max.dist', measure = "BER",
+                                           progressBar = FALSE, dist = 'max.dist', measure = "BER",
                                            test.keepX = c(1:num_features), nrepeat = nrepeat)
 
       opt_ncomp <- tune_splsda$choice.ncomp$ncomp # optimal number of components based on t-tests

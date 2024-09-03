@@ -103,44 +103,44 @@ PomaRankProd <- function(data,
   }
 
   # Plot
-  pfp <- as.matrix(RP$pfp)
-
-  if (is.null(RP$RPs)) {
-    RP1 <- as.matrix(RP$RSs)
-    rank <- as.matrix(RP$RSrank)
-  }
-
-  if (!is.null(RP$RPs)){
-    RP1 <- as.matrix(RP$RPs)
-    rank <- as.matrix(RP$RPrank)
-  }
-
-  ind1 <- which(!is.na(RP1[, 1]))
-  ind2 <- which(!is.na(RP1[, 2]))
-  ind3 <- append(ind1, ind2)
-  ind3 <- unique(ind3)
-  RP.sort.upin2 <- sort(RP1[ind1, 1], index.return = TRUE)
-  RP.sort.downin2 <- sort(RP1[ind2, 2], index.return = TRUE)
-  pfp1 <- pfp[ind1, 1]
-  pfp2 <- pfp[ind2, 2]
-  rank1 <- rank[ind1, 1]
-  rank2 <- rank[ind2, 2]
-
-  rp_plot <- data.frame(rank1 = rank1, rank2 = rank2, pfp1 = pfp1 ,  pfp2 = pfp2)
-
-  plot1 <- ggplot2::ggplot(rp_plot, ggplot2::aes(x = rank1, y = pfp1)) +
-    ggplot2::geom_point(size = 1.5, alpha=0.9) +
-    theme_poma() +
-    ggplot2::labs(x = "Number of identified features",
-                  y = "Estimated PFP",
-                  title = paste0("Up-regulated features in ", class2))
-
-  plot2 <- ggplot2::ggplot(rp_plot, ggplot2::aes(x = rank2, y = pfp2)) +
-    ggplot2::geom_point(size = 1.5, alpha=0.9) +
-    theme_poma() +
-    ggplot2::labs(x = "Number of identified features",
-                  y = "Estimated PFP",
-                  title = paste0("Down-regulated features in ", class2))
+  # pfp <- as.matrix(RP$pfp)
+  # 
+  # if (is.null(RP$RPs)) {
+  #   RP1 <- as.matrix(RP$RSs)
+  #   rank <- as.matrix(RP$RSrank)
+  # }
+  # 
+  # if (!is.null(RP$RPs)){
+  #   RP1 <- as.matrix(RP$RPs)
+  #   rank <- as.matrix(RP$RPrank)
+  # }
+  # 
+  # ind1 <- which(!is.na(RP1[, 1]))
+  # ind2 <- which(!is.na(RP1[, 2]))
+  # ind3 <- append(ind1, ind2)
+  # ind3 <- unique(ind3)
+  # RP.sort.upin2 <- sort(RP1[ind1, 1], index.return = TRUE)
+  # RP.sort.downin2 <- sort(RP1[ind2, 2], index.return = TRUE)
+  # pfp1 <- pfp[ind1, 1]
+  # pfp2 <- pfp[ind2, 2]
+  # rank1 <- rank[ind1, 1]
+  # rank2 <- rank[ind2, 2]
+  # 
+  # rp_plot <- data.frame(rank1 = rank1, rank2 = rank2, pfp1 = pfp1 ,  pfp2 = pfp2)
+  # 
+  # plot1 <- ggplot2::ggplot(rp_plot, ggplot2::aes(x = rank1, y = pfp1)) +
+  #   ggplot2::geom_point(size = 1.5, alpha=0.9) +
+  #   theme_poma() +
+  #   ggplot2::labs(x = "Number of identified features",
+  #                 y = "Estimated PFP",
+  #                 title = paste0("Up-regulated features in ", class2))
+  # 
+  # plot2 <- ggplot2::ggplot(rp_plot, ggplot2::aes(x = rank2, y = pfp2)) +
+  #   ggplot2::geom_point(size = 1.5, alpha=0.9) +
+  #   theme_poma() +
+  #   ggplot2::labs(x = "Number of identified features",
+  #                 y = "Estimated PFP",
+  #                 title = paste0("Down-regulated features in ", class2))
 
   return(list(up_regulated = one,
               down_regulated = two,

@@ -1,8 +1,4 @@
-# POMA 1.15.3
-
-* Push to BioC `3.20`
-
-# POMA 1.14.9
+# POMA 1.15.4
 
 * Analyzing data with replicates in `PomaLimma`
 * Select outcome factor in `PomaBoxplots`, `PomaDensity`, and `PomaOutliers`
