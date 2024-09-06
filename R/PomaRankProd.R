@@ -11,7 +11,7 @@
 #'
 #' @export
 #'
-#' @return A `list` with results including plots and tables.
+#' @return A `list` with the results. Objects in the list are `up_regulated` (tibble) and `down_regulated` (tibble).
 #' 
 #' @references Breitling, R., Armengaud, P., Amtmann, A., and Herzyk, P.(2004) Rank Products: A simple, yet powerful, new method to detect differentially regulated genes in replicated microarray experiments, FEBS Letter, 57383-92
 #' @references Hong, F., Breitling, R., McEntee, W.C., Wittner, B.S., Nemhauser, J.L., Chory, J. (2006). RankProd: a bioconductor package for detecting differentially expressed genes in meta-analysis Bioinformatics. 22(22):2825-2827
@@ -33,7 +33,7 @@ PomaRankProd <- function(data,
                          logged = TRUE,
                          paired = NA,
                          cutoff = 0.05,
-                         method = "pfp"){
+                         method = "pfp") {
 
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
@@ -59,21 +59,23 @@ PomaRankProd <- function(data,
   class1 <- levels(as.factor(group_factor))[1]
   class2 <- levels(as.factor(group_factor))[2]
 
-  RP <- RankProd::RankProducts(SummarizedExperiment::assay(data), 
-                               data_class, 
-                               logged = logged, 
-                               na.rm = TRUE, 
-                               plot = FALSE,
-                               RandomPairs = paired,
-                               rand = 123,
-                               gene.names = rownames(data))
-
-  top_rank <- RankProd::topGene(RP, 
-                                cutoff = cutoff, 
-                                method = method,
-                                logged = logged, 
-                                logbase = 2,
-                                gene.names = rownames(data))
+  capture.output({
+    RP <- RankProd::RankProducts(SummarizedExperiment::assay(data), 
+                                 data_class, 
+                                 logged = logged, 
+                                 na.rm = TRUE, 
+                                 plot = FALSE,
+                                 RandomPairs = paired,
+                                 rand = 123,
+                                 gene.names = rownames(data))
+    
+    top_rank <- RankProd::topGene(RP, 
+                                  cutoff = cutoff, 
+                                  method = method,
+                                  logged = logged, 
+                                  logbase = 2,
+                                  gene.names = rownames(data))
+  }, file = "/dev/null")
           
   one <- as.data.frame(top_rank$Table1)
   two <- as.data.frame(top_rank$Table2)
@@ -90,7 +92,7 @@ PomaRankProd <- function(data,
     colnames(one)[4] <- paste0("FC_", class1, "_", class2)
   }
   
-  if (nrow(two) != 0){
+  if (nrow(two) != 0) {
     
     two <- two %>% 
       tibble::rownames_to_column("feature") %>% 
@@ -143,8 +145,9 @@ PomaRankProd <- function(data,
   #                 title = paste0("Down-regulated features in ", class2))
 
   return(list(up_regulated = one,
-              down_regulated = two,
-              up_regulated_plot = plot1,
-              down_regulated_plot = plot2))
+              down_regulated = two
+              # up_regulated_plot = plot1,
+              # down_regulated_plot = plot2
+              ))
 }
 

@@ -18,7 +18,7 @@ PomaRankProd(data, logged = TRUE, paired = NA, cutoff = 0.05, method = "pfp")
 \item{method}{Character. Indicates the method to identify features. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.}
 }
 \value{
-A \code{list} with results including plots and tables.
+A \code{list} with the results. Objects in the list are \code{up_regulated} (tibble) and \code{down_regulated} (tibble).
 }
 \description{
 \code{PomaRankProd} performs the Rank Product (or Rank Sum) method to identify differentially expressed genes.
