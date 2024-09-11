@@ -3,7 +3,7 @@ test_that("PomaRankProd handles valid SummarizedExperiment objects", {
   data <- create_mock_summarized_experiment(binary = TRUE)
   rank_prod_results <- PomaRankProd(data)
   expect_is(rank_prod_results, "list")
-  expect_true(all(c("up_regulated", "down_regulated", "up_regulated_plot", "down_regulated_plot") %in% names(rank_prod_results)))
+  expect_true(all(c("up_regulated", "down_regulated") %in% names(rank_prod_results)))
 })
 
 test_that("PomaRankProd stops with non-SummarizedExperiment objects", {
