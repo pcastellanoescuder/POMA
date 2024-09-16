@@ -23,25 +23,82 @@
 #' #se <- airway
 #' #
 #' ## Classic DESeq2
-#' #se %>% 
+#' #DESeq_results <- se %>% 
 #' #  PomaDESeq(contrast = NULL,
 #' #            outcome = "dex",
 #' #            covs = NULL,
 #' #            adjust = "fdr")
 #' #
-#' ## DESeq2 with covariates
+#' #DESeq_results %>% 
+#' #  dplyr::slice(1:10)
+#' #
+#' ### Volcano plot
+#' #DESeq_results %>% 
+#' #  dplyr::select(feature, log2FC, pvalue) %>% 
+#' #  PomaVolcano()
+#' #
+#' ### Boxplot of top features
 #' #se %>% 
+#' #  PomaBoxplots(x = "features", 
+#' #               outcome = "cell", # factorial variable to group by (e.g., treatment, sex, etc)
+#' #               feature_name = DESeq_results$feature[1:10])
+#' #
+#' ### Heatmap of top features
+#' #se[rownames(se) %in% DESeq_results$feature[1:10]] %>% 
+#' #  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
+#' #              feature_names = TRUE)
+#' #
+#' ## DESeq2 with covariates
+#' #DESeq_results <- se %>% 
 #' #  PomaDESeq(contrast = NULL,
 #' #            outcome = "dex",
 #' #            covs = "cell",
 #' #            adjust = "fdr")
 #' #
-#' ## DESeq2 with covariates and batch
+#' #DESeq_results %>% 
+#' #  dplyr::slice(1:10)
+#' #
+#' ### Volcano plot
+#' #DESeq_results %>% 
+#' #  dplyr::select(feature, log2FC, adj_pvalue) %>% 
+#' #  PomaVolcano(y_label = "-log10 (Adjusted P-value)")
+#' #
+#' ### Boxplot of top features
 #' #se %>% 
+#' #  PomaBoxplots(x = "features", 
+#' #               outcome = "dex", # factorial variable to group by (e.g., treatment, sex, etc)
+#' #               feature_name = DESeq_results$feature[1:10])
+#' #
+#' ### Heatmap of top features
+#' #se[rownames(se) %in% DESeq_results$feature[1:10]] %>% 
+#' #  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
+#' #              feature_names = TRUE)
+#' #
+#' ## DESeq2 with covariates and batch
+#' #DESeq_results <- se %>% 
 #' #  PomaDESeq(contrast = NULL,
 #' #            outcome = "dex",
 #' #            covs = c("batch", "cell"),
 #' #            adjust = "fdr")
+#' #
+#' #DESeq_results %>% 
+#' #  dplyr::slice(1:10)
+#' #
+#' ### Volcano plot
+#' #DESeq_results %>% 
+#' #  dplyr::select(feature, log2FC, adj_pvalue) %>% 
+#' #  PomaVolcano(y_label = "-log10 (Adjusted P-value)")
+#' #
+#' ### Boxplot of top features
+#' #se %>% 
+#' #  PomaBoxplots(x = "features", 
+#' #               outcome = "cell", # factorial variable to group by (e.g., treatment, sex, etc)
+#' #               feature_name = DESeq_results$feature[1:10])
+#' #
+#' ### Heatmap of top features
+#' #se[rownames(se) %in% DESeq_results$feature[1:10]] %>% 
+#' #  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
+#' #              feature_names = TRUE)
 PomaDESeq <- function(data,
                       contrast = NULL,
                       outcome = NULL,
@@ -90,7 +147,7 @@ PomaDESeq <- function(data,
                                  unlist(strsplit(contrast, split = "-"))[1], 
                                  unlist(strsplit(contrast, split = "-"))[2])) %>% 
     dplyr::as_tibble(rownames = "feature") %>% 
-    dplyr::rename(adj_pvalue = padj) %>% 
+    dplyr::rename(log2FC = log2FoldChange, adj_pvalue = padj) %>% 
     dplyr::arrange(adj_pvalue)
   
   return(result)

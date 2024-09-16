@@ -25,32 +25,93 @@
 #' data <- POMA::st000336 # Example SummarizedExperiment object included in POMA
 #' 
 #' ## Perform T-test
-#' st000336 %>% 
+#' ttest_results <- st000336 %>% 
 #'   PomaImpute() %>% 
 #'   PomaUnivariate(method = "ttest",
 #'                  paired = FALSE,
 #'                  var_equal = FALSE,
 #'                  adjust = "fdr")
 #' 
+#' ttest_results %>% 
+#'   dplyr::slice(1:10)
+#' 
+#' ## Volcano plot
+#' ttest_results %>% 
+#'   dplyr::select(feature, fold_change, pvalue) %>% 
+#'   PomaVolcano()
+#' 
+#' ## Boxplot of top features
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                outcome = "group", # factorial variable to group by (e.g., treatment, sex, etc)
+#'                feature_name = ttest_results$feature[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% ttest_results$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("group"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
+#' 
 #' ## Perform Mann-Whitney U test
-#' st000336 %>% 
+#' mann_whitney_results <- st000336 %>% 
 #'   PomaImpute() %>% 
 #'   PomaUnivariate(method = "mann",
 #'                  paired = FALSE,
 #'                  var_equal = FALSE,
 #'                  adjust = "fdr")
 #' 
+#' mann_whitney_results %>% 
+#'   dplyr::slice(1:10)
+#' 
+#' ## Volcano plot
+#' mann_whitney_results %>% 
+#'   dplyr::select(feature, fold_change, pvalue) %>% 
+#'   PomaVolcano()
+#' 
+#' ## Boxplot of top features
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                outcome = "group", # factorial variable to group by (e.g., treatment, sex, etc)
+#'                feature_name = mann_whitney_results$feature[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% mann_whitney_results$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("group"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
+#' 
 #' # More than 2 groups
 #' ## Output is a list with objects `result` and `post_hoc_tests`
 #' data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 #' 
 #' ## Perform Two-Way ANOVA
-#' data %>% 
+#' anova_results <- data %>% 
 #'   PomaUnivariate(method = "anova",
 #'                  covs = c("gender"),
 #'                  error = NULL,
 #'                  adjust = "fdr",
 #'                  run_post_hoc = TRUE)
+#' 
+#' anova_results$result %>% 
+#'   dplyr::slice(1:10)
+#' 
+#' anova_results$post_hoc_tests %>% 
+#'   dplyr::slice(1:10)
+#' 
+#' ## Boxplot of top features
+#' data %>% 
+#'   PomaBoxplots(x = "features",
+#'                outcome = "factors", # factorial variable to group by (e.g., treatment, sex, etc)
+#'                feature_name = anova_results$result$feature[1:10])
+#' 
+#' ## Boxplot of top significant pairwise features (after posthoc test)
+#' data %>% 
+#'   PomaBoxplots(x = "features",
+#'                outcome = "factors", # factorial variable to group by (e.g., treatment, sex, etc)
+#'                feature_name = unique(anova_results$post_hoc_tests$feature)[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% anova_results$result$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("factors"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
 #' 
 #' ## Perform Three-Way ANOVA
 #' data %>% 
@@ -227,17 +288,23 @@ PomaUnivariate <- function(data,
       if (run_post_hoc & is.null(error)) {
         post_hoc_tests <- list()
         for (i in seq_len(nrow(SummarizedExperiment::assay(data)))) {
+          # Gereral Linear Hypotheses 
+          posthoc <- multcomp::glht(
+            aov(as.formula(paste(colnames(covariates_feat)[i], "~", model_names)),
+                data = covariates_feat), 
+            linfct = multcomp::mcp(group_factor = "Tukey"))
+          summary_posthoc <- summary(posthoc)
+          # Tukey
+          # TukeyHSD(
+          # aov(as.formula(paste(colnames(covariates_feat)[i], "~", model_names)),
+          #     data = covariates_feat))$group_factor
           post_hoc_tests[[i]] <- dplyr::tibble(feature = rownames(SummarizedExperiment::assay(data))[i], 
-                                               as.data.frame(TukeyHSD(
-                                                 aov(as.formula(paste(colnames(covariates_feat)[i], "~", model_names)),
-                                                     data = covariates_feat))$group_factor) %>% 
-                                                 tibble::rownames_to_column("contrast") %>% 
-                                                 dplyr::select(contrast, adj_pvalue = `p adj`)
-          )
+                                               contrast = gsub(" ", "", names(summary_posthoc$test$coefficients)),
+                                               pvalue = summary_posthoc$test$pvalues)
         }
-        
         post_hoc_tests <- dplyr::bind_rows(post_hoc_tests) %>%
-          dplyr::arrange(adj_pvalue)
+          dplyr::mutate(adj_pvalue = p.adjust(pvalue, method = "fdr")) %>% 
+          dplyr::arrange(pvalue)
       } else {
         post_hoc_tests <- NULL
       }

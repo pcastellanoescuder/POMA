@@ -24,11 +24,30 @@
 #'   PomaNorm()
 #' 
 #' # Basic limma
-#' data %>% 
+#' limma_results <- data %>% 
 #'   PomaLimma(contrast = "Healthy-CRC", 
 #'             covs = NULL,
 #'             adjust = "fdr",
 #'             replicates = NULL)
+#' 
+#' limma_results %>% 
+#'   dplyr::slice(1:10)
+#' 
+#' ## Volcano plot
+#' limma_results %>% 
+#'   dplyr::select(feature, log2FC, pvalue) %>% 
+#'   PomaVolcano()
+#' 
+#' ## Boxplot of top features
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
+#'                feature_name = limma_results$feature[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% limma_results$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
 #' 
 #' # Basic limma on alternative outcome
 #' SummarizedExperiment::colData(data)$gender <- factor(ifelse(SummarizedExperiment::colData(data)$gender == 0, "male", "female"))
@@ -39,12 +58,50 @@
 #'             adjust = "fdr",
 #'             replicates = NULL)
 #' 
+#' limma_results %>% 
+#'   dplyr::slice(1:10)
+#' 
+#' ## Volcano plot
+#' limma_results %>% 
+#'   dplyr::select(feature, log2FC, pvalue) %>% 
+#'   PomaVolcano()
+#' 
+#' ## Boxplot of top features
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
+#'                feature_name = limma_results$feature[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% limma_results$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
+#' 
 #' # limma with one covariate
 #' data %>% 
 #'   PomaLimma(contrast = "Healthy-CRC", 
 #'             covs = "gender",
 #'             adjust = "fdr",
 #'             replicates = NULL)
+#' 
+#' limma_results %>% 
+#'   dplyr::slice(1:10)
+#' 
+#' ## Volcano plot
+#' limma_results %>% 
+#'   dplyr::select(feature, log2FC, pvalue) %>% 
+#'   PomaVolcano()
+#' 
+#' ## Boxplot of top features
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
+#'                feature_name = limma_results$feature[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% limma_results$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
 #' 
 #' # limma with two covariates
 #' data %>% 
@@ -53,12 +110,31 @@
 #'             adjust = "fdr",
 #'             replicates = NULL)
 #' 
+#' limma_results %>% 
+#'   dplyr::slice(1:10)
+#' 
+#' ## Volcano plot
+#' limma_results %>% 
+#'   dplyr::select(feature, log2FC, pvalue) %>% 
+#'   PomaVolcano()
+#' 
+#' ## Boxplot of top features
+#' data %>% 
+#'   PomaBoxplots(x = "features", 
+#'                outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
+#'                feature_name = limma_results$feature[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% limma_results$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
+#' 
 #' # limma with replicates
 #' # data %>% 
 #' #   PomaLimma(contrast = "Healthy-CRC", 
 #' #             covs = NULL,
 #' #             adjust = "fdr",
-#' #             replicates = "replicate)
+#' #             replicates = "replicate")
 PomaLimma <- function(data,
                       contrast = NULL,
                       outcome = NULL,
@@ -138,7 +214,7 @@ PomaLimma <- function(data,
   result <- limma::topTable(modelstats, number = nrow(to_limma),
                             coef = contrast, sort.by = "p", adjust.method = adjust) %>% 
     tibble::rownames_to_column("feature") %>% 
-    dplyr::rename(pvalue = P.Value, adj_pvalue = adj.P.Val) %>% 
+    dplyr::rename(log2FC = logFC, pvalue = P.Value, adj_pvalue = adj.P.Val) %>% 
     dplyr::as_tibble()
   
   return(result)

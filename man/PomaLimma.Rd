@@ -40,11 +40,30 @@ data <- POMA::st000284 \%>\% # Example SummarizedExperiment object included in P
   PomaNorm()
 
 # Basic limma
-data \%>\% 
+limma_results <- data \%>\% 
   PomaLimma(contrast = "Healthy-CRC", 
             covs = NULL,
             adjust = "fdr",
             replicates = NULL)
+
+limma_results \%>\% 
+  dplyr::slice(1:10)
+
+## Volcano plot
+limma_results \%>\% 
+  dplyr::select(feature, log2FC, pvalue) \%>\% 
+  PomaVolcano()
+
+## Boxplot of top features
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
+               feature_name = limma_results$feature[1:10])
+
+## Heatmap of top features
+data[rownames(data) \%in\% limma_results$feature[1:10]] \%>\% 
+  PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
+              feature_names = TRUE)
 
 # Basic limma on alternative outcome
 SummarizedExperiment::colData(data)$gender <- factor(ifelse(SummarizedExperiment::colData(data)$gender == 0, "male", "female"))
@@ -55,12 +74,50 @@ data \%>\%
             adjust = "fdr",
             replicates = NULL)
 
+limma_results \%>\% 
+  dplyr::slice(1:10)
+
+## Volcano plot
+limma_results \%>\% 
+  dplyr::select(feature, log2FC, pvalue) \%>\% 
+  PomaVolcano()
+
+## Boxplot of top features
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
+               feature_name = limma_results$feature[1:10])
+
+## Heatmap of top features
+data[rownames(data) \%in\% limma_results$feature[1:10]] \%>\% 
+  PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
+              feature_names = TRUE)
+
 # limma with one covariate
 data \%>\% 
   PomaLimma(contrast = "Healthy-CRC", 
             covs = "gender",
             adjust = "fdr",
             replicates = NULL)
+
+limma_results \%>\% 
+  dplyr::slice(1:10)
+
+## Volcano plot
+limma_results \%>\% 
+  dplyr::select(feature, log2FC, pvalue) \%>\% 
+  PomaVolcano()
+
+## Boxplot of top features
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
+               feature_name = limma_results$feature[1:10])
+
+## Heatmap of top features
+data[rownames(data) \%in\% limma_results$feature[1:10]] \%>\% 
+  PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
+              feature_names = TRUE)
 
 # limma with two covariates
 data \%>\% 
@@ -69,12 +126,31 @@ data \%>\%
             adjust = "fdr",
             replicates = NULL)
 
+limma_results \%>\% 
+  dplyr::slice(1:10)
+
+## Volcano plot
+limma_results \%>\% 
+  dplyr::select(feature, log2FC, pvalue) \%>\% 
+  PomaVolcano()
+
+## Boxplot of top features
+data \%>\% 
+  PomaBoxplots(x = "features", 
+               outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
+               feature_name = limma_results$feature[1:10])
+
+## Heatmap of top features
+data[rownames(data) \%in\% limma_results$feature[1:10]] \%>\% 
+  PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
+              feature_names = TRUE)
+
 # limma with replicates
 # data \%>\% 
 #   PomaLimma(contrast = "Healthy-CRC", 
 #             covs = NULL,
 #             adjust = "fdr",
-#             replicates = "replicate)
+#             replicates = "replicate")
 }
 \references{
 Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007
