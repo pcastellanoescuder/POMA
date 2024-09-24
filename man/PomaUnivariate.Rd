@@ -22,7 +22,7 @@ PomaUnivariate(
 
 \item{covs}{Character vector. Indicates the names of \code{colData} columns to be included as covariates. Default is NULL (no covariates). If not NULL, an ANCOVA model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.}
 
-\item{error}{Character vector. Indicates the name of a \code{colData} column to be included as an error term (e.g. replicates). Default is NULL (no error term).}
+\item{error}{Character vector. Indicates the name of a \code{colData} column to be included as an error term (e.g., replicates). Default is NULL (no error term).}
 
 \item{paired}{Logical. Indicates if the data is paired or not. Default is FALSE.}
 

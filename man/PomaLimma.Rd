@@ -10,7 +10,7 @@ PomaLimma(
   outcome = NULL,
   covs = NULL,
   adjust = "fdr",
-  replicates = NULL,
+  block = NULL,
   weights = FALSE
 )
 }
@@ -25,7 +25,7 @@ PomaLimma(
 
 \item{adjust}{Character. Indicates the multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 
-\item{replicates}{Character. Indicates the name of the \code{colData} column including the replicate or random effect factor label. Default is NULL (no replicates).}
+\item{block}{Character. Specifies the name of the \code{colData} factor column that includes the random effect variable to be considered (e.g., replicate). The default is NULL, indicating no random effect.}
 
 \item{weights}{Logical. Indicates whether the limma model should estimate the relative quality weights for each group. See \code{?limma::arrayWeights()}.}
 }
@@ -44,7 +44,7 @@ limma_results <- data \%>\%
   PomaLimma(contrast = "Healthy-CRC", 
             covs = NULL,
             adjust = "fdr",
-            replicates = NULL)
+            block = NULL)
 
 limma_results \%>\% 
   dplyr::slice(1:10)
@@ -72,7 +72,7 @@ data \%>\%
             outcome = "gender",
             covs = NULL,
             adjust = "fdr",
-            replicates = NULL)
+            block = NULL)
 
 limma_results \%>\% 
   dplyr::slice(1:10)
@@ -98,7 +98,7 @@ data \%>\%
   PomaLimma(contrast = "Healthy-CRC", 
             covs = "gender",
             adjust = "fdr",
-            replicates = NULL)
+            block = NULL)
 
 limma_results \%>\% 
   dplyr::slice(1:10)
@@ -124,7 +124,7 @@ data \%>\%
   PomaLimma(contrast = "Healthy-CRC", 
             covs = c("gender", "age_at_consent"),
             adjust = "fdr",
-            replicates = NULL)
+            block = NULL)
 
 limma_results \%>\% 
   dplyr::slice(1:10)
@@ -150,7 +150,7 @@ data[rownames(data) \%in\% limma_results$feature[1:10]] \%>\%
 #   PomaLimma(contrast = "Healthy-CRC", 
 #             covs = NULL,
 #             adjust = "fdr",
-#             replicates = "replicate")
+#             block = "replicate")
 }
 \references{
 Matthew E. Ritchie, Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law, Wei Shi, Gordon K. Smyth, limma powers differential expression analyses for RNA-sequencing and microarray studies, Nucleic Acids Research, Volume 43, Issue 7, 20 April 2015, Page e47, https://doi.org/10.1093/nar/gkv007

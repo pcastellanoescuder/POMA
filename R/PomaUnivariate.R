@@ -6,7 +6,7 @@
 #' @param data A `SummarizedExperiment` object.
 #' @param method Character. The univariate statistical test to be performed. Available options include "ttest" (T-test), "anova" (analysis of variance), "mann" (Wilcoxon rank-sum test), and "kruskal" (Kruskal-Wallis test).
 #' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates. Default is NULL (no covariates). If not NULL, an ANCOVA model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.
-#' @param error Character vector. Indicates the name of a `colData` column to be included as an error term (e.g. replicates). Default is NULL (no error term).
+#' @param error Character vector. Indicates the name of a `colData` column to be included as an error term (e.g., replicates). Default is NULL (no error term).
 #' @param paired Logical. Indicates if the data is paired or not. Default is FALSE.
 #' @param var_equal Logical. Indicates if the data variances are assumed to be equal or not. Default is FALSE.
 #' @param adjust Character. Multiple comparisons correction method to adjust p-values. Available options are: "fdr" (false discovery rate), "holm", "hochberg", "hommel", "bonferroni", "BH" (Benjamini-Hochberg), and "BY" (Benjamini-Yekutieli).

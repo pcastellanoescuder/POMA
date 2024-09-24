@@ -8,7 +8,7 @@
 #' @param outcome Character. Indicates the name of the `colData` column to be used as the outcome factor. Default is NULL (first factor variable in `colData`).
 #' @param covs Character vector. Indicates the names of `colData` columns to be included as covariates. Default is NULL (no covariates). If not NULL, a limma model will be fitted using the specified covariates. Note: The order of the covariates is important and should be listed in increasing order of importance in the experimental design.
 #' @param weights Logical. Indicates whether the limma model should estimate the relative quality weights for each group. See `?limma::arrayWeights()`.
-#' @param replicates Character. Indicates the name of the `colData` column including the replicate or random effect factor label. Default is NULL (no replicates).
+#' @param block Character. Specifies the name of the `colData` factor column that includes the random effect variable to be considered (e.g., replicate). The default is NULL, indicating no random effect.
 #' @param adjust Character. Indicates the multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".
 #'
 #' @export
@@ -28,7 +28,7 @@
 #'   PomaLimma(contrast = "Healthy-CRC", 
 #'             covs = NULL,
 #'             adjust = "fdr",
-#'             replicates = NULL)
+#'             block = NULL)
 #' 
 #' limma_results %>% 
 #'   dplyr::slice(1:10)
@@ -56,7 +56,7 @@
 #'             outcome = "gender",
 #'             covs = NULL,
 #'             adjust = "fdr",
-#'             replicates = NULL)
+#'             block = NULL)
 #' 
 #' limma_results %>% 
 #'   dplyr::slice(1:10)
@@ -82,7 +82,7 @@
 #'   PomaLimma(contrast = "Healthy-CRC", 
 #'             covs = "gender",
 #'             adjust = "fdr",
-#'             replicates = NULL)
+#'             block = NULL)
 #' 
 #' limma_results %>% 
 #'   dplyr::slice(1:10)
@@ -108,7 +108,7 @@
 #'   PomaLimma(contrast = "Healthy-CRC", 
 #'             covs = c("gender", "age_at_consent"),
 #'             adjust = "fdr",
-#'             replicates = NULL)
+#'             block = NULL)
 #' 
 #' limma_results %>% 
 #'   dplyr::slice(1:10)
@@ -134,13 +134,13 @@
 #' #   PomaLimma(contrast = "Healthy-CRC", 
 #' #             covs = NULL,
 #' #             adjust = "fdr",
-#' #             replicates = "replicate")
+#' #             block = "replicate")
 PomaLimma <- function(data,
                       contrast = NULL,
                       outcome = NULL,
                       covs = NULL,
                       adjust = "fdr",
-                      replicates = NULL,
+                      block = NULL,
                       weights = FALSE) {
 
   if (!is(data, "SummarizedExperiment")){
@@ -186,10 +186,10 @@ PomaLimma <- function(data,
     colnames(design) <- levels(grouping_factor)
   }
   
-  if (!is.null(replicates)) {
+  if (!is.null(block)) {
     replicate <- SummarizedExperiment::colData(data) %>%
       as.data.frame() %>%
-      dplyr::pull(replicates) %>% 
+      dplyr::pull(block) %>% 
       factor()
     
     corfit <- limma::duplicateCorrelation(to_limma, design, block = replicate)
