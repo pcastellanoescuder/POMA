@@ -53,7 +53,7 @@ results <- data \%>\%
   PomaImpute() \%>\% 
   PomaNorm() \%>\% 
   PomaLimma(contrast = "DMD-Controls") \%>\% 
-  dplyr::select(feature, logFC, pvalue)
+  dplyr::select(feature, log2FC, pvalue)
 
 results \%>\% 
   PomaVolcano(pval_cutoff = 0.05,

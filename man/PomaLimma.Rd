@@ -25,7 +25,7 @@ PomaLimma(
 
 \item{adjust}{Character. Indicates the multiple comparisons correction method. Options are: "fdr", "holm", "hochberg", "hommel", "bonferroni", "BH" and "BY".}
 
-\item{replicates}{Character. Indicates the name of the \code{colData} column including the replicate factor label. Default is NULL (no replicates).}
+\item{replicates}{Character. Indicates the name of the \code{colData} column including the replicate or random effect factor label. Default is NULL (no replicates).}
 
 \item{weights}{Logical. Indicates whether the limma model should estimate the relative quality weights for each group. See \code{?limma::arrayWeights()}.}
 }

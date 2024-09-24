@@ -25,10 +25,10 @@
 #' data <- POMA::st000336 %>% # Example SummarizedExperiment object included in POMA
 #'   PomaImpute()
 #' 
-#' ## Output is a list with objects `up_regulated` (tibble with up regulated features), `down_regulated` (tibble with down regulated features), `up_regulated_plot` (ggplot2 object), and `down_regulated_plot` (ggplot2 object) 
+#' ## Output is a list with objects `up_regulated` (tibble with up regulated features) and `down_regulated` (tibble with down regulated features) 
 #' ## Perform on no-scaled object to avoid negative values
 #' data %>% 
-#'   PomaRankProd(paired = NA, cutoff = 0.05, method = "pfp")
+#'   PomaRankProd(cutoff = 0.05, method = "pfp")
 PomaRankProd <- function(data,
                          logged = TRUE,
                          paired = NA,
