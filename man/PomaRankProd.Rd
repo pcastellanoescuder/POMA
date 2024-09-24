@@ -4,7 +4,7 @@
 \alias{PomaRankProd}
 \title{Rank Product/Rank Sum Analysis}
 \usage{
-PomaRankProd(data, logged = TRUE, paired = NA, cutoff = 0.05, method = "pfp")
+PomaRankProd(data, logged = TRUE, paired = NA, cutoff = 1, method = "pfp")
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}
@@ -13,7 +13,7 @@ PomaRankProd(data, logged = TRUE, paired = NA, cutoff = 0.05, method = "pfp")
 
 \item{paired}{Numeric. Indicates the number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.}
 
-\item{cutoff}{Numeric. Indicates the pfp/pvalue threshold value used to select features.}
+\item{cutoff}{Numeric. Indicates the pfp/pvalue threshold value used to select features. Default is 1 to include all features.}
 
 \item{method}{Character. Indicates the method to identify features. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.}
 }
@@ -30,7 +30,7 @@ data <- POMA::st000336 \%>\% # Example SummarizedExperiment object included in P
 ## Output is a list with objects `up_regulated` (tibble with up regulated features) and `down_regulated` (tibble with down regulated features) 
 ## Perform on no-scaled object to avoid negative values
 data \%>\% 
-  PomaRankProd(cutoff = 0.05, method = "pfp")
+  PomaRankProd(method = "pfp")
 }
 \references{
 Breitling, R., Armengaud, P., Amtmann, A., and Herzyk, P.(2004) Rank Products: A simple, yet powerful, new method to detect differentially regulated genes in replicated microarray experiments, FEBS Letter, 57383-92

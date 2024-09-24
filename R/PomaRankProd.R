@@ -6,7 +6,7 @@
 #' @param data A `SummarizedExperiment` object.
 #' @param logged Logical. Indicates if data should be log transformed first.
 #' @param paired Numeric. Indicates the number of random pairs generated in the function, if set to NA (default), the odd integer closer to the square of the number of replicates is used.
-#' @param cutoff Numeric. Indicates the pfp/pvalue threshold value used to select features.
+#' @param cutoff Numeric. Indicates the pfp/pvalue threshold value used to select features. Default is 1 to include all features.
 #' @param method Character. Indicates the method to identify features. "pfp" uses percentage of false prediction, which is a default setting. "pval" uses p-values which is less stringent than pfp.
 #'
 #' @export
@@ -28,11 +28,11 @@
 #' ## Output is a list with objects `up_regulated` (tibble with up regulated features) and `down_regulated` (tibble with down regulated features) 
 #' ## Perform on no-scaled object to avoid negative values
 #' data %>% 
-#'   PomaRankProd(cutoff = 0.05, method = "pfp")
+#'   PomaRankProd(method = "pfp")
 PomaRankProd <- function(data,
                          logged = TRUE,
                          paired = NA,
-                         cutoff = 0.05,
+                         cutoff = 1,
                          method = "pfp") {
 
   if(!is(data, "SummarizedExperiment")){
