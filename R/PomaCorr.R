@@ -27,29 +27,37 @@ cor_pmat <- function(x, method) {
 #' 
 #' @param cormat Output from `cor`.
 #' @param pmat Output from `cor_pmat`.
-flattenCorrMatrix <- function(cormat, pmat) {
+flattenCorrMatrix <- function(cormat, pmat = NULL) {
   ut <- upper.tri(cormat)
-  data.frame(
-    row = rownames(cormat)[row(cormat)[ut]],
-    column = rownames(cormat)[col(cormat)[ut]],
-    cor = (cormat)[ut],
-    p = pmat[ut]
-  )
+  if (!is.null(pmat)) {
+    data.frame(
+      row = rownames(cormat)[row(cormat)[ut]],
+      column = rownames(cormat)[col(cormat)[ut]],
+      cor = (cormat)[ut],
+      p = pmat[ut]
+    )
+  } else {
+    data.frame(
+      row = rownames(cormat)[row(cormat)[ut]],
+      column = rownames(cormat)[col(cormat)[ut]],
+      cor = (cormat)[ut]
+    )
+  }
 }
 
 #' Correlation Analysis
 #'
-#' @description `PomaCorr` computes all pairwise correlations in the data.
+#' @description `PomaCorr` computes all pairwise correlations in the data and generates a correlation plot.
 #' 
 #' @param data A `SummarizedExperiment` object.
-#' @param method Character. Indicates which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".
-#' @param label_size Numeric. Indicates plot label size.
-#' @param theme_params List. Indicating `theme_poma` parameters.
+#' @param method Character. Indicates which correlation coefficient has to be computed. Options are "pearson" (default), "kendall", and "spearman".
+#' @param cluster Logical. Indicates whether the correlation plot will be ordered using the `hclust` function. Default is TRUE.
+#' @param corrplot_shape Character. Indicates the visualization method of the correlation plot to be used. Allowed values are "square" (default) and "circle".
+#' @param sig_level Numeric. Indicates the significance level. If the correlation p-value exceeds this threshold, the corresponding correlation coefficient is considered insignificant, and that pair will be hidden in the correlation plot. The default is 1, meaning all correlations are included in the plot. For datasets with more than 500 features, this threshold is ignored, and all pairwise correlations are displayed in the plot.
 #' 
 #' @export
 #'
 #' @return A `list` with the results.
-#' @references Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso
 #' @author Pol Castellano-Escuder
 #' 
 #' @importFrom magrittr %>%
@@ -62,8 +70,9 @@ flattenCorrMatrix <- function(cormat, pmat) {
 #'   PomaCorr(method = "pearson")
 PomaCorr <- function(data,
                      method = "pearson",
-                     label_size = 8,
-                     theme_params = list()) {
+                     cluster = TRUE,
+                     corrplot_shape = "square",
+                     sig_level = 1) {
   
   if (missing(data)) {
     stop("data argument is empty!")
@@ -78,34 +87,40 @@ PomaCorr <- function(data,
   to_correlation <- t(SummarizedExperiment::assay(data))
   
   cor_matrix <- cor(to_correlation, method = method)
-  cor_pval <- cor_pmat(to_correlation, method = method)
   
-  correlations <- flattenCorrMatrix(cor_matrix, cor_pval) %>% 
-    dplyr::rename(feature1 = row, feature2 = column, corr = cor, pvalue = p) %>% 
-    tidyr::drop_na() %>% 	
-    dplyr::mutate(FDR = p.adjust(pvalue, method = "fdr")) %>% 
-    dplyr::arrange(dplyr::desc(corr)) %>% 
-    dplyr::as_tibble()
-
+  if (length(colnames(to_correlation)) < 500) { # if less than 500 features, compute p-values
+    cor_pval <- cor_pmat(to_correlation, method = method)
+    
+    correlations <- flattenCorrMatrix(cor_matrix, cor_pval) %>% 
+      dplyr::rename(feature1 = row, feature2 = column, corr = cor, pvalue = p) %>% 
+      tidyr::drop_na() %>% 	
+      dplyr::mutate(FDR = p.adjust(pvalue, method = "fdr")) %>% 
+      dplyr::arrange(dplyr::desc(corr)) %>% 
+      dplyr::as_tibble()
+  } else {
+    cor_pval <- NULL
+    
+    correlations <- flattenCorrMatrix(cor_matrix) %>% 
+      dplyr::rename(feature1 = row, feature2 = column, corr = cor) %>%
+      tidyr::drop_na() %>%
+      dplyr::arrange(dplyr::desc(corr)) %>% 
+      dplyr::as_tibble()
+  }
+  
   # corrplot
-  cor_matrix_plot <- cor_matrix %>% 
-    as.data.frame() %>% 
-    tibble::rownames_to_column("feature1") %>% 
-    tidyr::pivot_longer(cols = -feature1) %>% 
-    dplyr::rename(feature2 = name, corr = value) %>% 
-    dplyr::mutate(corr = tidyr::replace_na(corr, 0)) %>% 
-    dplyr::arrange(dplyr::desc(corr))
-  
-  corrplot <- ggplot2::ggplot(cor_matrix_plot, ggplot2::aes_string(x = "feature1", y = "feature2", fill = "corr")) +
-    ggplot2::geom_tile() +
-    theme_poma(axis_x_rotate = TRUE, axistitle = "none", base_size = label_size) +
-    ggplot2::scale_fill_gradient2(
-      low = "red",
-      high = "blue",
-      mid = "white",
-      midpoint = 0,
-      limit = c(-1, 1),
-      space = "Lab")
+  corrplot <- ggcorrplot::ggcorrplot(corr = cor_matrix,
+                                     p.mat = cor_pval,
+                                     method = corrplot_shape,
+                                     type = "full",
+                                     show.legend = TRUE,
+                                     legend.title = "Corr",
+                                     show.diag = NULL,
+                                     colors = c("red", "white", "blue"),
+                                     outline.color = "gray",
+                                     hc.order = cluster,
+                                     hc.method = "complete",
+                                     insig = "blank",
+                                     sig.level = sig_level)
   
   # graph
   # if(!(requireNamespace("ggraph", character.only = TRUE))) {
@@ -175,7 +190,7 @@ PomaCorr <- function(data,
   # }
   
   return(list(correlations = correlations,
-                  corrplot = corrplot)
+              corrplot = corrplot)
          )
 }
 

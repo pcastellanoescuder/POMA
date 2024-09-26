@@ -4,22 +4,30 @@
 \alias{PomaCorr}
 \title{Correlation Analysis}
 \usage{
-PomaCorr(data, method = "pearson", label_size = 8, theme_params = list())
+PomaCorr(
+  data,
+  method = "pearson",
+  cluster = TRUE,
+  corrplot_shape = "square",
+  sig_level = 1
+)
 }
 \arguments{
 \item{data}{A \code{SummarizedExperiment} object.}
 
-\item{method}{Character. Indicates which correlation coefficient has to be computed. Options are "pearson" (default), "kendall" and "spearman".}
+\item{method}{Character. Indicates which correlation coefficient has to be computed. Options are "pearson" (default), "kendall", and "spearman".}
 
-\item{label_size}{Numeric. Indicates plot label size.}
+\item{cluster}{Logical. Indicates whether the correlation plot will be ordered using the \code{hclust} function. Default is TRUE.}
 
-\item{theme_params}{List. Indicating \code{theme_poma} parameters.}
+\item{corrplot_shape}{Character. Indicates the visualization method of the correlation plot to be used. Allowed values are "square" (default) and "circle".}
+
+\item{sig_level}{Numeric. Indicates the significance level. If the correlation p-value exceeds this threshold, the corresponding correlation coefficient is considered insignificant, and that pair will be hidden in the correlation plot. The default is 1, meaning all correlations are included in the plot. For datasets with more than 500 features, this threshold is ignored, and all pairwise correlations are displayed in the plot.}
 }
 \value{
 A \code{list} with the results.
 }
 \description{
-\code{PomaCorr} computes all pairwise correlations in the data.
+\code{PomaCorr} computes all pairwise correlations in the data and generates a correlation plot.
 }
 \examples{
 ## Output is a list with objects `correlations` (tibble) and `corrplot` (ggplot2 object)
@@ -27,9 +35,6 @@ data <- POMA::st000284 # Example SummarizedExperiment object included in POMA
 
 data \%>\% 
   PomaCorr(method = "pearson")
-}
-\references{
-Jerome Friedman, Trevor Hastie and Rob Tibshirani (2019). glasso: Graphical Lasso: Estimation of Gaussian Graphical Models. R package version 1.11. https://CRAN.R-project.org/package=glasso
 }
 \author{
 Pol Castellano-Escuder

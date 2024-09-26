@@ -73,10 +73,13 @@ PomaPCA <- function(data,
                                as.data.frame() %>%
                                dplyr::pull(outcome) %>% 
                                factor(), 
-                             pca_res$x[,1:ncomp])
+                             pca_res$x[,1:ncomp]) %>% 
+      tibble::remove_rownames() %>% 
+      dplyr::as_tibble()
   } else if (!grouping_factor & is.null(outcome)) {
     pca_res_df <- data.frame(sample_id = colnames(SummarizedExperiment::assay(data)),
                              pca_res$x[,1:ncomp]) %>% 
+      tibble::remove_rownames() %>% 
       dplyr::as_tibble()
   }
   

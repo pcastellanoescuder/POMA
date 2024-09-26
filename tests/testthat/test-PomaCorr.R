@@ -25,9 +25,3 @@ test_that("PomaCorr stops with incorrect method argument", {
   expect_error(PomaCorr(data, method = "invalid_method"), "Incorrect value for method argument")
 })
 
-test_that("PomaCorr applies label_size and theme_params correctly", {
-  data <- create_mock_summarized_experiment()
-  result <- PomaCorr(data, label_size = 10, theme_params = list(base_size = 10))
-  expect_is(result, "list")
-})
-

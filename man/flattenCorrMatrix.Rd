@@ -4,7 +4,7 @@
 \alias{flattenCorrMatrix}
 \title{Flatten Correlation Matrix}
 \usage{
-flattenCorrMatrix(cormat, pmat)
+flattenCorrMatrix(cormat, pmat = NULL)
 }
 \arguments{
 \item{cormat}{Output from \code{cor}.}
