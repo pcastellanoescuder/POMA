@@ -67,7 +67,7 @@ A \code{tibble} with the results.
 ### Volcano plot
 #DESeq_results \%>\% 
 #  dplyr::select(feature, log2FC, adj_pvalue) \%>\% 
-#  PomaVolcano(y_label = "-log10 (Adjusted P-value)")
+#  PomaVolcano(labels = TRUE, y_label = "-log10 (Adjusted P-value)")
 #
 ### Boxplot of top features
 #se \%>\% 
@@ -93,7 +93,7 @@ A \code{tibble} with the results.
 ### Volcano plot
 #DESeq_results \%>\% 
 #  dplyr::select(feature, log2FC, adj_pvalue) \%>\% 
-#  PomaVolcano(y_label = "-log10 (Adjusted P-value)")
+#  PomaVolcano(labels = TRUE, y_label = "-log10 (Adjusted P-value)")
 #
 ### Boxplot of top features
 #se \%>\% 

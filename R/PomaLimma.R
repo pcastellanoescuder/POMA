@@ -36,7 +36,7 @@
 #' ## Volcano plot
 #' limma_results %>% 
 #'   dplyr::select(feature, log2FC, pvalue) %>% 
-#'   PomaVolcano()
+#'   PomaVolcano(labels = TRUE)
 #' 
 #' ## Boxplot of top features
 #' data %>% 
@@ -64,7 +64,7 @@
 #' ## Volcano plot
 #' limma_results %>% 
 #'   dplyr::select(feature, log2FC, pvalue) %>% 
-#'   PomaVolcano()
+#'   PomaVolcano(labels = TRUE)
 #' 
 #' ## Boxplot of top features
 #' data %>% 
@@ -90,7 +90,7 @@
 #' ## Volcano plot
 #' limma_results %>% 
 #'   dplyr::select(feature, log2FC, pvalue) %>% 
-#'   PomaVolcano()
+#'   PomaVolcano(labels = TRUE)
 #' 
 #' ## Boxplot of top features
 #' data %>% 
@@ -116,7 +116,7 @@
 #' ## Volcano plot
 #' limma_results %>% 
 #'   dplyr::select(feature, log2FC, pvalue) %>% 
-#'   PomaVolcano()
+#'   PomaVolcano(labels = TRUE)
 #' 
 #' ## Boxplot of top features
 #' data %>% 
