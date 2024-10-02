@@ -41,7 +41,7 @@ A \code{tibble} with the results.
 ### Volcano plot
 #DESeq_results \%>\% 
 #  dplyr::select(feature, log2FC, pvalue) \%>\% 
-#  PomaVolcano()
+#  PomaVolcano(labels = TRUE)
 #
 ### Boxplot of top features
 #se \%>\% 

@@ -57,7 +57,7 @@ ttest_results \%>\%
 ## Volcano plot
 ttest_results \%>\% 
   dplyr::select(feature, fold_change, pvalue) \%>\% 
-  PomaVolcano(label)
+  PomaVolcano(labels = TRUE)
 
 ## Boxplot of top features
 data \%>\% 

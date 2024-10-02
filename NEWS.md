@@ -1,4 +1,4 @@
-# POMA 1.15.15
+# POMA 1.15.16
 
 * Analyzing data with replicates in `PomaLimma`
 * Select outcome factor in `PomaBoxplots`, `PomaDensity`, and `PomaOutliers`
