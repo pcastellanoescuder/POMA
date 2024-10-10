@@ -75,7 +75,7 @@ PomaRankProd <- function(data,
                                   logged = logged, 
                                   logbase = 2,
                                   gene.names = rownames(data))
-  }, file = "/dev/null")
+  }, file = NULL)
           
   one <- as.data.frame(top_rank$Table1)
   two <- as.data.frame(top_rank$Table2)

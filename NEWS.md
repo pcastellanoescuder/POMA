@@ -1,9 +1,9 @@
-# POMA 1.15.16
+# POMA 1.15.17
 
-* Analyzing data with replicates in `PomaLimma`
+* Analyzing data with random effects in `PomaLimma`
 * Select outcome factor in `PomaBoxplots`, `PomaDensity`, and `PomaOutliers`
 * Documentation improvements
-* Introduces `PomaEnrichment` for enrichment analysis
+* Introduces `PomaEnrichment` for gene set analysis
 * Allows custom study designs in `PomaDESeq`
 
 # POMA 1.14.0
