@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis
-Version: 1.16.0
+Version: 1.17.0
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
