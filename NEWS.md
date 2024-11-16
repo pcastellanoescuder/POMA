@@ -1,3 +1,7 @@
+# POMA 1.17.1
+
+* New documentation
+
 # POMA 1.15.17
 
 * Analyzing data with random effects in `PomaLimma`

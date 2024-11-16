@@ -44,11 +44,6 @@
 #'                outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
 #'                feature_name = limma_results$feature[1:10])
 #' 
-#' ## Heatmap of top features
-#' data[rownames(data) %in% limma_results$feature[1:10]] %>% 
-#'   PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
-#'               feature_names = TRUE)
-#' 
 #' # Basic limma on alternative outcome
 #' SummarizedExperiment::colData(data)$gender <- factor(ifelse(SummarizedExperiment::colData(data)$gender == 0, "male", "female"))
 #' data %>% 
@@ -72,11 +67,6 @@
 #'                outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
 #'                feature_name = limma_results$feature[1:10])
 #' 
-#' ## Heatmap of top features
-#' data[rownames(data) %in% limma_results$feature[1:10]] %>% 
-#'   PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
-#'               feature_names = TRUE)
-#' 
 #' # limma with one covariate
 #' data %>% 
 #'   PomaLimma(contrast = "Healthy-CRC", 
@@ -98,11 +88,6 @@
 #'                outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
 #'                feature_name = limma_results$feature[1:10])
 #' 
-#' ## Heatmap of top features
-#' data[rownames(data) %in% limma_results$feature[1:10]] %>% 
-#'   PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
-#'               feature_names = TRUE)
-#' 
 #' # limma with two covariates
 #' data %>% 
 #'   PomaLimma(contrast = "Healthy-CRC", 
@@ -123,11 +108,6 @@
 #'   PomaBoxplots(x = "features", 
 #'                outcome = "gender", # factorial variable to group by (e.g., treatment, sex, etc)
 #'                feature_name = limma_results$feature[1:10])
-#' 
-#' ## Heatmap of top features
-#' data[rownames(data) %in% limma_results$feature[1:10]] %>% 
-#'   PomaHeatmap(covs = c("gender", "smoking_condition", "alcohol_consumption"), # covariates to plot (e.g., treatment, sex, etc)
-#'               feature_names = TRUE)
 #' 
 #' # limma with replicates
 #' # data %>% 

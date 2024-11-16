@@ -49,11 +49,6 @@ A \code{tibble} with the results.
 #               outcome = "cell", # factorial variable to group by (e.g., treatment, sex, etc)
 #               feature_name = DESeq_results$feature[1:10])
 #
-### Heatmap of top features
-#se[rownames(se) \%in\% DESeq_results$feature[1:10]] \%>\% 
-#  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
-#              feature_names = TRUE)
-#
 ## DESeq2 with covariates
 #DESeq_results <- se \%>\% 
 #  PomaDESeq(contrast = NULL,
@@ -75,11 +70,6 @@ A \code{tibble} with the results.
 #               outcome = "dex", # factorial variable to group by (e.g., treatment, sex, etc)
 #               feature_name = DESeq_results$feature[1:10])
 #
-### Heatmap of top features
-#se[rownames(se) \%in\% DESeq_results$feature[1:10]] \%>\% 
-#  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
-#              feature_names = TRUE)
-#
 ## DESeq2 with covariates and batch
 #DESeq_results <- se \%>\% 
 #  PomaDESeq(contrast = NULL,
@@ -100,11 +90,6 @@ A \code{tibble} with the results.
 #  PomaBoxplots(x = "features", 
 #               outcome = "cell", # factorial variable to group by (e.g., treatment, sex, etc)
 #               feature_name = DESeq_results$feature[1:10])
-#
-### Heatmap of top features
-#se[rownames(se) \%in\% DESeq_results$feature[1:10]] \%>\% 
-#  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
-#              feature_names = TRUE)
 }
 \references{
 Love, M.I., Huber, W., Anders, S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2 Genome Biology 15(12):550 (2014)
