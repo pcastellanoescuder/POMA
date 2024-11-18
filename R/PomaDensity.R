@@ -66,8 +66,13 @@ PomaDensity <- function(data,
   
   plot_data <- t(SummarizedExperiment::assay(data))
   
-  grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
-                            is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  if (is.null(outcome)) {
+    grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
+                              is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  } else {
+    grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0,  
+                              is.factor(SummarizedExperiment::colData(data)[, outcome]), FALSE)
+  }
   
   if (grouping_factor & is.null(outcome)) {
     plot_data <- data.frame(sample_id = rownames(SummarizedExperiment::colData(data)),

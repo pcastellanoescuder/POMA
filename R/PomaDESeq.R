@@ -43,6 +43,11 @@
 #' #               outcome = "cell", # factorial variable to group by (e.g., treatment, sex, etc)
 #' #               feature_name = DESeq_results$feature[1:10])
 #' #
+#' ### Heatmap of top features
+#' #se[rownames(se) %in% DESeq_results$feature[1:10]] %>% 
+#' #  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
+#' #              feature_names = TRUE)
+#' #
 #' ## DESeq2 with covariates
 #' #DESeq_results <- se %>% 
 #' #  PomaDESeq(contrast = NULL,
@@ -64,6 +69,11 @@
 #' #               outcome = "dex", # factorial variable to group by (e.g., treatment, sex, etc)
 #' #               feature_name = DESeq_results$feature[1:10])
 #' #
+#' ### Heatmap of top features
+#' #se[rownames(se) %in% DESeq_results$feature[1:10]] %>% 
+#' #  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
+#' #              feature_names = TRUE)
+#' #
 #' ## DESeq2 with covariates and batch
 #' #DESeq_results <- se %>% 
 #' #  PomaDESeq(contrast = NULL,
@@ -84,6 +94,11 @@
 #' #  PomaBoxplots(x = "features", 
 #' #               outcome = "cell", # factorial variable to group by (e.g., treatment, sex, etc)
 #' #               feature_name = DESeq_results$feature[1:10])
+#' #
+#' ### Heatmap of top features
+#' #se[rownames(se) %in% DESeq_results$feature[1:10]] %>% 
+#' #  PomaHeatmap(covs = c("cell", "dex"), # covariates to plot (e.g., treatment, sex, etc)
+#' #              feature_names = TRUE)
 PomaDESeq <- function(data,
                       contrast = NULL,
                       outcome = NULL,

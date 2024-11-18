@@ -56,8 +56,13 @@ PomaPCA <- function(data,
   to_pca <- t(SummarizedExperiment::assay(data))
   pca_res <- prcomp(to_pca, center = center, scale. = scale)
   
-  grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
-                            is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  if (is.null(outcome)) {
+    grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
+                              is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  } else {
+    grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0,  
+                              is.factor(SummarizedExperiment::colData(data)[, outcome]), FALSE)
+  }
   
   # factors
   if (grouping_factor & is.null(outcome)) {

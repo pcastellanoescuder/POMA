@@ -46,6 +46,11 @@
 #'                outcome = "group", # factorial variable to group by (e.g., treatment, sex, etc)
 #'                feature_name = ttest_results$feature[1:10])
 #' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% ttest_results$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("group"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
+#'
 #' ## Perform Mann-Whitney U test
 #' mann_whitney_results <- st000336 %>% 
 #'   PomaImpute() %>% 
@@ -67,6 +72,11 @@
 #'   PomaBoxplots(x = "features", 
 #'                outcome = "group", # factorial variable to group by (e.g., treatment, sex, etc)
 #'                feature_name = mann_whitney_results$feature[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% mann_whitney_results$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("group"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
 #' 
 #' # More than 2 groups
 #' ## Output is a list with objects `result` and `post_hoc_tests`
@@ -97,6 +107,11 @@
 #'   PomaBoxplots(x = "features",
 #'                outcome = "factors", # factorial variable to group by (e.g., treatment, sex, etc)
 #'                feature_name = unique(anova_results$post_hoc_tests$feature)[1:10])
+#' 
+#' ## Heatmap of top features
+#' data[rownames(data) %in% anova_results$result$feature[1:10]] %>% 
+#'   PomaHeatmap(covs = c("factors"), # covariates to plot (e.g., treatment, sex, etc)
+#'               feature_names = TRUE)
 #' 
 #' ## Perform Three-Way ANOVA
 #' data %>% 

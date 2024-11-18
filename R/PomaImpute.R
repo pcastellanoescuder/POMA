@@ -7,7 +7,7 @@
 #' @param zeros_as_na Logical. Indicates if the zeros in the data are missing values. Default is FALSE.
 #' @param remove_na Logical. Indicates if features with a percentage of missing values over the `cutoff` parameter should be removed. Default is TRUE.
 #' @param cutoff Numeric. Percentage of missing values allowed in each feature.
-#' @param group_by Logical. If `metadata` file is present and its first variable is a factor, it can be used to compute missing values per group and drop them accordingly. Features will be removed only if all of the groups contain more missing values than allowed. Default is TRUE.
+#' @param group_by Character. Indicates the name of the `colData` column to be used as the grouping factor. Default is NULL (no grouping). This variable specifies the grouping criteria for evaluating missing values. Missing values will be assessed within each group defined by this variable, and features will be removed only if all groups exceed the allowed threshold of missing values.
 #' @param method Character. The imputation method to use. Options include "none" (no imputation, replace missing values by zeros), "half_min" (replace missing values with half of the minimum value), "median" (replace missing values with the median), "mean" (replace missing values with the mean), "min" (replace missing values with the minimum value), "knn" (replace missing values using k-nearest neighbors imputation), and "random_forest" (replace missing values using random forest imputation).
 #'
 #' @export
@@ -27,13 +27,13 @@
 #'   PomaImpute(zeros_as_na = FALSE,
 #'              remove_na = TRUE,
 #'              cutoff = 20,
-#'              group_by = TRUE,
+#'              group_by = NULL,
 #'              method = "knn")
 PomaImpute <- function(data,
                        zeros_as_na = FALSE,
                        remove_na = TRUE,
                        cutoff = 20,
-                       group_by = TRUE,
+                       group_by = NULL,
                        method = "knn"){
 
   if (!is(data, "SummarizedExperiment")){
@@ -62,13 +62,16 @@ PomaImpute <- function(data,
     method <- "none"
   }
   
-  grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0, 
-                            is.factor(SummarizedExperiment::colData(data)[,1]), FALSE)
+  grouping_factor <- FALSE
+  if (!is.null(group_by)) {
+    grouping_factor <- ifelse(ncol(SummarizedExperiment::colData(data)) > 0,  
+                              is.factor(SummarizedExperiment::colData(data)[, group_by]), FALSE)
+  }
   
   # remove NA
   if (remove_na){
-    if (group_by & ncol(SummarizedExperiment::colData(data)) > 0 & grouping_factor) {
-      to_impute <- data.frame(group_factor = SummarizedExperiment::colData(data)[,1], to_impute)
+    if (!is.null(group_by) & grouping_factor) {
+      to_impute <- data.frame(group_factor = SummarizedExperiment::colData(data)[, group_by], to_impute)
       
       count_na <- aggregate(. ~ group_factor, data = to_impute,
                             function(x) {100*(sum(is.na(x))/(sum(is.na(x)) + sum(!is.na(x))))},

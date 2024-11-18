@@ -9,7 +9,7 @@ PomaImpute(
   zeros_as_na = FALSE,
   remove_na = TRUE,
   cutoff = 20,
-  group_by = TRUE,
+  group_by = NULL,
   method = "knn"
 )
 }
@@ -22,7 +22,7 @@ PomaImpute(
 
 \item{cutoff}{Numeric. Percentage of missing values allowed in each feature.}
 
-\item{group_by}{Logical. If \code{metadata} file is present and its first variable is a factor, it can be used to compute missing values per group and drop them accordingly. Features will be removed only if all of the groups contain more missing values than allowed. Default is TRUE.}
+\item{group_by}{Character. Indicates the name of the \code{colData} column to be used as the grouping factor. Default is NULL (no grouping). This variable specifies the grouping criteria for evaluating missing values. Missing values will be assessed within each group defined by this variable, and features will be removed only if all groups exceed the allowed threshold of missing values.}
 
 \item{method}{Character. The imputation method to use. Options include "none" (no imputation, replace missing values by zeros), "half_min" (replace missing values with half of the minimum value), "median" (replace missing values with the median), "mean" (replace missing values with the mean), "min" (replace missing values with the minimum value), "knn" (replace missing values using k-nearest neighbors imputation), and "random_forest" (replace missing values using random forest imputation).}
 }
@@ -41,7 +41,7 @@ data \%>\%
   PomaImpute(zeros_as_na = FALSE,
              remove_na = TRUE,
              cutoff = 20,
-             group_by = TRUE,
+             group_by = NULL,
              method = "knn")
 }
 \references{
