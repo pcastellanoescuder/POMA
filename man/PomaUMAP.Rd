@@ -16,6 +16,7 @@ PomaUMAP(
   show_clusters = TRUE,
   hide_noise = TRUE,
   labels = FALSE,
+  outcome = NULL,
   theme_params = list(legend_title = TRUE, legend_position = "bottom")
 )
 }
@@ -42,6 +43,8 @@ PomaUMAP(
 
 \item{labels}{Logical. Indicates if sample names should be plotted or not.}
 
+\item{outcome}{Character. Has no effect on the analysis. Indicates the name of the \code{colData} column to be added to the output table. Default is NULL (no extra column added).}
+
 \item{theme_params}{List. Indicates \code{theme_poma} parameters.}
 }
 \value{
@@ -63,7 +66,8 @@ data \%>\%
            hdbscan_minpts = floor(nrow(data) * 0.05),
            show_clusters = TRUE,
            hide_noise = TRUE,
-           labels = FALSE)
+           labels = FALSE,
+           outcome = NULL)
 }
 \references{
 McInnes, L., Healy, J., & Melville, J. (2018). Umap: Uniform manifold approximation and projection for dimension reduction. arXiv preprint arXiv:1802.03426.

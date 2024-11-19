@@ -14,6 +14,7 @@
 #' @param show_clusters Logical. Indicates if clusters computed with HDBSCAN method should be plotted or not.
 #' @param hide_noise Logical. Specifies whether to hide Cluster 0 in the plot. In HDBSCAN, Cluster 0 is typically regarded as "noise."
 #' @param labels Logical. Indicates if sample names should be plotted or not.
+#' @param outcome Character. Has no effect on the analysis. Indicates the name of the `colData` column to be added to the output table. Default is NULL (no extra column added).
 #' @param theme_params List. Indicates `theme_poma` parameters.
 #' 
 #' @export
@@ -38,7 +39,8 @@
 #'            hdbscan_minpts = floor(nrow(data) * 0.05),
 #'            show_clusters = TRUE,
 #'            hide_noise = TRUE,
-#'            labels = FALSE)
+#'            labels = FALSE,
+#'            outcome = NULL)
 PomaUMAP <- function(data,
                      n_neighbors = floor(sqrt(nrow(data))),
                      n_components = 2,
@@ -50,6 +52,7 @@ PomaUMAP <- function(data,
                      show_clusters = TRUE,
                      hide_noise = TRUE,
                      labels = FALSE,
+                     outcome = NULL,
                      theme_params = list(legend_title = TRUE, legend_position = "bottom")) {
   
   if(!is(data, "SummarizedExperiment")){
@@ -77,6 +80,12 @@ PomaUMAP <- function(data,
 
   umap_clusters %<>%
     dplyr::rename_at(dplyr::vars(dplyr::starts_with("V")), ~ gsub("V", "UMAP", .))
+  
+  if (!is.null(outcome)) {
+    umap_clusters <- umap_clusters %>%
+      dplyr::mutate(outcome = SummarizedExperiment::colData(data)[, outcome]) %>%
+      dplyr::select(sample, outcome, dplyr::everything())
+  }
   
   if (hide_noise) {
     plot_data <- umap_clusters %>% 
