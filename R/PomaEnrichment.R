@@ -13,6 +13,7 @@
 #' @param fdr_cutoff Numeric. Adjusted p-value cutoff on enrichment tests to report.
 #' @param min_size Numeric. Minimal size of a gene set to test. All pathways below the threshold are excluded.
 #' @param max_size Numeric. Maximal size of a gene set to test. All pathways above the threshold are excluded.
+#' @param max_genes Numeric. The number of genes to retain from the `overlap_genes` or `leading_edge` columns. If `max_genes` is greater than the number of genes available, all genes are retained.
 #'
 #' @export
 #'
@@ -60,7 +61,8 @@ PomaEnrichment <- function(genes,
                            pval_cutoff = 0.05,
                            fdr_cutoff = 0.1,
                            min_size = 2,
-                           max_size = if (method == "gsea") {length(genes) - 1} else {NULL}) {
+                           max_size = if (method == "gsea") {length(genes) - 1} else {NULL},
+                           max_genes = 10) {
   
   pathways <- msigdbr::msigdbr(species = organism, 
                                category = collection,
@@ -93,6 +95,9 @@ PomaEnrichment <- function(genes,
                     direction, pathway_size = size, leading_edge = leadingEdge) %>%
       dplyr::arrange(pval) %>%
       dplyr::as_tibble() %>%
+      dplyr::mutate(leading_edge = leading_edge %>%
+                      lapply(function(x) strsplit(x, ", ")[[1]]) %>%
+                      purrr:::map_chr(~ paste(head(.x, max_genes), collapse = ", "))) %>% 
       dplyr::filter(pval < pval_cutoff & adjPval < fdr_cutoff)
   }
   
@@ -121,6 +126,9 @@ PomaEnrichment <- function(genes,
                     pathway_size = size, overlap, overlap_genes = overlapGenes) %>%
       dplyr::arrange(pval) %>%
       dplyr::as_tibble() %>%
+      dplyr::mutate(overlap_genes = overlap_genes %>%
+                      lapply(function(x) strsplit(x, ", ")[[1]]) %>%
+                      purrr:::map_chr(~ paste(head(.x, max_genes), collapse = ", "))) %>% 
       dplyr::filter(pval < pval_cutoff & adjPval < fdr_cutoff)
   }
   

@@ -18,7 +18,8 @@ PomaEnrichment(
      length(genes) - 1
  } else {
      NULL
- }
+ },
+  max_genes = 10
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ PomaEnrichment(
 \item{min_size}{Numeric. Minimal size of a gene set to test. All pathways below the threshold are excluded.}
 
 \item{max_size}{Numeric. Maximal size of a gene set to test. All pathways above the threshold are excluded.}
+
+\item{max_genes}{Numeric. The number of genes to retain from the \code{overlap_genes} or \code{leading_edge} columns. If \code{max_genes} is greater than the number of genes available, all genes are retained.}
 }
 \value{
 A \code{tibble} with the enriched gene sets.
