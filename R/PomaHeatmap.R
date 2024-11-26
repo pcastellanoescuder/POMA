@@ -8,10 +8,10 @@
 #' @param sample_names Logical. Indicates if sample names should be displayed or not. Default is TRUE.
 #' @param feature_names Logical. Indicates if feature names should be displayed or not. Default is FALSE.
 #' @param show_legend Logical. Indicates if legend should be displayed or not. Default is TRUE.
-#'
+#' 
 #' @export
 #'
-#' @return A heatmap plot.
+#' @return A `ggplot` object.
 #' @author Pol Castellano-Escuder
 #' 
 #' @examples 
@@ -33,7 +33,7 @@ PomaHeatmap <- function(data,
                         covs = NULL,
                         sample_names = TRUE,
                         feature_names = FALSE,
-                        show_legend = TRUE){
+                        show_legend = TRUE) {
   
   if(!is(data, "SummarizedExperiment")){
     stop("data is not a SummarizedExperiment object. \nSee POMA::PomaCreateObject or SummarizedExperiment::SummarizedExperiment")
@@ -48,7 +48,7 @@ PomaHeatmap <- function(data,
     
     heatmap_annotations <- ComplexHeatmap::HeatmapAnnotation(df = metadata, show_legend = show_legend)
     
-    suppressMessages(
+    poma_heatmap <- suppressMessages(
       ComplexHeatmap::Heatmap(plot_data, 
                               name = "Value", 
                               top_annotation = heatmap_annotations,
@@ -57,7 +57,7 @@ PomaHeatmap <- function(data,
                               show_heatmap_legend = show_legend)
     )
   } else {
-    suppressMessages(
+    poma_heatmap <- suppressMessages(
       ComplexHeatmap::Heatmap(plot_data, 
                               name = "Value", 
                               show_row_names = feature_names, 
@@ -65,5 +65,13 @@ PomaHeatmap <- function(data,
                               show_heatmap_legend = show_legend)
     )
   }
+  
+  # Convert to ggplot
+  hm_grob <- grid::grid.grabExpr(ComplexHeatmap::draw(poma_heatmap))
+  poma_heatmap <- ggplot2::ggplot() +
+    ggplot2::annotation_custom(hm_grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
+    ggplot2::theme_void()
+  
+  return(poma_heatmap)
 }
 

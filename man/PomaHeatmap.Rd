@@ -24,7 +24,7 @@ PomaHeatmap(
 \item{show_legend}{Logical. Indicates if legend should be displayed or not. Default is TRUE.}
 }
 \value{
-A heatmap plot.
+A \code{ggplot} object.
 }
 \description{
 \code{PomaHeatmap} generates a heatmap.

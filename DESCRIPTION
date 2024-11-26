@@ -1,6 +1,6 @@
 Package: POMA
 Title: Tools for Omics Data Analysis
-Version: 1.17.5
+Version: 1.17.6
 Authors@R: 
     c(person(given = "Pol",
              family = "Castellano-Escuder",
@@ -50,6 +50,7 @@ Imports:
     ggplot2,
     ggrepel,
     glmnet,
+    grid,
     impute,
     janitor,
     limma,

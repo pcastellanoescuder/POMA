@@ -1,4 +1,4 @@
-# POMA 1.17.5
+# POMA 1.17.6
 
 * Allow grouping variable selection in `PomaImpute`
 * New documentation
